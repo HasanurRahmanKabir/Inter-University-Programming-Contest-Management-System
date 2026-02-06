@@ -1,0 +1,61 @@
+     body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        /* min-height ensures full screen height */
+        min-height: 100vh;
+      }
+
+      .login-card {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px; /* Limits width on large screens */
+        transition: transform 0.3s;
+      }
+
+      .login-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .brand-logo {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 20px;
+      }
+
+      .form-control {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 12px 15px;
+      }
+
+      .form-control:focus {
+        background-color: white;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+      }
+
+      .btn-primary {
+        background-color: #3b82f6;
+        border: none;
+        padding: 12px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      .btn-primary:hover {
+        background-color: #2563eb;
+      }
+
+      .input-group-text {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-right: none;
+        color: #64748b;
+      }
+
+      .input-group .form-control {
+        border-left: none;
+      }

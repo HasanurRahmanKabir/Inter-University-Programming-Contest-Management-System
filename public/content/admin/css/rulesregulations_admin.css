@@ -1,0 +1,51 @@
+  
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        /* --- Reusable Sidebar Styles --- */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            color: #fff;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        .sidebar-header { padding: 20px; background: rgba(255, 255, 255, 0.05); text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .sidebar-menu { padding: 20px 0; }
+        .sidebar-menu a { display: flex; align-items: center; padding: 12px 25px; color: #94a3b8; text-decoration: none; transition: 0.3s; border-left: 4px solid transparent; font-size: 0.95rem; }
+        .sidebar-menu a:hover, .sidebar-menu a.active { color: #fff; background: rgba(255, 255, 255, 0.05); border-left: 4px solid #3b82f6; }
+        .sidebar-menu a i { margin-right: 15px; width: 20px; text-align: center; }
+
+        .main-content { margin-left: 260px; transition: all 0.3s; min-height: 100vh; display: flex; flex-direction: column; }
+        .top-navbar { background: #fff; padding: 15px 30px; box-shadow: 0 2px 15px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 999; }
+
+        /* --- Admin Page Specifics --- */
+        .custom-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: none; overflow: hidden; }
+        .form-section { background: #fff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); padding: 25px; margin-bottom: 25px; }
+        .rules-display { background: #fff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); padding: 25px; }
+        .rule-item { border-left: 4px solid #3b82f6; padding: 15px; margin-bottom: 15px; background: #f8fafc; border-radius: 8px; }
+        .rule-headline { font-size: 1.3rem; font-weight: 600; color: #1e293b; margin-bottom: 15px; }
+        .rule-line { display: flex; align-items: center; padding: 8px 0; color: #475569; }
+        .rule-line:before { content: "•"; color: #3b82f6; font-weight: bold; margin-right: 10px; }
+
+        /* Admin Avatar */
+        .admin-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px; background-color: #e2e8f0; }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .sidebar { margin-left: -260px; }
+            .sidebar.active { margin-left: 0; }
+            .main-content { margin-left: 0; }
+            .overlay { display: none; position: fixed; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 998; top: 0; left: 0; }
+            .overlay.active { display: block; }
+        }
+    

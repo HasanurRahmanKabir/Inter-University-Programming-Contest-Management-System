@@ -1,0 +1,250 @@
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background-color: #0f172a;
+            /* Dark Blue */
+            padding: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            margin-left: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #3b82f6 !important;
+        }
+
+        .btn-register {
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .btn-register:hover {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('/image/sublogoiupc.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            padding: 0 15px;
+            /* small padding for mobile */
+        }
+
+        /* Responsive text for hero */
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+
+        .hero-section p {
+            font-size: 1rem;
+        }
+
+        /* Countdown adjustments for mobile */
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 10px;
+            border-radius: 10px;
+            min-width: 70px;
+            /* reduce min-width for mobile */
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 10px;
+            /* for spacing when wrap occurs */
+        }
+
+        /* Countdown numbers smaller on mobile */
+        .countdown-number {
+            font-size: 2rem;
+        }
+
+        /* Buttons responsive padding */
+        .hero-section .btn {
+            padding: 10px 20px;
+            /* mobile friendly */
+            font-size: 0.9rem;
+        }
+
+        /* Media query for tablets and above */
+        @media (min-width: 768px) {
+            .hero-section h1 {
+                font-size: 3rem;
+            }
+
+            .hero-section p {
+                font-size: 1.25rem;
+            }
+
+            .countdown-item {
+                min-width: 100px;
+                padding: 20px;
+            }
+
+            .countdown-number {
+                font-size: 2.5rem;
+            }
+
+            .hero-section .btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Media query for large screens */
+        @media (min-width: 992px) {
+            .hero-section h1 {
+                font-size: 3.5rem;
+            }
+
+            .hero-section p {
+                font-size: 1.5rem;
+            }
+        }
+
+
+        /* Countdown Timer */
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 100px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Sections General --- */
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .section-title p {
+            color: #64748b;
+        }
+
+        /* --- Notice Board --- */
+        .notice-card {
+            background: white;
+            border-left: 5px solid #3b82f6;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .notice-card:hover {
+            transform: translateX(10px);
+        }
+
+        /* --- Timeline --- */
+        .timeline-item {
+            border-left: 3px solid #e2e8f0;
+            padding-left: 30px;
+            position: relative;
+            padding-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            width: 15px;
+            height: 15px;
+            background: #3b82f6;
+            border-radius: 50%;
+            position: absolute;
+            left: -9px;
+            top: 0;
+        }
+
+        .timeline-date {
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        /* --- Gallery --- */
+        .gallery-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .gallery-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* --- Sponsors --- */
+        .sponsor-logo {
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: 0.3s;
+            max-height: 140px;
+        }
+
+        .sponsor-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #0f172a;
+            color: white;
+            padding: 50px 0;
+        }
+
+        footer a {
+            color: #94a3b8;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: white;
+        }

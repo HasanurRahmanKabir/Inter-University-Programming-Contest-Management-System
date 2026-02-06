@@ -1,0 +1,20 @@
+    body { font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+
+    /* --- Navbar (from homepage) --- */
+    .navbar { background-color: #0f172a; padding: 15px 0; transition: all 0.3s; }
+    .nav-link { color: rgba(255,255,255,0.8) !important; font-weight: 500; margin-left: 15px; transition: 0.3s; }
+    .nav-link:hover { color: #3b82f6 !important; }
+    .btn-register { background-color: #3b82f6; color: white; padding: 8px 25px; border-radius: 50px; font-weight: 600; }
+    .btn-register:hover { background-color: #2563eb; color: white; }
+
+    /* Page header */
+    .page-header { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; padding: 110px 0 20px; text-align: center; }
+
+    /* Notice list styles (match homepage cards) */
+    .notice-card { background: white; border-left: 5px solid #3b82f6; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; transition: transform 0.3s; }
+    .notice-card:hover { transform: translateX(6px); }
+
+    /* Footer */
+    footer { background: #0f172a; color: white; padding: 50px 0; }
+    footer a { color: #94a3b8; text-decoration: none; }
+    footer a:hover { color: white; }

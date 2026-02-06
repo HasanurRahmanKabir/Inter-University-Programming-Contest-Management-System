@@ -1,0 +1,26 @@
+    body { font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+
+    /* Navbar theme from homepage */
+    .navbar { background-color: #0f172a; padding: 15px 0; transition: all 0.3s; }
+    .nav-link { color: rgba(255,255,255,0.8) !important; font-weight: 500; margin-left: 15px; transition: 0.3s; }
+    .nav-link:hover { color: #3b82f6 !important; }
+    .btn-register { background-color: #3b82f6; color: white; padding: 8px 25px; border-radius: 50px; font-weight: 600; }
+    .btn-register:hover { background-color: #2563eb; color: white; }
+
+    /* Page header */
+    .page-header { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; padding: 110px 0 20px; text-align: center; }
+
+    /* Table styles */
+    .card { border: none; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .table thead th { background: #0f172a; color: #fff; border: 0; }
+    .table tbody tr { background: #fff; }
+    .table tbody tr + tr { border-top: 1px solid #e5e7eb; }
+    .badge { border-radius: 999px; padding: 6px 10px; font-weight: 600; }
+    .badge-paid { background: #10b981; color: #fff; }
+    .badge-pending { background: #f59e0b; color: #111827; }
+    .badge-verified { background: #3b82f6; color: #fff; }
+
+    /* Footer */
+    footer { background: #0f172a; color: white; padding: 50px 0; }
+    footer a { color: #94a3b8; text-decoration: none; }
+    footer a:hover { color: white; }

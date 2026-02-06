@@ -1,0 +1,86 @@
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background-color: #0f172a;
+            padding: 15px 0;
+            transition: all 0.3s;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.8) !important;
+            font-weight: 500;
+            margin-left: 15px;
+            transition: 0.3s;
+        }
+        .nav-link:hover { color: #3b82f6 !important; }
+        .btn-register {
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .btn-register:hover { background-color: #2563eb; color: white; }
+
+        /* --- Page Header --- */
+        .page-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 120px 0 20px;
+            color: white;
+            text-align: center;
+        }
+
+        /* --- Sections General --- */
+        .section-padding { padding: 80px 0; }
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-title h2 { font-weight: 700; color: #1e293b; }
+        .section-title p { color: #64748b; }
+
+        /* --- Rules Content --- */
+        .rules-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            border-left: 5px solid #3b82f6;
+        }
+        .rules-card h3 {
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .rules-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .rules-card ul li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #64748b;
+        }
+        .rules-card ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+        }
+
+        /* --- Footer --- */
+        footer { background: #0f172a; color: white; padding: 50px 0; }
+        footer a { color: #94a3b8; text-decoration: none; }
+        footer a:hover { color: white; }

@@ -1,0 +1,92 @@
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        /* Header Style */
+        .page-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Form Card Style */
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .form-header {
+            background-color: #f8fafc;
+            padding: 15px 25px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+            color: #334155;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-header i {
+            margin-right: 10px;
+            color: #3b82f6;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        /* Image Upload */
+        .image-upload-box {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            background: #f8fafc;
+            position: relative;
+            margin: 0 auto 10px;
+        }
+
+        .image-upload-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .image-upload-box:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .required-star { color: #ef4444; margin-left: 3px; }
+
+        /* Steps Indicator (Optional Visual) */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        .step.active { background: #3b82f6; color: white; box-shadow: 0 4px 10px rgba(59,130,246,0.3); }

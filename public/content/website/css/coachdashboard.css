@@ -1,0 +1,208 @@
+ body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f3f4f6;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .dashboard-header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      padding: 30px 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .dashboard-header .subtitle {
+      opacity: 0.8;
+      font-size: 14px;
+    }
+
+    /* Info Cards */
+    .info-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+      border: none;
+      transition: transform 0.2s;
+    }
+
+    .info-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .info-card-header i {
+      font-size: 24px;
+      color: #3b82f6;
+      margin-right: 12px;
+    }
+
+    .info-card-header h5 {
+      margin: 0;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    /* Stats Cards */
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border-left: 4px solid #3b82f6;
+    }
+
+    .stat-card h3 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 10px 0;
+    }
+
+    .stat-card p {
+      color: #64748b;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* Profile Image */
+    .profile-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #f1f5f9;
+      margin-bottom: 15px;
+    }
+
+    .member-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #f1f5f9;
+      margin-bottom: 10px;
+    }
+
+    /* Info Labels */
+    .info-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      font-size: 15px;
+      color: #1e293b;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    /* Member Cards */
+    .member-card {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      height: 100%;
+      border: 1px solid #e2e8f0;
+    }
+
+    .member-card h6 {
+      font-weight: 600;
+      color: #1e293b;
+      margin: 10px 0;
+    }
+
+    /* Transaction Section */
+    .transaction-section {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .transaction-section h5 {
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .transaction-input {
+      background: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 15px;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .transaction-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+
+    .submit-btn {
+      background: white;
+      color: #3b82f6;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 30px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.3s;
+      margin-top: 15px;
+    }
+
+    .submit-btn:hover {
+      background: #f1f5f9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Badge */
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.verified {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 22px;
+      }
+
+      .info-card {
+        padding: 20px;
+      }
+    }
