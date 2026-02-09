@@ -237,9 +237,13 @@ XAMPP or similar server
 
 🧪 Setup Steps
 git clone (https://github.com/HasanurRahmanKabir/Inter-University-Programming-Contest-Management-System)
+
 cd Inter-University-Programming-Contest-Management-System
+
 composer install
+
 cp .env.example .env
+
 php artisan key:generate
 
 
