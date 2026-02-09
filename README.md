@@ -3,8 +3,6 @@
 A centralized, secure and scalable web based platform for managing Inter University Programming Contests, covering the complete lifecycle from contest creation and team registration to payment verification and on site logistics management.
 
 
-
-
 📑 **Table of Contents**
 
 📌 Overview
