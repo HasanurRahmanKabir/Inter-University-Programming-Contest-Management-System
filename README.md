@@ -2,7 +2,8 @@
 
 A centralized, secure and scalable web based platform for managing Inter University Programming Contests, covering the complete lifecycle from contest creation and team registration to payment verification and on site logistics management.
 
-📑 Table of Contents
+
+📑 **Table of Contents**
 
 📌 Overview
 
@@ -32,7 +33,8 @@ A centralized, secure and scalable web based platform for managing Inter Univers
 
 📜 License
 
-📌 Overview
+
+📌 **Overview**
 
 The Inter University Programming Contest Management System is a web application developed to modernize and automate the organizational workflow of large scale academic programming contests.
 
@@ -40,7 +42,8 @@ The platform eliminates dependency on spreadsheets, manual verification and scat
 
 Inter University Programming Contest Management System ensures data integrity, operational transparency and efficient logistics handling through role based access control and a robust backend architecture.
 
-❗ Problem Statement
+
+❗ **Problem Statement**
 
 Organizing Inter University Programming Contests using traditional manual methods leads to:
 
@@ -56,7 +59,8 @@ High administrative overhead
 
 As contest scale increases, these issues directly affect reliability, transparency and overall event quality.
 
-💡 Solution Summary
+
+💡 **Solution Summary**
 
 Inter University Programming Contest Management System introduces a centralized digital platform that:
 
@@ -72,7 +76,8 @@ Stores all contest data in a secure relational database
 
 The system significantly reduces human error, administrative effort and operational complexity.
 
-🚀 Key Features
+
+🚀 **Key Features**
 
 Multi role authentication system
 
@@ -94,12 +99,16 @@ Sponsor and gallery management
 
 Data export (Excel)
 
-👥 User Roles & Responsibilities
+
+👥 **User Roles & Responsibilities**
+
+
 🛡️ Super Admin
 
 Create and manage Admin accounts
 
 Control system level access
+
 
 🧑‍💼 Admin
 
@@ -113,6 +122,7 @@ Manage notices, sponsors, gallery and rules
 
 Add volunteers
 
+
 🎓 Coach
 
 Register teams
@@ -123,13 +133,15 @@ Submit payment transaction ID
 
 View team status
 
+
 🧢 Volunteer
 
 View assigned teams
 
 Update kit distribution status
 
-🏗️ System Architecture
+
+🏗️ **System Architecture**
 
 The platform follows the Model–View–Controller (MVC) architectural pattern:
 
@@ -141,12 +153,15 @@ Controller → Business logic
 
 This architecture ensures separation of concerns, scalability and maintainability.
 
-🛠️ Technology Stack
-🔧 Backend
+
+🛠️ **Technology Stack**
+
+🔧 **Backend**
 
 PHP (Laravel Framework)
 
-🎨 Frontend
+
+🎨 **Frontend**
 
 HTML5
 
@@ -156,11 +171,13 @@ Bootstrap 5
 
 JavaScript
 
-🗄️ Database
+
+🗄️ **Database**
 
 MySQL
 
-🧰 Development Tools
+
+🧰 **Development Tools**
 
 VS Code
 
@@ -168,7 +185,8 @@ XAMPP
 
 phpMyAdmin
 
-🔐 Security Implementation
+
+🔐 **Security Implementation**
 
 Role Based Access Control (RBAC)
 
@@ -180,7 +198,8 @@ SQL Injection prevention
 
 Input validation
 
-🗄️ Database Design Overview
+
+🗄️ **Database Design Overview**
 
 The system uses a relational database containing tables such as:
 
@@ -208,7 +227,8 @@ sponsor_infos
 
 All relationships are maintained using foreign keys to ensure data consistency and integrity.
 
-🔄 Workflow Description
+
+🔄 **Workflow Description**
 
 Admin creates contest
 
@@ -224,8 +244,10 @@ Volunteer distributes kits
 
 Volunteer updates kit status
 
-⚙️ Installation & Setup
-📋 Prerequisites
+
+⚙️ **Installation & Setup**
+
+📋 **Prerequisites**
 
 PHP >= 8.2.12
 
@@ -235,7 +257,10 @@ MySQL
 
 XAMPP or similar server
 
-🧪 Setup Steps
+
+🧪 **Setup Steps**
+
+
 git clone (https://github.com/HasanurRahmanKabir/Inter-University-Programming-Contest-Management-System)
 
 cd Inter-University-Programming-Contest-Management-System
@@ -253,11 +278,13 @@ php artisan migrate
 php artisan serve
 
 
-🔗 Access the application:
+🔗 **Access the application:**
 
 http://127.0.0.1:8000
 
-🔮 Future Enhancements
+
+🔮 **Future Enhancements**
+
 
 Online judge integration
 
@@ -271,7 +298,9 @@ Two factor authentication
 
 Mobile application
 
-👨‍💻 Contributors
+
+👨‍💻 **Contributors**
+
 
 Hasanur Rahman Anik
 
@@ -281,9 +310,12 @@ Shabnur Akter
 
 Nure Jannat Nina
 
+
 Department of Computer Science & Engineering
 State University of Bangladesh
 
-📜 License
+
+📜 **License**
+
 
 This project is developed for academic and educational purposes.
