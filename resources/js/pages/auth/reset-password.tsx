@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে নিশ্চিতভাবে '@/routes/index' ইম্পোর্ট করা হয়েছে
+// এখানে ইম্পোর্ট পাথ ঠিক করা হয়েছে
 import { password as passwordRoute } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
@@ -22,12 +22,12 @@ export default function ResetPassword({
             <Head title="Reset password" />
 
             <Form
-                // passwordRoute.reset.update.form() বা আপনার index.ts অনুযায়ী মেথড কল করুন
+                // passwordRoute.reset.update.form() ব্যবহার করা হয়েছে
                 {...passwordRoute.reset.update.form()}
                 className="space-y-6"
             >
                 {({ data, setData, processing, errors }) => {
-                    // টোকেন এবং ইমেইল ডাটা সেট করা নিশ্চিত করছি
+                    // টোকেন এবং ইমেইল সেট করা নিশ্চিত করছি
                     data.token = token;
                     data.email = email;
 
