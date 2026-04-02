@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে পরিবর্তনটি নিশ্চিত করুন: '@/routes/index'
+// এখানে পরিবর্তনটি নিশ্চিত করুন: শেষে '/index' যোগ করা হয়েছে
 import { password as passwordRoute } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
