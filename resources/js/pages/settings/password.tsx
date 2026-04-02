@@ -5,23 +5,24 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-// সঠিক রাউট ইম্পোর্ট (আপনার routes/index থেকে)
+// routes/index থেকে সঠিক ইম্পোর্ট
 import { password as passwordRoute } from '@/routes/index'; 
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
 import { useRef } from 'react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Password settings',
-        href: passwordRoute().url,
-    },
-];
-
 export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
+
+    // ব্রেডক্রাম্ব এর জন্য সঠিক ইউআরএল কল
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Password settings',
+            href: passwordRoute.url(),
+        },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -35,18 +36,21 @@ export default function Password() {
                     />
 
                     <Form
-                        {...passwordRoute.form()} // PasswordController এর বদলে রাউট ব্যবহার করা হয়েছে
+                        // সরাসরি রাউট অবজেক্ট থেকে ফর্ম প্রপস নেওয়া হয়েছে
+                        {...passwordRoute.update.form()}
                         options={{
                             preserveScroll: true,
-                        }}
-                        resetOnSuccess
-                        onError={(errors) => {
-                            if (errors.password) {
-                                passwordInput.current?.focus();
-                            }
+                            onSuccess: () => {
+                                // পাসওয়ার্ড রিসেট করার অপশন (যদি আপনার ফর্ম কম্পোনেন্ট সাপোর্ট করে)
+                            },
+                            onError: (errors) => {
+                                if (errors.password) {
+                                    passwordInput.current?.focus();
+                                }
 
-                            if (errors.current_password) {
-                                currentPasswordInput.current?.focus();
+                                if (errors.current_password) {
+                                    currentPasswordInput.current?.focus();
+                                }
                             }
                         }}
                         className="space-y-6"
