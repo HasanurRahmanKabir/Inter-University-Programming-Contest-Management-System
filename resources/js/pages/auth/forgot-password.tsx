@@ -4,15 +4,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// নিশ্চিত করুন যে '@/routes/index' থেকে passwordRoute সঠিকভাবে এক্সপোর্ট করা আছে
+// এখানে '@/routes' এর বদলে '@/routes/index' নিশ্চিত করা হয়েছে
 import { password as passwordRoute } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
-interface ForgotPasswordProps {
-    status?: string;
-}
-
-export default function ForgotPassword({ status }: ForgotPasswordProps) {
+export default function ForgotPassword({ status }: { status?: string }) {
     return (
         <AuthLayout
             title="Forgot password"
@@ -20,15 +16,14 @@ export default function ForgotPassword({ status }: ForgotPasswordProps) {
         >
             <Head title="Forgot password" />
 
-            {/* সাকসেস মেসেজ দেখানোর জন্য */}
             {status && (
-                <div className="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
+                <div className="mb-4 text-sm font-medium text-green-600">
                     {status}
                 </div>
             )}
 
             <Form
-                {...passwordRoute.forgot.send.form()} // এখানে আপনার রাউট কনফিগ অনুযায়ী কল হবে
+                {...passwordRoute.forgot.send.form()}
                 className="space-y-6"
             >
                 {({ data, setData, processing, errors }) => (
@@ -39,14 +34,13 @@ export default function ForgotPassword({ status }: ForgotPasswordProps) {
                                 id="email"
                                 type="email"
                                 name="email"
-                                value={data.email || ''} // ডাটা বাইন্ডিং নিশ্চিত করা হয়েছে
+                                value={data.email}
                                 className="mt-1 block w-full"
                                 autoFocus
                                 onChange={(e) => setData('email', e.target.value)}
                                 placeholder="email@example.com"
-                                required
                             />
-                            <InputError message={errors.email} className="mt-2" />
+                            <InputError message={errors.email} />
                         </div>
 
                         <div className="flex items-center justify-end">
