@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে নিশ্চিতভাবে '@/routes/index' ইম্পোর্ট করা হয়েছে এবং সঠিক নাম (verifyEmail) ব্যবহার করা হয়েছে
-import { logout, verifyEmail } from '@/routes/index'; 
-import { Form, Head, Link } from '@inertiajs/react';
+// এখানে পাথটি পরিবর্তন করে '@/routes/index' করা হয়েছে
+import { logout as logoutRoute, verificationSend } from '@/routes/index'; 
+import { Form, Head } from '@inertiajs/react';
 
 export default function VerifyEmail({ status }: { status?: string }) {
+    const isVerificationLinkSent = status === 'verification-link-sent';
+
     return (
         <AuthLayout
             title="Verify email"
@@ -13,28 +14,26 @@ export default function VerifyEmail({ status }: { status?: string }) {
         >
             <Head title="Email Verification" />
 
-            {status === 'verification-link-sent' && (
+            {isVerificationLinkSent && (
                 <div className="mb-4 text-sm font-medium text-green-600">
                     A new verification link has been sent to the email address you provided during registration.
                 </div>
             )}
 
             <div className="mt-4 flex items-center justify-between">
-                <Form {...verifyEmail.send.form()}>
+                <Form {...verificationSend.form()}>
                     {({ processing }) => (
                         <Button disabled={processing}>
-                            {processing && <Spinner className="mr-2 h-4 w-4" />}
-                            Resend verification email
+                            Resend Verification Email
                         </Button>
                     )}
                 </Form>
 
-                <Link
-                    {...logout().link()}
-                    className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Log Out
-                </Link>
+                <Form {...logoutRoute.form()}>
+                    <Button variant="link" as="button" type="submit" className="text-sm text-muted-foreground underline">
+                        Log Out
+                    </Button>
+                </Form>
             </div>
         </AuthLayout>
     );
