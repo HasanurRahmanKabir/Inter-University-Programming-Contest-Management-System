@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// সঠিক ইম্পোর্ট পাথ এবং নাম ব্যবহার করা হয়েছে
+// সঠিক ইম্পোর্ট পাথ নিশ্চিত করা হয়েছে
 import { password as passwordRoute } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
@@ -22,21 +22,21 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             <Head title="Reset password" />
 
             <Form
-                {...passwordRoute.form()} // এখানে passwordRoute ব্যবহার করা হয়েছে
+                {...passwordRoute.form()}
                 transform={(data) => ({ ...data, token, email })}
                 resetOnSuccess={['password', 'password_confirmation']}
             >
                 {({ data, setData, processing, errors }) => (
                     <div className="grid gap-6">
+                        {/* ইমেইল ফিল্ড (এটি পরিবর্তন করা যাবে না) */}
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
                                 id="email"
                                 type="email"
                                 name="email"
-                                autoComplete="email"
                                 value={email}
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full bg-muted"
                                 readOnly
                             />
                             <InputError
@@ -45,8 +45,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             />
                         </div>
 
+                        {/* পাসওয়ার্ড ইনপুট */}
                         <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">New Password</Label>
                             <Input
                                 id="password"
                                 type="password"
@@ -56,14 +57,15 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 autoComplete="new-password"
                                 className="mt-1 block w-full"
                                 autoFocus
-                                placeholder="Password"
+                                placeholder="Enter new password"
                             />
                             <InputError message={errors.password} />
                         </div>
 
+                        {/* পাসওয়ার্ড কনফার্মেশন */}
                         <div className="grid gap-2">
                             <Label htmlFor="password_confirmation">
-                                Confirm password
+                                Confirm Password
                             </Label>
                             <Input
                                 id="password_confirmation"
@@ -73,7 +75,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
                                 autoComplete="new-password"
                                 className="mt-1 block w-full"
-                                placeholder="Confirm password"
+                                placeholder="Confirm new password"
                             />
                             <InputError
                                 message={errors.password_confirmation}
@@ -81,6 +83,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             />
                         </div>
 
+                        {/* সাবমিট বাটন */}
                         <Button
                             type="submit"
                             className="mt-4 w-full"
