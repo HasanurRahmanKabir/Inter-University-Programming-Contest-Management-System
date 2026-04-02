@@ -1,7 +1,3 @@
-import { login } from '@/routes';
-import { store } from '@/routes/register';
-import { Form, Head } from '@inertiajs/react';
-
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -9,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
+import { login, register as store } from '@/routes/index'; // এখানে '@/routes/index' ব্যবহার করা হয়েছে
+import { Form, Head } from '@inertiajs/react';
 
 export default function Register() {
     return (
@@ -92,9 +90,10 @@ export default function Register() {
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full"
+                                className="w-full mt-2"
                                 tabIndex={5}
                                 data-test="register-user-button"
+                                disabled={processing}
                             >
                                 {processing && <Spinner />}
                                 Create account
@@ -103,7 +102,7 @@ export default function Register() {
 
                         <div className="text-center text-sm text-muted-foreground">
                             Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6}>
+                            <TextLink href={login().url} tabIndex={6}>
                                 Log in
                             </TextLink>
                         </div>
