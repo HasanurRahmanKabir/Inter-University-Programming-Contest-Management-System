@@ -1,12 +1,13 @@
 import HeadingSmall from '@/components/heading-small';
-import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
-import { appearance as appearanceRoute } from '@/routes/index';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Button } from '@/components/ui/button';
+import AppLayout from '@/layouts/app-layout';
+import SettingsLayout from '@/layouts/settings/layout';
+// নিশ্চিত করা হয়েছে যে ইম্পোর্ট পাথটি '@/routes/index' ই আছে
+import { appearance as appearanceRoute } from '@/routes/index'; 
+import { type BreadcrumbItem } from '@/types';
+import { Head, useForm } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,15 +17,21 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Appearance() {
-    // এখানে সরাসরি ফর্ম লজিক রাখা হয়েছে যাতে আলাদা ফাইল না লাগে
+    // Inertia useForm লজিক
     const { data, setData, patch, processing } = useForm({
-        appearance: 'light', // ডিফল্ট ভ্যালু
+        appearance: 'light', // ডিফল্ট ভ্যালু, ডাটাবেজ থেকে আসলে এখানে ম্যাপ করতে পারেন
     });
 
     const updateAppearance = (e: React.FormEvent) => {
         e.preventDefault();
-        // আপনার ব্যাকএন্ড রাউট অনুযায়ী এটি কাজ করবে
-        patch(appearanceRoute().url);
+        
+        // patch মেথডটি সরাসরি appearanceRoute().url এ কল হবে
+        patch(appearanceRoute().url, {
+            preserveScroll: true,
+            onSuccess: () => {
+                // সাকসেস হলে কোনো মেসেজ দেখাতে চাইলে এখানে লজিক দিতে পারেন
+            },
+        });
     };
 
     return (
@@ -44,17 +51,22 @@ export default function Appearance() {
                             onValueChange={(value) => setData('appearance', value)}
                             className="grid grid-cols-2 gap-4"
                         >
-                            <div className="flex items-center space-x-2">
+                            <div className="flex items-center space-x-2 rounded-md border p-4 hover:bg-accent cursor-pointer">
                                 <RadioGroupItem value="light" id="light" />
-                                <Label htmlFor="light">Light Mode</Label>
+                                <Label htmlFor="light" className="flex-1 cursor-pointer">Light Mode</Label>
                             </div>
-                            <div className="flex items-center space-x-2">
+                            
+                            <div className="flex items-center space-x-2 rounded-md border p-4 hover:bg-accent cursor-pointer">
                                 <RadioGroupItem value="dark" id="dark" />
-                                <Label htmlFor="dark">Dark Mode</Label>
+                                <Label htmlFor="dark" className="flex-1 cursor-pointer">Dark Mode</Label>
                             </div>
                         </RadioGroup>
 
-                        <Button disabled={processing}>Save Changes</Button>
+                        <div className="flex justify-start">
+                            <Button disabled={processing} type="submit">
+                                {processing ? 'Saving...' : 'Save Changes'}
+                            </Button>
+                        </div>
                     </form>
                 </div>
             </SettingsLayout>
