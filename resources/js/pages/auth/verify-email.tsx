@@ -3,11 +3,15 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// ইম্পোর্ট পাথগুলো '@/routes/index' এ পরিবর্তন করা হয়েছে
+// ইম্পোর্ট পাথ অবশ্যই '@/routes/index' হতে হবে
 import { logout, verificationSend as send } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
-export default function VerifyEmail({ status }: { status?: string }) {
+interface VerifyEmailProps {
+    status?: string;
+}
+
+export default function VerifyEmail({ status }: VerifyEmailProps) {
     return (
         <AuthLayout
             title="Verify email"
@@ -22,21 +26,23 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 </div>
             )}
 
-            {/* {...send.form()} এখন কাজ করবে কারণ আমরা index.ts এ এটি ডিফাইন করেছি */}
+            {/* send.form() এখন সঠিকভাবে কল হবে */}
             <Form {...send.form()} className="space-y-6 text-center">
                 {({ processing }) => (
                     <>
-                        <Button disabled={processing} variant="secondary">
-                            {processing && <Spinner />}
-                            Resend verification email
-                        </Button>
+                        <div className="flex flex-col gap-4">
+                            <Button disabled={processing} variant="secondary" type="submit">
+                                {processing && <Spinner />}
+                                Resend verification email
+                            </Button>
 
-                        <TextLink
-                            href={logout().url} // .url যোগ করা হয়েছে সঠিক লিঙ্কের জন্য
-                            className="mx-auto block text-sm"
-                        >
-                            Log out
-                        </TextLink>
+                            <TextLink
+                                href={logout().url} // .url প্রপার্টি ব্যবহার করা হয়েছে
+                                className="mx-auto block text-sm"
+                            >
+                                Log out
+                            </TextLink>
+                        </div>
                     </>
                 )}
             </Form>
