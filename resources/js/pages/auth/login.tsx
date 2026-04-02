@@ -4,24 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-import { register } from '@/routes/index';
-import { store } from '@/routes/login';
-import { request } from '@/routes/password';
+// ইম্পোর্ট পাথ '@/routes/index' নিশ্চিত করা হয়েছে
+import { login as loginRoute, register } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
-interface LoginProps {
-    status?: string;
-    canResetPassword: boolean;
-    canRegister: boolean;
-}
-
-export default function Login({
-    status,
-    canResetPassword,
-    canRegister,
-}: LoginProps) {
+export default function Login({ status, canResetPassword }: { status?: string; canResetPassword?: boolean }) {
     return (
         <AuthLayout
             title="Log in to your account"
@@ -29,12 +17,13 @@ export default function Login({
         >
             <Head title="Log in" />
 
+            {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
+
             <Form
-                {...store.form()}
-                resetOnSuccess={['password']}
+                {...loginRoute.form()}
                 className="flex flex-col gap-6"
             >
-                {({ processing, errors }) => (
+                {({ data, setData, processing, errors }) => (
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
@@ -43,25 +32,22 @@ export default function Login({
                                     id="email"
                                     type="email"
                                     name="email"
-                                    required
-                                    autoFocus
-                                    tabIndex={1}
-                                    autoComplete="email"
+                                    value={data.email}
+                                    autoComplete="username"
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    className="mt-1 block w-full"
                                     placeholder="email@example.com"
+                                    autoFocus
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
-                                <div className="flex items-center">
+                                <div className="flex items-center justify-between">
                                     <Label htmlFor="password">Password</Label>
                                     {canResetPassword && (
-                                        <TextLink
-                                            href={request()}
-                                            className="ml-auto text-sm"
-                                            tabIndex={5}
-                                        >
-                                            Forgot password?
+                                        <TextLink href="/forgot-password" tabIndex={5}>
+                                            Forgot your password?
                                         </TextLink>
                                     )}
                                 </div>
@@ -69,52 +55,44 @@ export default function Login({
                                     id="password"
                                     type="password"
                                     name="password"
-                                    required
-                                    tabIndex={2}
+                                    value={data.password}
                                     autoComplete="current-password"
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    className="mt-1 block w-full"
                                     placeholder="Password"
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
-                            <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-2">
                                 <Checkbox
                                     id="remember"
                                     name="remember"
-                                    tabIndex={3}
+                                    checked={data.remember}
+                                    onCheckedChange={(checked) => setData('remember', !!checked)}
                                 />
-                                <Label htmlFor="remember">Remember me</Label>
+                                <label
+                                    htmlFor="remember"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Remember me
+                                </label>
                             </div>
 
-                            <Button
-                                type="submit"
-                                className="mt-4 w-full"
-                                tabIndex={4}
-                                disabled={processing}
-                                data-test="login-button"
-                            >
-                                {processing && <Spinner />}
+                            <Button type="submit" className="mt-2 w-full" disabled={processing}>
                                 Log in
                             </Button>
                         </div>
 
-                        {canRegister && (
-                            <div className="text-center text-sm text-muted-foreground">
-                                Don't have an account?{' '}
-                                <TextLink href={register()} tabIndex={5}>
-                                    Sign up
-                                </TextLink>
-                            </div>
-                        )}
+                        <div className="text-center text-sm text-muted-foreground">
+                            Don't have an account?{' '}
+                            <TextLink href={register().url} tabIndex={6}>
+                                Sign up
+                            </TextLink>
+                        </div>
                     </>
                 )}
             </Form>
-
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
         </AuthLayout>
     );
 }
