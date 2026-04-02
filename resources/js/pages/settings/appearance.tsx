@@ -1,58 +1,66 @@
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/layouts/auth-layout';
-// এখানে নিশ্চিতভাবে '@/routes/index' ইম্পোর্ট করা হয়েছে
-import { password as passwordRoute } from '@/routes/index'; 
-import { Form, Head } from '@inertiajs/react';
+import HeadingSmall from '@/components/heading-small';
+import { useAppearance } from '@/hooks/use-appearance';
+import SettingsLayout from '@/layouts/settings/layout';
+// সার্ভার এরর দূর করতে '@/routes/index' নিশ্চিত করা হয়েছে
+import { appearance } from '@/routes/index'; 
+import { type BreadcrumbItem } from '@/types';
+import { Head } from '@inertiajs/react';
+import { Monitor, Moon, Sun } from 'lucide-react';
 
-export default function ForgotPassword({ status }: { status?: string }) {
+export default function Appearance() {
+    const { appearance: mode, updateAppearance } = useAppearance();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Appearance settings',
+            href: appearance.url(),
+        },
+    ];
+
     return (
-        <AuthLayout
-            title="Forgot password"
-            description="Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one."
-        >
-            <Head title="Forgot password" />
+        <SettingsLayout>
+            <Head title="Appearance settings" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
+            <div className="space-y-6">
+                <HeadingSmall
+                    title="Appearance settings"
+                    description="Update your account's appearance settings"
+                />
+
+                <div className="space-y-2">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        <button
+                            onClick={() => updateAppearance('light')}
+                            className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-accent ${
+                                mode === 'light' ? 'border-primary' : 'border-transparent'
+                            }`}
+                        >
+                            <Sun className="h-6 w-6" />
+                            <span className="text-sm font-medium">Light</span>
+                        </button>
+
+                        <button
+                            onClick={() => updateAppearance('dark')}
+                            className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-accent ${
+                                mode === 'dark' ? 'border-primary' : 'border-transparent'
+                            }`}
+                        >
+                            <Moon className="h-6 w-6" />
+                            <span className="text-sm font-medium">Dark</span>
+                        </button>
+
+                        <button
+                            onClick={() => updateAppearance('system')}
+                            className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-accent ${
+                                mode === 'system' ? 'border-primary' : 'border-transparent'
+                            }`}
+                        >
+                            <Monitor className="h-6 w-6" />
+                            <span className="text-sm font-medium">System</span>
+                        </button>
+                    </div>
                 </div>
-            )}
-
-            <Form
-                {...passwordRoute.forgot.send.form()}
-                className="space-y-6"
-            >
-                {({ data, setData, processing, errors }) => (
-                    <>
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email address</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                name="email"
-                                value={data.email}
-                                className="mt-1 block w-full"
-                                autoFocus
-                                onChange={(e) => setData('email', e.target.value)}
-                                placeholder="email@example.com"
-                                required
-                            />
-                            <InputError message={errors.email} />
-                        </div>
-
-                        <div className="flex items-center justify-end">
-                            <Button className="w-full" disabled={processing}>
-                                {processing && <Spinner className="mr-2 h-4 w-4" />}
-                                Email password reset link
-                            </Button>
-                        </div>
-                    </>
-                )}
-            </Form>
-        </AuthLayout>
+            </div>
+        </SettingsLayout>
     );
 }
