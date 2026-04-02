@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে '@/routes' এর বদলে '@/routes/index' নিশ্চিত করা হয়েছে
+// এখানে নিশ্চিতভাবে '@/routes/index' ব্যবহার করা হয়েছে
 import { logout, verificationSend } from '@/routes/index'; 
 import { Head, useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
@@ -11,6 +11,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
     const submit = (e: FormEvent) => {
         e.preventDefault();
 
+        // verificationSend.form() ব্যবহার করা হয়েছে আপনার routes/index.ts অনুযায়ী
         post(verificationSend.form().action);
     };
 
