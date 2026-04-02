@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// ইম্পোর্ট পাথ ঠিক করা হয়েছে
+// এখানে নিশ্চিতভাবে '@/routes/index' ইম্পোর্ট করা হয়েছে এবং সঠিক নাম (verifyEmail) ব্যবহার করা হয়েছে
 import { logout, verifyEmail } from '@/routes/index'; 
 import { Form, Head, Link } from '@inertiajs/react';
 
@@ -23,7 +23,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 <Form {...verifyEmail.send.form()}>
                     {({ processing }) => (
                         <Button disabled={processing}>
-                            {processing && <Spinner />}
+                            {processing && <Spinner className="mr-2 h-4 w-4" />}
                             Resend verification email
                         </Button>
                     )}
