@@ -1,9 +1,3 @@
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { send } from '@/routes/verification';
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Transition } from '@headlessui/react';
-import { Form, Head, Link, usePage } from '@inertiajs/react';
-
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -12,7 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { edit } from '@/routes/profile';
+// সঠিক ইম্পোর্ট পাথগুলো এখানে আপডেট করা হয়েছে
+import { edit, verificationSend } from '@/routes/index'; 
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Transition } from '@headlessui/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -42,13 +40,15 @@ export default function Profile({
                     />
 
                     <Form
-                        {...ProfileController.update.form()}
+                        // ProfileController এর বদলে সরাসরি পাথ ব্যবহার করা হয়েছে যা নিরাপদ
+                        action={edit().url}
+                        method="patch"
                         options={{
                             preserveScroll: true,
                         }}
                         className="space-y-6"
                     >
-                        {({ processing, recentlySuccessful, errors }) => (
+                        {({ data, setData, processing, recentlySuccessful, errors }) => (
                             <>
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
@@ -56,7 +56,8 @@ export default function Profile({
                                     <Input
                                         id="name"
                                         className="mt-1 block w-full"
-                                        defaultValue={auth.user.name}
+                                        value={data.name ?? auth.user.name}
+                                        onChange={(e) => setData('name', e.target.value)}
                                         name="name"
                                         required
                                         autoComplete="name"
@@ -76,7 +77,8 @@ export default function Profile({
                                         id="email"
                                         type="email"
                                         className="mt-1 block w-full"
-                                        defaultValue={auth.user.email}
+                                        value={data.email ?? auth.user.email}
+                                        onChange={(e) => setData('email', e.target.value)}
                                         name="email"
                                         required
                                         autoComplete="username"
@@ -96,7 +98,8 @@ export default function Profile({
                                                 Your email address is
                                                 unverified.{' '}
                                                 <Link
-                                                    href={send()}
+                                                    href={verificationSend.form().action}
+                                                    method="post"
                                                     as="button"
                                                     className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                                 >
@@ -105,8 +108,7 @@ export default function Profile({
                                                 </Link>
                                             </p>
 
-                                            {status ===
-                                                'verification-link-sent' && (
+                                            {status === 'verification-link-sent' && (
                                                 <div className="mt-2 text-sm font-medium text-green-600">
                                                     A new verification link has
                                                     been sent to your email
