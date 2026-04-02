@@ -6,8 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-// appearance এবং verificationSend ইম্পোর্ট করা হয়েছে
-import { appearance, verificationSend } from '@/routes/index'; 
+// profile এবং verificationSend রাউট ইম্পোর্ট করা হয়েছে
+import { profile, verificationSend } from '@/routes/index'; 
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
@@ -21,11 +21,11 @@ export default function Profile({
 }) {
     const { auth } = usePage<SharedData>().props;
 
-    // ব্রেডক্রাম্ব এর জন্য appearance.url() ব্যবহার করা হয়েছে
+    // ব্রেডক্রাম্ব এর জন্য profile.url() ব্যবহার করা হয়েছে
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Profile settings',
-            href: appearance.url(),
+            href: profile.url(),
         },
     ];
 
@@ -41,12 +41,8 @@ export default function Profile({
                     />
 
                     <Form
-                        // appearance.url() ব্যবহার করা হয়েছে যা আপনার index.ts এ আছে
-                        action={appearance.url()}
-                        method="patch"
-                        options={{
-                            preserveScroll: true,
-                        }}
+                        // profile.update.form() ব্যবহার করা সবচেয়ে নিরাপদ উপায়
+                        {...profile.update.form()}
                         className="space-y-6"
                     >
                         {({ data, setData, processing, recentlySuccessful, errors }) => (
@@ -57,8 +53,7 @@ export default function Profile({
                                     <Input
                                         id="name"
                                         className="mt-1 block w-full"
-                                        // initial value হিসেবে auth.user.name সরাসরি ব্যবহার করা নিরাপদ
-                                        value={data.name ?? auth.user.name}
+                                        value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
                                         name="name"
                                         required
@@ -79,7 +74,7 @@ export default function Profile({
                                         id="email"
                                         type="email"
                                         className="mt-1 block w-full"
-                                        value={data.email ?? auth.user.email}
+                                        value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
                                         name="email"
                                         required
@@ -123,7 +118,6 @@ export default function Profile({
                                 <div className="flex items-center gap-4">
                                     <Button
                                         disabled={processing}
-                                        data-test="update-profile-button"
                                     >
                                         Save
                                     </Button>
