@@ -1,22 +1,21 @@
-import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
+import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+// সঠিক রাউট ইম্পোর্ট (আপনার routes/index থেকে)
+import { password as passwordRoute } from '@/routes/index'; 
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
 import { useRef } from 'react';
 
-import HeadingSmall from '@/components/heading-small';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { edit } from '@/routes/user-password';
-
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Password settings',
-        href: edit().url,
+        href: passwordRoute().url,
     },
 ];
 
@@ -36,15 +35,10 @@ export default function Password() {
                     />
 
                     <Form
-                        {...PasswordController.update.form()}
+                        {...passwordRoute.form()} // PasswordController এর বদলে রাউট ব্যবহার করা হয়েছে
                         options={{
                             preserveScroll: true,
                         }}
-                        resetOnError={[
-                            'password',
-                            'password_confirmation',
-                            'current_password',
-                        ]}
                         resetOnSuccess
                         onError={(errors) => {
                             if (errors.password) {
@@ -57,7 +51,7 @@ export default function Password() {
                         }}
                         className="space-y-6"
                     >
-                        {({ errors, processing, recentlySuccessful }) => (
+                        {({ data, setData, errors, processing, recentlySuccessful }) => (
                             <>
                                 <div className="grid gap-2">
                                     <Label htmlFor="current_password">
@@ -68,6 +62,8 @@ export default function Password() {
                                         id="current_password"
                                         ref={currentPasswordInput}
                                         name="current_password"
+                                        value={data.current_password}
+                                        onChange={(e) => setData('current_password', e.target.value)}
                                         type="password"
                                         className="mt-1 block w-full"
                                         autoComplete="current-password"
@@ -88,6 +84,8 @@ export default function Password() {
                                         id="password"
                                         ref={passwordInput}
                                         name="password"
+                                        value={data.password}
+                                        onChange={(e) => setData('password', e.target.value)}
                                         type="password"
                                         className="mt-1 block w-full"
                                         autoComplete="new-password"
@@ -105,6 +103,8 @@ export default function Password() {
                                     <Input
                                         id="password_confirmation"
                                         name="password_confirmation"
+                                        value={data.password_confirmation}
+                                        onChange={(e) => setData('password_confirmation', e.target.value)}
                                         type="password"
                                         className="mt-1 block w-full"
                                         autoComplete="new-password"
@@ -119,7 +119,6 @@ export default function Password() {
                                 <div className="flex items-center gap-4">
                                     <Button
                                         disabled={processing}
-                                        data-test="update-password-button"
                                     >
                                         Save password
                                     </Button>
