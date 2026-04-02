@@ -2,52 +2,55 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/layouts/auth-layout'; // আপনার প্রজেক্ট অনুযায়ী পাথ চেক করুন
-import { confirmPassword as store } from '@/routes/index'; 
-import { Form, Head } from '@inertiajs/react';
+import AuthLayout from '@/layouts/auth-layout';
+// এখানে '@/routes' এর বদলে '@/routes/index' নিশ্চিত করা হয়েছে
+import { confirmPassword } from '@/routes/index'; 
+import { Head, useForm } from '@inertiajs/react';
+import { FormEvent } from 'react';
 
 export default function ConfirmPassword() {
+    const { data, setData, post, processing, errors, reset } = useForm({
+        password: '',
+    });
+
+    const submit = (e: FormEvent) => {
+        e.preventDefault();
+
+        post(confirmPassword().url, {
+            onFinish: () => reset('password'),
+        });
+    };
+
     return (
         <AuthLayout
             title="Confirm your password"
             description="This is a secure area of the application. Please confirm your password before continuing."
         >
-            <Head title="Confirm password" />
+            <Head title="Confirm Password" />
 
-            <Form {...store.form()} resetOnSuccess={['password']}>
-                {({ data, setData, processing, errors }) => (
-                    <div className="space-y-6">
-                        <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password} // ডেটা বাইন্ডিং যোগ করা হয়েছে
-                                onChange={(e) => setData('password', e.target.value)}
-                                placeholder="Password"
-                                autoComplete="current-password"
-                                autoFocus
-                                required
-                            />
+            <form onSubmit={submit} className="space-y-6">
+                <div className="grid gap-2">
+                    <Label htmlFor="password">Password</Label>
 
-                            <InputError message={errors.password} />
-                        </div>
+                    <Input
+                        id="password"
+                        type="password"
+                        name="password"
+                        value={data.password}
+                        className="mt-1 block w-full"
+                        autoFocus
+                        onChange={(e) => setData('password', e.target.value)}
+                    />
 
-                        <div className="flex items-center">
-                            <Button
-                                className="w-full"
-                                disabled={processing}
-                                type="submit"
-                            >
-                                {processing && <Spinner />}
-                                Confirm password
-                            </Button>
-                        </div>
-                    </div>
-                )}
-            </Form>
+                    <InputError message={errors.password} />
+                </div>
+
+                <div className="flex items-center justify-end">
+                    <Button className="ml-4" disabled={processing}>
+                        Confirm
+                    </Button>
+                </div>
+            </form>
         </AuthLayout>
     );
 }
