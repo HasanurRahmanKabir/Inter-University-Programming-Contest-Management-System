@@ -1,12 +1,12 @@
-import { update } from '@/routes/password';
-import { Form, Head } from '@inertiajs/react';
-
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
+// সঠিক ইম্পোর্ট পাথ এবং নাম ব্যবহার করা হয়েছে
+import { password as passwordRoute } from '@/routes/index'; 
+import { Form, Head } from '@inertiajs/react';
 
 interface ResetPasswordProps {
     token: string;
@@ -22,11 +22,11 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             <Head title="Reset password" />
 
             <Form
-                {...update.form()}
+                {...passwordRoute.form()} // এখানে passwordRoute ব্যবহার করা হয়েছে
                 transform={(data) => ({ ...data, token, email })}
                 resetOnSuccess={['password', 'password_confirmation']}
             >
-                {({ processing, errors }) => (
+                {({ data, setData, processing, errors }) => (
                     <div className="grid gap-6">
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
@@ -51,6 +51,8 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 id="password"
                                 type="password"
                                 name="password"
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
                                 autoComplete="new-password"
                                 className="mt-1 block w-full"
                                 autoFocus
@@ -67,6 +69,8 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 id="password_confirmation"
                                 type="password"
                                 name="password_confirmation"
+                                value={data.password_confirmation}
+                                onChange={(e) => setData('password_confirmation', e.target.value)}
                                 autoComplete="new-password"
                                 className="mt-1 block w-full"
                                 placeholder="Confirm password"
