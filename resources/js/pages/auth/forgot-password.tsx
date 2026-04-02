@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে '@/routes' এর বদলে '@/routes/index' নিশ্চিত করা হয়েছে
+// এখানে নিশ্চিতভাবে '@/routes/index' ইম্পোর্ট করা হয়েছে
 import { password as passwordRoute } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
@@ -39,6 +39,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                 autoFocus
                                 onChange={(e) => setData('email', e.target.value)}
                                 placeholder="email@example.com"
+                                required
                             />
                             <InputError message={errors.email} />
                         </div>
