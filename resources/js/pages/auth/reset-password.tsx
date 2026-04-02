@@ -3,32 +3,32 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-// নিশ্চিত করা হয়েছে ইম্পোর্ট পাথ '@/routes/index'
-import { password as passwordRoute } from '@/routes/index'; 
-import { Form, Head } from '@inertiajs/react';
+/** * পরিবর্তন: '@/routes/password' এর বদলে সরাসরি '@/routes/index' থেকে 
+ * resetPassword রাউট অবজেক্টটি ইম্পোর্ট করা হয়েছে।
+ */
+import { resetPassword } from '@/routes/index'; 
+import { Head, useForm } from '@inertiajs/react';
+import { Form } from '@inertiajs/react';
 
-interface ResetPasswordProps {
+export default function ResetPassword({
+    token,
+    email,
+}: {
     token: string;
     email: string;
-}
-
-export default function ResetPassword({ token, email }: ResetPasswordProps) {
+}) {
     return (
         <AuthLayout
             title="Reset password"
             description="Please enter your new password below to reset your account password."
         >
-            <Head title="Reset password" />
+            <Head title="Reset Password" />
 
             <Form
-                // আপনার index.ts এর passwordRoute অবজেক্ট অনুযায়ী মেথড কল করা হয়েছে
-                {...passwordRoute.reset.update.form()}
-                // পেজ লোড হওয়ার সময় ডিফল্ট ডাটা হিসেবে ইমেইল ও টোকেন পাস করা হয়েছে
-                data={{
-                    token: token,
-                    email: email,
-                    password: '',
-                    password_confirmation: '',
+                {...resetPassword.store.form()}
+                onBefore={(form) => {
+                    form.setData('token', token);
+                    form.setData('email', email);
                 }}
                 className="space-y-6"
             >
@@ -36,6 +36,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                     <>
                         <div className="grid gap-2">
                             <Label htmlFor="password">New Password</Label>
+
                             <Input
                                 id="password"
                                 type="password"
@@ -43,18 +44,18 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 value={data.password}
                                 className="mt-1 block w-full"
                                 autoComplete="new-password"
-                                autoFocus
                                 onChange={(e) => setData('password', e.target.value)}
-                                placeholder="New password"
                                 required
                             />
-                            <InputError message={errors.password} />
+
+                            <InputError message={errors.password} className="mt-2" />
                         </div>
 
                         <div className="grid gap-2">
                             <Label htmlFor="password_confirmation">
                                 Confirm Password
                             </Label>
+
                             <Input
                                 id="password_confirmation"
                                 type="password"
@@ -65,15 +66,18 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 onChange={(e) =>
                                     setData('password_confirmation', e.target.value)
                                 }
-                                placeholder="Confirm password"
                                 required
                             />
-                            <InputError message={errors.password_confirmation} />
+
+                            <InputError
+                                message={errors.password_confirmation}
+                                className="mt-2"
+                            />
                         </div>
 
                         <div className="flex items-center justify-end">
-                            <Button className="w-full" disabled={processing}>
-                                {processing ? 'Resetting...' : 'Reset password'}
+                            <Button className="ml-4" disabled={processing}>
+                                Reset Password
                             </Button>
                         </div>
                     </>
