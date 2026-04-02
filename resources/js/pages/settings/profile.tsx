@@ -6,18 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-// সঠিক ইম্পোর্ট পাথগুলো এখানে আপডেট করা হয়েছে
-import { edit, verificationSend } from '@/routes/index'; 
+// appearance এবং verificationSend ইম্পোর্ট করা হয়েছে
+import { appearance, verificationSend } from '@/routes/index'; 
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: edit().url,
-    },
-];
 
 export default function Profile({
     mustVerifyEmail,
@@ -27,6 +20,14 @@ export default function Profile({
     status?: string;
 }) {
     const { auth } = usePage<SharedData>().props;
+
+    // ব্রেডক্রাম্ব এর জন্য appearance.url() ব্যবহার করা হয়েছে
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Profile settings',
+            href: appearance.url(),
+        },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -40,8 +41,8 @@ export default function Profile({
                     />
 
                     <Form
-                        // ProfileController এর বদলে সরাসরি পাথ ব্যবহার করা হয়েছে যা নিরাপদ
-                        action={edit().url}
+                        // appearance.url() ব্যবহার করা হয়েছে যা আপনার index.ts এ আছে
+                        action={appearance.url()}
                         method="patch"
                         options={{
                             preserveScroll: true,
@@ -56,6 +57,7 @@ export default function Profile({
                                     <Input
                                         id="name"
                                         className="mt-1 block w-full"
+                                        // initial value হিসেবে auth.user.name সরাসরি ব্যবহার করা নিরাপদ
                                         value={data.name ?? auth.user.name}
                                         onChange={(e) => setData('name', e.target.value)}
                                         name="name"

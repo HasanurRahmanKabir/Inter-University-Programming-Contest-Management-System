@@ -6,8 +6,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { logout } from '@/routes/index';
-import { edit } from '@/routes/index';
+// আপনার index.ts ফাইল অনুযায়ী এই ইম্পোর্টগুলো সঠিক
+import { appearance, logout } from '@/routes/index'; 
 import { type User } from '@/types';
 import { Link, router } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
@@ -21,7 +21,8 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
 
     const handleLogout = () => {
         cleanup();
-        router.flushAll();
+        // আপনার index.ts এ logout একটি 'post' মেথড, তাই router.post ব্যবহার করা হলো
+        router.post(logout.url());
     };
 
     return (
@@ -35,29 +36,25 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                     <Link
-                        className="block w-full"
-                        href={edit()}
-                        as="button"
-                        prefetch
+                        className="flex w-full items-center cursor-pointer"
+                        // আপনার index.ts অনুযায়ী appearance.url() ব্যবহার করা হয়েছে
+                        href={appearance.url()}
                         onClick={cleanup}
                     >
-                        <Settings className="mr-2" />
+                        <Settings className="mr-2 h-4 w-4" />
                         Settings
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-                <Link
-                    className="block w-full"
-                    href={logout()}
-                    as="button"
+                <button
+                    className="flex w-full items-center cursor-pointer text-destructive focus:text-destructive"
                     onClick={handleLogout}
-                    data-test="logout-button"
                 >
-                    <LogOut className="mr-2" />
+                    <LogOut className="mr-2 h-4 w-4" />
                     Log out
-                </Link>
+                </button>
             </DropdownMenuItem>
         </>
     );
