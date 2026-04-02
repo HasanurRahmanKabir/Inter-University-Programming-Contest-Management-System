@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// ইম্পোর্ট পাথ '@/routes/index' নিশ্চিত করা হয়েছে
+// ইম্পোর্ট পাথ অবশ্যই '@/routes/index' হতে হবে
 import { login, register as store } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
