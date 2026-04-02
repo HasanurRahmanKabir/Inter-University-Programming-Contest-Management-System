@@ -17,9 +17,11 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
-        // wayfinder({
-        //     formVariants: true,
-        // }),
+        // Wayfinder বন্ধ রাখা হলো বিল্ড টাইমআউট ঠিক করার জন্য
+        /* wayfinder({
+            formVariants: true,
+        }),
+        */
     ],
     esbuild: {
         jsx: 'automatic',
