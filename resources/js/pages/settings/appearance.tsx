@@ -1,7 +1,7 @@
 import HeadingSmall from '@/components/heading-small';
 import { useAppearance } from '@/hooks/use-appearance';
 import SettingsLayout from '@/layouts/settings/layout';
-// সার্ভার এরর দূর করতে '@/routes/index' নিশ্চিত করা হয়েছে
+// এখানে '@/routes' এর বদলে '@/routes/index' করা হয়েছে যা সার্ভারের জন্য জরুরি
 import { appearance } from '@/routes/index'; 
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -30,6 +30,7 @@ export default function Appearance() {
                 <div className="space-y-2">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <button
+                            type="button"
                             onClick={() => updateAppearance('light')}
                             className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-accent ${
                                 mode === 'light' ? 'border-primary' : 'border-transparent'
@@ -40,6 +41,7 @@ export default function Appearance() {
                         </button>
 
                         <button
+                            type="button"
                             onClick={() => updateAppearance('dark')}
                             className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-accent ${
                                 mode === 'dark' ? 'border-primary' : 'border-transparent'
@@ -50,6 +52,7 @@ export default function Appearance() {
                         </button>
 
                         <button
+                            type="button"
                             onClick={() => updateAppearance('system')}
                             className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-accent ${
                                 mode === 'system' ? 'border-primary' : 'border-transparent'
