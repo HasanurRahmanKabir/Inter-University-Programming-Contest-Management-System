@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 // এখানে '@/routes' এর বদলে '@/routes/index' নিশ্চিত করা হয়েছে
-import { confirmPassword } from '../../routes/index'; 
+import { confirmPassword } from '@/routes/index'; 
 import { Head, useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
