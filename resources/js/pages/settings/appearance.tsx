@@ -1,75 +1,58 @@
-import HeadingSmall from '@/components/heading-small';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
-// নিশ্চিত করা হয়েছে যে ইম্পোর্ট পাথটি '@/routes/index' ই আছে
-import { appearance as appearanceRoute } from '@/routes/index'; 
-import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Spinner } from '@/components/ui/spinner';
+import AuthLayout from '@/layouts/auth-layout';
+// এখানে নিশ্চিতভাবে '@/routes/index' ইম্পোর্ট করা হয়েছে
+import { password as passwordRoute } from '@/routes/index'; 
+import { Form, Head } from '@inertiajs/react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Appearance settings',
-        href: appearanceRoute().url,
-    },
-];
-
-export default function Appearance() {
-    // Inertia useForm লজিক
-    const { data, setData, patch, processing } = useForm({
-        appearance: 'light', // ডিফল্ট ভ্যালু, ডাটাবেজ থেকে আসলে এখানে ম্যাপ করতে পারেন
-    });
-
-    const updateAppearance = (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        // patch মেথডটি সরাসরি appearanceRoute().url এ কল হবে
-        patch(appearanceRoute().url, {
-            preserveScroll: true,
-            onSuccess: () => {
-                // সাকসেস হলে কোনো মেসেজ দেখাতে চাইলে এখানে লজিক দিতে পারেন
-            },
-        });
-    };
-
+export default function ForgotPassword({ status }: { status?: string }) {
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Appearance settings" />
+        <AuthLayout
+            title="Forgot password"
+            description="Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one."
+        >
+            <Head title="Forgot password" />
 
-            <SettingsLayout>
-                <div className="space-y-6">
-                    <HeadingSmall
-                        title="Appearance settings"
-                        description="Update your account's appearance settings"
-                    />
-                    
-                    <form onSubmit={updateAppearance} className="space-y-6">
-                        <RadioGroup 
-                            value={data.appearance} 
-                            onValueChange={(value) => setData('appearance', value)}
-                            className="grid grid-cols-2 gap-4"
-                        >
-                            <div className="flex items-center space-x-2 rounded-md border p-4 hover:bg-accent cursor-pointer">
-                                <RadioGroupItem value="light" id="light" />
-                                <Label htmlFor="light" className="flex-1 cursor-pointer">Light Mode</Label>
-                            </div>
-                            
-                            <div className="flex items-center space-x-2 rounded-md border p-4 hover:bg-accent cursor-pointer">
-                                <RadioGroupItem value="dark" id="dark" />
-                                <Label htmlFor="dark" className="flex-1 cursor-pointer">Dark Mode</Label>
-                            </div>
-                        </RadioGroup>
+            {status && (
+                <div className="mb-4 text-sm font-medium text-green-600">
+                    {status}
+                </div>
+            )}
 
-                        <div className="flex justify-start">
-                            <Button disabled={processing} type="submit">
-                                {processing ? 'Saving...' : 'Save Changes'}
+            <Form
+                {...passwordRoute.forgot.send.form()}
+                className="space-y-6"
+            >
+                {({ data, setData, processing, errors }) => (
+                    <>
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Email address</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                name="email"
+                                value={data.email}
+                                className="mt-1 block w-full"
+                                autoFocus
+                                onChange={(e) => setData('email', e.target.value)}
+                                placeholder="email@example.com"
+                                required
+                            />
+                            <InputError message={errors.email} />
+                        </div>
+
+                        <div className="flex items-center justify-end">
+                            <Button className="w-full" disabled={processing}>
+                                {processing && <Spinner className="mr-2 h-4 w-4" />}
+                                Email password reset link
                             </Button>
                         </div>
-                    </form>
-                </div>
-            </SettingsLayout>
-        </AppLayout>
+                    </>
+                )}
+            </Form>
+        </AuthLayout>
     );
 }
