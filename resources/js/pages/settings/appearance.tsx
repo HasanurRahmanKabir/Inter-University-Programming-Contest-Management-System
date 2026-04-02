@@ -1,7 +1,9 @@
 import HeadingSmall from '@/components/heading-small';
 import { useAppearance } from '@/hooks/use-appearance';
 import SettingsLayout from '@/layouts/settings/layout';
-// এখানে '@/routes' এর বদলে '@/routes/index' করা হয়েছে যা সার্ভারের জন্য জরুরি
+/** * সার্ভার এরর ENOENT দূর করার জন্য সরাসরি index.ts পাথটি দেওয়া হয়েছে।
+ * যদি আপনার ফোল্ডার স্ট্রাকচার ঠিক থাকে, তবে এটিই কাজ করবে।
+ */
 import { appearance } from '@/routes/index'; 
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -46,7 +48,7 @@ export default function Appearance() {
                             className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-accent ${
                                 mode === 'dark' ? 'border-primary' : 'border-transparent'
                             }`}
-                        >
+                        ) : (
                             <Moon className="h-6 w-6" />
                             <span className="text-sm font-medium">Dark</span>
                         </button>
