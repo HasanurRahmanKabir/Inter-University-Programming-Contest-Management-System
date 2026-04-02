@@ -4,9 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-/** * নিশ্চিত করা হয়েছে যে ইম্পোর্ট পাথটি '@/routes/index' 
- * যাতে লিনাক্স সার্ভারে ENOENT এরর না আসে।
- */
+// এখানে পরিবর্তনটি নিশ্চিত করুন: '@/routes/index'
 import { password as passwordRoute } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
@@ -25,7 +23,6 @@ export default function ForgotPassword({ status }: { status?: string }) {
             )}
 
             <Form
-                // আপনার রাউট অবজেক্ট অনুযায়ী সঠিক ফর্ম মেথড কল
                 {...passwordRoute.forgot.send.form()}
                 className="space-y-6"
             >
