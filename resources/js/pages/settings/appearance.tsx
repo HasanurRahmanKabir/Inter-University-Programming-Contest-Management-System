@@ -6,8 +6,8 @@ import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-// এখানে পাথটি পরিবর্তন করা হয়েছে: @/routes/appearance এর বদলে @/routes ব্যবহার করা হয়েছে
-import { appearance as editAppearance } from '@/routes'; 
+// পাথটি '@/routes/index' এ পরিবর্তন করা হয়েছে যাতে Vite সরাসরি ফাইলটি খুঁজে পায়
+import { appearance as editAppearance } from '@/routes/index'; 
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
