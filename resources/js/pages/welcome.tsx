@@ -1,9 +1,9 @@
-import { login, register } from '@/routes'; 
+import { login, register } from '@/routes/index'; 
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 // নিচের এই লাইনটি যদি থাকে তবে ডিলিট করে দিন, কারণ এটিই মেইন এরর দিচ্ছে
-// import { dashboard } from '@/routes';
+// import { dashboard } from '@/routes/index';
 export default function Welcome({
     canRegister = true,
 }: {
