@@ -1,51 +1,45 @@
-// Components
-import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// ইম্পোর্ট পাথ অবশ্যই '@/routes/index' হতে হবে
-import { logout, verificationSend as send } from '@/routes/index'; 
-import { Form, Head } from '@inertiajs/react';
+// এখানে '@/routes' এর বদলে '@/routes/index' নিশ্চিত করা হয়েছে
+import { logout, verificationSend } from '@/routes/index'; 
+import { Head, useForm } from '@inertiajs/react';
+import { FormEvent } from 'react';
 
-interface VerifyEmailProps {
-    status?: string;
-}
+export default function VerifyEmail({ status }: { status?: string }) {
+    const { post, processing } = useForm({});
 
-export default function VerifyEmail({ status }: VerifyEmailProps) {
+    const submit = (e: FormEvent) => {
+        e.preventDefault();
+
+        post(verificationSend.form().action);
+    };
+
     return (
         <AuthLayout
             title="Verify email"
-            description="Please verify your email address by clicking on the link we just emailed to you."
+            description="Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another."
         >
-            <Head title="Email verification" />
+            <Head title="Email Verification" />
 
             {status === 'verification-link-sent' && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                <div className="mb-4 text-sm font-medium text-green-600">
+                    A new verification link has been sent to the email address you provided during registration.
                 </div>
             )}
 
-            {/* send.form() এখন সঠিকভাবে কল হবে */}
-            <Form {...send.form()} className="space-y-6 text-center">
-                {({ processing }) => (
-                    <>
-                        <div className="flex flex-col gap-4">
-                            <Button disabled={processing} variant="secondary" type="submit">
-                                {processing && <Spinner />}
-                                Resend verification email
-                            </Button>
+            <form onSubmit={submit} className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <Button disabled={processing}>Resend Verification Email</Button>
 
-                            <TextLink
-                                href={logout().url} // .url প্রপার্টি ব্যবহার করা হয়েছে
-                                className="mx-auto block text-sm"
-                            >
-                                Log out
-                            </TextLink>
-                        </div>
-                    </>
-                )}
-            </Form>
+                    <button
+                        type="button"
+                        onClick={() => post(logout().url)}
+                        className="text-sm text-muted-foreground underline hover:text-primary"
+                    >
+                        Log Out
+                    </button>
+                </div>
+            </form>
         </AuthLayout>
     );
 }
