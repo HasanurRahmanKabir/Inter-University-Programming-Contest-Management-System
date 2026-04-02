@@ -6,7 +6,8 @@ import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { edit as editAppearance } from '@/routes/appearance';
+// এখানে পাথটি পরিবর্তন করা হয়েছে: @/routes/appearance এর বদলে @/routes ব্যবহার করা হয়েছে
+import { appearance as editAppearance } from '@/routes'; 
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
