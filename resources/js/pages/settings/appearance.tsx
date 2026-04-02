@@ -1,18 +1,16 @@
 import { Head } from '@inertiajs/react';
-
-import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
-import { type BreadcrumbItem } from '@/types';
-
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-// পাথটি '@/routes/index' এ পরিবর্তন করা হয়েছে যাতে Vite সরাসরি ফাইলটি খুঁজে পায়
-import { appearance as editAppearance } from '@/routes/index'; 
+import { type BreadcrumbItem } from '@/types';
+// এখানে '@/routes' এর বদলে '@/routes/index' নিশ্চিত করা হয়েছে
+import { appearance as appearanceRoute } from '@/routes/index'; 
+import AppearanceForm from './partials/appearance-form';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Appearance settings',
-        href: editAppearance().url,
+        href: appearanceRoute().url,
     },
 ];
 
@@ -27,7 +25,7 @@ export default function Appearance() {
                         title="Appearance settings"
                         description="Update your account's appearance settings"
                     />
-                    <AppearanceTabs />
+                    <AppearanceForm />
                 </div>
             </SettingsLayout>
         </AppLayout>
