@@ -5,7 +5,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে নিশ্চিতভাবে '@/routes/index' ইম্পোর্ট করা হয়েছে
+/** * নিশ্চিত করা হয়েছে যে ইম্পোর্ট পাথটি '@/routes/index' 
+ * যাতে লিনাক্স সার্ভারে ফাইল খুঁজে পেতে সমস্যা না হয়।
+ */
 import { login, password, register } from '@/routes/index'; 
 import { Form, Head, Link } from '@inertiajs/react';
 
@@ -34,6 +36,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 autoFocus
                                 onChange={(e) => setData('email', e.target.value)}
                                 placeholder="email@example.com"
+                                required
                             />
                             <InputError message={errors.email} />
                         </div>
@@ -44,7 +47,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 {canResetPassword && (
                                     <Link
                                         {...password.forgot.link()}
-                                        className="text-sm text-gray-600 underline hover:text-gray-900"
+                                        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
                                     >
                                         Forgot your password?
                                     </Link>
@@ -59,6 +62,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 autoComplete="current-password"
                                 onChange={(e) => setData('password', e.target.value)}
                                 placeholder="Password"
+                                required
                             />
                             <InputError message={errors.password} />
                         </div>
@@ -70,7 +74,10 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 checked={data.remember}
                                 onCheckedChange={(checked) => setData('remember', checked as boolean)}
                             />
-                            <Label htmlFor="remember" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            <Label 
+                                htmlFor="remember" 
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
                                 Remember me
                             </Label>
                         </div>
@@ -80,9 +87,13 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             Log in
                         </Button>
 
-                        <div className="text-center text-sm">
+                        <div className="text-center text-sm text-muted-foreground">
                             Don't have an account?{' '}
-                            <Link {...register().link()} className="underline underline-offset-4">
+                            <Link 
+                                // register().link() এর বদলে সরাসরি register.link() ব্যবহার করা হয়েছে (যদি আপনার স্ট্রাকচার তেমন হয়)
+                                {...register.link()} 
+                                className="text-foreground underline underline-offset-4"
+                            >
                                 Sign up
                             </Link>
                         </div>
