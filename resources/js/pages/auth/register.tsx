@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-import { login, register as store } from '@/routes/index'; // '@/routes/index' পাথটি নিশ্চিত করা হয়েছে
+// ইম্পোর্ট পাথ '@/routes/index' নিশ্চিত করা হয়েছে
+import { login, register as store } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
 export default function Register() {
@@ -18,10 +19,9 @@ export default function Register() {
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
-                disableWhileProcessing
                 className="flex flex-col gap-6"
             >
-                {({ processing, errors }) => (
+                {({ data, setData, processing, errors }) => (
                     <>
                         <div className="grid gap-6">
                             {/* Name Field */}
@@ -30,11 +30,13 @@ export default function Register() {
                                 <Input
                                     id="name"
                                     type="text"
+                                    name="name"
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
                                     required
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="name"
-                                    name="name"
                                     placeholder="Full name"
                                 />
                                 <InputError
@@ -49,10 +51,12 @@ export default function Register() {
                                 <Input
                                     id="email"
                                     type="email"
+                                    name="email"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
                                     required
                                     tabIndex={2}
                                     autoComplete="email"
-                                    name="email"
                                     placeholder="email@example.com"
                                 />
                                 <InputError message={errors.email} />
@@ -64,10 +68,12 @@ export default function Register() {
                                 <Input
                                     id="password"
                                     type="password"
+                                    name="password"
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
                                     required
                                     tabIndex={3}
                                     autoComplete="new-password"
-                                    name="password"
                                     placeholder="Password"
                                 />
                                 <InputError message={errors.password} />
@@ -81,10 +87,12 @@ export default function Register() {
                                 <Input
                                     id="password_confirmation"
                                     type="password"
+                                    name="password_confirmation"
+                                    value={data.password_confirmation}
+                                    onChange={(e) => setData('password_confirmation', e.target.value)}
                                     required
                                     tabIndex={4}
                                     autoComplete="new-password"
-                                    name="password_confirmation"
                                     placeholder="Confirm password"
                                 />
                                 <InputError
@@ -97,7 +105,6 @@ export default function Register() {
                                 type="submit"
                                 className="w-full mt-2"
                                 tabIndex={5}
-                                data-test="register-user-button"
                                 disabled={processing}
                             >
                                 {processing && <Spinner />}
