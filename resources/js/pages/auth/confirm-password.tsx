@@ -2,55 +2,52 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে '@/routes' এর বদলে '@/routes/index' নিশ্চিত করা হয়েছে
+// এখানে নিশ্চিতভাবে '@/routes/index' ইম্পোর্ট করা হয়েছে
 import { confirmPassword } from '@/routes/index'; 
-import { Head, useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { Form, Head } from '@inertiajs/react';
 
 export default function ConfirmPassword() {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        password: '',
-    });
-
-    const submit = (e: FormEvent) => {
-        e.preventDefault();
-
-        post(confirmPassword().url, {
-            onFinish: () => reset('password'),
-        });
-    };
-
     return (
         <AuthLayout
             title="Confirm your password"
             description="This is a secure area of the application. Please confirm your password before continuing."
         >
-            <Head title="Confirm Password" />
+            <Head title="Confirm password" />
 
-            <form onSubmit={submit} className="space-y-6">
-                <div className="grid gap-2">
-                    <Label htmlFor="password">Password</Label>
+            <Form
+                {...confirmPassword.form()}
+                resetOnSuccess={['password']}
+                className="space-y-6"
+            >
+                {({ data, setData, processing, errors }) => (
+                    <>
+                        <div className="grid gap-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                name="password"
+                                value={data.password}
+                                className="mt-1 block w-full"
+                                autoFocus
+                                onChange={(e) => setData('password', e.target.value)}
+                                placeholder="Enter your password"
+                                required
+                            />
+                            <InputError message={errors.password} />
+                        </div>
 
-                    <Input
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoFocus
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} />
-                </div>
-
-                <div className="flex items-center justify-end">
-                    <Button className="ml-4" disabled={processing}>
-                        Confirm
-                    </Button>
-                </div>
-            </form>
+                        <div className="flex items-center justify-end">
+                            <Button className="w-full" disabled={processing}>
+                                {processing && <Spinner className="mr-2 h-4 w-4" />}
+                                Confirm
+                            </Button>
+                        </div>
+                    </>
+                )}
+            </Form>
         </AuthLayout>
     );
 }
