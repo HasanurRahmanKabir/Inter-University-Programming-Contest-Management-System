@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { disable, enable, show } from '@/routes/two-factor';
+// এখানে পাথটি পরিবর্তন করে সরাসরি index.ts থেকে twoFactor ইম্পোর্ট করা হয়েছে
+import { twoFactor } from '@/routes/index'; 
 import { type BreadcrumbItem } from '@/types';
 import { Form, Head } from '@inertiajs/react';
 import { ShieldBan, ShieldCheck } from 'lucide-react';
@@ -16,13 +17,6 @@ interface TwoFactorProps {
     requiresConfirmation?: boolean;
     twoFactorEnabled?: boolean;
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Two-Factor Authentication',
-        href: show.url(),
-    },
-];
 
 export default function TwoFactor({
     requiresConfirmation = false,
@@ -39,6 +33,14 @@ export default function TwoFactor({
         errors,
     } = useTwoFactorAuth();
     const [showSetupModal, setShowSetupModal] = useState<boolean>(false);
+
+    // ব্রেডক্রাম্ব এর ভেতর twoFactor.show.url() ব্যবহার করা হয়েছে
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Two-Factor Authentication',
+            href: twoFactor.show.url(),
+        },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -66,14 +68,15 @@ export default function TwoFactor({
                             />
 
                             <div className="relative inline">
-                                <Form {...disable.form()}>
+                                {/* disable.form() এর বদলে twoFactor.disable.form() ব্যবহার করা হয়েছে */}
+                                <Form {...twoFactor.disable.form()}>
                                     {({ processing }) => (
                                         <Button
                                             variant="destructive"
                                             type="submit"
                                             disabled={processing}
                                         >
-                                            <ShieldBan /> Disable 2FA
+                                            <ShieldBan className="mr-2 h-4 w-4" /> Disable 2FA
                                         </Button>
                                     )}
                                 </Form>
@@ -94,12 +97,12 @@ export default function TwoFactor({
                                     <Button
                                         onClick={() => setShowSetupModal(true)}
                                     >
-                                        <ShieldCheck />
+                                        <ShieldCheck className="mr-2 h-4 w-4" />
                                         Continue Setup
                                     </Button>
                                 ) : (
                                     <Form
-                                        {...enable.form()}
+                                        {...twoFactor.enable.form()}
                                         onSuccess={() =>
                                             setShowSetupModal(true)
                                         }
@@ -109,7 +112,7 @@ export default function TwoFactor({
                                                 type="submit"
                                                 disabled={processing}
                                             >
-                                                <ShieldCheck />
+                                                <ShieldCheck className="mr-2 h-4 w-4" />
                                                 Enable 2FA
                                             </Button>
                                         )}
