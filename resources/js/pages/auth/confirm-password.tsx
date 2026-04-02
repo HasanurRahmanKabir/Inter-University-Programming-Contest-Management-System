@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/layouts/auth/auth-simple-layout'; 
-import { confirmPassword as store } from '@/routes/index'; // @/routes/index নিশ্চিত করা হয়েছে
+import AuthLayout from '@/layouts/auth-layout'; // আপনার প্রজেক্ট অনুযায়ী পাথ চেক করুন
+import { confirmPassword as store } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
 export default function ConfirmPassword() {
@@ -16,7 +16,7 @@ export default function ConfirmPassword() {
             <Head title="Confirm password" />
 
             <Form {...store.form()} resetOnSuccess={['password']}>
-                {({ processing, errors }) => (
+                {({ data, setData, processing, errors }) => (
                     <div className="space-y-6">
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
@@ -24,9 +24,12 @@ export default function ConfirmPassword() {
                                 id="password"
                                 type="password"
                                 name="password"
+                                value={data.password} // ডেটা বাইন্ডিং যোগ করা হয়েছে
+                                onChange={(e) => setData('password', e.target.value)}
                                 placeholder="Password"
                                 autoComplete="current-password"
                                 autoFocus
+                                required
                             />
 
                             <InputError message={errors.password} />
@@ -36,7 +39,7 @@ export default function ConfirmPassword() {
                             <Button
                                 className="w-full"
                                 disabled={processing}
-                                data-test="confirm-password-button"
+                                type="submit"
                             >
                                 {processing && <Spinner />}
                                 Confirm password
