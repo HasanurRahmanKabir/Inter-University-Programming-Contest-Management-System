@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-import { login, register as store } from '@/routes/index'; // এখানে '@/routes/index' ব্যবহার করা হয়েছে
+import { login, register as store } from '@/routes/index'; // '@/routes/index' পাথটি নিশ্চিত করা হয়েছে
 import { Form, Head } from '@inertiajs/react';
 
 export default function Register() {
@@ -24,6 +24,7 @@ export default function Register() {
                 {({ processing, errors }) => (
                     <>
                         <div className="grid gap-6">
+                            {/* Name Field */}
                             <div className="grid gap-2">
                                 <Label htmlFor="name">Name</Label>
                                 <Input
@@ -42,6 +43,7 @@ export default function Register() {
                                 />
                             </div>
 
+                            {/* Email Field */}
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
                                 <Input
@@ -56,6 +58,7 @@ export default function Register() {
                                 <InputError message={errors.email} />
                             </div>
 
+                            {/* Password Field */}
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
@@ -70,6 +73,7 @@ export default function Register() {
                                 <InputError message={errors.password} />
                             </div>
 
+                            {/* Confirm Password Field */}
                             <div className="grid gap-2">
                                 <Label htmlFor="password_confirmation">
                                     Confirm password
@@ -88,6 +92,7 @@ export default function Register() {
                                 />
                             </div>
 
+                            {/* Submit Button */}
                             <Button
                                 type="submit"
                                 className="w-full mt-2"
@@ -100,6 +105,7 @@ export default function Register() {
                             </Button>
                         </div>
 
+                        {/* Login Redirect */}
                         <div className="text-center text-sm text-muted-foreground">
                             Already have an account?{' '}
                             <TextLink href={login().url} tabIndex={6}>

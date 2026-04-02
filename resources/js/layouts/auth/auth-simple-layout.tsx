@@ -1,5 +1,5 @@
 import AppLogoIcon from '@/components/app-logo-icon';
-import { home } from '@/routes'; // এখানে home ইম্পোর্ট করা হয়েছে
+import { home } from '@/routes/index'; // '@/routes/index' পাথটি নিশ্চিত করা হয়েছে
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 
@@ -20,13 +20,13 @@ export default function AuthSimpleLayout({
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col items-center gap-4">
                         <Link
-                            href={home().url} // এখানে home().url ব্যবহার করা হয়েছে
+                            href={home().url} // home().url এখন সঠিকভাবে কাজ করবে
                             className="flex flex-col items-center gap-2 font-medium"
                         >
                             <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
                                 <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" />
                             </div>
-                            <span className="sr-only">{title}</span>
+                            <span className="sr-only">Home</span>
                         </Link>
 
                         <div className="space-y-2 text-center">
