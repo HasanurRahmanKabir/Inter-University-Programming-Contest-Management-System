@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/layouts/auth-layout';
-import { store } from '@/routes/password/confirm';
+import AuthLayout from '@/layouts/auth/auth-simple-layout'; // আপনার প্রোজেক্টের সঠিক পাথ অনুযায়ী
+import { confirmPassword as store } from '@/routes'; // এখানে পাথ পরিবর্তন করা হয়েছে
 import { Form, Head } from '@inertiajs/react';
 
 export default function ConfirmPassword() {
