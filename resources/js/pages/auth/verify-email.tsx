@@ -1,20 +1,11 @@
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে নিশ্চিতভাবে '@/routes/index' ব্যবহার করা হয়েছে
-import { logout, verificationSend } from '@/routes/index'; 
-import { Head, useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+// ইম্পোর্ট পাথ ঠিক করা হয়েছে
+import { logout, verifyEmail } from '@/routes/index'; 
+import { Form, Head, Link } from '@inertiajs/react';
 
 export default function VerifyEmail({ status }: { status?: string }) {
-    const { post, processing } = useForm({});
-
-    const submit = (e: FormEvent) => {
-        e.preventDefault();
-
-        // verificationSend.form() ব্যবহার করা হয়েছে আপনার routes/index.ts অনুযায়ী
-        post(verificationSend.form().action);
-    };
-
     return (
         <AuthLayout
             title="Verify email"
@@ -28,19 +19,23 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 </div>
             )}
 
-            <form onSubmit={submit} className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <Button disabled={processing}>Resend Verification Email</Button>
+            <div className="mt-4 flex items-center justify-between">
+                <Form {...verifyEmail.send.form()}>
+                    {({ processing }) => (
+                        <Button disabled={processing}>
+                            {processing && <Spinner />}
+                            Resend verification email
+                        </Button>
+                    )}
+                </Form>
 
-                    <button
-                        type="button"
-                        onClick={() => post(logout().url)}
-                        className="text-sm text-muted-foreground underline hover:text-primary"
-                    >
-                        Log Out
-                    </button>
-                </div>
-            </form>
+                <Link
+                    {...logout().link()}
+                    className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                    Log Out
+                </Link>
+            </div>
         </AuthLayout>
     );
 }
