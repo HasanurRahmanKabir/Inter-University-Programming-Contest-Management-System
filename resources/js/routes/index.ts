@@ -181,7 +181,7 @@ export const verificationSend = {
 
 /**
  * @route '/settings/password'
- * একীভূত পাসওয়ার্ড অবজেক্ট (ডুপ্লিকেট রিমুভড)
+ * একীভূত পাসওয়ার্ড অবজেক্ট (ডুপ্লিকেট রিমুভড এবং ক্লিন্ড)
  */
 export const password = Object.assign(
     (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
