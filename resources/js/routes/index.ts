@@ -29,6 +29,66 @@ export const appearance = Object.assign(
 );
 
 /**
+ * @route '/settings/profile'
+ */
+export const profile = Object.assign(
+    (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+        url: profile.url(options),
+        method: 'get',
+    }),
+    {
+        definition: { methods: ["get", "head", "patch"], url: '/settings/profile' } as RouteDefinition<["get", "head", "patch"]>,
+        url: (options?: RouteQueryOptions) => '/settings/profile' + queryParams(options),
+        form: (options?: RouteQueryOptions): RouteFormDefinition<'patch'> => ({
+            action: '/settings/profile' + queryParams(options),
+            method: 'patch',
+        })
+    }
+);
+
+/**
+ * @route '/settings/two-factor'
+ * এরর ফিক্স: twoFactor রাউট যোগ করা হলো
+ */
+export const twoFactor = Object.assign(
+    (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+        url: twoFactor.url(options),
+        method: 'get',
+    }),
+    {
+        definition: { methods: ["get", "head", "post", "delete"], url: '/settings/two-factor' } as RouteDefinition<["get", "head", "post", "delete"]>,
+        url: (options?: RouteQueryOptions) => '/settings/two-factor' + queryParams(options),
+        enable: (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: '/settings/two-factor' + queryParams(options),
+            method: 'post',
+        }),
+        disable: (options?: RouteQueryOptions): RouteFormDefinition<'delete'> => ({
+            action: '/settings/two-factor' + queryParams(options),
+            method: 'delete',
+        })
+    }
+);
+
+/**
+ * @route '/settings/danger-zone'
+ * ভবিষ্যতের এরর এড়াতে এটিও যোগ করে রাখা হলো
+ */
+export const dangerZone = Object.assign(
+    (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+        url: dangerZone.url(options),
+        method: 'get',
+    }),
+    {
+        definition: { methods: ["get", "head", "delete"], url: '/settings/danger-zone' } as RouteDefinition<["get", "head", "delete"]>,
+        url: (options?: RouteQueryOptions) => '/settings/danger-zone' + queryParams(options),
+        destroy: (options?: RouteQueryOptions): RouteFormDefinition<'delete'> => ({
+            action: '/settings/danger-zone' + queryParams(options),
+            method: 'delete',
+        })
+    }
+);
+
+/**
  * @route '/forgot-password'
  */
 export const forgotPassword = Object.assign(
@@ -138,7 +198,6 @@ export const register = Object.assign(
 
 /**
  * @route '/email/verification-notification'
- * এরর ফিক্স: verificationSend এক্সপোর্ট যোগ করা হয়েছে
  */
 export const verificationSend = Object.assign(
     (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
