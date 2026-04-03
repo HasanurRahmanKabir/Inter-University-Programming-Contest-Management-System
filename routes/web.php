@@ -24,7 +24,7 @@ use App\Http\Controllers\website\NoticeInfoController;
 use App\Http\Controllers\website\RulesController;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan; // অতিরিক্ত যোগ করা হয়েছে
+use Illuminate\Support\Facades\Artisan; 
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
@@ -95,8 +95,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/dashboard/volunteer', [VolunteerController::class, 'index']);
     Route::post('/dashboard/volunteer/store', [VolunteerController::class, 'store']);
     Route::put('/dashboard/volunteer/update/{volunteer_id}', [VolunteerController::class, 'update'])->name('admin.volunteer.update');
-    Route::delete('/dashboard/volunteer/delete/{volunteer_id}', [VolunteerController::class, 'destroy']);
-
     // Notice Management
     Route::get('/dashboard/notice', [NoticeController::class, 'index']);
     Route::post('/dashboard/notice/store', [NoticeController::class, 'store']);
@@ -153,13 +151,26 @@ Route::get('/_boost/browser-logs', function () {
     return response('', 204);
 });
 
-// --- এখানে আপনার ডাটাবেজ টেবিল তৈরির বিশেষ রাউট যোগ করা হলো ---
+// --- বিশেষ ইউটিলিটি রাউটস ---
+
+// ডাটাবেজ টেবিল নতুন করে তৈরি করার রাউট
 Route::get('/fix-database', function () {
     try {
         Artisan::call('migrate:fresh', ['--force' => true]);
-        return "অভিনন্দন! সব টেবিল নতুন করে তৈরি হয়েছে। এখন আপনার সাইট চলবে।";
+        return "অভিনন্দন! সব টেবিল নতুন করে তৈরি হয়েছে।";
     } catch (\Exception $e) {
-        return "ভুল হয়েছে: " . $e->getMessage();
+        return "ভুল হয়েছে: " . $e->getMessage();
+    }
+});
+
+// সিডার রান করার রাউট (অ্যাডমিন ইউজার তৈরির জন্য)
+Route::get('/run-seeder', function () {
+    try {
+        // এটি আপনার DatabaseSeeder রান করবে
+        Artisan::call('db:seed', ['--force' => true]);
+        return "সিডার সফলভাবে রান হয়েছে! এখন অ্যাডমিন লগইন করার চেষ্টা করুন।";
+    } catch (\Exception $e) {
+        return "সিডার রান করতে সমস্যা হয়েছে: " . $e->getMessage();
     }
 });
 
