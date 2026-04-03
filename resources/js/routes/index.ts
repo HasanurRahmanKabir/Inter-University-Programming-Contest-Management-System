@@ -58,7 +58,6 @@ forgotPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'>
 
 /**
  * @route '/confirm-password'
- * নতুন যোগ করা হয়েছে যাতে ইম্পোর্ট এরর না আসে
  */
 export const confirmPassword = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: confirmPassword.url(options),
