@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../wayfinder';
+import { queryParams, type RouteDefinition, type RouteFormDefinition, type RouteQueryOptions } from './../wayfinder';
 
 /**
  * @route '/'
@@ -37,7 +37,7 @@ appearance.url = (options?: RouteQueryOptions) => {
 /**
  * @route '/settings/password'
  */
-export const password = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const password = (options?: RouteQueryOptions) => ({
     url: password.url(options),
     method: 'get',
 });
@@ -72,6 +72,11 @@ forgotPassword.definition = {
 forgotPassword.url = (options?: RouteQueryOptions) => {
     return forgotPassword.definition.url + queryParams(options);
 };
+
+//forgotPassword এর ভেতরে সরাসরি link মেথড রাখা হলো সুবিধার জন্য
+forgotPassword.link = (options?: RouteQueryOptions) => ({
+    href: forgotPassword.url(options)
+});
 
 forgotPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: forgotPassword.url(options),
@@ -161,6 +166,10 @@ register.url = (options?: RouteQueryOptions) => {
     return register.definition.url + queryParams(options);
 };
 
+register.link = (options?: RouteQueryOptions) => ({
+    href: register.url(options)
+});
+
 register.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: register.url(options),
     method: 'post',
@@ -192,3 +201,19 @@ export const verificationSend = {
         method: 'post',
     }),
 };
+
+// password অবজেক্টের ভেতর forgot রাউটটি ম্যাপ করে দেওয়া হলো আপনার Login পেজের সুবিধার জন্য
+export const password = Object.assign(
+    (options?: RouteQueryOptions) => ({
+        url: '/settings/password' + queryParams(options),
+        method: 'get' as const,
+    }),
+    {
+        url: (options?: RouteQueryOptions) => '/settings/password' + queryParams(options),
+        form: (options?: RouteQueryOptions) => ({
+            action: '/settings/password' + queryParams(options),
+            method: 'put' as const,
+        }),
+        forgot: forgotPassword // Login পেজে password().forgot.link() এর জন্য
+    }
+);
