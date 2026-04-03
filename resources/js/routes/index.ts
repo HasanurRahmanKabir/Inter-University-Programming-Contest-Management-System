@@ -138,7 +138,7 @@ export const register = Object.assign(
 
 /**
  * @route '/email/verification-notification'
- * এটি আগের বার মিসিং ছিল, তাই এরর আসছিল।
+ * এরর ফিক্স: verificationSend এক্সপোর্ট যোগ করা হয়েছে
  */
 export const verificationSend = Object.assign(
     (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
