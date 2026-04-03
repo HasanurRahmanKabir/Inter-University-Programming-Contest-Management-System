@@ -51,12 +51,31 @@ forgotPassword.url = (options?: RouteQueryOptions) => {
     return forgotPassword.definition.url + queryParams(options);
 };
 
-forgotPassword.link = (options?: RouteQueryOptions) => ({
-    href: forgotPassword.url(options)
-});
-
 forgotPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: forgotPassword.url(options),
+    method: 'post',
+});
+
+/**
+ * @route '/confirm-password'
+ * নতুন যোগ করা হয়েছে যাতে ইম্পোর্ট এরর না আসে
+ */
+export const confirmPassword = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confirmPassword.url(options),
+    method: 'get',
+});
+
+confirmPassword.definition = {
+    methods: ["get", "head", "post"],
+    url: '/confirm-password',
+} satisfies RouteDefinition<["get", "head", "post"]>;
+
+confirmPassword.url = (options?: RouteQueryOptions) => {
+    return confirmPassword.definition.url + queryParams(options);
+};
+
+confirmPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: confirmPassword.url(options),
     method: 'post',
 });
 
@@ -143,45 +162,13 @@ register.url = (options?: RouteQueryOptions) => {
     return register.definition.url + queryParams(options);
 };
 
-register.link = (options?: RouteQueryOptions) => ({
-    href: register.url(options)
-});
-
 register.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: register.url(options),
     method: 'post',
 });
 
 /**
- * @route '/verify-email'
- */
-export const verifyEmail = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: verifyEmail.url(options),
-    method: 'get',
-});
-
-verifyEmail.definition = {
-    methods: ["get", "head"],
-    url: '/verify-email',
-} satisfies RouteDefinition<["get", "head"]>;
-
-verifyEmail.url = (options?: RouteQueryOptions) => {
-    return verifyEmail.definition.url + queryParams(options);
-};
-
-/**
- * Verification Send Logic
- */
-export const verificationSend = {
-    form: (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: '/email/verification-notification' + queryParams(options),
-        method: 'post',
-    }),
-};
-
-/**
  * @route '/settings/password'
- * একীভূত পাসওয়ার্ড অবজেক্ট (ডুপ্লিকেট রিমুভড এবং ক্লিন্ড)
  */
 export const password = Object.assign(
     (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
