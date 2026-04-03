@@ -95,6 +95,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/dashboard/volunteer', [VolunteerController::class, 'index']);
     Route::post('/dashboard/volunteer/store', [VolunteerController::class, 'store']);
     Route::put('/dashboard/volunteer/update/{volunteer_id}', [VolunteerController::class, 'update'])->name('admin.volunteer.update');
+    Route::delete('/dashboard/volunteer/delete/{volunteer_id}', [VolunteerController::class, 'destroy']);
+
     // Notice Management
     Route::get('/dashboard/notice', [NoticeController::class, 'index']);
     Route::post('/dashboard/notice/store', [NoticeController::class, 'store']);
@@ -166,9 +168,15 @@ Route::get('/fix-database', function () {
 // সিডার রান করার রাউট (অ্যাডমিন ইউজার তৈরির জন্য)
 Route::get('/run-seeder', function () {
     try {
-        // এটি আপনার DatabaseSeeder রান করবে
-        Artisan::call('db:seed', ['--force' => true]);
-        return "সিডার সফলভাবে রান হয়েছে! এখন অ্যাডমিন লগইন করার চেষ্টা করুন।";
+        // ক্লাস পাথসহ কল করা হয়েছে যেন রেলওয়েতে কোনো পাথ এরর না হয়
+        Artisan::call('db:seed', [
+            '--class' => 'Database\\Seeders\\DatabaseSeeder',
+            '--force' => true
+        ]);
+        
+        return "অভিনন্দন! সিডার সফলভাবে রান হয়েছে।<br>
+                ইমেইল: superadmin@gmail.com <br>
+                পাসওয়ার্ড: admin123";
     } catch (\Exception $e) {
         return "সিডার রান করতে সমস্যা হয়েছে: " . $e->getMessage();
     }
