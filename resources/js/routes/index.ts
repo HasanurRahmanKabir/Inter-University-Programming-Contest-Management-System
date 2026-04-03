@@ -137,6 +137,25 @@ export const register = Object.assign(
 );
 
 /**
+ * @route '/email/verification-notification'
+ * এটি আগের বার মিসিং ছিল, তাই এরর আসছিল।
+ */
+export const verificationSend = Object.assign(
+    (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+        url: verificationSend.url(options),
+        method: 'post',
+    }),
+    {
+        definition: { methods: ["post"], url: '/email/verification-notification' } as RouteDefinition<["post"]>,
+        url: (options?: RouteQueryOptions) => '/email/verification-notification' + queryParams(options),
+        form: (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: '/email/verification-notification' + queryParams(options),
+            method: 'post',
+        })
+    }
+);
+
+/**
  * @route '/settings/password'
  */
 export const password = Object.assign(
