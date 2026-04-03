@@ -3,12 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-/** * পরিবর্তন: '@/routes/password' এর বদলে সরাসরি '@/routes/index' থেকে 
- * resetPassword রাউট অবজেক্টটি ইম্পোর্ট করা হয়েছে।
+/** * পরিবর্তন: '@/routes/index' থেকে সরাসরি resetPassword ইম্পোর্ট করা হয়েছে।
  */
 import { resetPassword } from '@/routes/index'; 
-import { Head, useForm } from '@inertiajs/react';
-import { Form } from '@inertiajs/react';
+import { Form, Head } from '@inertiajs/react';
 
 export default function ResetPassword({
     token,
@@ -25,7 +23,8 @@ export default function ResetPassword({
             <Head title="Reset Password" />
 
             <Form
-                {...resetPassword.store.form()}
+                // আপনার নতুন index.ts এর স্ট্রাকচার অনুযায়ী সরাসরি .form() কল করা হয়েছে
+                {...resetPassword.form()}
                 onBefore={(form) => {
                     form.setData('token', token);
                     form.setData('email', email);
@@ -76,7 +75,7 @@ export default function ResetPassword({
                         </div>
 
                         <div className="flex items-center justify-end">
-                            <Button className="ml-4" disabled={processing}>
+                            <Button className="w-full" disabled={processing}>
                                 Reset Password
                             </Button>
                         </div>

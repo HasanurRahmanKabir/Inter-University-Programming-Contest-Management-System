@@ -5,8 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-/** * নিশ্চিত করা হয়েছে যে ইম্পোর্ট পাথটি '@/routes/index' 
- * যাতে লিনাক্স সার্ভারে ফাইল খুঁজে পেতে সমস্যা না হয়।
+/** * আপনার নতুন index.ts স্ট্রাকচার অনুযায়ী ইম্পোর্ট নিশ্চিত করা হলো।
  */
 import { login, password, register } from '@/routes/index'; 
 import { Form, Head, Link } from '@inertiajs/react';
@@ -46,7 +45,8 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 <Label htmlFor="password">Password</Label>
                                 {canResetPassword && (
                                     <Link
-                                        {...password.forgot.link()}
+                                        // password() ফাংশন কল করে forgot.link() ব্যবহার করা হয়েছে
+                                        {...password().forgot.link()}
                                         className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
                                     >
                                         Forgot your password?
@@ -90,8 +90,8 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         <div className="text-center text-sm text-muted-foreground">
                             Don't have an account?{' '}
                             <Link 
-                                // register().link() এর বদলে সরাসরি register.link() ব্যবহার করা হয়েছে (যদি আপনার স্ট্রাকচার তেমন হয়)
-                                {...register.link()} 
+                                // register() ফাংশন কল করা হয়েছে যাতে .link() প্রপার্টি পাওয়া যায়
+                                {...register().link()} 
                                 className="text-foreground underline underline-offset-4"
                             >
                                 Sign up

@@ -4,8 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-// এখানে পরিবর্তনটি নিশ্চিত করুন: শেষে '/index' যোগ করা হয়েছে
-import { password as passwordRoute } from '@/routes/index'; 
+/** * পরিবর্তন: '@/routes/index' থেকে সরাসরি forgotPassword ইম্পোর্ট করা হয়েছে
+ * যা আপনার নতুন index.ts ফাইলের সাথে সামঞ্জস্যপূর্ণ।
+ */
+import { forgotPassword } from '@/routes/index'; 
 import { Form, Head } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }: { status?: string }) {
@@ -23,7 +25,8 @@ export default function ForgotPassword({ status }: { status?: string }) {
             )}
 
             <Form
-                {...passwordRoute.forgot.send.form()}
+                // আপনার নতুন index.ts এর স্ট্রাকচার অনুযায়ী সরাসরি .form() কল করা হয়েছে
+                {...forgotPassword.form()}
                 className="space-y-6"
             >
                 {({ data, setData, processing, errors }) => (

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-// routes/index থেকে সঠিক ইম্পোর্ট
+// index থেকে ইম্পোর্ট করা হলো
 import { password as passwordRoute } from '@/routes/index'; 
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
@@ -16,11 +16,11 @@ export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
-    // ব্রেডক্রাম্ব এর জন্য সঠিক ইউআরএল কল
+    // পরিবর্তন: passwordRoute একটি ফাংশন, তাই এটি কল করা হয়েছে
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Password settings',
-            href: passwordRoute.url(),
+            href: passwordRoute().url(),
         },
     ];
 
@@ -36,12 +36,12 @@ export default function Password() {
                     />
 
                     <Form
-                        // সরাসরি রাউট অবজেক্ট থেকে ফর্ম প্রপস নেওয়া হয়েছে
-                        {...passwordRoute.update.form()}
+                        // পরিবর্তন: passwordRoute() কল করে .form() নেওয়া হয়েছে
+                        {...passwordRoute().form()}
                         options={{
                             preserveScroll: true,
                             onSuccess: () => {
-                                // পাসওয়ার্ড রিসেট করার অপশন (যদি আপনার ফর্ম কম্পোনেন্ট সাপোর্ট করে)
+                                // পাসওয়ার্ড আপডেট সফল হলে ইনপুটগুলো রিসেট করা যেতে পারে
                             },
                             onError: (errors) => {
                                 if (errors.password) {

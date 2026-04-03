@@ -51,36 +51,54 @@ password.url = (options?: RouteQueryOptions) => {
     return password.definition.url + queryParams(options);
 };
 
-const passwordForm = (options?: RouteQueryOptions): RouteFormDefinition<'put'> => ({
+password.form = (options?: RouteQueryOptions): RouteFormDefinition<'put'> => ({
     action: password.url(options),
     method: 'put',
 });
 
-password.form = passwordForm;
-
 /**
- * @route '/confirm-password'
+ * @route '/forgot-password'
  */
-export const confirmPassword = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: confirmPassword.url(options),
+export const forgotPassword = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: forgotPassword.url(options),
     method: 'get',
 });
 
-confirmPassword.definition = {
+forgotPassword.definition = {
     methods: ["get", "head", "post"],
-    url: '/confirm-password',
+    url: '/forgot-password',
 } satisfies RouteDefinition<["get", "head", "post"]>;
 
-confirmPassword.url = (options?: RouteQueryOptions) => {
-    return confirmPassword.definition.url + queryParams(options);
+forgotPassword.url = (options?: RouteQueryOptions) => {
+    return forgotPassword.definition.url + queryParams(options);
 };
 
-const confirmPasswordForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: confirmPassword.url(options),
+forgotPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: forgotPassword.url(options),
     method: 'post',
 });
 
-confirmPassword.form = confirmPasswordForm;
+/**
+ * @route '/reset-password'
+ */
+export const resetPassword = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: resetPassword.url(options),
+    method: 'get',
+});
+
+resetPassword.definition = {
+    methods: ["get", "head", "post"],
+    url: '/reset-password',
+} satisfies RouteDefinition<["get", "head", "post"]>;
+
+resetPassword.url = (options?: RouteQueryOptions) => {
+    return resetPassword.definition.url + queryParams(options);
+};
+
+resetPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: resetPassword.url(options),
+    method: 'post',
+});
 
 /**
  * @route '/login'
@@ -99,13 +117,10 @@ login.url = (options?: RouteQueryOptions) => {
     return login.definition.url + queryParams(options);
 };
 
-const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+login.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: login.url(options),
-    of: login.definition.url,
     method: 'post',
 });
-
-login.form = loginForm;
 
 /**
  * @route '/logout'
@@ -124,12 +139,10 @@ logout.url = (options?: RouteQueryOptions) => {
     return logout.definition.url + queryParams(options);
 };
 
-const logoutForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+logout.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: logout.url(options),
     method: 'post',
 });
-
-logout.form = logoutForm;
 
 /**
  * @route '/register'
@@ -148,12 +161,10 @@ register.url = (options?: RouteQueryOptions) => {
     return register.definition.url + queryParams(options);
 };
 
-const registerForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+register.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: register.url(options),
     method: 'post',
 });
-
-register.form = registerForm;
 
 /**
  * @route '/verify-email'
