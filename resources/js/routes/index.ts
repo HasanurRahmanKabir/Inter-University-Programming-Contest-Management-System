@@ -35,28 +35,6 @@ appearance.url = (options?: RouteQueryOptions) => {
 };
 
 /**
- * @route '/settings/password'
- */
-export const password = (options?: RouteQueryOptions) => ({
-    url: password.url(options),
-    method: 'get',
-});
-
-password.definition = {
-    methods: ["get", "head", "put"],
-    url: '/settings/password',
-} satisfies RouteDefinition<["get", "head", "put"]>;
-
-password.url = (options?: RouteQueryOptions) => {
-    return password.definition.url + queryParams(options);
-};
-
-password.form = (options?: RouteQueryOptions): RouteFormDefinition<'put'> => ({
-    action: password.url(options),
-    method: 'put',
-});
-
-/**
  * @route '/forgot-password'
  */
 export const forgotPassword = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -73,7 +51,6 @@ forgotPassword.url = (options?: RouteQueryOptions) => {
     return forgotPassword.definition.url + queryParams(options);
 };
 
-//forgotPassword এর ভেতরে সরাসরি link মেথড রাখা হলো সুবিধার জন্য
 forgotPassword.link = (options?: RouteQueryOptions) => ({
     href: forgotPassword.url(options)
 });
@@ -202,18 +179,25 @@ export const verificationSend = {
     }),
 };
 
-// password অবজেক্টের ভেতর forgot রাউটটি ম্যাপ করে দেওয়া হলো আপনার Login পেজের সুবিধার জন্য
+/**
+ * @route '/settings/password'
+ * একীভূত পাসওয়ার্ড অবজেক্ট (ডুপ্লিকেট রিমুভড)
+ */
 export const password = Object.assign(
-    (options?: RouteQueryOptions) => ({
-        url: '/settings/password' + queryParams(options),
-        method: 'get' as const,
+    (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+        url: password.url(options),
+        method: 'get',
     }),
     {
+        definition: {
+            methods: ["get", "head", "put"],
+            url: '/settings/password',
+        } as RouteDefinition<["get", "head", "put"]>,
         url: (options?: RouteQueryOptions) => '/settings/password' + queryParams(options),
-        form: (options?: RouteQueryOptions) => ({
+        form: (options?: RouteQueryOptions): RouteFormDefinition<'put'> => ({
             action: '/settings/password' + queryParams(options),
-            method: 'put' as const,
+            method: 'put',
         }),
-        forgot: forgotPassword // Login পেজে password().forgot.link() এর জন্য
+        forgot: forgotPassword
     }
 );
