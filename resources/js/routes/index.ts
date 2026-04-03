@@ -13,9 +13,7 @@ home.definition = {
     url: '/',
 } satisfies RouteDefinition<["get", "head"]>;
 
-home.url = (options?: RouteQueryOptions) => {
-    return home.definition.url + queryParams(options);
-};
+home.url = (options?: RouteQueryOptions) => home.definition.url + queryParams(options);
 
 /**
  * @route '/settings/appearance'
@@ -30,9 +28,7 @@ appearance.definition = {
     url: '/settings/appearance',
 } satisfies RouteDefinition<["get", "head"]>;
 
-appearance.url = (options?: RouteQueryOptions) => {
-    return appearance.definition.url + queryParams(options);
-};
+appearance.url = (options?: RouteQueryOptions) => appearance.definition.url + queryParams(options);
 
 /**
  * @route '/forgot-password'
@@ -47,9 +43,7 @@ forgotPassword.definition = {
     url: '/forgot-password',
 } satisfies RouteDefinition<["get", "head", "post"]>;
 
-forgotPassword.url = (options?: RouteQueryOptions) => {
-    return forgotPassword.definition.url + queryParams(options);
-};
+forgotPassword.url = (options?: RouteQueryOptions) => forgotPassword.definition.url + queryParams(options);
 
 forgotPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: forgotPassword.url(options),
@@ -58,6 +52,7 @@ forgotPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'>
 
 /**
  * @route '/confirm-password'
+ * এটি আগের বার মিসিং ছিল, তাই এরর আসছিল। এখন ফিক্সড।
  */
 export const confirmPassword = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: confirmPassword.url(options),
@@ -69,9 +64,7 @@ confirmPassword.definition = {
     url: '/confirm-password',
 } satisfies RouteDefinition<["get", "head", "post"]>;
 
-confirmPassword.url = (options?: RouteQueryOptions) => {
-    return confirmPassword.definition.url + queryParams(options);
-};
+confirmPassword.url = (options?: RouteQueryOptions) => confirmPassword.definition.url + queryParams(options);
 
 confirmPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: confirmPassword.url(options),
@@ -91,9 +84,7 @@ resetPassword.definition = {
     url: '/reset-password',
 } satisfies RouteDefinition<["get", "head", "post"]>;
 
-resetPassword.url = (options?: RouteQueryOptions) => {
-    return resetPassword.definition.url + queryParams(options);
-};
+resetPassword.url = (options?: RouteQueryOptions) => resetPassword.definition.url + queryParams(options);
 
 resetPassword.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: resetPassword.url(options),
@@ -113,9 +104,7 @@ login.definition = {
     url: '/login',
 } satisfies RouteDefinition<["get", "head", "post"]>;
 
-login.url = (options?: RouteQueryOptions) => {
-    return login.definition.url + queryParams(options);
-};
+login.url = (options?: RouteQueryOptions) => login.definition.url + queryParams(options);
 
 login.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: login.url(options),
@@ -135,9 +124,7 @@ logout.definition = {
     url: '/logout',
 } satisfies RouteDefinition<["post"]>;
 
-logout.url = (options?: RouteQueryOptions) => {
-    return logout.definition.url + queryParams(options);
-};
+logout.url = (options?: RouteQueryOptions) => logout.definition.url + queryParams(options);
 
 logout.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: logout.url(options),
@@ -157,9 +144,7 @@ register.definition = {
     url: '/register',
 } satisfies RouteDefinition<["get", "head", "post"]>;
 
-register.url = (options?: RouteQueryOptions) => {
-    return register.definition.url + queryParams(options);
-};
+register.url = (options?: RouteQueryOptions) => register.definition.url + queryParams(options);
 
 register.form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: register.url(options),
