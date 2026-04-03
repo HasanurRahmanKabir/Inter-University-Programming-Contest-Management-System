@@ -24,6 +24,7 @@ use App\Http\Controllers\website\NoticeInfoController;
 use App\Http\Controllers\website\RulesController;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan; // অতিরিক্ত যোগ করা হয়েছে
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
@@ -150,6 +151,16 @@ Route::group(['prefix' => 'volunteer', 'middleware' => 'auth:volunteer'], functi
 // System/Utility Routes
 Route::get('/_boost/browser-logs', function () {
     return response('', 204);
+});
+
+// --- এখানে আপনার ডাটাবেজ টেবিল তৈরির বিশেষ রাউট যোগ করা হলো ---
+Route::get('/fix-database', function () {
+    try {
+        Artisan::call('migrate:fresh', ['--force' => true]);
+        return "অভিনন্দন! সব টেবিল নতুন করে তৈরি হয়েছে। এখন আপনার সাইট চলবে।";
+    } catch (\Exception $e) {
+        return "ভুল হয়েছে: " . $e->getMessage();
+    }
 });
 
 require __DIR__ . '/settings.php';
