@@ -153,9 +153,7 @@ Route::get('/_boost/browser-logs', function () {
     return response('', 204);
 });
 
-// --- বিশেষ ইউটিলিটি রাউটস ---
 
-// ডাটাবেজ টেবিল নতুন করে তৈরি করার রাউট
 Route::get('/fix-database', function () {
     try {
         Artisan::call('migrate:fresh', ['--force' => true]);
@@ -165,10 +163,8 @@ Route::get('/fix-database', function () {
     }
 });
 
-// সিডার রান করার রাউট (অ্যাডমিন ইউজার তৈরির জন্য)
 Route::get('/run-seeder', function () {
     try {
-        // ক্লাস পাথসহ কল করা হয়েছে যেন রেলওয়েতে কোনো পাথ এরর না হয়
         Artisan::call('db:seed', [
             '--class' => 'Database\\Seeders\\DatabaseSeeder',
             '--force' => true

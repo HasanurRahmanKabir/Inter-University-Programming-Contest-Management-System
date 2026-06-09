@@ -25,13 +25,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('team/registration') }}">Registered Teams</a>
-                    </li>
+                    
+                    @if($isRegistrationOpen)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('team/registration') }}">Registered Teams</a>
+                        </li>
+                    @endif
+                    
                     <li class="nav-item"><a class="nav-link" href="{{ url('notice-info') }}">Notice</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('website/user_login') }}">Login</a></li>
-                    <li class="nav-item ms-lg-3">
-                        <a href="{{ url('team/registration') }}" class="btn btn-register shadow">Register Now</a>
-                    </li>
+                    
+                    @if($isRegistrationOpen)
+                        <li class="nav-item ms-lg-3">
+                            <a href="{{ url('team/registration') }}" class="btn btn-register shadow">Register Now</a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>
@@ -56,6 +64,7 @@
                     </ul>
                 </div>
             @endforeach
+        </div>
     </section>
 
     <footer>
@@ -104,7 +113,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Navbar Scroll Effect
         window.addEventListener('scroll', function() {
             if (window.scrollY > 50) {
                 document.querySelector('.navbar').classList.add('shadow');
@@ -113,7 +121,5 @@
             }
         });
     </script>
-
 </body>
-
 </html>

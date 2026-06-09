@@ -71,8 +71,8 @@
         </div>
     </nav>
     <section id="home" class="hero-section"
-        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ asset('uploads/Pictures of programming/sublogoiupc.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"
-        <div class="container">
+    style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ asset('uploads/Pictures of programming/sublogoiupc.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-12 col-md-10 col-lg-8">
                     @if ($isRegistrationOpen)
@@ -365,7 +365,7 @@
             const isRegistrationOpen = @json($isRegistrationOpen);
 
             @if ($contest->count())
-                const registrationEndDate = new Date("{{ $contest[0]->registration_end_date }} 23:59:59")
+                const registrationEndDate = new Date("{{ \Carbon\Carbon::parse($contest[0]->registration_end_date)->format('Y/m/d') }} 23:59:59").getTime();
                     .getTime();
             @else
                 const registrationEndDate = null;

@@ -14,7 +14,6 @@
 
 <body>
 
-    <!-- Header copied from homepage -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a href="{{ url('') }}" class="text-decoration-none">
@@ -26,19 +25,26 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/registration-info') }}">Registerd Teams</a>
-                    </li>
+                    
+                    @if($isRegistrationOpen)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/registration-info') }}">Registered Teams</a>
+                        </li>
+                    @endif
+                    
                     <li class="nav-item"><a class="nav-link" href="{{ url('/rules') }}">Rules</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/website/user_login') }}">Login</a></li>
-                    <li class="nav-item ms-lg-3">
-                        <a href="{{ url('/team/registration') }}" class="btn btn-register shadow">Register Now</a>
-                    </li>
+                    
+                    @if($isRegistrationOpen)
+                        <li class="nav-item ms-lg-3">
+                            <a href="{{ url('/team/registration') }}" class="btn btn-register shadow">Register Now</a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Page header -->
     <section class="page-header">
         <div class="container">
             <h1 class="display-5 fw-bold mb-2">Latest Notices</h1>
@@ -46,13 +52,11 @@
         </div>
     </section>
 
-    <!-- Notice content -->
     <section class="section-padding bg-light py-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
 
-                    <!-- Example Notice Item 1 -->
                     @foreach ($notices as $data)
                         <a href="#" class="text-decoration-none">
                             <div class="card notice-card p-3">
@@ -74,7 +78,6 @@
         </div>
     </section>
 
-    <!-- Footer copied from homepage -->
     <footer>
         <div class="container">
             <div class="row">
@@ -82,8 +85,7 @@
                     <img src="{{ asset('content/admin') }}/image/logosub.png" alt="University Logo" class="navbar-logo"
                         style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px;">
                     <p class="small text-white-50">Organizing SUBIUPC 2025 - Sub Inter-University Programming Contest.
-                        Join us in
-                        celebrating innovation, collaboration, and competitive programming excellence.</p>
+                        Join us in celebrating innovation, collaboration, and competitive programming excellence.</p>
                 </div>
                 <div class="col-md-2 mb-4">
                     <h6 class="fw-bold mb-3">Online Platforms</h6>
@@ -104,12 +106,9 @@
                     <p class="small text-white-50 mb-1"><i class="fas fa-envelope me-2"></i> info@sub.edu.bd</p>
                     <p class="small text-white-50"><i class="fas fa-phone me-2"></i> +880 1711 000000</p>
                     <div class="mt-3">
-                        <a href="https://www.facebook.com/subedubd" class="me-3"><i
-                                class="fab fa-facebook fa-lg"></i></a>
-                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3"><i
-                                class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3"><i
-                                class="fab fa-youtube fa-lg"></i></a>
+                        <a href="https://www.facebook.com/subedubd" class="me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3"><i class="fab fa-youtube fa-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -129,6 +128,22 @@
             }
         });
     </script>
-</body>
+    <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
 
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    footer {
+        margin-top: auto;
+        width: 100%;
+    }
+</style>
+</body>
 </html>
