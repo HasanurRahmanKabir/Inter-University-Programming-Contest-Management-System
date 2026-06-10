@@ -14,14 +14,13 @@
 
 <body>
 
-    <!-- Header copied from homepage -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-
             <a href="{{ url('') }}">
                 <img src="{{ asset('content/admin') }}/image/logosub.png" alt="University Logo" class="navbar-logo"
                     style="height: 40px; margin-left: 15px; vertical-align: middle;">
-            </a> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            </a> 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon bg-light rounded"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -37,7 +36,6 @@
         </div>
     </nav>
 
-    <!-- Page header -->
     <section class="page-header">
         <div class="container">
             <h1 class="display-5 fw-bold mb-2">Registered Teams</h1>
@@ -45,74 +43,82 @@
         </div>
     </section>
 
-    <!-- Teams table -->
-    <section class="section-padding bg-light">
+    <section class="section-padding bg-light" style="flex: 1;">
         <div class="container">
-            <div class="card p-3">
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-                    <div class="input-group" style="max-width: 500px;">
-                        <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Search by team, institution or coach"
-                            aria-label="Search">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fas fa-search me-2"></i>Search
-                        </button>
+            
+            @if($teams->count() > 0)
+                <div class="card p-3 shadow-sm border-0 mb-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                        <div class="input-group" style="max-width: 500px;">
+                            <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Search by team, institution or coach" aria-label="Search">
+                            <button class="btn btn-primary" type="button"><i class="fas fa-search me-2"></i>Search</button>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <span class="badge bg-success">Selected</span>
+                            <span class="badge bg-secondary">Pending</span>
+                            <span class="badge bg-primary">Paid</span>
+                            <span class="badge bg-warning text-dark">Unpaid</span>
+                        </div>
                     </div>
-                    <div class="d-flex gap-2">
-                        <span class="badge badge-verified">Selected</span>
-                        <span class="badge badge-verified">Pending</span>
-                        <span class="badge badge-paid">Paid</span>
-                        <span class="badge badge-pending">Unpaid</span>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table align-middle">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Team Name</th>
-                                <th scope="col">Institution</th>
-                                <th scope="col">Coach</th>
-                                <th scope="col">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($teams as $data)
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $data->team_id }}</th>
-                                    <td>{{ $data->team_name }}</td>
-                                    <td>{{ $data->institute_name }}</td>
-                                    <td>{{ $data->coach_name }}</td>
-                                    <td>
-                                        <!-- Selected Badge -->
-                                        @if ($data->is_selected)
-                                            <span class="badge bg-success">Selected</span>
-                                        @else
-                                            <span class="badge bg-secondary">Pending</span>
-                                        @endif
-
-                                        <!-- Paid Badge -->
-                                        @if ($data->is_paid)
-                                            <span class="badge bg-primary">Paid</span>
-                                        @else
-                                            <span class="badge bg-warning text-dark">Unpaid</span>
-                                        @endif
-                                    </td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Team Name</th>
+                                    <th scope="col">Institution</th>
+                                    <th scope="col">Coach</th>
+                                    <th scope="col">Status</th>
                                 </tr>
-                            @endforeach
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($teams as $data)
+                                    <tr>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ $data->team_name }}</td>
+                                        <td>{{ $data->institute_name }}</td>
+                                        <td>{{ $data->coach_name }}</td>
+                                        <td>
+                                            @if ($data->is_selected)
+                                                <span class="badge bg-success">Selected</span>
+                                            @else
+                                                <span class="badge bg-secondary">Pending</span>
+                                            @endif
+
+                                            @if ($data->is_paid)
+                                                <span class="badge bg-primary">Paid</span>
+                                            @else
+                                                <span class="badge bg-warning text-dark">Unpaid</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="text-center mt-4 mb-5">
-                <a href="{{ url('/team/registration') }}" class="btn btn-outline-primary rounded-pill">Go to
-                    Registration</a>
-            </div>
+
+                <div class="text-center mt-4 mb-5">
+                    <a href="{{ url('/team/registration') }}" class="btn btn-outline-primary rounded-pill">Go to Registration</a>
+                </div>
+
+            @else
+                <div class="text-center py-5">
+                    <div class="card p-5 border-0 shadow-sm rounded-4" style="max-width: 600px; margin: auto;">
+                        <div class="mb-4">
+                            <i class="fas fa-users-slash fa-4x text-muted opacity-50"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">No Teams Registered Yet</h4>
+                        <p class="text-muted mb-4">Currently, no teams have completed their registration for SUBIUPC 2025. Be the first to join!</p>
+                        <a href="{{ url('/team/registration') }}" class="btn btn-primary">Register Your Team</a>
+                    </div>
+                </div>
+            @endif
+
         </div>
     </section>
 
-    <!-- Footer copied from homepage -->
     <footer>
         <div class="container">
             <div class="row">
@@ -141,12 +147,9 @@
                     <p class="small text-white-50 mb-1"><i class="fas fa-envelope me-2"></i> info@sub.edu.bd</p>
                     <p class="small text-white-50"><i class="fas fa-phone me-2"></i> +880 1711 000000</p>
                     <div class="mt-3">
-                        <a href="https://www.facebook.com/subedubd" class="me-3"><i
-                                class="fab fa-facebook fa-lg"></i></a>
-                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3"><i
-                                class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3"><i
-                                class="fab fa-youtube fa-lg"></i></a>
+                        <a href="https://www.facebook.com/subedubd" class="me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3"><i class="fab fa-youtube fa-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -166,6 +169,10 @@
             }
         });
     </script>
+    <style>
+        html, body { height: 100%; margin: 0; }
+        body { display: flex; flex-direction: column; }
+        footer { margin-top: auto; }
+    </style>
 </body>
-
 </html>

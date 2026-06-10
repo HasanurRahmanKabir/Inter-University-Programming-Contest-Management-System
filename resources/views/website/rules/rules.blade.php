@@ -28,7 +28,7 @@
                     
                     @if($isRegistrationOpen)
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('team/registration') }}">Registered Teams</a>
+                            <a class="nav-link" href="{{ url('registration-info') }}">Registered Teams</a>
                         </li>
                     @endif
                     
@@ -52,18 +52,42 @@
         </div>
     </section>
 
-    <section class="section-padding bg-light">
+    <section class="section-padding bg-light py-5" style="flex: 1;">
         <div class="container">
-            @foreach ($rules as $data)
-                <div class="rules-card">
-                    <h3><i class="fas fa-users text-primary me-2"></i> {{ $data->rules_headline }}</h3>
-                    <ul>
-                        @foreach (explode("\n", $data->rules_description) as $rule)
-                            <li>{{ $rule }}</li>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    
+                    @php
+                        $publishedRules = $rules->where('is_published', 1);
+                    @endphp
+
+                    @if($publishedRules->count() > 0)
+                        @foreach ($publishedRules as $data)
+                            <div class="rules-card mb-4 p-4 shadow-sm border-0">
+                                <h3><i class="fas fa-users text-primary me-2"></i> {{ $data->rules_headline }}</h3>
+                                <ul>
+                                    @foreach (explode("\n", $data->rules_description) as $rule)
+                                        @if(!empty(trim($rule)))
+                                            <li>{{ $rule }}</li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endforeach
-                    </ul>
+                    @else
+                        <div class="text-center py-5">
+                            <div class="card p-5 border-0 shadow-sm rounded-4">
+                                <div class="mb-4">
+                                    <i class="fas fa-clipboard-list fa-4x text-muted opacity-50"></i>
+                                </div>
+                                <h4 class="fw-bold text-dark">No Rules to Show</h4>
+                                <p class="text-muted">Currently, no rules or guidelines have been added or published. Please check back later for updates!</p>
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
-            @endforeach
+            </div>
         </div>
     </section>
 
@@ -95,12 +119,9 @@
                     <p class="small text-white-50 mb-3"><i class="fas fa-phone me-2"></i> +880 1711 000000</p>
                     <p class="small text-white-50 mb-1"><i class="fas fa-envelope me-2"></i> info@sub.edu.bd</p>
                     <div class="mt-3">
-                        <a href="https://www.facebook.com/subedubd" class="me-3" title="Facebook"><i
-                                class="fab fa-facebook fa-lg"></i></a>
-                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3"
-                            title="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3" title="YouTube"><i
-                                class="fab fa-youtube fa-lg"></i></a>
+                        <a href="https://www.facebook.com/subedubd" class="me-3 text-white" title="Facebook"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3 text-white" title="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3 text-white" title="YouTube"><i class="fab fa-youtube fa-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -111,7 +132,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         window.addEventListener('scroll', function() {
             if (window.scrollY > 50) {
@@ -121,5 +141,20 @@
             }
         });
     </script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        footer {
+            margin-top: auto;
+            width: 100%;
+        }
+    </style>
 </body>
 </html>

@@ -25,13 +25,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    
                     @if($isRegistrationOpen)
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/registration-info') }}">Registered Teams</a>
                         </li>
                     @endif
-                    
                     <li class="nav-item"><a class="nav-link" href="{{ url('/rules') }}">Rules</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/website/user_login') }}">Login</a></li>
                     
@@ -52,28 +50,44 @@
         </div>
     </section>
 
-    <section class="section-padding bg-light py-5">
+    <section class="section-padding bg-light py-5" style="flex: 1;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
 
-                    @foreach ($notices as $data)
-                        <a href="#" class="text-decoration-none">
-                            <div class="card notice-card p-3">
+                    @php
+                        $activeNotices = $notices->where('status', 1);
+                    @endphp
+
+                    @if($activeNotices->count() > 0)
+                        @foreach ($activeNotices as $data)
+                            <div class="card notice-card p-3 mb-3 shadow-sm border-0">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="badge bg-primary">{{ $data->audience }}</span>
-                                    <small class="text-muted">{{ $data->notice_date }}</small>
+                                    <small class="text-muted"><i class="fas fa-calendar-alt me-1"></i>{{ $data->notice_date }}</small>
                                 </div>
                                 <h5 class="fw-bold mb-1">{{ $data->title }}</h5>
                                 <p class="text-muted small mb-0">{{ $data->description }}</p>
                             </div>
-                        </a>
-                    @endforeach
+                        @endforeach
+                    @else
+                        <div class="text-center py-5">
+                            <div class="card p-5 border-0 shadow-sm rounded-4">
+                                <div class="mb-4">
+                                    <i class="fas fa-bell-slash fa-4x text-muted opacity-50"></i>
+                                </div>
+                                <h4 class="fw-bold text-dark">No Notices Yet</h4>
+                                <p class="text-muted">Currently, there are no official announcements. Please check back later for updates!</p>
+                            </div>
+                        </div>
+                    @endif
 
                 </div>
             </div>
             <div class="text-center mt-4 mb-5">
-                <a href="{{ url('') }}" class="btn btn-outline-primary rounded-pill">Back to Home</a>
+                <a href="{{ url('') }}" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Home
+                </a>
             </div>
         </div>
     </section>
@@ -106,9 +120,9 @@
                     <p class="small text-white-50 mb-1"><i class="fas fa-envelope me-2"></i> info@sub.edu.bd</p>
                     <p class="small text-white-50"><i class="fas fa-phone me-2"></i> +880 1711 000000</p>
                     <div class="mt-3">
-                        <a href="https://www.facebook.com/subedubd" class="me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3"><i class="fab fa-youtube fa-lg"></i></a>
+                        <a href="https://www.facebook.com/subedubd" class="me-3 text-white"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3 text-white"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3 text-white"><i class="fab fa-youtube fa-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -129,21 +143,19 @@
         });
     </script>
     <style>
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    footer {
-        margin-top: auto;
-        width: 100%;
-    }
-</style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        footer {
+            margin-top: auto;
+            width: 100%;
+        }
+    </style>
 </body>
 </html>

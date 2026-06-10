@@ -13,30 +13,30 @@ class RulesAdminController extends Controller
         $rules = Rules::all();
         return view('admin.rulesadmin.rules_admin', compact('rules'));
     }
+
     public function store(Request $request)
     {
-        $insert = Rules::create([
-            'rules_id' => $request->rules_id,
+        Rules::create([
             'rules_headline' => $request->rules_headline,
             'rules_description' => $request->rules_description,
             'is_published' => $request->input('is_published', 1),
-
-
         ]);
 
-        return redirect('/admin/dashboard/rules_admin')->with('success', 'rules added successfully');
+        return redirect('/admin/dashboard/rules_admin')->with('success', 'Rules added successfully');
     }
+
     public function update(Request $request, $rules_id)
     {
-        $updates = Rules::findOrFail($rules_id);
-        $updates->update([
+        $rule = Rules::findOrFail($rules_id);
+        $rule->update([
             'rules_headline' => $request->rules_headline,
             'rules_description' => $request->rules_description,
-            'is_published' => $request->has('is_published') ? 1 : 0,
+            'is_published' => $request->is_published, 
         ]);
 
         return redirect('admin/dashboard/rules_admin')->with('success', 'Rules updated successfully');
     }
+
     public function destroy($id)
     {
         Rules::where('rules_id', $id)->delete();
