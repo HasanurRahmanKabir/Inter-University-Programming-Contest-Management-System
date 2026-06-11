@@ -47,6 +47,9 @@
                 href=" {{ url('admin/dashboard/rules_admin') }}"><i class="fas fa-clipboard-list"></i> Rules</a>
             <a class="{{ Request::is('admin/dashboard/admin') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/admin') }}"><i class="fas fa-user-cog"></i> Admins</a>
+            <a class="{{ Request::is('admin/dashboard/website-settings') ? 'active' : '' }}" 
+                href="{{ url('admin/dashboard/website-settings') }}">
+                <i class="fas fa-cogs"></i> Website Settings</a>    
 
             <div class="mt-5 border-top border-secondary pt-3">
                 <a href="{{ route('admin.logout') }}" class="text-danger"

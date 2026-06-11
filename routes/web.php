@@ -22,6 +22,7 @@ use App\Http\Controllers\website\WebsiteController;
 use App\Http\Controllers\website\RegisterInfoController;
 use App\Http\Controllers\website\NoticeInfoController;
 use App\Http\Controllers\website\RulesController;
+use App\Http\Controllers\Admin\WebsiteSettingController;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan; 
@@ -122,11 +123,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/dashboard/kitstatus', [KitStatusController::class, 'index']);
     Route::post('/dashboard/kitstatus/store', [KitStatusController::class, 'store']);
     Route::put('/dashboard/kitstatus/update/{id}', [KitStatusController::class, 'update']);
+
     // Sponsor Management
     Route::get('/dashboard/sponsor', [SponsorController::class, 'index']);
     Route::post('/dashboard/sponsor/store', [SponsorController::class, 'store']);
     Route::put('/dashboard/sponsor/update/{sponsor_id}', [SponsorController::class, 'update'])->name('admin.sponsor.update');
     Route::delete('/dashboard/sponsor/delete/{sponsor_id}', [SponsorController::class, 'destroy']);
+
+    // Website Settings
+    Route::get('/dashboard/website-settings', [WebsiteSettingController::class, 'index']);
+    Route::post('/dashboard/website-settings/update', [WebsiteSettingController::class, 'update'])->name('admin.settings.update');
 
 });
 

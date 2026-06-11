@@ -8,7 +8,8 @@
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/homepage.css">
     <style>
         .gallery-img {
@@ -46,8 +47,8 @@
 
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <img src="{{ asset('content/admin') }}/image/logosub.png" alt="University Logo" class="navbar-logo"
-                style="height: 40px; margin-left: 15px; vertical-align: middle;">
+            <img src="{{ asset('uploads/settings/' . basename($setting->header_logo)) }}" alt="Logo"
+                style="height: 40px;">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon bg-light rounded"></span>
             </button>
@@ -71,8 +72,8 @@
         </div>
     </nav>
     <section id="home" class="hero-section"
-    style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ asset('uploads/Pictures of programming/sublogoiupc.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-    <div class="container">
+        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ asset('uploads/Pictures of programming/sublogoiupc.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-12 col-md-10 col-lg-8">
                     @if ($isRegistrationOpen)
@@ -200,7 +201,7 @@
                     @endforeach
                 </div>
             @else
-                
+
                 <div class="row justify-content-center">
                     <div class="col-lg-8 text-center">
                         <div class="alert alert-info">
@@ -267,13 +268,13 @@
                     @endforeach
                 </div>
 
-                
+
                 <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon"></span>
                 </button>
 
-                
+
                 <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel"
                     data-bs-slide="next">
                     <span class="carousel-control-next-icon"></span>
@@ -292,8 +293,7 @@
                     @if ($sponsor->logo)
                         @if ($sponsor->link)
                             <a href="{{ $sponsor->link }}" target="_blank" title="Visit {{ $sponsor->name }}">
-                                <img src="{{ asset($sponsor->logo) }}" alt="{{ $sponsor->name }}"
-                                    class="sponsor-logo"
+                                <img src="{{ asset($sponsor->logo) }}" alt="{{ $sponsor->name }}" class="sponsor-logo"
                                     style="max-height: 80px; max-width: 150px; object-fit: contain;">
                             </a>
                         @else
@@ -316,8 +316,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <img src="{{ asset('content/admin') }}/image/logosub.png" alt="University Logo"
-                        class="navbar-logo"
+                    <img src="{{ !empty($setting->footer_logo) ? asset('uploads/settings/' . basename($setting->footer_logo)) : asset('content/admin/image/logosub.png') }}"
+                        alt="University Logo" class="navbar-logo"
                         style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px;">
                     <p class="small text-white-50">Organizing SUBIUPC 2025 - Sub Inter-University Programming Contest.
                         Join us in celebrating innovation, collaboration, and competitive programming excellence.</p>
@@ -360,13 +360,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
             const isRegistrationOpen = @json($isRegistrationOpen);
 
             @if ($contest->count())
                 const registrationEndDate = new Date("{{ \Carbon\Carbon::parse($contest[0]->registration_end_date)->format('Y/m/d') }} 23:59:59").getTime();
-                    .getTime();
+                                .getTime();
             @else
                 const registrationEndDate = null;
             @endif
@@ -388,7 +388,7 @@
                 return;
             }
 
-            const timer = setInterval(function() {
+            const timer = setInterval(function () {
                 const now = new Date().getTime();
                 const distance = registrationEndDate - now;
 

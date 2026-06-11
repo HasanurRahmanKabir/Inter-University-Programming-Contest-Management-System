@@ -9,6 +9,7 @@ use App\Models\Contest;
 use App\Models\Notice;
 use App\Models\Sponsor;
 use App\Models\TeamRegistration;
+use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 
 class WebsiteController extends Controller
@@ -21,6 +22,7 @@ class WebsiteController extends Controller
         $teamcount = TeamRegistration::count();
         $contestinfo = Contest::where('status', 1)->first();
         $galleries = Gallery::latest()->get();
+        $setting = WebsiteSetting::first();
 
         $today = Carbon::today();
 
@@ -35,6 +37,6 @@ class WebsiteController extends Controller
             }
         }
 
-        return view('website.home_page.index', compact('notice', 'sponsors', 'contest', 'teamcount', 'isRegistrationOpen', 'galleries'));
+        return view('website.home_page.index', compact('notice', 'sponsors', 'contest', 'teamcount', 'isRegistrationOpen', 'galleries', 'setting'));
     }
 }
