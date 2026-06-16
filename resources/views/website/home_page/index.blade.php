@@ -72,7 +72,7 @@
         </div>
     </nav>
     <section id="home" class="hero-section"
-        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ asset('uploads/Pictures of programming/sublogoiupc.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ !empty($setting->hero_banner) ? asset($setting->hero_banner) : asset('uploads/Pictures of programming/sublogoiupc.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-12 col-md-10 col-lg-8">
@@ -82,13 +82,16 @@
                         </span>
                     @endif
 
-                    <h1 class="display-5 fw-bold mb-4 text-white">
-                        State University Of Bangladesh Inter University Programming Contest
-                    </h1>
-                    <p class="lead mb-5 opacity-75 text-white">
-                        Battle of the brains. Solve problems, debug logic, and optimize your code to win the ultimate
-                        championship.
-                    </p>
+                    @if(!empty($setting->hero_title))
+                        <h1 class="display-5 fw-bold mb-4 text-white">
+                            {{ $setting->hero_title }}
+                        </h1>
+                    @endif
+                    @if(!empty($setting->hero_description))
+                        <p class="lead mb-5 opacity-75 text-white">
+                            {{ $setting->hero_description }}
+                        </p>
+                    @endif
 
                     <div class="d-flex justify-content-center gap-2 gap-md-3 mb-5 flex-wrap" id="countdown">
                         <div class="countdown-item">
@@ -130,15 +133,21 @@
     <section id="about" class="section-padding bg-light">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <img src="{{ asset('content/admin') }}/image/hero2.jpg" class="img-fluid rounded-4 shadow"
-                        alt="About Contest">
-                </div>
+                @if(!empty($setting->about_image))
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <img src="{{ asset($setting->about_image) }}" class="img-fluid rounded-4 shadow"
+                            alt="About Contest">
+                    </div>
+                @endif
                 <div class="col-lg-6 ps-lg-5">
-                    <h2 class="fw-bold mb-4">About SUBIUPC</h2>
-                    <p class="text-muted">State University of Bangladesh Inter University Programming Contest (SUBIUPC)
-                        is the largest coding event of the year. We bring together the brightest minds from Universities
-                        & Institutions across the country.</p>
+                    <h2 class="fw-bold mb-4">
+                        {{ $setting->about_title ?? 'About Your Contest' }}
+                    </h2>
+                    @if(!empty($setting->about_description))
+                        <p class="text-muted">
+                            {{ $setting->about_description }}
+                        </p>
+                    @endif
                     <div class="row mt-4 g-3">
 
                         <div class="col-6">
@@ -154,7 +163,9 @@
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-trophy fa-2x text-warning me-3"></i>
                                 <div>
-                                    <h4 class="fw-bold mb-0">200K</h4>
+                                    <h4 class="fw-bold mb-0">
+                                        {{ $setting->prize_pool_amount ?? '0' }}
+                                    </h4>
                                     <small class="text-muted">Prize Pool</small>
                                 </div>
                             </div>
@@ -316,43 +327,80 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <img src="{{ !empty($setting->footer_logo) ? asset('uploads/settings/' . basename($setting->footer_logo)) : asset('content/admin/image/logosub.png') }}"
+                    <img src="{{ !empty($setting->footer_logo) ? asset($setting->footer_logo) : asset('content/admin/image/logosub.png') }}"
                         alt="University Logo" class="navbar-logo"
                         style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px;">
-                    <p class="small text-white-50">Organizing SUBIUPC 2025 - Sub Inter-University Programming Contest.
-                        Join us in celebrating innovation, collaboration, and competitive programming excellence.</p>
+                    @if(!empty($setting->footer_description))
+                        <p class="small text-white-50">
+                            {{ $setting->footer_description }}
+                        </p>
+                    @endif
                 </div>
                 <div class="col-md-2 mb-4">
-                    <h6 class="fw-bold mb-3">Online Platforms</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="https://beecrowd.com/">Beecrowd</a></li>
-                        <li class="mb-2"><a href="https://toph.co/">Toph</a></li>
-                        <li class="mb-2"><a href="https://leetcode.com/">Leetcode</a></li>
-                    </ul>
+                    @if(!empty($setting->platform_1_name) || !empty($setting->platform_2_name) || !empty($setting->platform_3_name) || !empty($setting->platform_4_name))
+                        <h6 class="fw-bold mb-3">Online Platforms</h6>
+                        <ul class="list-unstyled small">
+                            @if(!empty($setting->platform_1_name))
+                                <li class="mb-2"><a
+                                        href="{{ $setting->platform_1_link ?? '#' }}">{{ $setting->platform_1_name }}</a></li>
+                            @endif
+                            @if(!empty($setting->platform_2_name))
+                                <li class="mb-2"><a
+                                        href="{{ $setting->platform_2_link ?? '#' }}">{{ $setting->platform_2_name }}</a></li>
+                            @endif
+                            @if(!empty($setting->platform_3_name))
+                                <li class="mb-2"><a
+                                        href="{{ $setting->platform_3_name ?? '#' }}">{{ $setting->platform_3_name }}</a></li>
+                            @endif
+                            @if(!empty($setting->platform_4_name))
+                                <li class="mb-2"><a
+                                        href="{{ $setting->platform_4_name ?? '#' }}">{{ $setting->platform_4_name }}</a></li>
+                            @endif
+                        </ul>
+                    @endif
                 </div>
                 <div class="col-md-2 mb-4">
                     <h6 class="fw-bold mb-3">Location</h6>
                     <ul class="list-unstyled small">
-                        <li class="mb-2">696 Kendua, Kanchan, Rupganj, Narayanganj, Dhaka-1461, Bangladesh</li>
+                        @if(!empty($setting->location))
+                            <li class="mb-2">{{ $setting->location }}</li>
+                        @endif
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <h6 class="fw-bold mb-3">Contact Info</h6>
-                    <p class="small text-white-50 mb-1"><i class="fas fa-envelope me-2"></i> info@sub.edu.bd</p>
-                    <p class="small text-white-50"><i class="fas fa-phone me-2"></i> +880 1711 000000</p>
+                    <p class="small text-white-50 mb-1"><i class="fas fa-envelope me-2"></i>
+                        @if(!empty($setting->email))
+                            {{ $setting->email }}
+                        @endif
+                    </p>
+                    <p class="small text-white-50"><i class="fas fa-phone me-2"></i>
+                        @if(!empty($setting->phone_number))
+                            {{ $setting->phone_number }}
+                        @endif
+                    </p>
                     <div class="mt-3">
-                        <a href="https://www.facebook.com/subedubd" class="me-3"><i
-                                class="fab fa-facebook fa-lg"></i></a>
-                        <a href="https://www.linkedin.com/school/state-university-of-bangladesh/" class="me-3"><i
-                                class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="https://www.youtube.com/@sub_edu_bd/featured" class="me-3"><i
-                                class="fab fa-youtube fa-lg"></i></a>
+                        @if(!empty($setting->facebook_link))
+                            <a href="{{ $setting->facebook_link }}" class="me-3">
+                                <i class="fab fa-facebook fa-lg"></i>
+                            </a>
+                        @endif
+                        @if(!empty($setting->linkedin_link))
+                            <a href="{{ $setting->linkedin_link }}" class="me-3">
+                                <i class="fab fa-linkedin fa-lg"></i>
+                            </a>
+                        @endif
+                        @if(!empty($setting->youtube_link))
+                            <a href="{{ $setting->youtube_link }}" class="me-3">
+                                <i class="fab fa-youtube fa-lg"></i>
+                            </a>
+                        @endif
                     </div>
                 </div>
 
             </div>
             <div class="border-top border-secondary mt-4 pt-4 text-center small text-white-50">
-                &copy; SUBIUPC - 2025. All Rights Reserved. | Organized by State University of Bangladesh.
+                &copy; {{ $setting->copyright_text ?? '' }}
             </div>
         </div>
     </footer>
@@ -366,7 +414,7 @@
 
             @if ($contest->count())
                 const registrationEndDate = new Date("{{ \Carbon\Carbon::parse($contest[0]->registration_end_date)->format('Y/m/d') }} 23:59:59").getTime();
-                                .getTime();
+                                                                                                                        .getTime();
             @else
                 const registrationEndDate = null;
             @endif
