@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SUBIUPC - User Login</title>
+    <title>{{ $setting->website_name ?? 'Your Website Name' }} - User Login</title>
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css" />
@@ -16,13 +16,20 @@
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="login-card">
             <div class="brand-logo">
-                <img src="{{ asset('content/admin') }}/image/sub_logo.jpg" alt="SUBIUPC Logo"
-                    class="w-100 h-100 rounded-circle">
+                @if(!empty($setting->header_logo))
+                    <img src="{{ asset($setting->header_logo) }}" alt="SUBIUPC Logo" class="w-100 h-100 rounded-circle">
+                @else
+                    <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border"
+                        style="background: #f8f9fa; color: #6c757d; font-size: 10px; text-align: center;">
+                        Upload Your Logo
+                    </div>
+                @endif
             </div>
 
             <h4 class="text-center fw-bold mb-1">Welcome Back!</h4>
             <p class="text-center text-muted small mb-4">
-                Sign in to access your SUBIUPC Account
+                Sign in to access your
+                {{ !empty($setting->website_name) ? $setting->website_name : 'Your Website Name' }} Account
             </p>
 
             @if (session('success'))
@@ -86,8 +93,8 @@
             <div class="text-center mt-3 border-top pt-3">
                 <small class="text-muted">Don't have an account?
                     @if (isset($isRegistrationOpen) && $isRegistrationOpen)
-                        <a href="{{ route('team.registration') }}"
-                            class="text-primary text-decoration-none fw-bold">Sign Up</a>
+                        <a href="{{ route('team.registration') }}" class="text-primary text-decoration-none fw-bold">Sign
+                            Up</a>
                     @else
                         <span class="text-danger fw-bold">Registration Closed</span>
                     @endif

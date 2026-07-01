@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('website_settings', function (Blueprint $table) {
             $table->id();
+            $table->string('website_name')->nullable();
             $table->string('header_logo')->nullable();
             $table->string('footer_logo')->nullable();
             $table->string('hero_banner')->nullable();
@@ -21,6 +22,10 @@ return new class extends Migration
             $table->string('about_image')->nullable();
             $table->string('about_title')->nullable();
             $table->text('about_description')->nullable();
+            $table->string('event_schedule_title_1')->nullable();
+            $table->text('event_schedule_description_1')->nullable();
+            $table->string('event_schedule_title_2')->nullable();
+            $table->text('event_schedule_description_2')->nullable();
             $table->string('prize_pool_amount')->nullable();
             $table->text('footer_description')->nullable();
             $table->string('location')->nullable();

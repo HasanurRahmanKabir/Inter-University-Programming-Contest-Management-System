@@ -30,33 +30,93 @@
 
                     <h6 class="text-primary fw-bold mt-4 mb-3"><i class="fas fa-images me-2"></i>Branding & Media</h6>
                     <div class="row g-3">
-                        <div class="col-12 col-sm-6 col-lg-3"><label class="form-label small fw-bold">Header
-                                Logo</label><input type="file" name="header_logo" class="form-control shadow-none"></div>
-                        <div class="col-12 col-sm-6 col-lg-3"><label class="form-label small fw-bold">Footer
-                                Logo</label><input type="file" name="footer_logo" class="form-control shadow-none"></div>
-                        <div class="col-12 col-sm-6 col-lg-3"><label class="form-label small fw-bold">Hero
-                                Banner</label><input type="file" name="hero_banner" class="form-control shadow-none"></div>
-                        <div class="col-12 col-sm-6 col-lg-3"><label class="form-label small fw-bold">About Us
-                                Image</label><input type="file" name="about_image" class="form-control shadow-none"></div>
+                        @php $images = ['header_logo' => 'Header Logo', 'footer_logo' => 'Footer Logo', 'hero_banner' => 'Hero Banner', 'about_image' => 'About Us Image']; @endphp
+
+                        @foreach($images as $key => $label)
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <label class="form-label small fw-bold">{{ $label }}</label>
+
+                                @if(!empty($setting->$key))
+                                    <div class="mb-2 position-relative d-inline-block">
+                                        <img src="{{ asset($setting->$key) }}" alt="{{ $label }}" class="img-thumbnail"
+                                            style="height: 80px; width: auto;">
+
+                                        {{-- ডিলিট করার রাউট লিংক --}}
+                                        <a href="{{ route('admin.settings.deleteImage', $key) }}"
+                                            class="badge bg-danger position-absolute top-0 end-0 text-decoration-none"
+                                            onclick="return confirm('Are you sure you want to delete this image?');">
+                                            ×
+                                        </a>
+                                    </div>
+                                @endif
+
+                                <input type="file" name="{{ $key }}" class="form-control shadow-none">
+                            </div>
+                        @endforeach
                     </div>
 
                     <h6 class="text-primary fw-bold mt-4 mb-3"><i class="fas fa-pen-nib me-2"></i>Website Content</h6>
                     <div class="row g-3">
-                        <div class="col-12 col-lg-6"><label class="form-label small fw-bold">Hero Title</label><input
-                                type="text" name="hero_title" class="form-control shadow-none"
-                                value="{{ $setting->hero_title ?? '' }}"></div>
-                        <div class="col-12 col-lg-6"><label class="form-label small fw-bold">About Us Title</label><input
-                                type="text" name="about_title" class="form-control shadow-none"
-                                value="{{ $setting->about_title ?? '' }}"></div>
-                        <div class="col-12 col-lg-6"><label class="form-label small fw-bold">Hero
-                                Description</label><textarea name="hero_description" class="form-control shadow-none"
-                                rows="2">{{ $setting->hero_description ?? '' }}</textarea></div>
-                        <div class="col-12 col-lg-6"><label class="form-label small fw-bold">About Us
-                                Description</label><textarea name="about_description" class="form-control shadow-none"
-                                rows="2">{{ $setting->about_description ?? '' }}</textarea></div>
+                        <div class="col-12 col-lg-6">
+                            <label class="form-label small fw-bold">Website Name</label>
+                            <input type="text" name="website_name" class="form-control shadow-none"
+                                placeholder="Enter Website Name" value="{{ $setting->website_name ?? '' }}">
+                        </div>
+
+                        <div class="col-12 col-lg-6"><label class="form-label small fw-bold">Hero Title</label>
+                            <input type="text" name="hero_title" class="form-control shadow-none"
+                                value="{{ $setting->hero_title ?? '' }}">
+                        </div>
+                        <div class="col-12 col-lg-6"><label class="form-label small fw-bold">About Us Title</label>
+                            <input type="text" name="about_title" class="form-control shadow-none"
+                                value="{{ $setting->about_title ?? '' }}">
+                        </div>
+                        <div class="col-12 col-lg-6"><label class="form-label small fw-bold">Hero Description</label>
+                            <textarea name="hero_description" class="form-control shadow-none"
+                                rows="2">{{ $setting->hero_description ?? '' }}</textarea>
+                        </div>
+                        <div class="col-12 col-lg-6"><label class="form-label small fw-bold">About Us Description</label>
+                            <textarea name="about_description" class="form-control shadow-none"
+                                rows="2">{{ $setting->about_description ?? '' }}</textarea>
+                        </div>
                     </div>
 
-                    <h6 class="text-primary fw-bold mt-4 mb-3"><i class="fas fa-address-card me-2"></i>Contact Details</h6>
+                    <h6 class="text-primary fw-bold mt-4 mb-3"><i class="fas fa-calendar-alt me-2"></i>Event Schedule</h6>
+                    <div class="row g-3">
+                        <div class="col-12 col-lg-6">
+                            <div class="p-3 border rounded bg-light">
+                                <h6 class="small fw-bold text-dark mb-2">Schedule 1</h6>
+                                <div class="mb-2">
+                                    <label class="form-label small text-muted">Title</label>
+                                    <input type="text" name="event_schedule_title_1" class="form-control shadow-none"
+                                        value="{{ $setting->event_schedule_title_1 ?? '' }}">
+                                </div>
+                                <div>
+                                    <label class="form-label small text-muted">Description</label>
+                                    <textarea name="event_schedule_description_1" class="form-control shadow-none"
+                                        rows="2">{{ $setting->event_schedule_description_1 ?? '' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="p-3 border rounded bg-light">
+                                <h6 class="small fw-bold text-dark mb-2">Schedule 2</h6>
+                                <div class="mb-2">
+                                    <label class="form-label small text-muted">Title</label>
+                                    <input type="text" name="event_schedule_title_2" class="form-control shadow-none"
+                                        value="{{ $setting->event_schedule_title_2 ?? '' }}">
+                                </div>
+                                <div>
+                                    <label class="form-label small text-muted">Description</label>
+                                    <textarea name="event_schedule_description_2" class="form-control shadow-none"
+                                        rows="2">{{ $setting->event_schedule_description_2 ?? '' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="text-primary fw-bold mt-4 mb-3"><i class="fas fa-address-card me-2"></i>Contact Details
+                    </h6>
                     <div class="row g-3">
                         <div class="col-12 col-md-6 col-lg-3"><label class="form-label small fw-bold">Prize Pool
                                 Amount</label><input type="text" name="prize_pool_amount" class="form-control shadow-none"
@@ -104,7 +164,8 @@
                                         <div class="col-6">
                                             <label class="form-label small text-muted">Platform Name</label>
                                             <input type="text" name="platform_{{$i}}_name" class="form-control shadow-none"
-                                                placeholder="e.g. Steam" value="{{ $setting->{'platform_' . $i . '_name'} ?? '' }}">
+                                                placeholder="e.g. Steam"
+                                                value="{{ $setting->{'platform_' . $i . '_name'} ?? '' }}">
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label small text-muted">Platform Link</label>

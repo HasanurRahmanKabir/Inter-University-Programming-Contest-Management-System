@@ -133,6 +133,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     // Website Settings
     Route::get('/dashboard/website-settings', [WebsiteSettingController::class, 'index']);
     Route::post('/dashboard/website-settings/update', [WebsiteSettingController::class, 'update'])->name('admin.settings.update');
+    Route::get('/dashboard/website-settings/delete-image/{field}', [WebsiteSettingController::class, 'deleteImage'])->name('admin.settings.deleteImage');
 
 });
 

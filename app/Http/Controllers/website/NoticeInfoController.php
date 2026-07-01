@@ -5,6 +5,7 @@ namespace App\Http\Controllers\website;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notice;
+use App\Models\WebsiteSetting;
 use App\Models\Contest;
 
 class NoticeInfoController extends Controller
@@ -12,7 +13,7 @@ class NoticeInfoController extends Controller
     public function index()
     {
         $notices = Notice::all();
-        
+        $setting = WebsiteSetting::first();
         $contest = Contest::first(); 
         $today = date('Y-m-d');
         $isRegistrationOpen = false;
@@ -21,6 +22,6 @@ class NoticeInfoController extends Controller
             $isRegistrationOpen = true;
         }
 
-        return view('website.noticeinfo.notice_info', compact('notices', 'isRegistrationOpen'));
+        return view('website.noticeinfo.notice_info', compact('notices', 'isRegistrationOpen', 'setting'));
     }
 }

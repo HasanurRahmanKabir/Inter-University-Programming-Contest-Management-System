@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>SUBIUPC - Team Registration</title>
+    <title>{{ $setting->website_name ?? 'Your Website Name' }} - Team Registration</title>
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
@@ -19,7 +18,9 @@
     <div class="page-header">
         <div class="container position-relative">
             <h2 class="fw-bold mb-2">Team Registration</h2>
-            <p class="opacity-75 mb-0">SUB Inter University Programming Contest - SUBIUPC 2025</p>
+            <p class="opacity-75 mb-0">
+                {{ !empty($setting->website_name) ? $setting->website_name : 'Your Website Name' }}
+            </p>
         </div>
     </div>
 
@@ -147,8 +148,7 @@
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
                                         class="required-star">*</span></label>
-                                <input type="text" class="form-control form-control-sm" name="mem_1_name"
-                                    required>
+                                <input type="text" class="form-control form-control-sm" name="mem_1_name" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Student ID <span
@@ -199,8 +199,7 @@
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
                                         class="required-star">*</span></label>
-                                <input type="text" class="form-control form-control-sm" name="mem_2_name"
-                                    required>
+                                <input type="text" class="form-control form-control-sm" name="mem_2_name" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Student ID <span
@@ -251,8 +250,7 @@
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
                                         class="required-star">*</span></label>
-                                <input type="text" class="form-control form-control-sm" name="mem_3_name"
-                                    required>
+                                <input type="text" class="form-control form-control-sm" name="mem_3_name" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Student ID <span
@@ -337,11 +335,11 @@
             }
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             // --- 2. LOCAL DUPLICATE CHECK ---
             function validateLocalDuplicate(selector, itemName) {
-                $(document).on('input', selector, function() {
+                $(document).on('input', selector, function () {
                     var currentInput = $(this);
                     var currentValue = currentInput.val().trim();
                     var isDuplicate = false;
@@ -353,7 +351,7 @@
 
                     if (currentValue === "") return;
 
-                    $(selector).not(this).each(function() {
+                    $(selector).not(this).each(function () {
                         if ($(this).val().trim() === currentValue) {
                             isDuplicate = true;
                         }
@@ -374,7 +372,7 @@
 
 
             // --- 3. DATABASE DUPLICATE CHECK (AJAX) ---
-            $('.check-db').on('blur', function() {
+            $('.check-db').on('blur', function () {
                 var inputField = $(this);
                 var fieldName = inputField.attr('name');
                 var fieldValue = inputField.val().trim();
@@ -390,7 +388,7 @@
                         field_name: fieldName,
                         value: fieldValue
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.exists) {
                             inputField.addClass('is-invalid');
                             inputField.after(
@@ -426,7 +424,7 @@
         function previewImage(input, previewId) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     var preview = document.getElementById(previewId);
                     preview.src = e.target.result;
                     preview.style.display = 'block';
@@ -438,7 +436,7 @@
 
         document.getElementById('refreshCaptcha').addEventListener('click', generateCaptcha);
 
-        document.getElementById('verifyCaptcha').addEventListener('click', function() {
+        document.getElementById('verifyCaptcha').addEventListener('click', function () {
             const userAnswer = parseInt(document.getElementById('captchaAnswer').value);
             const messageEl = document.getElementById('captchaMessage');
 
@@ -459,7 +457,7 @@
             document.getElementById('captcha_verified').value = 1;
         });
 
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        document.getElementById('registrationForm').addEventListener('submit', function (e) {
             if (!isCaptchaVerified) {
                 e.preventDefault();
                 alert('Please verify the CAPTCHA.');

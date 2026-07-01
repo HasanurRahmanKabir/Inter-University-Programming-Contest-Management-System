@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUBIUPC 2025 - Inter University Programming Contest</title>
+    <title>{{ $setting->website_name ?? 'Your Website Name' }}</title>
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
@@ -47,8 +47,14 @@
 
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <img src="{{ asset('uploads/settings/' . basename($setting->header_logo)) }}" alt="Logo"
-                style="height: 40px;">
+            @if(!empty($setting->header_logo))
+                <img src="{{ asset($setting->header_logo) }}" alt="Logo" style="height: 40px;">
+            @else
+                <div
+                    style="height: 40px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border: 1px dashed #ced4da; padding: 0 10px; color: #6c757d; font-size: 14px; font-weight: 500; border-radius: 4px;">
+                    Upload Your Logo
+                </div>
+            @endif
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon bg-light rounded"></span>
             </button>
@@ -71,8 +77,13 @@
             </div>
         </div>
     </nav>
-    <section id="home" class="hero-section"
-        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ !empty($setting->hero_banner) ? asset($setting->hero_banner) : asset('uploads/Pictures of programming/sublogoiupc.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <section id="home" class="hero-section" style="
+    @if(!empty($setting->hero_banner))
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ asset($setting->hero_banner) }}');
+    @endif
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;">
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-12 col-md-10 col-lg-8">
@@ -82,16 +93,13 @@
                         </span>
                     @endif
 
-                    @if(!empty($setting->hero_title))
-                        <h1 class="display-5 fw-bold mb-4 text-white">
-                            {{ $setting->hero_title }}
-                        </h1>
-                    @endif
-                    @if(!empty($setting->hero_description))
-                        <p class="lead mb-5 opacity-75 text-white">
-                            {{ $setting->hero_description }}
-                        </p>
-                    @endif
+                    <h1 class="display-5 fw-bold mb-4">
+                        {{ !empty($setting->hero_title) ? $setting->hero_title : 'Your Hero Section Title' }}
+                    </h1>
+
+                    <p class="lead mb-5 opacity-75 text-white">
+                        {{ !empty($setting->hero_description) ? $setting->hero_description : 'Your Hero Section Description' }}
+                    </p>
 
                     <div class="d-flex justify-content-center gap-2 gap-md-3 mb-5 flex-wrap" id="countdown">
                         <div class="countdown-item">
@@ -133,21 +141,17 @@
     <section id="about" class="section-padding bg-light">
         <div class="container">
             <div class="row align-items-center">
-                @if(!empty($setting->about_image))
-                    <div class="col-lg-6 mb-4 mb-lg-0">
-                        <img src="{{ asset($setting->about_image) }}" class="img-fluid rounded-4 shadow"
-                            alt="About Contest">
-                    </div>
-                @endif
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="{{ !empty($setting->about_image) ? asset($setting->about_image) : asset('uploads/settings/hero2.jpg') }}"
+                        class="img-fluid rounded-4 shadow" alt="About Contest">
+                </div>
                 <div class="col-lg-6 ps-lg-5">
                     <h2 class="fw-bold mb-4">
                         {{ $setting->about_title ?? 'About Your Contest' }}
                     </h2>
-                    @if(!empty($setting->about_description))
-                        <p class="text-muted">
-                            {{ $setting->about_description }}
-                        </p>
-                    @endif
+                    <p class="text-muted">
+                        {{ !empty($setting->about_description) ? $setting->about_description : 'Your About Section Description' }}
+                    </p>
                     <div class="row mt-4 g-3">
 
                         <div class="col-6">
@@ -193,9 +197,11 @@
                                     -
                                     {{ \Carbon\Carbon::parse($data->registration_end_date)->format('d M Y') }}
                                 </div>
-                                <h5 class="fw-bold">Registration Phase</h5>
+                                <h5 class="fw-bold">
+                                    {{ $setting->event_schedule_title_1 ?? 'Contest Title' }}
+                                </h5>
                                 <p class="text-muted small">
-                                    Online registration and payment verification period.
+                                    {{ $setting->event_schedule_description_1 ?? 'Contest Description' }}
                                 </p>
                             </div>
 
@@ -203,9 +209,9 @@
                                 <div class="timeline-date">
                                     {{ \Carbon\Carbon::parse($data->contest_end_date)->format('d M Y') }}
                                 </div>
-                                <h5 class="fw-bold text-primary">Final Contest Day</h5>
+                                <h5 class="fw-bold text-primary">{{ $setting->event_schedule_title_2 ?? 'Contest Title' }}</h5>
                                 <p class="text-muted small">
-                                    Onsite contest at SUB Permanent Campus. Reporting time 8:00 AM.
+                                    {{ $setting->event_schedule_description_2 ?? 'Contest Description' }}
                                 </p>
                             </div>
                         </div>
@@ -327,80 +333,99 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <img src="{{ !empty($setting->footer_logo) ? asset($setting->footer_logo) : asset('content/admin/image/logosub.png') }}"
-                        alt="University Logo" class="navbar-logo"
-                        style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px;">
-                    @if(!empty($setting->footer_description))
-                        <p class="small text-white-50">
-                            {{ $setting->footer_description }}
-                        </p>
+                    @if(!empty($setting->footer_logo))
+                        <img src="{{ asset($setting->footer_logo) }}" alt="University Logo" class="navbar-logo"
+                            style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px;">
+                    @else
+                        <div
+                            style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px; display: inline-flex; align-items: center; justify-content: center; background: #f8f9fa; border: 1px dashed #ced4da; padding: 0 15px; border-radius: 4px; color: #6c757d; font-size: 14px; font-weight: 500;">
+                            Upload Your Logo
+                        </div>
                     @endif
+
+                    <p class="small text-white-50">
+                        {{ !empty($setting->footer_description) ? $setting->footer_description : 'Your Footer Description' }}
+                    </p>
+
                 </div>
+
                 <div class="col-md-2 mb-4">
-                    @if(!empty($setting->platform_1_name) || !empty($setting->platform_2_name) || !empty($setting->platform_3_name) || !empty($setting->platform_4_name))
-                        <h6 class="fw-bold mb-3">Online Platforms</h6>
-                        <ul class="list-unstyled small">
-                            @if(!empty($setting->platform_1_name))
-                                <li class="mb-2"><a
-                                        href="{{ $setting->platform_1_link ?? '#' }}">{{ $setting->platform_1_name }}</a></li>
-                            @endif
-                            @if(!empty($setting->platform_2_name))
-                                <li class="mb-2"><a
-                                        href="{{ $setting->platform_2_link ?? '#' }}">{{ $setting->platform_2_name }}</a></li>
-                            @endif
-                            @if(!empty($setting->platform_3_name))
-                                <li class="mb-2"><a
-                                        href="{{ $setting->platform_3_name ?? '#' }}">{{ $setting->platform_3_name }}</a></li>
-                            @endif
-                            @if(!empty($setting->platform_4_name))
-                                <li class="mb-2"><a
-                                        href="{{ $setting->platform_4_name ?? '#' }}">{{ $setting->platform_4_name }}</a></li>
-                            @endif
-                        </ul>
-                    @endif
+                    <h6 class="fw-bold mb-3">Online Platforms</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2">
+                            <a
+                                href="{{ (!empty($setting->platform_1_link) && filter_var($setting->platform_1_link, FILTER_VALIDATE_URL)) ? $setting->platform_1_link : 'javascript:void(0)' }}">
+                                {{ !empty($setting->platform_1_name) ? $setting->platform_1_name : 'Platform Name 1' }}
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a
+                                href="{{ (!empty($setting->platform_2_link) && filter_var($setting->platform_2_link, FILTER_VALIDATE_URL)) ? $setting->platform_2_link : 'javascript:void(0)' }}">
+                                {{ !empty($setting->platform_2_name) ? $setting->platform_2_name : 'Platform Name 2' }}
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a
+                                href="{{ (!empty($setting->platform_3_link) && filter_var($setting->platform_3_link, FILTER_VALIDATE_URL)) ? $setting->platform_3_link : 'javascript:void(0)' }}">
+                                {{ !empty($setting->platform_3_name) ? $setting->platform_3_name : 'Platform Name 3' }}
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a
+                                href="{{ (!empty($setting->platform_4_link) && filter_var($setting->platform_4_link, FILTER_VALIDATE_URL)) ? $setting->platform_4_link : 'javascript:void(0)' }}">
+                                {{ !empty($setting->platform_4_name) ? $setting->platform_4_name : 'Platform Name 4' }}
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+
                 <div class="col-md-2 mb-4">
                     <h6 class="fw-bold mb-3">Location</h6>
                     <ul class="list-unstyled small">
-                        @if(!empty($setting->location))
-                            <li class="mb-2">{{ $setting->location }}</li>
-                        @endif
+                        <li class="mb-2">
+                            {{ !empty($setting->location) ? $setting->location : 'Your Location' }}
+                        </li>
                     </ul>
                 </div>
+
                 <div class="col-md-4">
                     <h6 class="fw-bold mb-3">Contact Info</h6>
-                    <p class="small text-white-50 mb-1"><i class="fas fa-envelope me-2"></i>
-                        @if(!empty($setting->email))
-                            {{ $setting->email }}
-                        @endif
+                    <p class="small text-white-50 mb-1">
+                        <i class="fas fa-envelope me-2"></i>
+                        {{ !empty($setting->email) ? $setting->email : 'info@gmail.com' }}
                     </p>
-                    <p class="small text-white-50"><i class="fas fa-phone me-2"></i>
-                        @if(!empty($setting->phone_number))
-                            {{ $setting->phone_number }}
-                        @endif
+
+                    <p class="small text-white-50">
+                        <i class="fas fa-phone me-2"></i>
+                        {{ !empty($setting->phone_number) ? $setting->phone_number : '+880 1711 000000' }}
                     </p>
+
                     <div class="mt-3">
-                        @if(!empty($setting->facebook_link))
-                            <a href="{{ $setting->facebook_link }}" class="me-3">
-                                <i class="fab fa-facebook fa-lg"></i>
-                            </a>
-                        @endif
-                        @if(!empty($setting->linkedin_link))
-                            <a href="{{ $setting->linkedin_link }}" class="me-3">
-                                <i class="fab fa-linkedin fa-lg"></i>
-                            </a>
-                        @endif
-                        @if(!empty($setting->youtube_link))
-                            <a href="{{ $setting->youtube_link }}" class="me-3">
-                                <i class="fab fa-youtube fa-lg"></i>
-                            </a>
-                        @endif
+                        <a href="{{ !empty($setting->facebook_link) ? $setting->facebook_link : 'javascript:void(0)' }}"
+                            class="me-3 text-white">
+                            <i class="fab fa-facebook fa-lg"></i>
+                        </a>
+
+                        <a href="{{ !empty($setting->linkedin_link) ? $setting->linkedin_link : 'javascript:void(0)' }}"
+                            class="me-3 text-white">
+                            <i class="fab fa-linkedin fa-lg"></i>
+                        </a>
+
+                        <a href="{{ !empty($setting->youtube_link) ? $setting->youtube_link : 'javascript:void(0)' }}"
+                            class="me-3 text-white">
+                            <i class="fab fa-youtube fa-lg"></i>
+                        </a>
                     </div>
+
                 </div>
 
             </div>
             <div class="border-top border-secondary mt-4 pt-4 text-center small text-white-50">
-                &copy; {{ $setting->copyright_text ?? '' }}
+                &copy;
+                {{ !empty($setting->copyright_text) ? $setting->copyright_text : 'All Rights Reserved. | Organized by Your Website Name.' }}
             </div>
         </div>
     </footer>
@@ -414,7 +439,7 @@
 
             @if ($contest->count())
                 const registrationEndDate = new Date("{{ \Carbon\Carbon::parse($contest[0]->registration_end_date)->format('Y/m/d') }} 23:59:59").getTime();
-                                                                                                                        .getTime();
+                                                                                                                                                                                                                        .getTime();
             @else
                 const registrationEndDate = null;
             @endif

@@ -19,6 +19,7 @@ class WebsiteSetting extends Model
      * @var array
      */
     protected $fillable = [
+        'website_name',
         'header_logo',
         'footer_logo',
         'hero_banner',
@@ -27,6 +28,10 @@ class WebsiteSetting extends Model
         'about_image',
         'about_title',
         'about_description',
+        'event_schedule_title_1',
+        'event_schedule_description_1',
+        'event_schedule_title_2',
+        'event_schedule_description_2',
         'prize_pool_amount',
         'footer_description',
         'location',

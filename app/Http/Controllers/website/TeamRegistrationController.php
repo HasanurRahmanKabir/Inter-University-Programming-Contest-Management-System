@@ -4,6 +4,7 @@ namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
 use App\Models\TeamRegistration;
+use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,7 +12,8 @@ class TeamRegistrationController extends Controller
 {
     public function index()
     {
-        return view('website.registration.registration');
+        $setting = WebsiteSetting::first();
+        return view('website.registration.registration', compact('setting'));
     }
 
     public function checkDuplicateInDB(Request $request)

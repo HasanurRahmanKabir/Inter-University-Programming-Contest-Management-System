@@ -5,6 +5,7 @@ namespace App\Http\Controllers\website;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Contest;
+use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +16,7 @@ class UserLogin extends Controller
     {
         $contestinfo = Contest::where('status', 1)->first();
         $today = Carbon::today();
+        $setting = WebsiteSetting::first();
         $isRegistrationOpen = false;
 
         if ($contestinfo) {
@@ -25,7 +27,7 @@ class UserLogin extends Controller
                 $isRegistrationOpen = true;
             }
         }
-        return view('website.login.user_login', compact('isRegistrationOpen'));
+        return view('website.login.user_login', compact('isRegistrationOpen', 'setting'));
     }
 
     public function login(Request $request)
