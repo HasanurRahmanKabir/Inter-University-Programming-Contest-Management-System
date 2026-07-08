@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
+use App\Models\WebsiteSetting;
 use App\Models\Contest;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +14,12 @@ class CoachController extends Controller
 {
     public function index()
     {
+        $setting = WebsiteSetting::first();
         $user = Auth::guard('team')->user();
         $payment = Payment::where('team_name', $user->team_name)->first();
         $contest = Contest::latest('contest_id')->first();
 
-        return view('website.coach.coach', compact('user', 'payment', 'contest'));
+        return view('website.coach.coach', compact('user', 'payment', 'contest', 'setting'));
     }
 
     public function storePayment(Request $request)

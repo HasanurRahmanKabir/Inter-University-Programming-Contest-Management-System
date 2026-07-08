@@ -46,14 +46,14 @@
             background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('/image/sublogoiupc.jpg');
             background-size: cover;
             background-position: center;
-            height: 90vh;
+            min-height: 85vh;
             display: flex;
             align-items: center;
             color: white;
             text-align: center;
             position: relative;
-            padding: 0 15px;
-            /* small padding for mobile */
+            padding: 120px 15px 60px;
+            /* Added padding for navbar and changed height to min-height for responsive overflow */
         }
 
         /* Responsive text for hero */
@@ -65,28 +65,34 @@
             font-size: 1rem;
         }
 
-        /* Countdown adjustments for mobile */
+        /* Countdown adjustments for mobile (Base styles) */
         .countdown-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px 10px;
             border-radius: 10px;
             min-width: 70px;
-            /* reduce min-width for mobile */
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             margin-bottom: 10px;
-            /* for spacing when wrap occurs */
         }
 
         /* Countdown numbers smaller on mobile */
         .countdown-number {
             font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Buttons responsive padding */
         .hero-section .btn {
             padding: 10px 20px;
-            /* mobile friendly */
             font-size: 0.9rem;
         }
 
@@ -103,10 +109,15 @@
             .countdown-item {
                 min-width: 100px;
                 padding: 20px;
+                margin-bottom: 0;
             }
 
             .countdown-number {
                 font-size: 2.5rem;
+            }
+
+            .countdown-label {
+                font-size: 0.9rem;
             }
 
             .hero-section .btn {
@@ -124,30 +135,6 @@
             .hero-section p {
                 font-size: 1.5rem;
             }
-        }
-
-
-        /* Countdown Timer */
-        .countdown-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            min-width: 100px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .countdown-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #3b82f6;
-            display: block;
-        }
-
-        .countdown-label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         /* --- Sections General --- */

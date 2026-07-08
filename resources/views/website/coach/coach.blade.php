@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coach Dashboard - SUBIUPC</title>
+    <title>Coach Dashboard - {{ $setting->website_name ?? 'Your Website Name' }}</title>
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css" />

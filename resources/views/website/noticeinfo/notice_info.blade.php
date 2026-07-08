@@ -157,6 +157,7 @@
                         </li>
                     </ul>
                 </div>
+
                 <div class="col-md-4">
                     <h6 class="fw-bold mb-3">Contact Info</h6>
                     <p class="small text-white-50 mb-1">
@@ -184,6 +185,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="border-top border-secondary mt-4 pt-4 text-center small text-white-50">
                 &copy;
                 {{ !empty($setting->copyright_text) ? $setting->copyright_text : 'All Rights Reserved. | Organized by Your University Name.' }}

@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan; 
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
-
+use App\Http\Controllers\admin\AdminProfileController;
 
 // Homepage
 Route::get('', [WebsiteController::class, 'index']);
@@ -66,6 +66,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // Logout
     Route::post('/logout', [AdminLogin::class, 'logout'])->name('admin.logout');
+
+    // Profile & Settings
+    Route::post('/profile/update', [AdminProfileController::class, 'updateProfile'])->name('admin.profile.update');
+    Route::post('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.password');
 
     // Main Dashboard
     Route::get('/dashboard', [UserController::class, 'index'])->name('admin.dashboard');
@@ -164,9 +168,9 @@ Route::get('/_boost/browser-logs', function () {
 Route::get('/fix-database', function () {
     try {
         Artisan::call('migrate:fresh', ['--force' => true]);
-        return "অভিনন্দন! সব টেবিল নতুন করে তৈরি হয়েছে।";
+        return "Congratulations! All tables have been recreated successfully.";
     } catch (\Exception $e) {
-        return "ভুল হয়েছে: " . $e->getMessage();
+        return "Error occurred: " . $e->getMessage();
     }
 });
 
@@ -177,11 +181,11 @@ Route::get('/run-seeder', function () {
             '--force' => true
         ]);
         
-        return "অভিনন্দন! সিডার সফলভাবে রান হয়েছে।<br>
-                ইমেইল: superadmin@gmail.com <br>
-                পাসওয়ার্ড: admin123";
+        return "Congratulations! Seeder executed successfully.<br>
+                Email: superadmin@gmail.com <br>
+                Password: admin123";
     } catch (\Exception $e) {
-        return "সিডার রান করতে সমস্যা হয়েছে: " . $e->getMessage();
+        return "Error occurred while running seeder: " . $e->getMessage();
     }
 });
 

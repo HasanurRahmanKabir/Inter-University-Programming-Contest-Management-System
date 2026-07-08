@@ -43,7 +43,7 @@ class UserLogin extends Controller
             'password' => $request->password
         ];
 
-        if (Auth::guard('team')->attempt($teamCredentials, $request->filled('remember'))) {
+        if (Auth::guard('team')->attempt($teamCredentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             return redirect()->intended(route('coach.dashboard'))
@@ -55,7 +55,7 @@ class UserLogin extends Controller
             'password' => $request->password
         ];
 
-        if (Auth::guard('volunteer')->attempt($volunteerCredentials, $request->filled('remember'))) {
+        if (Auth::guard('volunteer')->attempt($volunteerCredentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             return redirect()->intended(route('volunteer.dashboard'))

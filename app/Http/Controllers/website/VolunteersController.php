@@ -4,6 +4,7 @@ namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contest;
+use App\Models\WebsiteSetting;
 use App\Models\TeamRegistration;
 use App\Models\KitStatus;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ class VolunteersController extends Controller
 {
     public function index()
     {
+        $setting = WebsiteSetting::first();
         $volunteer = Auth::guard('volunteer')->user();
         $contest = Contest::latest('contest_id')->first();
         $teams = TeamRegistration::leftJoin('kit_statuses', 'team_registration_infos.team_id', '=', 'kit_statuses.team_id')
@@ -22,7 +24,7 @@ class VolunteersController extends Controller
             )
             ->get();
 
-        return view('website.volunteer.volunteer', compact('volunteer', 'teams', 'contest'));
+        return view('website.volunteer.volunteer', compact('volunteer', 'teams', 'contest', 'setting'));
     }
 
     public function saveKitStatus(Request $request)

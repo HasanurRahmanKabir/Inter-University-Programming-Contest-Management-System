@@ -16,7 +16,7 @@ class WebsiteController extends Controller
 {
     public function index()
     {
-        $notice = Notice::orderBy('created_at', 'desc')->take(4)->get();
+        $notice = Notice::where('status', 1)->orderBy('created_at', 'desc')->take(4)->get();
         $sponsors = Sponsor::all();
         $contest = Contest::orderBy('created_at', 'desc')->take(1)->get();
         $teamcount = TeamRegistration::count();

@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SUBIUPC - Premium Admin Dashboard</title>
+    <title>{{ $setting->website_name ?? 'Your Website Name' }} - Premium Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/bootstrap.min.css">
@@ -17,7 +17,7 @@
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h4 class="fw-bold mb-0 text-white">
-                SUBIUPC <span style="color: #3b82f6">Panel</span>
+                Admin <span style="color: #3b82f6">Panel</span>
             </h4>
         </div>
         <div class="sidebar-menu">
@@ -74,48 +74,49 @@
                     <h5 class="modal-title fw-bold">Admin Profile</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                <form action="{{ route('admin.profile.update') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
                         <div class="text-center mb-3">
                             <img id="profileAvatar"
-                                src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff"
+                                src="https://ui-avatars.com/api/?name={{ urlencode(Auth::guard('admin')->user()->name) }}&background=0D8ABC&color=fff"
                                 class="rounded-circle mb-2" width="90" height="90" alt="Avatar" />
                             <div class="small text-muted">
-                                Change avatar by uploading a new image
+                                Avatar is generated from your name
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="profileName" class="form-label text-muted small fw-bold">Full Name</label>
-                            <input type="text" id="profileName" class="form-control" value="kamal Hasan" />
+                            <input type="text" name="name" id="profileName" class="form-control" value="{{ Auth::guard('admin')->user()->name }}" required />
                         </div>
 
                         <div class="mb-3">
                             <label for="profileEmail" class="form-label text-muted small fw-bold">Email Address</label>
-                            <input type="email" id="profileEmail" class="form-control"
-                                value="kamalhasan124@gmail.com" />
+                            <input type="email" name="email" id="profileEmail" class="form-control"
+                                value="{{ Auth::guard('admin')->user()->email }}" required />
                         </div>
 
                         <div class="mb-3">
                             <label for="profilePhone" class="form-label text-muted small fw-bold">Phone Number</label>
-                            <input type="text" id="profilePhone" class="form-control" value="01789559698" />
+                            <input type="text" name="phone" id="profilePhone" class="form-control" value="{{ Auth::guard('admin')->user()->phone }}" required />
                         </div>
 
                         <div class="mb-3">
                             <label for="profileRole" class="form-label text-muted small fw-bold">Role</label>
-                            <input type="text" id="profileRole" class="form-control" value="Super Admin"
+                            <input type="text" id="profileRole" class="form-control" value="{{ Auth::guard('admin')->user()->role ?? 'Super Admin' }}"
                                 readonly />
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary px-4">
-                        Save Profile
-                    </button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary px-4">
+                            Save Profile
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -128,35 +129,34 @@
                     <h5 class="modal-title fw-bold">Account Settings</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                <form action="{{ route('admin.profile.password') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
                         <div class="mb-3">
-                            <label for="currentPassword" class="form-label text-muted small fw-bold">Current
-                                Password</label>
-                            <input type="password" id="currentPassword" class="form-control"
-                                placeholder="Enter current password" />
+                            <label for="currentPassword" class="form-label text-muted small fw-bold">Current Password</label>
+                            <input type="password" name="current_password" id="currentPassword" class="form-control"
+                                placeholder="Enter current password" required />
                         </div>
                         <div class="mb-3">
                             <label for="newPassword" class="form-label text-muted small fw-bold">New Password</label>
-                            <input type="password" id="newPassword" class="form-control"
-                                placeholder="Enter new password" />
+                            <input type="password" name="new_password" id="newPassword" class="form-control"
+                                placeholder="Enter new password" required />
                         </div>
                         <div class="mb-3">
-                            <label for="confirmPassword" class="form-label text-muted small fw-bold">Confirm New
-                                Password</label>
-                            <input type="password" id="confirmPassword" class="form-control"
-                                placeholder="Confirm new password" />
+                            <label for="confirmPassword" class="form-label text-muted small fw-bold">Confirm New Password</label>
+                            <input type="password" name="new_password_confirmation" id="confirmPassword" class="form-control"
+                                placeholder="Confirm new password" required />
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-                    <button type="button" class="btn btn-primary px-4">
-                        Save Settings
-                    </button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary px-4">
+                            Save Settings
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -165,3 +165,4 @@
 </body>
 
 </html>
+

@@ -439,7 +439,6 @@
 
             @if ($contest->count())
                 const registrationEndDate = new Date("{{ \Carbon\Carbon::parse($contest[0]->registration_end_date)->format('Y/m/d') }} 23:59:59").getTime();
-                                                                                                                                                                                                                        .getTime();
             @else
                 const registrationEndDate = null;
             @endif

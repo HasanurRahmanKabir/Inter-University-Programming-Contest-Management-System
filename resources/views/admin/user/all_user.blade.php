@@ -13,9 +13,9 @@
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark"
                             id="userDropdown" data-bs-toggle="dropdown">
-                            <img src="https://ui-avatars.com/api/?name=Admin" alt="Super Admin" class="rounded-circle me-2"
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::guard('admin')->user()->name) }}&background=0D8ABC&color=fff" alt="Admin" class="rounded-circle me-2"
                                 width="40" height="40">
-                            <span class="fw-medium d-none d-sm-inline">Admin</span>
+                            <span class="fw-medium d-none d-sm-inline">{{ Auth::guard('admin')->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
@@ -25,10 +25,16 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item text-danger" href="admin_login.html">Logout</a></li>
+                                <li>
+                                    <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">Logout</button>
+                                    </form>
+                                </li>
                         </ul>
                     </div>
                 </div>
+            </div>
         </nav>
 
         <div class="container-fluid p-4">
@@ -243,3 +249,4 @@
         overlay.addEventListener('click', toggleSidebar);
     </script>
 @endsection
+

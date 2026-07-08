@@ -4,13 +4,15 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\WebsiteSetting;
 use Illuminate\Support\Facades\Auth;
 
 class AdminLogin extends Controller
 {
     public function index()
     {
-        return view('admin.auth.login');
+        $setting = WebsiteSetting::first();
+        return view('admin.auth.login' , compact('setting'));
     }
 
     public function login(Request $request)
@@ -23,7 +25,7 @@ class AdminLogin extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        $remember = $request->filled('remember');
+        $remember = $request->boolean('remember');
 
         if (Auth::guard('admin')->attempt($credentials, $remember)) {
 

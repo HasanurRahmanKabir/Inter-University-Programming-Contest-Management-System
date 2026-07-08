@@ -1,4 +1,4 @@
-@extends('admin.layout.admin')
+﻿@extends('admin.layout.admin')
 @section('content')
     <div class="main-content">
 
@@ -12,9 +12,9 @@
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark"
                             id="userDropdown" data-bs-toggle="dropdown">
-                            <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" alt="Admin"
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::guard('admin')->user()->name) }}&background=0D8ABC&color=fff" alt="Admin"
                                 class="rounded-circle me-2" width="40" height="40">
-                            <span class="fw-medium d-none d-sm-inline">Admin User</span>
+                            <span class="fw-medium d-none d-sm-inline">{{ Auth::guard('admin')->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
@@ -24,7 +24,12 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item text-danger" href="admin_login.html">Logout</a></li>
+                                <li>
+                                    <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">Logout</button>
+                                    </form>
+                                </li>
                         </ul>
                     </div>
                 </div>
@@ -39,7 +44,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h6 class="text-muted small text-uppercase fw-bold">Total Collected</h6>
-                                <h3 class="fw-bold text-success">৳ {{ number_format($totalCollected) }}</h3>
+                                <h3 class="fw-bold text-success">à§³ {{ number_format($totalCollected) }}</h3>
                             </div>
                             <i class="fas fa-wallet fa-2x text-gray-300 opacity-25"></i>
                         </div>
@@ -63,7 +68,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h6 class="text-muted small text-uppercase fw-bold">Today's Collection</h6>
-                                <h3 class="fw-bold text-dark">৳ {{ number_format($todaysCollection) }}</h3>
+                                <h3 class="fw-bold text-dark">à§³ {{ number_format($todaysCollection) }}</h3>
                             </div>
                             <i class="fas fa-calendar-day fa-2x text-gray-300 opacity-25"></i>
                         </div>
@@ -261,3 +266,4 @@
         }
     </script>
 @endsection
+

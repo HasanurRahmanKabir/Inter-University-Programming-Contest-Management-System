@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SUBIUPC - Admin Login</title>
+    <title>{{ $setting->website_name ?? 'Your Website Name' }} - Admin Login</title>
 
     <link href="{{ asset('content/admin') }}/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/all.min.css" />
@@ -16,12 +16,19 @@
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="login-card">
             <div class="brand-logo">
-                <img src="{{ asset('content/admin') }}/image/sub_logo.jpg" alt="SUBIUPC Logo" class="w-100 h-100 rounded-circle" />
+                @if(!empty($setting->header_logo))
+                    <img src="{{ asset($setting->header_logo) }}" alt="SUBIUPC Logo" class="w-100 h-100 rounded-circle">
+                @else
+                    <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border"
+                        style="background: #f8f9fa; color: #6c757d; font-size: 10px; text-align: center;">
+                        Upload Your Logo
+                    </div>
+                @endif
             </div>
 
             <h4 class="text-center fw-bold mb-1">Welcome Back!</h4>
             <p class="text-center text-muted small mb-4">
-                Sign in to manage SUBIUPC Admin Panel
+                Sign in to manage {{ $setting->website_name ?? 'Your Website Name' }} Admin Panel
             </p>
 
             @if(session('error'))
@@ -46,8 +53,8 @@
                     <label class="form-label small fw-bold text-muted">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                        <input type="email" name="email" class="form-control" placeholder="Enter your email" 
-                               value="{{ old('email') }}" required />
+                        <input type="email" name="email" class="form-control" placeholder="Enter your email"
+                            value="{{ old('email') }}" required />
                     </div>
                 </div>
 
@@ -55,8 +62,10 @@
                     <label class="form-label small fw-bold text-muted">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="password" name="password" class="form-control" id="passwordInput" placeholder="Enter your password" required />
-                        <span class="input-group-text bg-white border-start-0" style="cursor: pointer" onclick="togglePassword()">
+                        <input type="password" name="password" class="form-control" id="passwordInput"
+                            placeholder="Enter your password" required />
+                        <span class="input-group-text bg-white border-start-0" style="cursor: pointer"
+                            onclick="togglePassword()">
                             <i class="fas fa-eye-slash text-muted" id="toggleIcon"></i>
                         </span>
                     </div>
@@ -64,7 +73,7 @@
 
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <div class="form-check">
-                        <input type="checkbox" name="remember" class="form-check-input" id="rememberCheck" />
+                        <input type="checkbox" name="remember" value="1" class="form-check-input" id="rememberCheck" />
                         <label class="form-check-label small text-muted" for="rememberCheck">Remember me</label>
                     </div>
                     <a href="#" class="small text-decoration-none text-primary fw-bold">Forgot Password?</a>

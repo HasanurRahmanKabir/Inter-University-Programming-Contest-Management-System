@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('admin/*')) {
                 return route('admin.login');
             }
-            return route('login');
+            return route('user.login');
         });
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
