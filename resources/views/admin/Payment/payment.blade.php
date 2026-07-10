@@ -1,4 +1,4 @@
-﻿@extends('admin.layout.admin')
+@extends('admin.layout.admin')
 @section('content')
     <div class="main-content">
 
@@ -17,19 +17,17 @@
                             <span class="fw-medium d-none d-sm-inline">{{ Auth::guard('admin')->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#profileModal">Profile</a></li>
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#settingsModal">Settings</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">Profile</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">Settings</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                                <li>
-                                    <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">Logout</button>
-                                    </form>
-                                </li>
+                            <li>
+                                <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">Logout</button>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -44,7 +42,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h6 class="text-muted small text-uppercase fw-bold">Total Collected</h6>
-                                <h3 class="fw-bold text-success">à§³ {{ number_format($totalCollected) }}</h3>
+                                <h3 class="fw-bold text-success">৳ {{ number_format($totalCollected) }}</h3>
                             </div>
                             <i class="fas fa-wallet fa-2x text-gray-300 opacity-25"></i>
                         </div>
@@ -68,7 +66,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h6 class="text-muted small text-uppercase fw-bold">Today's Collection</h6>
-                                <h3 class="fw-bold text-dark">à§³ {{ number_format($todaysCollection) }}</h3>
+                                <h3 class="fw-bold text-dark">৳ {{ number_format($todaysCollection) }}</h3>
                             </div>
                             <i class="fas fa-calendar-day fa-2x text-gray-300 opacity-25"></i>
                         </div>

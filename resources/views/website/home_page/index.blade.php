@@ -28,15 +28,16 @@
         .sponsor-logo {
             height: 80px;
             width: auto;
-            filter: grayscale(100%);
-            transition: all 0.3s ease;
-            opacity: 0.7;
+            transition: all 0.3s ease-in-out;
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 5px;
         }
 
         .sponsor-logo:hover {
-            filter: grayscale(0%);
-            transform: scale(1.1);
-            opacity: 1;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         }
     </style>
 
@@ -198,10 +199,10 @@
                                     {{ \Carbon\Carbon::parse($data->registration_end_date)->format('d M Y') }}
                                 </div>
                                 <h5 class="fw-bold">
-                                    {{ $setting->event_schedule_title_1 ?? 'Contest Title' }}
+                                    {{ $setting->event_schedule_title_1 ?? 'Your Schedule Title' }}
                                 </h5>
                                 <p class="text-muted small">
-                                    {{ $setting->event_schedule_description_1 ?? 'Contest Description' }}
+                                    {{ $setting->event_schedule_description_1 ?? 'Your Schedule Description' }}
                                 </p>
                             </div>
 
@@ -209,9 +210,9 @@
                                 <div class="timeline-date">
                                     {{ \Carbon\Carbon::parse($data->contest_end_date)->format('d M Y') }}
                                 </div>
-                                <h5 class="fw-bold text-primary">{{ $setting->event_schedule_title_2 ?? 'Contest Title' }}</h5>
+                                <h5 class="fw-bold text-primary">{{ $setting->event_schedule_title_2 ?? 'Your Schedule Title' }}</h5>
                                 <p class="text-muted small">
-                                    {{ $setting->event_schedule_description_2 ?? 'Contest Description' }}
+                                    {{ $setting->event_schedule_description_2 ?? 'Your Schedule Description' }}
                                 </p>
                             </div>
                         </div>

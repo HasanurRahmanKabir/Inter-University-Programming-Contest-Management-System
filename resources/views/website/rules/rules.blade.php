@@ -58,7 +58,7 @@
             <h1 class="display-4 fw-bold mb-3">Contest Rules & Guidelines</h1>
             <p class="lead opacity-75">
                 Please read carefully before participating in
-                {{ !empty($setting->website_name) ? $setting->website_name : 'Your Website Name' }}
+                {{ (!empty($contest) && $contest->status == 1 && !empty($contest->title)) ? $contest->title : 'Your Contest Title' }}
             </p>
         </div>
     </section>

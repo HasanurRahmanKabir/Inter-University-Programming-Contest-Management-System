@@ -56,8 +56,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Logo</th>
-                                <th style="width: 25%;">Sponsor Info</th>
-                                <th style="width: 35%;">Details</th>
+                                <th style="width: 20%;">Sponsor Info</th>
+                                <th>Status</th>
+                                <th style="width: 30%;">Details</th>
                                 <th class="text-end">Actions</th>
                             </tr>
                         </thead>
@@ -109,6 +110,13 @@
                                         </div>
                                     </td>
 
+                                    <td>
+                                        @if ($data->status == 1)
+                                            <span class="badge bg-success">Active</span>
+                                        @else
+                                            <span class="badge bg-danger">Inactive</span>
+                                        @endif
+                                    </td>
 
                                     <td>
                                         <div style="max-width: 300px;">
@@ -202,6 +210,14 @@
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Status</label>
+                            <select class="form-select" name="status">
+                                <option value="1" selected>Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Sponsorship Details</label>
                             <textarea class="form-control" rows="3" name="details"
                                 placeholder="Describe sponsorship tier and benefits..."></textarea>
@@ -276,6 +292,14 @@
                                     </option>
                                     <option value="4" {{ $data->sponsor_category == 4 ? 'selected' : '' }}>Diamond
                                     </option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold">Status</label>
+                                <select class="form-select" name="status">
+                                    <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Inactive</option>
                                 </select>
                             </div>
 

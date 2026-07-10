@@ -48,7 +48,7 @@
         <div class="container">
             <h1 class="display-5 fw-bold mb-2">Registered Teams</h1>
             <p class="lead opacity-75">
-                Latest registrations list for {{ $setting->website_name ?? 'Your Website Name' }}
+                Latest registrations list for {{ $contest->title ?? 'Your Contest Title' }}
             </p>
         </div>
     </section>
@@ -58,12 +58,12 @@
 
             @if($teams->count() > 0)
                 <div class="card p-3 shadow-sm border-0 mb-4">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
                         <div class="input-group" style="max-width: 500px;">
                             <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Search by team, institution or coach"
+                            <input type="text" id="searchInput" class="form-control" placeholder="Search by team, institution or coach"
                                 aria-label="Search">
-                            <button class="btn btn-primary" type="button"><i class="fas fa-search me-2"></i>Search</button>
+                            <button id="searchBtn" class="btn btn-primary" type="button"><i class="fas fa-search me-2"></i>Search</button>
                         </div>
                         <div class="d-flex gap-2">
                             <span class="badge bg-success">Selected</span>
@@ -83,7 +83,7 @@
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="teamTableBody">
                                 @foreach ($teams as $data)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
@@ -122,8 +122,11 @@
                             <i class="fas fa-users-slash fa-4x text-muted opacity-50"></i>
                         </div>
                         <h4 class="fw-bold text-dark">No Teams Registered Yet</h4>
-                        <p class="text-muted mb-4">Currently, no teams have completed their registration for SUBIUPC 2025.
-                            Be the first to join!</p>
+                        <p class="text-muted mb-4">
+                            Currently, no teams have completed their registration for
+                            {{ $contest->title ?? 'Your Contest Title' }}.
+                            Be the first to join!
+                        </p>
                         <a href="{{ url('/team/registration') }}" class="btn btn-primary">Register Your Team</a>
                     </div>
                 </div>
@@ -233,6 +236,89 @@
                 document.querySelector('.navbar').classList.remove('shadow');
             }
         });
+
+        // Search Functionality
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            let filter = document.getElementById('searchInput').value.toLowerCase();
+            let rows = document.querySelectorAll('#teamTableBody tr');
+
+            rows.forEach(row => {
+                // Get the specific columns to search (Team Name, Institution, Coach)
+                let teamName = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';
+                let institution = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';
+                let coach = row.cells[3] ? row.cells[3].textContent.toLowerCase() : '';
+
+                if (teamName.includes(filter) || institution.includes(filter) || coach.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Trigger search on Enter key press
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.getElementById('searchBtn').click();
+            }
+        });
+
+        // Show all rows immediately when search box is cleared
+        document.getElementById('searchInput').addEventListener('input', function() {
+            if (this.value.trim() === '') {
+                let rows = document.querySelectorAll('#teamTableBody tr');
+                rows.forEach(row => {
+                    row.style.display = '';
+                });
+            }
+        });
+
+        // Badge Filter Functionality
+        let statusBadges = document.querySelectorAll('.d-flex.gap-2 .badge');
+        statusBadges.forEach(badge => {
+            badge.style.cursor = 'pointer'; // Make it look clickable without modifying HTML
+            badge.addEventListener('click', function() {
+                // Clear the search input when a badge is clicked
+                document.getElementById('searchInput').value = ''; 
+                
+                let filterText = this.textContent.trim().toLowerCase();
+                let rows = document.querySelectorAll('#teamTableBody tr');
+
+                rows.forEach(row => {
+                    // Status is in the 5th column (index 4)
+                    let statusCell = row.cells[4];
+                    let match = false;
+                    
+                    if (statusCell) {
+                        let cellBadges = statusCell.querySelectorAll('.badge');
+                        cellBadges.forEach(b => {
+                            if (b.textContent.trim().toLowerCase() === filterText) {
+                                match = true;
+                            }
+                        });
+                    }
+                    
+                    if (match) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Ensure full list and clean search box on page refresh
+        window.addEventListener('load', function() {
+            let searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            let rows = document.querySelectorAll('#teamTableBody tr');
+            rows.forEach(row => {
+                row.style.display = '';
+            });
+        });
     </script>
     <style>
         html,
@@ -248,6 +334,16 @@
 
         footer {
             margin-top: auto;
+        }
+
+        /* Interactive Badge Hover Effects */
+        .d-flex.gap-2 .badge {
+            transition: all 0.2s ease-in-out;
+        }
+        .d-flex.gap-2 .badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            opacity: 0.9;
         }
     </style>
 </body>

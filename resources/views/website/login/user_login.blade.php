@@ -17,7 +17,7 @@
         <div class="login-card">
             <div class="brand-logo">
                 @if(!empty($setting->header_logo))
-                    <img src="{{ asset($setting->header_logo) }}" alt="SUBIUPC Logo" class="w-100 h-100 rounded-circle">
+                    <img src="{{ asset($setting->header_logo) }}" alt="Header Logo" class="w-100 h-100 rounded-circle">
                 @else
                     <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border"
                         style="background: #f8f9fa; color: #6c757d; font-size: 10px; text-align: center;">
@@ -29,7 +29,7 @@
             <h4 class="text-center fw-bold mb-1">Welcome Back!</h4>
             <p class="text-center text-muted small mb-4">
                 Sign in to access your
-                {{ !empty($setting->website_name) ? $setting->website_name : 'Your Website Name' }} Account
+                {{ (!empty($contestinfo) && $contestinfo->status == 1 && !empty($contestinfo->title)) ? $contestinfo->title : 'Contest Title' }} Account
             </p>
 
             @if (session('success'))

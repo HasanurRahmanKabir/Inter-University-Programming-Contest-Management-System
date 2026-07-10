@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ $setting->website_name ?? 'Your Website Name' }} - Notices</title>
+    <title>{{ $contest->website_name ?? 'Your Website Name' }} - Notices</title>
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
@@ -55,7 +55,7 @@
         <div class="container">
             <h1 class="display-5 fw-bold mb-2">Latest Notices</h1>
             <p class="lead opacity-75">
-                Official announcements and updates for {{ $setting->website_name ?? 'Your Website Name' }}
+                Official announcements and updates for {{ $contest->title ?? 'Your Contest Title' }}
             </p>
         </div>
     </section>

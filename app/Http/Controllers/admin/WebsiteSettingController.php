@@ -18,8 +18,19 @@ class WebsiteSettingController extends Controller
     public function update(Request $request)
     {
         $setting = WebsiteSetting::first() ?? new WebsiteSetting();
-        $data = $request->except(['header_logo', 'footer_logo', 'hero_banner', 'about_image']);
+        $data = $request->except(['header_logo', 'footer_logo', 'hero_banner', 'about_image', 'delete_images']);
         $images = ['header_logo', 'footer_logo', 'hero_banner', 'about_image'];
+
+        if ($request->has('delete_images')) {
+            foreach ($request->delete_images as $del_img) {
+                if (in_array($del_img, $images)) {
+                    if (!empty($setting->$del_img) && File::exists(public_path($setting->$del_img))) {
+                        File::delete(public_path($setting->$del_img));
+                    }
+                    $data[$del_img] = null;
+                }
+            }
+        }
 
         foreach ($images as $img) {
             if ($request->hasFile($img)) {

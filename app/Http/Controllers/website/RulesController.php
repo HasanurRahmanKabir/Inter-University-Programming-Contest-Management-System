@@ -13,7 +13,7 @@ class RulesController extends Controller
     public function index()
     {
         $rules = Rules::all();
-        $contest = Contest::first(); 
+        $contest = Contest::where('status', 1)->first();
         $setting = WebsiteSetting::first();
         $today = date('Y-m-d');
         $isRegistrationOpen = false;
@@ -22,6 +22,6 @@ class RulesController extends Controller
             $isRegistrationOpen = true;
         }
 
-        return view('website.rules.rules', compact('rules', 'isRegistrationOpen', 'setting'));
+        return view('website.rules.rules', compact('rules', 'isRegistrationOpen', 'setting', 'contest'));
     }
 }

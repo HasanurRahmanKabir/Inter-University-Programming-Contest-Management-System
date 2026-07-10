@@ -18,22 +18,21 @@
                             <span class="fw-medium d-none d-sm-inline">{{ Auth::guard('admin')->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#profileModal">Profile</a></li>
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#settingsModal">Settings</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">Profile</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">Settings</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                                <li>
-                                    <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">Logout</button>
-                                    </form>
-                                </li>
+                            <li>
+                                <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">Logout</button>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>
+            </div>
         </nav>
 
         <div class="container-fluid p-4">

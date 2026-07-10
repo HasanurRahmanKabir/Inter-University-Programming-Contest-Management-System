@@ -19,7 +19,7 @@
         <div class="container position-relative">
             <h2 class="fw-bold mb-2">Team Registration</h2>
             <p class="opacity-75 mb-0">
-                {{ !empty($setting->website_name) ? $setting->website_name : 'Your Website Name' }}
+                {{ (!empty($contest) && $contest->status == 1 && !empty($contest->title)) ? $contest->title : 'Your Contest Title' }}
             </p>
         </div>
     </div>

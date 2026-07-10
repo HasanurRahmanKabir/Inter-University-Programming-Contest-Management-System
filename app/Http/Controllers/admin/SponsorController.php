@@ -40,6 +40,7 @@ class SponsorController extends Controller
             'sponsor_category' => $request->sponsor_category,
             'details' => $request->details,
             'link' => $request->link,
+            'status' => $request->status,
         ]);
 
         return redirect()->back()->with('success', 'Sponsor added successfully!');
@@ -52,6 +53,7 @@ class SponsorController extends Controller
             'details' => $request->details,
             'sponsor_category' => $request->sponsor_category,
             'link' => $request->link,
+            'status' => $request->status,
         ];
 
         if ($request->hasFile('logo')) {

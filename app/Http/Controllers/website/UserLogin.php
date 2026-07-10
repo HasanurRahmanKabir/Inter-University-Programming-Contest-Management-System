@@ -27,7 +27,7 @@ class UserLogin extends Controller
                 $isRegistrationOpen = true;
             }
         }
-        return view('website.login.user_login', compact('isRegistrationOpen', 'setting'));
+        return view('website.login.user_login', compact('isRegistrationOpen', 'setting', 'contestinfo'));
     }
 
     public function login(Request $request)

@@ -1,4 +1,4 @@
-﻿@extends('admin.layout.admin')
+@extends('admin.layout.admin')
 @section('content')
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/rulesregulations_admin.css">
 
@@ -18,10 +18,8 @@
                             <span class="fw-medium d-none d-sm-inline">{{ Auth::guard('admin')->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#profileModal">Profile</a></li>
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#settingsModal">Settings</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">Profile</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">Settings</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -63,16 +61,18 @@
                                 <label class="form-label small fw-bold">{{ $label }}</label>
 
                                 @if(!empty($setting->$key))
-                                    <div class="mb-2 position-relative d-inline-block">
+                                    <div class="mb-2 position-relative d-inline-block" id="img-container-{{ $key }}">
                                         <img src="{{ asset($setting->$key) }}" alt="{{ $label }}" class="img-thumbnail"
                                             style="height: 80px; width: auto;">
 
-                                        {{-- à¦¡à¦¿à¦²à¦¿à¦Ÿ à¦•à¦°à¦¾à¦° à¦°à¦¾à¦‰à¦Ÿ à¦²à¦¿à¦‚à¦• --}}
-                                        <a href="{{ route('admin.settings.deleteImage', $key) }}"
-                                            class="badge bg-danger position-absolute top-0 end-0 text-decoration-none"
-                                            onclick="return confirm('Are you sure you want to delete this image?');">
-                                            Ã—
-                                        </a>
+                                        {{-- Image remove button --}}
+                                        <button type="button" 
+                                            class="badge bg-danger position-absolute top-0 end-0 text-decoration-none border-0"
+                                            onclick="let el = document.getElementById('img-container-{{ $key }}'); el.classList.remove('d-inline-block'); el.classList.add('d-none'); document.getElementById('delete-{{ $key }}').disabled=false;"
+                                            title="Remove Image">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <input type="hidden" name="delete_images[]" value="{{ $key }}" id="delete-{{ $key }}" disabled>
                                     </div>
                                 @endif
 

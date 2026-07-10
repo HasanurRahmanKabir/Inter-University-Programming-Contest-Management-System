@@ -14,7 +14,7 @@ class NoticeInfoController extends Controller
     {
         $notices = Notice::all();
         $setting = WebsiteSetting::first();
-        $contest = Contest::first(); 
+        $contest = Contest::where('status', 1)->first();
         $today = date('Y-m-d');
         $isRegistrationOpen = false;
 
@@ -22,6 +22,6 @@ class NoticeInfoController extends Controller
             $isRegistrationOpen = true;
         }
 
-        return view('website.noticeinfo.notice_info', compact('notices', 'isRegistrationOpen', 'setting'));
+        return view('website.noticeinfo.notice_info', compact('notices', 'isRegistrationOpen', 'setting', 'contest'));
     }
 }
