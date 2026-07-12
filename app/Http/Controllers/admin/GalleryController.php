@@ -11,7 +11,7 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        $galleries = Gallery::orderBy('event_date', 'desc')->get();
+        $galleries = Gallery::orderBy('event_date', 'desc')->paginate(12);
         return view('admin.gallery.gallery', compact('galleries'));
     }
 
@@ -35,10 +35,10 @@ class GalleryController extends Controller
                 'event_date' => $request->event_date,
             ]);
 
-            return redirect()->back()->with('success', 'Media uploaded successfully!');
+            return redirect()->back()->with('success', 'Media Uploaded Successfully!');
         }
 
-        return redirect()->back()->with('error', 'Failed to upload media.');
+        return redirect()->back()->with('error', 'Failed to Upload Media.');
     }
 
     public function destroy($id)
@@ -51,6 +51,6 @@ class GalleryController extends Controller
 
         $gallery->delete();
 
-        return redirect()->back()->with('success', 'Media deleted successfully!');
+        return redirect()->back()->with('success', 'Media Deleted Successfully!');
     }
 }

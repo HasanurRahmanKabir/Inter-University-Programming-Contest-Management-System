@@ -53,7 +53,7 @@ class WebsiteSettingController extends Controller
 
         $setting->fill($data)->save();
 
-        return back()->with('success', 'Website settings updated successfully!');
+        return back()->with('success', 'Website Settings Updated Successfully!');
     }
 
     public function destroy()
@@ -67,9 +67,9 @@ class WebsiteSettingController extends Controller
                 }
             }
             $setting->delete();
-            return back()->with('success', 'Settings reset successfully!');
+            return back()->with('success', 'Settings Reset Successfully!');
         }
-        return back()->with('error', 'No settings found to delete.');
+        return back()->with('error', 'No Settings Found to Delete.');
     }
     public function deleteImage($field)
     {
@@ -84,9 +84,9 @@ class WebsiteSettingController extends Controller
             $setting->$field = null;
             $setting->save();
 
-            return back()->with('success', 'Image removed successfully!');
+            return back()->with('success', 'Image Removed Successfully!');
         }
 
-        return back()->with('error', 'Image not found.');
+        return back()->with('error', 'Image Not Found.');
     }
 }

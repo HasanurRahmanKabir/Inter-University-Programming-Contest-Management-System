@@ -1,4 +1,4 @@
-﻿@extends('admin.layout.admin')
+@extends('admin.layout.admin')
 @section('content')
     <div class="main-content">
 
@@ -7,7 +7,7 @@
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h5 class="mb-0 text-secondary">Contest Management</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Contest Management</h5>
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark"
@@ -36,9 +36,23 @@
 
         <div class="container-fluid p-4">
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start gap-3 mb-4">
                 <h4 class="fw-bold mb-0 text-dark">All Contests Information</h4>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addContestModal">
+                <button class="btn btn-primary text-nowrap" data-bs-toggle="modal" data-bs-target="#addContestModal">
                     <i class="fas fa-plus me-2"></i> Add New Contest
                 </button>
             </div>
@@ -57,7 +71,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($contest as $data)
+                            @forelse ($contest as $data)
                                 <tr>
                                     <td>{{ $data->contest_id }}</td>
                                     <td>
@@ -95,17 +109,21 @@
                                         <button class="btn btn-light btn-sm text-primary" data-bs-toggle="modal"
                                             data-bs-target="#editContestModal{{ $data->contest_id }}" title="Edit"><i
                                                 class="fas fa-edit"></i></button>
-                                        <form action="{{ url('/admin/dashboard/contest/delete/' . $data->contest_id) }}"
-                                            method="post" class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-light btn-sm text-danger"
-                                                onclick="return confirm('Are you sure you want to delete this contest?')"
-                                                title="Delete"><i class="fas fa-trash"></i></button>
-                                        </form>
+                                        <button type="button" class="btn btn-light btn-sm text-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteContestModal{{ $data->contest_id }}" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-5">
+                                        <i class="fas fa-box-open mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                                        <h5 class="fw-bold mb-1">No contests found</h5>
+                                        <p class="mb-0 small">Click "Add New Contest" to create one.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -127,40 +145,45 @@
                         <div class="row g-3">
                             <div class="col-md-12">
                                 <label class="form-label text-muted small fw-bold">Contest Title</label>
-                                <input type="text" class="form-control" name="title" placeholder="Enter contest title"
-                                    required>
+                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Enter contest title" value="{{ old('title') }}" required>
+                                @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-12">
                                 <label class="form-label text-muted small fw-bold">Description</label>
-                                <textarea class="form-control" rows="3" name="description" placeholder="Enter contest details..."></textarea>
+                                <textarea class="form-control @error('description') is-invalid @enderror" rows="3" name="description" placeholder="Enter contest details...">{{ old('description') }}</textarea>
+                                @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold">Contest Start Date</label>
-                                <input type="datetime-local" name="contest_start_date" class="form-control" required>
+                                <input type="datetime-local" name="contest_start_date" class="form-control @error('contest_start_date') is-invalid @enderror" value="{{ old('contest_start_date') }}" required>
+                                @error('contest_start_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold">Contest End Date</label>
-                                <input type="datetime-local" name="contest_end_date" class="form-control" required>
+                                <input type="datetime-local" name="contest_end_date" class="form-control @error('contest_end_date') is-invalid @enderror" value="{{ old('contest_end_date') }}" required>
+                                @error('contest_end_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold">Registration Start Date</label>
-                                <input type="datetime-local" name="registration_start_date" class="form-control"
-                                    required>
+                                <input type="datetime-local" name="registration_start_date" class="form-control @error('registration_start_date') is-invalid @enderror" value="{{ old('registration_start_date') }}" required>
+                                @error('registration_start_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold">Registration End Date</label>
-                                <input type="datetime-local" name="registration_end_date" class="form-control" required>
+                                <input type="datetime-local" name="registration_end_date" class="form-control @error('registration_end_date') is-invalid @enderror" value="{{ old('registration_end_date') }}" required>
+                                @error('registration_end_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-12">
                                 <label class="form-label text-muted small fw-bold">Status</label>
-                                <select class="form-select" name="status">
-                                    <option value="1" selected>Active (Visible to users)</option>
-                                    <option value="0">Inactive (Hidden)</option>
+                                <select class="form-select @error('status') is-invalid @enderror" name="status">
+                                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active (Visible to users)</option>
+                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive (Hidden)</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="modal-footer border-0 pt-0">
@@ -190,64 +213,56 @@
                             @method('put')
                             <div class="row g-3">
                                 <div class="col-md-12">
-                                    <label for="editContestTitle" class="form-label text-muted small fw-bold">Edit Contest
-                                        Title</label>
-                                    <input type="text" id="editContestTitle" class="form-control"
-                                        placeholder="Enter contest title" value="{{ $data->title }}" name="title"
-                                        required>
+                                    <label for="editContestTitle{{ $data->contest_id }}" class="form-label text-muted small fw-bold">Edit Contest Title</label>
+                                    <input type="text" id="editContestTitle{{ $data->contest_id }}" class="form-control @error('title') is-invalid @enderror"
+                                        placeholder="Enter contest title" value="{{ old('title', $data->title) }}" name="title" required>
+                                    @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="editContestDescription" class="form-label text-muted small fw-bold">Edit
-                                        Description</label>
-                                    <textarea id="editContestDescription" class="form-control" rows="3" placeholder="Enter contest details..."
-                                        name="description">{{ $data->description }}</textarea>
+                                    <label for="editContestDescription{{ $data->contest_id }}" class="form-label text-muted small fw-bold">Edit Description</label>
+                                    <textarea id="editContestDescription{{ $data->contest_id }}" class="form-control @error('description') is-invalid @enderror" rows="3" placeholder="Enter contest details..."
+                                        name="description">{{ old('description', $data->description) }}</textarea>
+                                    @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="editContestStart" class="form-label text-muted small fw-bold">Edit Contest
-                                        Start
-                                        Date</label>
-                                    <input type="datetime-local" id="editContestStart" class="form-control"
-                                        value="{{ \Carbon\Carbon::parse($data->contest_start_date)->format('Y-m-d\TH:i') }}"
+                                    <label for="editContestStart{{ $data->contest_id }}" class="form-label text-muted small fw-bold">Edit Contest Start Date</label>
+                                    <input type="datetime-local" id="editContestStart{{ $data->contest_id }}" class="form-control @error('contest_start_date') is-invalid @enderror"
+                                        value="{{ old('contest_start_date', \Carbon\Carbon::parse($data->contest_start_date)->format('Y-m-d\TH:i')) }}"
                                         name="contest_start_date" required>
+                                    @error('contest_start_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="editContestEnd" class="form-label text-muted small fw-bold">Edit Contest
-                                        End
-                                        Date</label>
-                                    <input type="datetime-local" id="editContestEnd" class="form-control"
-                                        value="{{ \Carbon\Carbon::parse($data->contest_end_date)->format('Y-m-d\TH:i') }}"
+                                    <label for="editContestEnd{{ $data->contest_id }}" class="form-label text-muted small fw-bold">Edit Contest End Date</label>
+                                    <input type="datetime-local" id="editContestEnd{{ $data->contest_id }}" class="form-control @error('contest_end_date') is-invalid @enderror"
+                                        value="{{ old('contest_end_date', \Carbon\Carbon::parse($data->contest_end_date)->format('Y-m-d\TH:i')) }}"
                                         name="contest_end_date" required>
+                                    @error('contest_end_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="editRegStart" class="form-label text-muted small fw-bold">Edit
-                                        Registration
-                                        Start Date</label>
-                                    <input type="datetime-local" id="editRegStart" class="form-control"
-                                        value="{{ \Carbon\Carbon::parse($data->registration_start_date)->format('Y-m-d\TH:i') }}"
+                                    <label for="editRegStart{{ $data->contest_id }}" class="form-label text-muted small fw-bold">Edit Registration Start Date</label>
+                                    <input type="datetime-local" id="editRegStart{{ $data->contest_id }}" class="form-control @error('registration_start_date') is-invalid @enderror"
+                                        value="{{ old('registration_start_date', \Carbon\Carbon::parse($data->registration_start_date)->format('Y-m-d\TH:i')) }}"
                                         name="registration_start_date" required>
+                                    @error('registration_start_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="editRegEnd" class="form-label text-muted small fw-bold">Edit Registration
-                                        End
-                                        Date</label>
-                                    <input type="datetime-local" id="editRegEnd" class="form-control"
-                                        value="{{ \Carbon\Carbon::parse($data->registration_end_date)->format('Y-m-d\TH:i') }}"
+                                    <label for="editRegEnd{{ $data->contest_id }}" class="form-label text-muted small fw-bold">Edit Registration End Date</label>
+                                    <input type="datetime-local" id="editRegEnd{{ $data->contest_id }}" class="form-control @error('registration_end_date') is-invalid @enderror"
+                                        value="{{ old('registration_end_date', \Carbon\Carbon::parse($data->registration_end_date)->format('Y-m-d\TH:i')) }}"
                                         name="registration_end_date" required>
+                                    @error('registration_end_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="col-md-12">
                                     <label class="form-label text-muted small fw-bold">Status</label>
-                                    <select class="form-select" value="{{ $data->status }}" name="status">
-                                        <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>Active (Visible
-                                            to users)</option>
-                                        <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Inactive
-                                            (Hidden)
-                                        </option>
+                                    <select class="form-select @error('status') is-invalid @enderror" name="status">
+                                        <option value="1" {{ old('status', $data->status) == 1 ? 'selected' : '' }}>Active (Visible to users)</option>
+                                        <option value="0" {{ old('status', $data->status) == 0 ? 'selected' : '' }}>Inactive (Hidden)</option>
                                     </select>
-
+                                    @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                             </div>
                     </div>
@@ -259,21 +274,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- Delete Contest Modal -->
+        <div class="modal fade" id="deleteContestModal{{ $data->contest_id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center pb-4">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger" style="font-size: 4rem;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">Are you sure?</h4>
+                        <p class="text-muted mb-4">You are about to delete <strong>{{ $data->title }}</strong>.<br>This action cannot be undone.</p>
+                        
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{{ url('/admin/dashboard/contest/delete/' . $data->contest_id) }}" method="post" class="m-0">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endforeach
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const toggleBtn = document.getElementById('sidebarToggle');
-
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
-
-        toggleBtn.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', toggleSidebar);
-    </script>
-
-    </body>
 @endsection
-

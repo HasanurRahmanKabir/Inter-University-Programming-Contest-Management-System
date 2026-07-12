@@ -13,6 +13,11 @@ class NoticeController extends Controller
         $request = $request ?? request();
         $query = Notice::query();
 
+        if ($request->has('search') && $request->search !== null) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+        }
+
         if ($request->has('audience')) {
             $aud = trim((string) $request->audience);
             if ($aud !== '') {
@@ -32,21 +37,32 @@ class NoticeController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'audience' => 'required|string',
+            'notice_date' => 'required|date',
+            'description' => 'required|string',
+        ]);
+
         $insert = Notice::create([
-            'notice_id' => $request->noticeid,
             'title' => $request->title,
             'description' => $request->description,
             'audience' => $request->audience,
             'notice_date' => $request->notice_date,
             'status' => $request->boolean('status'),
-
-
         ]);
 
-        return redirect('admin/dashboard/notice')->with('success', 'notice added successfully');
+        return redirect('admin/dashboard/notice')->with('success', 'Notice Added Successfully');
     }
     public function update(Request $request, $notice_id)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'audience' => 'required|string',
+            'notice_date' => 'required|date',
+            'description' => 'required|string',
+        ]);
+
         $notice = Notice::findOrFail($notice_id);
         $notice->update([
             'title' => $request->title,
@@ -56,11 +72,11 @@ class NoticeController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect('admin/dashboard/notice')->with('success', 'Notice updated successfully');
+        return redirect('admin/dashboard/notice')->with('success', 'Notice Updated Successfully');
     }
     public function destroy($id)
     {
         Notice::where('notice_id', $id)->delete();
-        return back()->with('success', 'Notice deleted successfully');
+        return back()->with('success', 'Notice Deleted Successfully');
     }
 }

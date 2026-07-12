@@ -22,7 +22,7 @@ class RulesAdminController extends Controller
             'is_published' => $request->input('is_published', 1),
         ]);
 
-        return redirect('/admin/dashboard/rules_admin')->with('success', 'Rules added successfully');
+        return redirect('/admin/dashboard/rules_admin')->with('success', 'Rules Added Successfully');
     }
 
     public function update(Request $request, $rules_id)
@@ -34,12 +34,12 @@ class RulesAdminController extends Controller
             'is_published' => $request->is_published, 
         ]);
 
-        return redirect('admin/dashboard/rules_admin')->with('success', 'Rules updated successfully');
+        return redirect('admin/dashboard/rules_admin')->with('success', 'Rules Updated Successfully');
     }
 
     public function destroy($id)
     {
         Rules::where('rules_id', $id)->delete();
-        return back()->with('success', 'Rules deleted successfully');
+        return back()->with('success', 'Rules Deleted Successfully');
     }
 }

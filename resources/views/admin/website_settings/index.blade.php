@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                         class="fas fa-bars"></i></button>
-                <h5 class="mb-0 text-secondary">Website Settings</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Website Settings</h5>
 
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
@@ -43,6 +43,28 @@
                 </div>
             @endif
 
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong class="mb-0">Please fix the following errors:</strong>
+                    </div>
+                    <ul class="mb-0 ps-3">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <div class="form-section shadow-sm p-3 p-md-4 bg-white rounded">
                 <div class="mb-4 pb-2 border-bottom">
                     <h4 class="fw-bold text-dark">Update Website Settings</h4>
@@ -67,16 +89,24 @@
 
                                         {{-- Image remove button --}}
                                         <button type="button" 
-                                            class="badge bg-danger position-absolute top-0 end-0 text-decoration-none border-0"
+                                            class="btn btn-sm btn-danger rounded-circle position-absolute d-flex align-items-center justify-content-center p-0"
+                                            style="width: 24px; height: 24px; top: -8px; right: -8px; z-index: 5;"
                                             onclick="let el = document.getElementById('img-container-{{ $key }}'); el.classList.remove('d-inline-block'); el.classList.add('d-none'); document.getElementById('delete-{{ $key }}').disabled=false;"
                                             title="Remove Image">
-                                            <i class="fas fa-times"></i>
+                                            <i class="fas fa-times" style="font-size: 12px;"></i>
                                         </button>
                                         <input type="hidden" name="delete_images[]" value="{{ $key }}" id="delete-{{ $key }}" disabled>
                                     </div>
                                 @endif
 
-                                <input type="file" name="{{ $key }}" class="form-control shadow-none">
+                                <input type="file" name="{{ $key }}" class="form-control shadow-none mb-1">
+                                @if($key === 'header_logo' || $key === 'footer_logo')
+                                    <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="fas fa-info-circle me-1 text-primary"></i>Ratio: 3:1 or 4:1 (e.g. 250x80px). Max: 2MB.</small>
+                                @elseif($key === 'hero_banner')
+                                    <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="fas fa-info-circle me-1 text-primary"></i>Ratio: 16:9 (e.g. 1920x1080px). Max: 5MB.</small>
+                                @elseif($key === 'about_image')
+                                    <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="fas fa-info-circle me-1 text-primary"></i>Ratio: 4:3 or 1:1 (e.g. 800x600px). Max: 3MB.</small>
+                                @endif
                             </div>
                         @endforeach
                     </div>
@@ -187,14 +217,14 @@
                                 <div class="p-3 border rounded bg-light">
                                     <h6 class="small fw-bold text-dark mb-2">Platform {{$i}}</h6>
                                     <div class="row g-2">
-                                        <div class="col-6">
-                                            <label class="form-label small text-muted">Platform Name</label>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label small text-muted text-break">Platform Name</label>
                                             <input type="text" name="platform_{{$i}}_name" class="form-control shadow-none"
                                                 placeholder="e.g. Steam"
                                                 value="{{ $setting->{'platform_' . $i . '_name'} ?? '' }}">
                                         </div>
-                                        <div class="col-6">
-                                            <label class="form-label small text-muted">Platform Link</label>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label small text-muted text-break">Platform Link</label>
                                             <input type="text" name="platform_{{$i}}_link" class="form-control shadow-none"
                                                 placeholder="https://..."
                                                 value="{{ $setting->{'platform_' . $i . '_link'} ?? '' }}">
@@ -205,13 +235,90 @@
                         @endfor
                     </div>
 
-                    <div class="mt-4 pt-3 border-top d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary px-4 shadow-sm"><i class="fas fa-save me-2"></i>Save
+                    <div class="mt-4 pt-3 border-top d-flex flex-column flex-sm-row gap-2">
+                        <button type="submit" class="btn btn-primary px-4 shadow-sm flex-grow-1 flex-sm-grow-0"><i class="fas fa-save me-2"></i>Save
                             Changes</button>
-                        <button type="reset" class="btn btn-outline-secondary px-4">Reset</button>
+                        <button type="reset" class="btn btn-outline-secondary px-4 flex-grow-1 flex-sm-grow-0">Reset</button>
                     </div>
                 </form>
             </div>
         </div>
+
+        <script>
+            //Sidebar Logic
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const toggleBtn = document.getElementById('sidebarToggle');
+
+            function toggleSidebar() {
+                if(sidebar && overlay) {
+                    sidebar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                }
+            }
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', toggleSidebar);
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', toggleSidebar);
+            }
+
+            //Profile Settings
+            const saveProfileBtn = document.getElementById('saveProfileBtn');
+
+            if (saveProfileBtn) {
+                saveProfileBtn.addEventListener('click', () => {
+                    const firstName = document.getElementById('adminFirstName')?.value.trim();
+                    const lastName = document.getElementById('adminLastName')?.value.trim();
+                    const email = document.getElementById('adminEmail')?.value.trim();
+
+                    if (firstName && lastName && email) {
+                        alert('Profile updated successfully!');
+                        const profileModal = bootstrap.Modal.getInstance(
+                            document.getElementById('profileModal')
+                        );
+                        profileModal?.hide();
+                    } else {
+                        alert('Please fill in all required fields.');
+                    }
+                });
+            }
+
+            //Password Settings
+            const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+
+            if (saveSettingsBtn) {
+                saveSettingsBtn.addEventListener('click', () => {
+                    const currentPassword = document.getElementById('currentPassword')?.value.trim();
+                    const newPassword = document.getElementById('newPassword')?.value.trim();
+                    const confirmPassword = document.getElementById('confirmPassword')?.value.trim();
+
+                    if (!currentPassword || !newPassword || !confirmPassword) {
+                        alert('Please fill in all password fields!');
+                        return;
+                    }
+
+                    if (newPassword !== confirmPassword) {
+                        alert('Passwords do not match!');
+                        return;
+                    }
+
+                    if (newPassword.length < 6) {
+                        alert('Password must be at least 6 characters long!');
+                        return;
+                    }
+
+                    alert('Password updated successfully!');
+                    const settingsModal = bootstrap.Modal.getInstance(
+                        document.getElementById('settingsModal')
+                    );
+                    settingsModal?.hide();
+
+                    document.getElementById('settingsForm')?.reset();
+                });
+            }
+        </script>
     </div>
 @endsection

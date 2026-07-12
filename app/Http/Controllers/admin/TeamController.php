@@ -27,7 +27,7 @@ class TeamController extends Controller
             }
         }
 
-        $teamregistration = $query->get();
+        $teamregistration = $query->paginate(10);
         return view('admin.Team.team', compact('teamregistration'));
     }
 
@@ -41,8 +41,11 @@ class TeamController extends Controller
             }
         }
 
+        // Delete associated payment data
+        \App\Models\Payment::where('team_name', $team->team_name)->delete();
+
         $team->delete();
-        return back()->with('success', 'Team deleted successfully');
+        return back()->with('success', 'Team Deleted Successfully');
     }
 
     public function update(Request $request, $id)
@@ -94,6 +97,6 @@ class TeamController extends Controller
 
         $team->update($input);
 
-        return redirect()->back()->with('success', 'Team updated successfully');
+        return redirect()->back()->with('success', 'Team Updated Successfully');
     }
 }

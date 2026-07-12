@@ -1,4 +1,4 @@
-﻿@extends('admin.layout.admin')
+@extends('admin.layout.admin')
 @section('content')
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/download_details.css">
 
@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                         class="fas fa-bars"></i></button>
-                <h5 class="mb-0 text-secondary">Download Details</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Download Details</h5>
 
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
@@ -36,13 +36,13 @@
         </nav>
 
         <div class="container-fluid p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-3">
                 <div>
                     <h4 class="fw-bold mb-0 text-dark">Team Details</h4>
                     <p class="text-muted small mb-0">View and export details: institution, team, coach, members,
                         verification.</p>
                 </div>
-                <button class="btn btn-success" id="exportAllBtn"><i class="fas fa-file-excel me-2"></i>Export All to
+                <button class="btn btn-success align-self-stretch align-self-sm-auto" id="exportAllBtn"><i class="fas fa-file-excel me-2"></i>Export All to
                     Excel</button>
             </div>
 
@@ -63,7 +63,7 @@
                             </tr>
                         </thead>
                         <tbody id="detailsTbody">
-                            @foreach ($details as $data)
+                            @forelse ($paginatedDetails as $data)
                                 <tr>
                                     <td>{{ $data->institute_name }}</td>
                                     <td>{{ $data->team_name }}</td>
@@ -108,11 +108,27 @@
                                         </button>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="9" class="text-center py-5">
+                                        <i class="fas fa-box-open mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                                        <h5 class="fw-bold mb-1">No Team Details Found</h5>
+                                        <p class="text-muted small mb-0">There are currently no registered teams in the system.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
+                    </table>
+                </div>
 
-                        <!-- Modals -->
-                        @foreach ($details as $data)
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $paginatedDetails->links('pagination::bootstrap-5') }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        @foreach ($paginatedDetails as $data)
                             <div class="modal fade" id="viewDetailsModal{{ $data->team_id }}" tabindex="-1"
                                 aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
@@ -124,60 +140,57 @@
                                         <div class="modal-body">
                                             <div class="row g-3">
                                                 <div class="col-md-6">
-                                                    <div class="p-3 border rounded">
+                                                    <div class="p-3 border rounded h-100">
                                                         <div class="fw-bold mb-2">Institution</div>
-                                                        <div>{{ $data->institute_name }}</div>
+                                                        <div class="text-break">{{ $data->institute_name }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="p-3 border rounded">
+                                                    <div class="p-3 border rounded h-100">
                                                         <div class="fw-bold mb-2">Team Name</div>
-                                                        <div>{{ $data->team_name }}</div>
+                                                        <div class="text-break">{{ $data->team_name }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="p-3 border rounded">
+                                                    <div class="p-3 border rounded h-100">
                                                         <div class="fw-bold mb-2">Coach Name</div>
-                                                        <div>{{ $data->coach_name }}</div>
+                                                        <div class="text-break">{{ $data->coach_name }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="p-3 border rounded">
+                                                    <div class="p-3 border rounded h-100">
                                                         <div class="fw-bold mb-2">Coach T-Shirt</div>
                                                         <div>
-                                                            <span
-                                                                class="badge bg-dark text-white">{{ $data->coach_t_shirt }}</span>
+                                                            <span class="badge bg-dark text-white">{{ $data->coach_t_shirt }}</span>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="p-3 border rounded">
+                                                    <div class="p-3 border rounded h-100">
                                                         <div class="fw-bold mb-2">Coach Contact</div>
-                                                        <div>{{ $data->coach_phone }}</div>
+                                                        <div class="text-break">{{ $data->coach_phone }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="p-3 border rounded">
+                                                    <div class="p-3 border rounded h-100">
                                                         <div class="fw-bold mb-2">Coach Email</div>
-                                                        <div>{{ $data->coach_email }}</div>
+                                                        <div class="text-break">{{ $data->coach_email }}</div>
                                                     </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <div class="p-3 border rounded">
+                                                <div class="col-12 col-md-6">
+                                                    <div class="p-3 border rounded h-100">
                                                         <div class="fw-bold mb-2">Payment Status</div>
                                                         <div>
-                                                            <span
-                                                                class="badge {{ $data->is_paid ? 'bg-success' : 'bg-danger' }}">
+                                                            <span class="badge {{ $data->is_paid ? 'bg-success' : 'bg-danger' }}">
                                                                 {{ $data->is_paid ? 'Paid' : 'Unpaid' }}
                                                             </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <div class="p-3 border rounded">
+                                                    <div class="p-3 border rounded h-100">
                                                         <div class="fw-bold mb-2">Team Members</div>
-                                                        <ul class="mb-0 ps-3">
+                                                        <ul class="mb-0 ps-3 text-break">
                                                             @if ($data->mem_1_name)
                                                                 <li>
                                                                     <strong>{{ $data->mem_1_name }}</strong> -
@@ -221,7 +234,7 @@
                             </div>
                         @endforeach
                         <script>
-                            const teamDetails = @json($details);
+                            const teamDetails = @json($allDetails);
                         </script>
 
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -265,9 +278,5 @@
                             document.getElementById('exportAllBtn')
                                 .addEventListener('click', exportAllToExcel);
                         </script>
-
-
-                        </body>
-
-                        </html>
-
+                    </div> <!-- Closing main-content -->
+@endsection

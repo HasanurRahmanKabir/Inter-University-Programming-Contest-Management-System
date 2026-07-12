@@ -1,4 +1,4 @@
-﻿@extends('admin.layout.admin')
+@extends('admin.layout.admin')
 @section('content')
     <div class="main-content">
 
@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                         class="fas fa-bars"></i></button>
-                <h5 class="mb-0 text-secondary">Team Management</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Team Management</h5>
 
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
@@ -25,7 +25,7 @@
                             <li>
                                 <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
                                     @csrf
-                                    <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">Logout</button>
+                                    <button type="submit" class="dropdown-item text-danger bg-transparent border-0 w-100 text-start">Logout</button>
                                 </form>
                             </li>
                         </ul>
@@ -35,6 +35,20 @@
         </nav>
 
         <div class="container-fluid p-4">
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <form method="GET" action="{{ route('admin.teamregistration.index') }}" class="row mb-4 g-3">
                 <div class="col-md-4">
@@ -51,11 +65,17 @@
                         <option value="0" {{ request('filter') === '0' ? 'selected' : '' }}>Not Selected</option>
                     </select>
                 </div>
-                <div class="col-md-2 d-flex align-items-stretch">
+                <div class="col-md-3 d-flex align-items-stretch gap-2">
                     <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
                         <i class="fas fa-search me-2"></i>
                         Search
                     </button>
+                    @if(request()->has('q') || request('filter') !== null)
+                    <a href="{{ route('admin.teamregistration.index') }}" class="btn btn-light border w-100 d-flex align-items-center justify-content-center text-decoration-none text-secondary">
+                        <i class="fas fa-times me-2"></i>
+                        Clear
+                    </a>
+                    @endif
                 </div>
             </form>
 
@@ -73,7 +93,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($teamregistration as $data)
+                            @forelse ($teamregistration as $data)
                                 <tr>
                                     <td>{{ $data->team_id }}</td>
                                     <td>
@@ -93,7 +113,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="badge bg-primary bg-opacity-10 text-white">{{ $data->is_selected ? 'Selected' : 'Not Selected' }}</span>
+                                            class="badge {{ $data->is_selected ? 'bg-primary text-white' : 'bg-danger text-white' }} px-3 py-2 rounded-pill">{{ $data->is_selected ? 'Selected' : 'Not Selected' }}</span>
                                     </td>
                                     <td class="text-end">
                                         <button class="btn btn-light btn-sm text-primary" data-bs-toggle="modal"
@@ -102,18 +122,22 @@
                                             Details</button>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-5">
+                                        <i class="fas fa-users-slash mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                                        <h5 class="fw-bold mb-1">No teams found</h5>
+                                        <p class="mb-0 small">No teams match your current search criteria.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
-                <nav class="mt-4">
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
+                
+                <div class="mt-4 d-flex justify-content-end">
+                    {{ $teamregistration->appends(request()->query())->links('pagination::bootstrap-5') }}
+                </div>
             </div>
         </div>
     </div>
@@ -149,37 +173,43 @@
                                                     style="width: 80px; height: 80px; object-fit: cover;">
                                             </div>
                                             <label class="small text-muted fw-bold">Coach Photo</label>
-                                            <input type="file" class="form-control form-control-sm w-50 mx-auto mt-1"
+                                            <input type="file" class="form-control form-control-sm w-50 mx-auto mt-1 @error('coach_photo') is-invalid @enderror"
                                                 name="coach_photo" accept="image/*">
+                                            @error('coach_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="small text-muted fw-bold">Team Name</label>
-                                        <input type="text" class="form-control" name="team_name"
-                                            value="{{ $data->team_name }}">
+                                        <input type="text" class="form-control @error('team_name') is-invalid @enderror" name="team_name"
+                                            value="{{ old('team_name', $data->team_name) }}">
+                                        @error('team_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
 
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="small text-muted">Institute Name</label>
-                                            <input type="text" class="form-control" name="institute_name"
-                                                value="{{ $data->institute_name }}">
+                                            <input type="text" class="form-control @error('institute_name') is-invalid @enderror" name="institute_name"
+                                                value="{{ old('institute_name', $data->institute_name) }}">
+                                            @error('institute_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <label class="small text-muted">Coach Name</label>
-                                            <input type="text" class="form-control" name="coach_name"
-                                                value="{{ $data->coach_name }}">
+                                            <input type="text" class="form-control @error('coach_name') is-invalid @enderror" name="coach_name"
+                                                value="{{ old('coach_name', $data->coach_name) }}">
+                                            @error('coach_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <label class="small text-muted">Coach Email</label>
-                                            <input type="email" class="form-control" name="coach_email"
-                                                value="{{ $data->coach_email }}">
+                                            <input type="email" class="form-control @error('coach_email') is-invalid @enderror" name="coach_email"
+                                                value="{{ old('coach_email', $data->coach_email) }}">
+                                            @error('coach_email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <label class="small text-muted">Emergency Contact</label>
-                                            <input type="text" class="form-control" name="coach_phone"
-                                                value="{{ $data->coach_phone }}">
+                                            <input type="text" class="form-control @error('coach_phone') is-invalid @enderror" name="coach_phone"
+                                                value="{{ old('coach_phone', $data->coach_phone) }}">
+                                            @error('coach_phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <label class="small text-muted">Team T-Shirt Requirement</label>
@@ -217,14 +247,16 @@
                                             <img src="{{ !empty($data->mem_1_photo) && file_exists(public_path($data->mem_1_photo)) ? asset($data->mem_1_photo) : 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_1_name) }}"
                                                 class="member-card-img mx-auto"
                                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
-                                            <input type="file" class="form-control form-control-sm mt-2"
+                                            <input type="file" class="form-control form-control-sm mt-2 @error('mem_1_photo') is-invalid @enderror"
                                                 name="mem_1_photo" accept="image/*">
+                                            @error('mem_1_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
                                         <h6 class="fw-bold mb-2 text-center">Member 01</h6>
                                         <div class="mb-2">
                                             <label class="small text-muted">Name</label>
-                                            <input type="text" class="form-control form-control-sm" name="mem_1_name"
-                                                value="{{ $data->mem_1_name }}">
+                                            <input type="text" class="form-control form-control-sm @error('mem_1_name') is-invalid @enderror" name="mem_1_name"
+                                                value="{{ old('mem_1_name', $data->mem_1_name) }}">
+                                            @error('mem_1_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                         <div>
                                             <label class="small text-muted">Size</label>
@@ -251,14 +283,16 @@
                                             <img src="{{ !empty($data->mem_2_photo) && file_exists(public_path($data->mem_2_photo)) ? asset($data->mem_2_photo) : 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_2_name) }}"
                                                 class="member-card-img mx-auto"
                                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
-                                            <input type="file" class="form-control form-control-sm mt-2"
+                                            <input type="file" class="form-control form-control-sm mt-2 @error('mem_2_photo') is-invalid @enderror"
                                                 name="mem_2_photo" accept="image/*">
+                                            @error('mem_2_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
                                         <h6 class="fw-bold mb-2 text-center">Member 02</h6>
                                         <div class="mb-2">
                                             <label class="small text-muted">Name</label>
-                                            <input type="text" class="form-control form-control-sm" name="mem_2_name"
-                                                value="{{ $data->mem_2_name }}">
+                                            <input type="text" class="form-control form-control-sm @error('mem_2_name') is-invalid @enderror" name="mem_2_name"
+                                                value="{{ old('mem_2_name', $data->mem_2_name) }}">
+                                            @error('mem_2_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                         <div>
                                             <label class="small text-muted">Size</label>
@@ -285,14 +319,16 @@
                                             <img src="{{ !empty($data->mem_3_photo) && file_exists(public_path($data->mem_3_photo)) ? asset($data->mem_3_photo) : 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_3_name) }}"
                                                 class="member-card-img mx-auto"
                                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
-                                            <input type="file" class="form-control form-control-sm mt-2"
+                                            <input type="file" class="form-control form-control-sm mt-2 @error('mem_3_photo') is-invalid @enderror"
                                                 name="mem_3_photo" accept="image/*">
+                                            @error('mem_3_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
                                         <h6 class="fw-bold mb-2 text-center">Member 03</h6>
                                         <div class="mb-2">
                                             <label class="small text-muted">Name</label>
-                                            <input type="text" class="form-control form-control-sm" name="mem_3_name"
-                                                value="{{ $data->mem_3_name }}">
+                                            <input type="text" class="form-control form-control-sm @error('mem_3_name') is-invalid @enderror" name="mem_3_name"
+                                                value="{{ old('mem_3_name', $data->mem_3_name) }}">
+                                            @error('mem_3_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                         <div>
                                             <label class="small text-muted">Size</label>
@@ -317,97 +353,59 @@
                             <div class="card border-0 shadow-sm mt-4 border-warning border-start border-4">
                                 <div class="card-body">
                                     <h6 class="fw-bold">Admin Actions</h6>
-                                    <div class="row g-2 align-items-center">
-                                        <div class="col-md-4">
-                                            
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox"
-                                                    id="selectCheck{{ $data->team_id }}" name="is_selected"
-                                                    value="1" {{ $data->is_selected ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="selectCheck{{ $data->team_id }}">
-                                                    Team Selected
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="modal-footer border-0 p-0">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        </div>
+                                    <div class="form-check form-switch mb-0">
+                                        <input class="form-check-input @error('is_selected') is-invalid @enderror" type="checkbox"
+                                            id="selectCheck{{ $data->team_id }}" name="is_selected"
+                                            value="1" {{ old('is_selected', $data->is_selected) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="selectCheck{{ $data->team_id }}">
+                                            Team Selected
+                                        </label>
                                     </div>
                                 </div>
                             </div>
-                        </form> 
+                    </div>
+                    
+                    <div class="modal-footer d-flex justify-content-between align-items-center bg-white border-top">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTeamModal{{ $data->team_id }}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-                        <hr>
-
-
-                        <form action="{{ url('/admin/dashboard/team/delete/' . $data->team_id) }}" method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this team?')">
-                            @csrf
-                            @method('DELETE')
-
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i> Delete Team
-                            </button>
-                        </form>
-
+        <!-- Delete Team Modal -->
+        <div class="modal fade" id="deleteTeamModal{{ $data->team_id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center pb-4">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger" style="font-size: 4rem;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">Are you sure?</h4>
+                        <p class="text-muted mb-4">You are about to delete team <strong>{{ $data->team_name }}</strong>.<br>This action cannot be undone.</p>
+                        
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{{ url('/admin/dashboard/team/delete/' . $data->team_id) }}" method="post" class="m-0">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     @endforeach
 
-    <script>
-        (function() {
-            // Sidebar Logic
-            const sb = document.getElementById('sidebar');
-            const ov = document.getElementById('overlay');
-            const tgl = document.getElementById('sidebarToggle');
-
-            function toggleSidebar() {
-                if (sb) sb.classList.toggle('active');
-                if (ov) ov.classList.toggle('active');
-            }
-
-            if (tgl) tgl.addEventListener('click', toggleSidebar);
-            if (ov) ov.addEventListener('click', toggleSidebar);
-
-            // Search and Filter Logic (Persist State)
-            try {
-                var searchForm = document.querySelector('form[action="{{ route('admin.teamregistration.index') }}"]');
-                if (searchForm) {
-                    searchForm.addEventListener('submit', function() {
-                        try {
-                            sessionStorage.setItem('teams_searched', '1');
-                        } catch (e) {}
-                    });
-                }
-            } catch (e) {}
-
-            try {
-                if (window.location.search) {
-                    try {
-                        history.replaceState(null, '', window.location.pathname + window.location.hash);
-                    } catch (e) {}
-                }
-            } catch (e) {}
-
-            window.addEventListener('pageshow', function(event) {
-                try {
-                    if (!window.location.search) {
-                        var qInput = document.querySelector('input[name="q"]');
-                        var filterSelect = document.querySelector('select[name="filter"]');
-                        if (qInput) qInput.value = '';
-                        if (filterSelect) filterSelect.selectedIndex = 0;
-                        try {
-                            history.replaceState(null, '', window.location.pathname + window.location.hash);
-                        } catch (e) {}
-                    }
-                } catch (e) {}
-            });
-        })();
-    </script>
 @endsection
 

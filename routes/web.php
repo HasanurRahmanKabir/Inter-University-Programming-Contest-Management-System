@@ -17,6 +17,7 @@ use App\Http\Controllers\website\CoachController;
 use App\Http\Controllers\website\TeamMemberController;
 use App\Http\Controllers\website\TeamRegistrationController;
 use App\Http\Controllers\website\UserLogin;
+use App\Http\Controllers\website\ForgotPasswordController;
 use App\Http\Controllers\website\VolunteersController;
 use App\Http\Controllers\website\WebsiteController;
 use App\Http\Controllers\website\RegisterInfoController;
@@ -52,6 +53,14 @@ Route::post('team/registration/store', [TeamRegistrationController::class, 'stor
 Route::get('website/user_login', [UserLogin::class, 'index'])->name('user.login');
 Route::post('website/user_login_submit', [UserLogin::class, 'login'])->name('user.login.submit');
 Route::post('website/user_logout', [UserLogin::class, 'logout'])->name('user.logout');
+
+// Forgot Password Routes
+Route::get('forgot-password', [ForgotPasswordController::class, 'showEmailForm'])->name('forgot.password');
+Route::post('forgot-password/send-otp', [ForgotPasswordController::class, 'sendOtp'])->name('forgot.password.send');
+Route::get('forgot-password/verify-otp', [ForgotPasswordController::class, 'showOtpForm'])->name('forgot.password.verify');
+Route::post('forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('forgot.password.verify.submit');
+Route::get('forgot-password/reset-password', [ForgotPasswordController::class, 'showResetForm'])->name('forgot.password.reset');
+Route::post('forgot-password/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgot.password.reset.submit');
 
 
 //Admin Authentication

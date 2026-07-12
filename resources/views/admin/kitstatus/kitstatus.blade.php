@@ -1,4 +1,4 @@
-﻿@extends('admin.layout.admin')
+@extends('admin.layout.admin')
 @section('content')
     <div class="main-content">
 
@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                         class="fas fa-bars"></i></button>
-                <h5 class="mb-0 text-secondary">Kit Distribution</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Kit Distribution</h5>
 
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
@@ -35,6 +35,20 @@
         </nav>
 
         <div class="container-fluid p-4">
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <div class="row g-4 mb-4">
                 <div class="col-md-4">
@@ -90,12 +104,17 @@
                             <option value="0" {{ request('filter') === '0' ? 'selected' : '' }}>Not Received</option>
                         </select>
                     </div>
-                    <div class="col-md-3 d-flex align-items-stretch">
+                    <div class="col-md-3 d-flex align-items-stretch gap-2">
                         <button type="submit"
-                            class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
+                            class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center">
                             <i class="fas fa-search me-2"></i>
                             Search
                         </button>
+                        @if(request()->filled('q') || request()->filled('filter'))
+                            <a href="{{ url('admin/dashboard/kitstatus') }}" class="btn btn-light border d-flex align-items-center justify-content-center px-3" title="Clear Search">
+                                <i class="fas fa-times text-danger"></i>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </form>
@@ -147,7 +166,7 @@
                                         {{-- EDIT BUTTON WITH DATA ATTRIBUTES --}}
                                         <button class="btn btn-light btn-sm text-primary edit-kit-btn"
                                             data-bs-toggle="modal" data-bs-target="#editKitStatusModal"
-                                            data-id="{{ $kit->kit_id }}" data-team="{{ $kit->team_name }}"
+                                            data-id="{{ $kit->team_id }}" data-team="{{ $kit->team_name }}"
                                             data-status="{{ $kit->kit_received }}"
                                             data-date="{{ $kit->received_date ? \Carbon\Carbon::parse($kit->received_date)->format('Y-m-d\TH:i') : '' }}"
                                             data-comments="{{ $kit->comments }}" title="Edit">
@@ -157,7 +176,11 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center text-muted">No kit status records found.</td>
+                                    <td colspan="5" class="text-center py-5">
+                                        <i class="fas fa-box-open mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                                        <h5 class="fw-bold mb-1">No Teams Found</h5>
+                                        <p class="text-muted small mb-0">No registered teams found for kit distribution yet.</p>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -174,8 +197,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Edit Kit Status</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title fw-bold text-wrap me-3">Edit Kit Status</h5>
+                    <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     {{-- Form Action Will be set by JS --}}
@@ -208,7 +231,7 @@
                                 placeholder="Ex: Collected by Volunteer X..."></textarea>
                         </div>
 
-                        <div class="modal-footer px-0 pb-0">
+                        <div class="modal-footer px-0 pb-0 d-flex flex-wrap gap-2">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary px-4">Update Kit Status</button>
                         </div>
@@ -221,19 +244,6 @@
 
     <script>
         (function() {
-            // Sidebar Logic
-            const sb = document.getElementById('sidebar');
-            const ov = document.getElementById('overlay');
-            const tgl = document.getElementById('sidebarToggle');
-
-            function toggleSidebar() {
-                if (!sb || !ov) return;
-                sb.classList.toggle('active');
-                ov.classList.toggle('active');
-            }
-            if (tgl) tgl.addEventListener('click', toggleSidebar);
-            if (ov) ov.addEventListener('click', toggleSidebar);
-
             // Refresh handler logic (as per your code)
             const storageKey = 'kitstatus_refreshed';
             window.addEventListener('pageshow', function(event) {

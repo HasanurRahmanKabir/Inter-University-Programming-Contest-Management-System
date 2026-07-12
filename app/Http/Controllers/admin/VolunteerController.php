@@ -12,13 +12,19 @@ class VolunteerController extends Controller
 
     public function index()
     {
-        $volunteer = Volunteer::all();
+        $volunteer = Volunteer::paginate(10);
         return view('admin.Volunteer.volunteer', compact('volunteer'));
     }
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:volunteer_infos,email',
+            'phone' => 'required|string|max:20',
+            'password' => 'required|string|min:6',
+        ]);
+
         $insert = Volunteer::create([
-            'volunteer_id' => $request->volunteerid,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -29,10 +35,16 @@ class VolunteerController extends Controller
 
         ]);
 
-        return redirect('admin/dashboard/volunteer')->with('success', 'volunteer added successfully');
+        return redirect('admin/dashboard/volunteer')->with('success', 'Volunteer Added Successfully');
     }
     public function update(Request $request, $volunteer_id)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:volunteer_infos,email,'.$volunteer_id.',volunteer_id',
+            'phone' => 'required|string|max:20',
+        ]);
+
         $volunteer = Volunteer::findOrFail($volunteer_id);
         $volunteer->update([
             'name' => $request->name,
@@ -42,11 +54,11 @@ class VolunteerController extends Controller
             'volunteer_notice' => $request->volunteer_notice,
         ]);
 
-        return redirect('admin/dashboard/volunteer')->with('success', 'Volunteer updated successfully');
+        return redirect('admin/dashboard/volunteer')->with('success', 'Volunteer Updated Successfully');
     }
     public function destroy($id)
     {
         Volunteer::where('volunteer_id', $id)->delete();
-        return back()->with('success', 'Volunteer deleted successfully');
+        return back()->with('success', 'Volunteer Deleted Successfully');
     }
 }

@@ -15,13 +15,20 @@ class KitStatusController extends Controller
 
         $totalTeams = TeamRegistration::count();
 
-        $kitsDistributed = KitStatus::where('kit_received', 1)->count();
+        $kitsDistributed = KitStatus::join('team_registration_infos', 'kit_statuses.team_id', '=', 'team_registration_infos.team_id')
+            ->where('kit_statuses.kit_received', 1)->count();
 
-        $pendingDistribution = KitStatus::where('kit_received', 0)->count();
+        $pendingDistribution = $totalTeams - $kitsDistributed;
 
-        $query = KitStatus::select('kit_statuses.*')
-            ->leftJoin('team_registration_infos', 'kit_statuses.team_id', '=', 'team_registration_infos.team_id')
-            ->addSelect('team_registration_infos.team_name');
+        $query = TeamRegistration::select(
+                'team_registration_infos.team_id',
+                'team_registration_infos.team_name',
+                'kit_statuses.kit_id',
+                'kit_statuses.kit_received',
+                'kit_statuses.received_date',
+                'kit_statuses.comments'
+            )
+            ->leftJoin('kit_statuses', 'team_registration_infos.team_id', '=', 'kit_statuses.team_id');
 
         if ($request->filled('q')) {
             $q = $request->q;
@@ -30,8 +37,13 @@ class KitStatusController extends Controller
 
         if ($request->filled('filter') && $request->filter !== '') {
             $filter = $request->filter;
-            if (in_array($filter, ['0', '1'])) {
-                $query->where('kit_statuses.kit_received', $filter);
+            if ($filter === '1') {
+                $query->where('kit_statuses.kit_received', 1);
+            } elseif ($filter === '0') {
+                $query->where(function($q) {
+                    $q->where('kit_statuses.kit_received', 0)
+                      ->orWhereNull('kit_statuses.kit_received');
+                });
             }
         }
 
@@ -53,21 +65,22 @@ class KitStatusController extends Controller
             'kit_received' => $request->kitreceived,
             'received_date' => $request->receiveddate,
             'comments' => $request->comments,
-
         ]);
 
-        return redirect('/admin/dashboard/kitstatus')->with('success', 'Kit received successfully');
+        return redirect('/admin/dashboard/kitstatus')->with('success', 'Kit Received Successfully');
     }
-    public function update(Request $request, $id)
+
+    public function update(Request $request, $team_id)
     {
-        $kit = KitStatus::findOrFail($id);
+        KitStatus::updateOrCreate(
+            ['team_id' => $team_id],
+            [
+                'kit_received' => $request->kit_received,
+                'received_date' => $request->received_date,
+                'comments' => $request->comments,
+            ]
+        );
 
-        $kit->update([
-            'kit_received' => $request->kit_received,
-            'received_date' => $request->received_date,
-            'comments' => $request->comments,
-        ]);
-
-        return redirect()->back()->with('success', 'Kit status updated successfully');
+        return redirect()->back()->with('success', 'Kit Status Updated Successfully');
     }
 }

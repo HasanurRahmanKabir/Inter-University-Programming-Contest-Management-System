@@ -14,15 +14,16 @@ class PaymentController extends Controller
     {
         $request = request();
 
-        $totalCollected = Payment::where('payment_status', 1)->sum('amount');
-        $pendingVerification = Payment::where('payment_status', 0)->count();
-        $todaysCollection = Payment::where('payment_status', 1)
-            ->whereDate('created_at', Carbon::today())
-            ->sum('amount');
+        $baseQuery = Payment::join('team_registration_infos', 'payment_infos.team_name', '=', 'team_registration_infos.team_name')
+            ->where('team_registration_infos.is_selected', 1);
 
-        $query = Payment::join('team_registration_infos', 'payment_infos.team_name', '=', 'team_registration_infos.team_name')
-            ->where('team_registration_infos.is_selected', 1)
-            ->select('payment_infos.*');
+        $totalCollected = (clone $baseQuery)->where('payment_infos.payment_status', 1)->sum('payment_infos.amount');
+        $pendingVerification = (clone $baseQuery)->where('payment_infos.payment_status', 0)->count();
+        $todaysCollection = (clone $baseQuery)->where('payment_infos.payment_status', 1)
+            ->whereDate('payment_infos.created_at', Carbon::today())
+            ->sum('payment_infos.amount');
+
+        $query = (clone $baseQuery)->select('payment_infos.*');
 
 
         if ($request->filled('search')) {
@@ -41,7 +42,7 @@ class PaymentController extends Controller
             $query->where('payment_infos.platform', $request->platform);
         }
 
-        $payment = $query->orderBy('payment_infos.created_at', 'desc')->get();
+        $payment = $query->orderBy('payment_infos.created_at', 'desc')->paginate(10);
 
         return view('admin.Payment.payment', compact('payment', 'totalCollected', 'pendingVerification', 'todaysCollection'));
     }
@@ -63,6 +64,6 @@ class PaymentController extends Controller
                 ->update(['is_paid' => 0]);
         }
 
-        return redirect()->back()->with('success', 'Payment status updated successfully!');
+        return redirect()->back()->with('success', 'Payment Status Updated Successfully!');
     }
 }

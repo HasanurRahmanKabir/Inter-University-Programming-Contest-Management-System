@@ -88,9 +88,9 @@
                    <div class="col-12">
                        <div class="custom-table-card p-4">
 
-                           <div class="d-flex justify-content-between align-items-center mb-4">
+                           <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                                <h5 class="fw-bold mb-0">Recent Team Registrations</h5>
-                               <a href="{{ route('admin.teamregistration.index') }}" class="btn btn-primary btn-sm rounded-pill px-3">
+                               <a href="{{ route('admin.teamregistration.index') }}" class="btn btn-primary btn-sm rounded-pill px-3 text-nowrap">
                                    View All
                                </a>
                            </div>
@@ -128,14 +128,16 @@
                                                    <small class="text-muted">{{ $data->coach_phone }}</small>
                                                </td>
                                                <td>
-                                                   <span
-                                                       class="badge {{ $data->is_paid ? 'bg-success' : 'bg-danger' }} bg-opacity-10 text-white px-3 py-1 rounded-pill">
-                                                       {{ $data->is_paid ? 'Paid' : 'Unpaid' }}
-                                                   </span>
-                                                   <span
-                                                       class="badge {{ $data->is_selected ? 'bg-primary' : 'bg-secondary' }} bg-opacity-10 text-white px-3 py-1 rounded-pill">
-                                                       {{ $data->is_selected ? 'Selected' : 'Not Selected' }}
-                                                   </span>
+                                                   <div class="d-flex flex-wrap gap-2">
+                                                       <span
+                                                           class="badge {{ $data->is_paid ? 'bg-success' : 'bg-danger' }} bg-opacity-10 text-white px-3 py-1 rounded-pill">
+                                                           {{ $data->is_paid ? 'Paid' : 'Unpaid' }}
+                                                       </span>
+                                                       <span
+                                                           class="badge {{ $data->is_selected ? 'bg-primary' : 'bg-secondary' }} bg-opacity-10 text-white px-3 py-1 rounded-pill">
+                                                           {{ $data->is_selected ? 'Selected' : 'Not Selected' }}
+                                                       </span>
+                                                   </div>
                                                </td>
                                                <td class="text-end">
                                                    <!-- View Button -->

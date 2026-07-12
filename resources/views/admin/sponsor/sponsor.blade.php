@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                         class="fas fa-bars"></i></button>
-                <h5 class="mb-0 text-secondary">Sponsors & Partners</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Sponsors & Partners</h5>
 
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
@@ -37,13 +37,26 @@
 
         <div class="container-fluid p-4">
 
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
                 <div>
                     <h4 class="fw-bold mb-0 text-dark">Sponsor List</h4>
                     <p class="text-muted small mb-0">Manage event sponsors and their branding.</p>
                 </div>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSponsorModal">
+                <button class="btn btn-primary align-self-stretch align-self-sm-auto" data-bs-toggle="modal" data-bs-target="#addSponsorModal">
                     <i class="fas fa-plus me-2"></i> Add New Sponsor
                 </button>
             </div>
@@ -63,7 +76,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($sponsors as $data)
+                            @forelse ($sponsors as $data)
                                 <tr>
 
                                     <td><span class="fw-bold text-secondary">#{{ $data->sponsor_id }}</span></td>
@@ -94,19 +107,17 @@
 
 
                                         <div class="mt-2">
-                                            <span class="badge bg-info text-dark border border-info bg-opacity-25">
-                                                @if ($data->sponsor_category == 0)
-                                                    Bronze
-                                                @elseif($data->sponsor_category == 1)
-                                                    Silver
-                                                @elseif($data->sponsor_category == 2)
-                                                    Gold
-                                                @elseif($data->sponsor_category == 3)
-                                                    Platinum
-                                                @elseif($data->sponsor_category == 4)
-                                                    Diamond
-                                                @endif
-                                            </span>
+                                            @if ($data->sponsor_category == 0)
+                                                <span class="badge bg-danger">Bronze</span>
+                                            @elseif($data->sponsor_category == 1)
+                                                <span class="badge bg-secondary">Silver</span>
+                                            @elseif($data->sponsor_category == 2)
+                                                <span class="badge bg-warning text-dark">Gold</span>
+                                            @elseif($data->sponsor_category == 3)
+                                                <span class="badge bg-dark">Platinum</span>
+                                            @elseif($data->sponsor_category == 4)
+                                                <span class="badge bg-primary">Diamond</span>
+                                            @endif
                                         </div>
                                     </td>
 
@@ -145,20 +156,49 @@
                                             <i class="fas fa-edit"></i>
                                         </button>
 
-                                        <form action="{{ url('/admin/dashboard/sponsor/delete/' . $data->sponsor_id) }}"
-                                            method="post" class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit"
-                                                class="btn btn-light btn-sm text-danger shadow-sm border ms-1"
-                                                onclick="return confirm('Are you sure you want to delete this sponsor?')"
-                                                title="Delete">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-light btn-sm text-danger shadow-sm border ms-1"
+                                            data-bs-toggle="modal" data-bs-target="#deleteSponsorModal{{ $data->sponsor_id }}"
+                                            title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
-                            @endforeach
+
+                                {{-- Delete Confirmation Modal --}}
+                                <div class="modal fade" id="deleteSponsorModal{{ $data->sponsor_id }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 shadow">
+                                            <div class="modal-header border-0 pb-0">
+                                                <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center pb-4">
+                                                <div class="text-danger mb-3">
+                                                    <i class="fas fa-exclamation-circle fa-4x opacity-75"></i>
+                                                </div>
+                                                <h5 class="fw-bold text-dark mb-2">Delete Sponsor?</h5>
+                                                <p class="text-muted mb-4">Are you sure you want to delete <strong>{{ $data->name }}</strong>? This action cannot be undone and will remove their logo and details permanently.</p>
+                                                
+                                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                                    <form action="{{ url('/admin/dashboard/sponsor/delete/' . $data->sponsor_id) }}" method="post" class="m-0">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="btn btn-danger px-4">Yes, Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <i class="fas fa-handshake mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                                        <h5 class="fw-bold mb-1">No Sponsors Found</h5>
+                                        <p class="text-muted small mb-0">You have not added any sponsors or partners yet.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -171,8 +211,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Add Sponsor</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title fw-bold text-wrap me-3">Add Sponsor</h5>
+                    <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ url('/admin/dashboard/sponsor/store') }}" method="post" enctype="multipart/form-data">
@@ -222,7 +262,7 @@
                             <textarea class="form-control" rows="3" name="details"
                                 placeholder="Describe sponsorship tier and benefits..."></textarea>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer d-flex flex-wrap gap-2">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary px-4">Save Sponsor</button>
                         </div>
@@ -238,8 +278,8 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Edit Sponsor Information</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <h5 class="modal-title fw-bold text-wrap me-3">Edit Sponsor Information</h5>
+                        <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
 
@@ -308,7 +348,7 @@
                                 <textarea class="form-control" rows="3" name="details">{{ $data->details }}</textarea>
                             </div>
 
-                            <div class="modal-footer">
+                            <div class="modal-footer d-flex flex-wrap gap-2">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary px-4">Update Sponsor</button>
                             </div>
@@ -320,19 +360,7 @@
     @endforeach
 
     <script>
-        // Sidebar Logic
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const toggleBtn = document.getElementById('sidebarToggle');
-
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', toggleSidebar);
-            overlay.addEventListener('click', toggleSidebar);
-        }
+        // Any custom sponsor logic can go here
     </script>
 @endsection
 

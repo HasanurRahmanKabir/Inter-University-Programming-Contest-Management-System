@@ -7,7 +7,7 @@
                <div class="container-fluid">
                    <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                            class="fas fa-bars"></i></button>
-                   <h5 class="mb-0 text-secondary">Rules & Regulations</h5>
+                   <h5 class="mb-0 text-secondary d-none d-sm-block">Rules & Regulations</h5>
 
                    <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
@@ -36,9 +36,39 @@
         </nav>
 
            <div class="container-fluid p-4">
+
+               @if(session('success'))
+                   <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                       <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   </div>
+               @endif
+
+               @if(session('error'))
+                   <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                       <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   </div>
+               @endif
+
+               @if ($errors->any())
+                   <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                       <div class="d-flex align-items-center mb-2">
+                           <i class="fas fa-exclamation-triangle me-2"></i>
+                           <strong class="mb-0">Please fix the following errors:</strong>
+                       </div>
+                       <ul class="mb-0 ps-3">
+                           @foreach ($errors->all() as $error)
+                               <li>{{ $error }}</li>
+                           @endforeach
+                       </ul>
+                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   </div>
+               @endif
+
                <!-- Form Section -->
                <div class="form-section">
-                   <div class="d-flex justify-content-between align-items-center mb-4">
+                   <div class="mb-4">
                        <div>
                            <h4 class="fw-bold mb-0 text-dark">Add Rules & Regulations</h4>
                            <p class="text-muted small mb-0">Create and manage rules with multiple points</p>
@@ -62,7 +92,7 @@
                                formatting.</small>
                        </div>
 
-                       <div class="d-flex gap-2">
+                       <div class="d-flex flex-column flex-sm-row gap-2">
                            <button type="submit" class="btn btn-primary px-4"><i class="fas fa-plus me-2"></i>Add
                                Rule</button>
                            <button type="reset" class="btn btn-light px-4"><i class="fas fa-times me-2"></i>Clear</button>
@@ -72,7 +102,7 @@
 
                <!-- Rules Display Section -->
                <div class="rules-display">
-                   <div class="d-flex justify-content-between align-items-center mb-4">
+                   <div class="mb-4">
                        <div>
                            <h4 class="fw-bold mb-0 text-dark">Published Rules & Regulations</h4>
                            <p class="text-muted small mb-0">Manage and publish rules to the public</p>
@@ -86,51 +116,45 @@
                                    <div class="card-body">
 
                                        <!-- Headline + Publish Badge -->
-                                       <div class="d-flex justify-content-between align-items-start mb-2">
-                                           <h5 class="card-title mb-0">{{ $rule->rules_headline }}</h5>
+                                       <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-2 mb-3">
+                                           <h5 class="card-title mb-0 text-break">{{ $rule->rules_headline }}</h5>
 
                                            @if ($rule->is_published)
-                                               <span class="badge bg-success">Published</span>
+                                               <span class="badge bg-success align-self-start">Published</span>
                                            @else
-                                               <span class="badge bg-secondary">Draft</span>
+                                               <span class="badge bg-secondary align-self-start">Draft</span>
                                            @endif
                                        </div>
 
                                        <!-- Rule Description -->
-                                       <div class="card-text text-muted mb-3">
+                                       <ul class="card-text text-muted mb-3 ps-3">
                                            @foreach (explode("\n", $rule->rules_description) as $line)
-                                               <div>â€¢ {{ $line }}</div>
+                                               @if(trim($line) !== '')
+                                                   <li>{{ ltrim(trim($line), '- ') }}</li>
+                                               @endif
                                            @endforeach
-                                       </div>
+                                       </ul>
 
                                        <!-- Action Buttons -->
-                                       <div class="d-flex justify-content-end gap-2">
+                                       <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-3">
 
                                            <!-- Edit Button -->
-                                           <a href="#"
-                                               class="btn btn-light btn-sm text-primary d-flex align-items-center justify-content-center"
+                                           <button type="button" class="btn btn-light btn-sm text-primary d-flex align-items-center justify-content-center flex-grow-1 flex-sm-grow-0"
                                                style="height:38px; font-size:0.875rem; padding:0 12px;"
-                                               data-bs-toggle="modal" data-bs-target="#editRuleModal{{ $rule->id }}">
+                                               data-bs-toggle="modal" data-bs-target="#editRuleModal{{ $rule->rules_id }}">
                                                <i class="fas fa-edit me-1"></i> Edit
-                                           </a>
+                                           </button>
 
-
-                                           <form
-                                               action="{{ url('/admin/dashboard/rules_admin/delete/' . $rule->rules_id) }}"
-                                               method="post" class="d-inline">
-                                               @csrf
-                                               @method('delete')
-                                               <button type="submit" class="btn btn-light btn-sm text-danger"
-                                                   onclick="return confirm('Are you sure you want to delete this rule?')">
-                                                   <i class="fas fa-trash me-1"></i> Delete
-                                               </button>
-                                           </form>
-
+                                           <button type="button" class="btn btn-light btn-sm text-danger d-flex align-items-center justify-content-center flex-grow-1 flex-sm-grow-0"
+                                               style="height:38px; font-size:0.875rem; padding:0 12px;"
+                                               data-bs-toggle="modal" data-bs-target="#deleteRuleModal{{ $rule->rules_id }}">
+                                               <i class="fas fa-trash me-1"></i> Delete
+                                           </button>
 
                                        </div>
 
                                        <!-- Edit Modal -->
-                                       <div class="modal fade" id="editRuleModal{{ $rule->id }}" tabindex="-1"
+                                       <div class="modal fade" id="editRuleModal{{ $rule->rules_id }}" tabindex="-1"
                                            aria-hidden="true">
                                            <div class="modal-dialog modal-lg">
                                                <div class="modal-content">
@@ -179,7 +203,7 @@
                                                                </select>
                                                            </div>
 
-                                                           <div class="modal-footer">
+                                                           <div class="modal-footer d-flex flex-wrap gap-2">
                                                                <button type="button" class="btn btn-light"
                                                                    data-bs-dismiss="modal">Discard</button>
                                                                <button type="submit" class="btn btn-primary px-4">Update
@@ -191,6 +215,34 @@
                                            </div>
                                        </div>
                                        <!-- End Edit Modal -->
+
+                                       <!-- Delete Modal -->
+                                       <div class="modal fade" id="deleteRuleModal{{ $rule->rules_id }}" tabindex="-1" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered">
+                                               <div class="modal-content border-0 shadow">
+                                                   <div class="modal-header border-0 pb-0">
+                                                       <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                   </div>
+                                                   <div class="modal-body text-center pb-4">
+                                                       <div class="text-danger mb-3">
+                                                           <i class="fas fa-exclamation-circle fa-4x opacity-75"></i>
+                                                       </div>
+                                                       <h5 class="fw-bold text-dark mb-2">Delete Rule?</h5>
+                                                       <p class="text-muted mb-4">Are you sure you want to delete the rule <strong>"{{ $rule->rules_headline }}"</strong>? This action cannot be undone.</p>
+                                                       
+                                                       <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                                           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                                           <form action="{{ url('/admin/dashboard/rules_admin/delete/' . $rule->rules_id) }}" method="post" class="m-0">
+                                                               @csrf
+                                                               @method('delete')
+                                                               <button type="submit" class="btn btn-danger px-4">Yes, Delete</button>
+                                                           </form>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <!-- End Delete Modal -->
 
                                    </div>
                                </div>
@@ -282,9 +334,6 @@
                    });
                }
            </script>
-
-
-           </body>
-
-           </html>
+       </div> <!-- Closing main-content -->
+@endsection
 

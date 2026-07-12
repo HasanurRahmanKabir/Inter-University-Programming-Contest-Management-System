@@ -1,4 +1,4 @@
-﻿@extends('admin.layout.admin')
+@extends('admin.layout.admin')
 @section('content')
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/notices_adminpanel.css">
     <div class="main-content">
@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                         class="fas fa-bars"></i></button>
-                <h5 class="mb-0 text-secondary">Notice Board</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Notice Board</h5>
 
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
@@ -37,7 +37,21 @@
 
         <div class="container-fluid p-4">
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
                 <div>
                     <h4 class="fw-bold mb-0 text-dark">All Announcements</h4>
                     <p class="text-muted small mb-0">Broadcast updates to participants, coaches, and volunteers.</p>
@@ -48,6 +62,13 @@
             </div>
 
             <form method="GET" action="{{ url('admin/dashboard/notice') }}" class="row mb-3 g-2">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+                        <input type="text" name="search" class="form-control border-start-0"
+                            placeholder="Search title or description..." value="{{ request('search') }}">
+                    </div>
+                </div>
                 <div class="col-md-3">
                     <select name="audience" class="form-select">
                         <option value=""
@@ -71,11 +92,17 @@
                         <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
                     </select>
                 </div>
-                <div class="col-md-2 d-flex align-items-stretch">
-                    <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-search me-2"></i>
-                        Search
+                <div class="col-md-1 d-flex align-items-stretch">
+                    <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center" title="Search">
+                        <i class="fas fa-search"></i>
                     </button>
+                </div>
+                <div class="col-md-1 d-flex align-items-stretch">
+                    <a href="{{ url('admin/dashboard/notice') }}"
+                        class="btn btn-light border w-100 d-flex align-items-center justify-content-center"
+                        title="Refresh/Reset">
+                        <i class="fas fa-sync-alt text-muted"></i>
+                    </a>
                 </div>
             </form>
 
@@ -92,13 +119,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($notice as $data)
+                            @forelse ($notice as $data)
                                 <tr>
-
                                     <td>
-
                                         <div class="fw-bold">{{ $data->notice_date }}</div>
-                                        <small class="text-muted"></small>
                                     </td>
                                     <td>
                                         <div class="fw-bold text-dark">{{ $data->title }}</div>
@@ -107,29 +131,35 @@
                                         </small>
                                     </td>
                                     <td>
-                                        <span class="badge badge-participants rounded-pill px-3 text-dark"
-                                            style="background-color:#3b82f6">{{ $data->audience }}</span>
+                                        <span class="badge rounded-pill px-3 text-white
+                                            {{ $data->audience === 'Participants' ? 'bg-primary' : ($data->audience === 'Coaches' ? 'bg-warning text-dark' : ($data->audience === 'Volunteers' ? 'bg-info text-dark' : 'bg-secondary')) }}">
+                                            {{ $data->audience }}
+                                        </span>
                                     </td>
                                     <td>
-                                        <span class="badge bg-opacity-10 "
-                                            style="color:#198754; background-color: #f9f9f9">{{ $data->status ? 'Active' : 'Inactive' }}</span>
+                                        <span class="badge {{ $data->status ? 'bg-success text-white' : 'bg-danger text-white' }}">
+                                            {{ $data->status ? 'Active' : 'Inactive' }}
+                                        </span>
                                     </td>
                                     <td class="text-end">
                                         <button type="button" class="btn btn-light btn-sm text-primary edit-notice-btn"
                                             data-bs-toggle="modal" data-bs-target="#editNoticeModal"
                                             data-notice='{{ base64_encode(json_encode(['id' => $data->notice_id, 'title' => $data->title, 'description' => $data->description, 'audience' => $data->audience, 'notice_date' => $data->notice_date, 'status' => $data->status])) }}'
                                             title="Edit"><i class="fas fa-edit"></i></button>
-                                        <form action="{{ url('/admin/dashboard/notice/delete/' . $data->notice_id) }}"
-                                            method="post" class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-light btn-sm text-danger"
-                                                onclick="return confirm('Are you sure you want to delete this notice?')"
-                                                title="Remove"><i class="fas fa-trash"></i></button>
-                                        </form>
+                                        <button type="button" class="btn btn-light btn-sm text-danger"
+                                            data-bs-toggle="modal" data-bs-target="#deleteNoticeModal{{ $data->notice_id }}"
+                                            title="Remove"><i class="fas fa-trash"></i></button>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-5">
+                                        <i class="fas fa-bullhorn mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                                        <h5 class="fw-bold mb-1">No notices found</h5>
+                                        <p class="mb-0 small">There are no notices matching your search or filter.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -148,46 +178,50 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Post New Announcement</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title fw-bold text-wrap me-3">Post New Announcement</h5>
+                    <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ url('admin/dashboard/notice/store') }}" method="post">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Notice Title</label>
-                            <input type="text" class="form-control" name="title" placeholder="Enter title"
-                                required>
+                            <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Enter title" value="{{ old('title') }}" required>
+                            @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
-                        <div class="row mb-3">
+                        <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold">Target Audience</label>
-                                <select class="form-select" name="audience">
-                                    <option value="All">All Users</option>
-                                    <option value="Participants">Participants Only</option>
-                                    <option value="Coaches">Coaches Only</option>
-                                    <option value="Volunteers">Volunteers Only</option>
+                                <select class="form-select @error('audience') is-invalid @enderror" name="audience">
+                                    <option value="All" {{ old('audience') == 'All' ? 'selected' : '' }}>All Users</option>
+                                    <option value="Participants" {{ old('audience') == 'Participants' ? 'selected' : '' }}>Participants Only</option>
+                                    <option value="Coaches" {{ old('audience') == 'Coaches' ? 'selected' : '' }}>Coaches Only</option>
+                                    <option value="Volunteers" {{ old('audience') == 'Volunteers' ? 'selected' : '' }}>Volunteers Only</option>
                                 </select>
+                                @error('audience') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold">Notice Publish Date</label>
-                                <input type="date" class="form-control" name="notice_date">
+                                <input type="date" class="form-control @error('notice_date') is-invalid @enderror" name="notice_date" value="{{ old('notice_date') }}" required>
+                                @error('notice_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Description</label>
-                            <textarea class="form-control" name="description" rows="5"
-                                placeholder="Write the full notice content here..."></textarea>
+                            <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="5"
+                                placeholder="Write the full notice content here..." required>{{ old('description') }}</textarea>
+                            @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select name="status" id="status" class="form-select" required>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
+                            <label for="status" class="form-label text-muted small fw-bold">Status</label>
+                            <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
+                                <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
                             </select>
+                            @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="modal-footer">
@@ -204,47 +238,39 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Edit Notice Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title fw-bold text-wrap me-3">Edit Notice Information</h5>
+                    <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editNoticeForm" action="" method="post">
                         @csrf
                         @method('put')
                         <div class="mb-3">
-                            <label for="editNoticeTitle" class="form-label text-muted small fw-bold">Edit Notice
-                                Title</label>
+                            <label for="editNoticeTitle" class="form-label text-muted small fw-bold">Edit Notice Title</label>
                             <input type="text" id="editNoticeTitle" name="title" class="form-control"
                                 placeholder="Enter title" required>
                         </div>
 
-                        <div class="row mb-3">
+                        <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label for="editNoticeAudience" class="form-label text-muted small fw-bold">Target
-                                    Audience</label>
+                                <label for="editNoticeAudience" class="form-label text-muted small fw-bold">Target Audience</label>
                                 <select id="editNoticeAudience" name="audience" class="form-select">
                                     <option value="All">All Users</option>
                                     <option value="Participants">Participants Only</option>
                                     <option value="Coaches">Coaches Only</option>
                                     <option value="Volunteers">Volunteers Only</option>
                                 </select>
-
                             </div>
                             <div class="col-md-6">
-                                <label for="editNoticeDate" class="form-label text-muted small fw-bold">Edit
-                                    Publish
-                                    Date</label>
-                                <input type="date" id="editNoticeDate" name="notice_date" class="form-control"
-                                    name="notice_date">
+                                <label for="editNoticeDate" class="form-label text-muted small fw-bold">Edit Publish Date</label>
+                                <input type="date" id="editNoticeDate" name="notice_date" class="form-control" required>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="editNoticeDescription" class="form-label text-muted small fw-bold">Edit
-                                Description</label>
+                            <label for="editNoticeDescription" class="form-label text-muted small fw-bold">Edit Description</label>
                             <textarea id="editNoticeDescription" name="description" class="form-control" rows="5"
-                                placeholder="Write the full notice content here..."></textarea>
-
+                                placeholder="Write the full notice content here..." required></textarea>
                         </div>
 
                         <div class="mb-3">
@@ -253,7 +279,6 @@
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
                             </select>
-
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -265,26 +290,37 @@
         </div>
     </div>
 
+    @foreach ($notice as $data)
+        <!-- Delete Notice Modal -->
+        <div class="modal fade" id="deleteNoticeModal{{ $data->notice_id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center pb-4">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger" style="font-size: 4rem;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">Are you sure?</h4>
+                        <p class="text-muted mb-4">You are about to delete the notice <strong>"{{ $data->title }}"</strong>.<br>This action cannot be undone.</p>
+                        
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{{ url('/admin/dashboard/notice/delete/' . $data->notice_id) }}" method="post" class="m-0">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Sidebar Logic
-            const sb = document.getElementById('sidebar');
-            const ov = document.getElementById('overlay');
-            const tgl = document.getElementById('sidebarToggle');
-
-            function toggleSidebar() {
-                if (sb) sb.classList.toggle('active');
-                if (ov) ov.classList.toggle('active');
-            }
-            if (tgl) tgl.addEventListener('click', toggleSidebar);
-            if (ov) ov.addEventListener('click', toggleSidebar);
-
-            // Clean Query Params after load
-            try {
-                if (window.location.search) {
-                    history.replaceState(null, '', window.location.pathname + window.location.hash);
-                }
-            } catch (e) {}
 
 
             // EDIT MODAL LOGIC (FIXED)

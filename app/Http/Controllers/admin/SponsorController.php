@@ -43,7 +43,7 @@ class SponsorController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->back()->with('success', 'Sponsor added successfully!');
+        return redirect()->back()->with('success', 'Sponsor Added Successfully!');
     }
     public function update(Request $request, $sponsor_id)
     {
@@ -71,11 +71,17 @@ class SponsorController extends Controller
 
         $sponsor->update($updateData);
 
-        return redirect('/admin/dashboard/sponsor')->with('success', 'Sponsor updated successfully');
+        return redirect('/admin/dashboard/sponsor')->with('success', 'Sponsor Updated Successfully');
     }
     public function destroy($id)
     {
-        Sponsor::where('sponsor_id', $id)->delete();
-        return back()->with('success', 'Sponsor deleted successfully');
+        $sponsor = Sponsor::where('sponsor_id', $id)->first();
+        if ($sponsor) {
+            if (!empty($sponsor->logo) && file_exists(public_path($sponsor->logo))) {
+                unlink(public_path($sponsor->logo));
+            }
+            $sponsor->delete();
+        }
+        return back()->with('success', 'Sponsor Deleted Successfully');
     }
 }

@@ -27,7 +27,7 @@ class ContestController extends Controller
 
         ]);
 
-        return redirect('admin/dashboard/contest')->with('success', 'contest added successfully');
+        return redirect('admin/dashboard/contest')->with('success', 'Contest Added Successfully');
     }
     public function update(Request $request, $contest_id)
     {
@@ -42,14 +42,14 @@ class ContestController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect('admin/dashboard/contest')->with('success', 'Contest updated successfully');
+        return redirect('admin/dashboard/contest')->with('success', 'Contest Updated Successfully');
     }
 
 
     public function destroy($id)
     {
         Contest::where('contest_id', $id)->delete();
-        return back()->with('success', 'Contest deleted successfully');
+        return back()->with('success', 'Contest Deleted Successfully');
     }
 
 }

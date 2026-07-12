@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <a href="#" class="small text-primary fw-bold text-decoration-none">
+                        <a href="{{ route('forgot.password') }}" class="small text-primary fw-bold text-decoration-none">
                             Forgot Password?
                         </a>
                     </div>

@@ -15,14 +15,14 @@
 
     <div class="dashboard-header">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start gap-3">
                 <div>
                     <h1><i class="fas fa-hands-helping me-2"></i>Volunteer Dashboard</h1>
                     <p class="subtitle mb-0">
-                        {{ $contest->title ?? 'SUBIUPC 2025' }}
+                        {{ ($contest && $contest->status == 1 && !empty($contest->title)) ? $contest->title : 'Your Contest Title' }}
                     </p>
                 </div>
-                <div>
+                <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2 mt-2 mt-md-0 w-100 w-md-auto">
                     <form action="{{ route('user.logout') }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="btn btn-outline-light btn-sm">
@@ -45,8 +45,8 @@
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <div class="stat-card" style="border-left-color: #10b981;">
-                    <i class="fas fa-check-circle fa-2x text-success"></i>
+                <div class="stat-card" style="border-left-color: {{ $volunteer->status == 1 ? '#10b981' : '#ef4444' }};">
+                    <i class="fas {{ $volunteer->status == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }} fa-2x"></i>
                     <h3>{{ $volunteer->status == 1 ? 'Active' : 'Inactive' }}</h3>
                     <p>Status</p>
                 </div>
@@ -70,19 +70,44 @@
                 <h5>My Information</h5>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 mb-3 mb-md-0">
                     <div class="info-label">Full Name</div>
-                    <div class="info-value">{{ $volunteer->name }}</div>
+                    <div class="info-value text-break">{{ $volunteer->name }}</div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mb-3 mb-md-0">
                     <div class="info-label">Email Address</div>
-                    <div class="info-value">{{ $volunteer->email }}</div>
+                    <div class="info-value text-break">{{ $volunteer->email }}</div>
                 </div>
                 <div class="col-md-6">
                     <div class="info-label">Phone Number</div>
-                    <div class="info-value">{{ $volunteer->phone }}</div>
+                    <div class="info-value text-break">{{ $volunteer->phone }}</div>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="info-card-header">
+                <i class="fas fa-bell" style="color: #f59e0b;"></i>
+                <h5>Message from Admin</h5>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @if(!empty($volunteer->volunteer_notice))
+                        <div class="alert alert-info d-flex align-items-start mb-0" role="alert" style="border-left: 4px solid #0ea5e9; background-color: #f0f9ff; border-radius: 0.5rem;">
+                            <i class="fas fa-bullhorn fa-lg me-3 mt-1" style="color: #0ea5e9;"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1" style="color: #0369a1;">Special Instruction</h6>
+                                <p class="mb-0" style="color: #0c4a6e;">{{ $volunteer->volunteer_notice }}</p>
+                            </div>
+                        </div>
+                    @else
+                        <div class="text-center py-4 text-muted border rounded" style="background-color: #f9fafb;">
+                            <i class="fas fa-envelope-open-text fa-2x mb-2" style="color: #9ca3af;"></i>
+                            <p class="mb-0 fw-medium">No new messages from admin at the moment.</p>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -120,7 +145,8 @@
                                                 <select name="kit_received"
                                                     class="form-select form-select-sm kit-status-select"
                                                     style="max-width:150px; cursor: pointer;"
-                                                    {{ ($team->kit_received ?? 0) == 1 ? 'disabled' : '' }}>
+                                                    data-original="{{ $team->kit_received ?? 0 }}"
+                                                    {{ (($team->kit_received ?? 0) == 1 || $volunteer->status != 1) ? 'disabled' : '' }}>
 
                                                     <option value="0"
                                                         {{ ($team->kit_received ?? 0) == 0 ? 'selected' : '' }}>Not
@@ -130,70 +156,13 @@
                                                     </option>
                                                 </select>
                                             </form>
+                                        </td>
+                                    </tr>
                                 @endforeach
-
-                                <script>
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        const selects = document.querySelectorAll('.kit-status-select');
-
-                                        selects.forEach(select => {
-                                            select.addEventListener('change', function() {
-                                                const form = this.closest('form');
-                                                const formData = new FormData(form);
-                                                const originalColor = this.style.backgroundColor;
-                                                const selectedValue = this.value;
-                                                let isFinalized = false;
-
-
-                                                this.style.backgroundColor = '#e9ecef';
-                                                this.disabled = true;
-
-                                                fetch(form.action, {
-                                                        method: 'POST',
-                                                        body: formData,
-                                                        headers: {
-                                                            'X-Requested-With': 'XMLHttpRequest'
-                                                        }
-                                                    })
-                                                    .then(response => response.json())
-                                                    .then(data => {
-                                                        if (data.success) {
-                                                            this.style.border = '2px solid green';
-
-                                                            if (selectedValue == '1') {
-                                                                isFinalized = true;
-                                                            } else {
-
-                                                                setTimeout(() => {
-                                                                    this.style.border = '';
-                                                                }, 2000);
-                                                            }
-                                                        } else {
-                                                            alert('Error saving status: ' + data.message);
-                                                            this.style.border = '2px solid red';
-                                                        }
-                                                    })
-                                                    .catch(error => {
-                                                        console.error('Error:', error);
-                                                        alert('Something went wrong!');
-                                                    })
-                                                    .finally(() => {
-                                                        if (!isFinalized) {
-                                                            this.style.backgroundColor = originalColor;
-                                                            this.disabled = false;
-                                                        } else {
-
-                                                            this.style.backgroundColor = '#e9ecef';
-                                                            this.disabled = true;
-                                                        }
-                                                    });
-                                            });
-                                        });
-                                    });
-                                </script>
                             </tbody>
 
                         </table>
+                        @if($volunteer->status == 1)
                         <div class="mt-3">
                             <small class="text-muted">
                                 <i class="fas fa-info-circle me-1"></i>
@@ -208,49 +177,117 @@
                                 <i class="fas fa-save me-2"></i>Save Changes
                             </button>
                         </div>
+                        @else
+                        <div class="mt-3">
+                            <small class="text-danger fw-medium">
+                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                Your Account Is Currently Inactive. Please Contact The Administrator To Activate Your Account & Make Changes.
+                            </small>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+        <div id="volunteerToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="volunteerToastMessage">
+                    <!-- Message goes here -->
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" id="volunteerToastClose"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function showToast(message, type = 'success') {
+            const toastEl = document.getElementById('volunteerToast');
+            const toastMessage = document.getElementById('volunteerToastMessage');
+            const closeBtn = document.getElementById('volunteerToastClose');
+            
+            // Remove previous classes
+            toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'text-white', 'text-dark');
+            closeBtn.classList.remove('btn-close-white');
+            
+            if(type === 'success') {
+                toastEl.classList.add('bg-success', 'text-white');
+                closeBtn.classList.add('btn-close-white');
+            } else if(type === 'error') {
+                toastEl.classList.add('bg-danger', 'text-white');
+                closeBtn.classList.add('btn-close-white');
+            } else if(type === 'warning') {
+                toastEl.classList.add('bg-warning', 'text-dark');
+            }
+            
+            toastMessage.textContent = message;
+            const toast = bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3000 });
+            toast.show();
+        }
+
+        function cancelKitChanges() {
+            const selects = document.querySelectorAll('.kit-status-select');
+            selects.forEach(select => {
+                if (!select.disabled) {
+                    select.value = select.getAttribute('data-original');
+                }
+            });
+        }
+
         function saveKitChanges() {
             const forms = document.querySelectorAll('.kit-form');
             let promises = [];
 
             forms.forEach(form => {
-                const formData = new FormData(form);
+                const select = form.querySelector('.kit-status-select');
+                if (!select.disabled && select.value !== select.getAttribute('data-original')) {
+                    const formData = new FormData(form);
 
-                promises.push(
-                    fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-CSRF-TOKEN': formData.get('_token')
-                        },
-                        body: formData
-                    }).then(res => res.json())
-                );
+                    promises.push(
+                        fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': formData.get('_token')
+                            },
+                            body: formData
+                        }).then(res => res.json())
+                    );
+                }
             });
+
+            if (promises.length === 0) {
+                return;
+            }
 
             Promise.all(promises)
                 .then(results => {
                     let failed = results.filter(r => !r.success);
                     if (failed.length === 0) {
-                        alert('All kit statuses saved successfully!');
+                        sessionStorage.setItem('kitSavedSuccess', 'true');
                         location.reload();
                     } else {
                         let messages = failed.map(r => r.message).filter(m => m).join('\n');
                         console.error(failed);
-                        alert('Some records failed to save!\n' + messages);
+                        showToast('Some records failed to save!', 'error');
                     }
                 })
                 .catch(err => {
                     console.error(err);
-                    alert('Server error while saving kit statuses.');
+                    showToast('Server error while saving kit statuses.', 'error');
                 });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('kitSavedSuccess')) {
+                showToast('Kit statuses saved successfully!', 'success');
+                sessionStorage.removeItem('kitSavedSuccess');
+            }
+        });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

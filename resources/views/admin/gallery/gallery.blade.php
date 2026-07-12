@@ -1,4 +1,4 @@
-﻿@extends('admin.layout.admin')
+@extends('admin.layout.admin')
 @section('content')
 
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/gallery_adminpanel.css">
@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                         class="fas fa-bars"></i></button>
-                <h5 class="mb-0 text-secondary">Media Gallery</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Media Gallery</h5>
 
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
@@ -39,7 +39,7 @@
 
         <div class="container-fluid p-4">
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
                 <div>
                     <h4 class="fw-bold mb-0 text-dark">Event Photos & Videos</h4>
                     <p class="text-muted small mb-0">Manage gallery content displayed on the frontend.</p>
@@ -50,18 +50,15 @@
             </div>
 
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ $errors->first() }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
@@ -79,15 +76,9 @@
                                         <i class="fas fa-eye"></i>
                                     </button>
 
-                                    <form action="{{ route('admin.gallery.delete', $gallery->id) }}" method="POST"
-                                        class="d-inline"
-                                        onsubmit="return confirm('Are you sure you want to delete this image?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger rounded-circle" title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-danger rounded-circle" data-bs-toggle="modal" data-bs-target="#deleteGalleryModal{{ $gallery->id }}" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="p-3">
@@ -101,10 +92,18 @@
                     </div>
                 @empty
                     <div class="col-12 text-center py-5">
-                        <p class="text-muted">No media found. Please upload some images.</p>
+                        <i class="fas fa-images mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                        <h5 class="fw-bold mb-1">No media found</h5>
+                        <p class="text-muted small mb-0">Your gallery is currently empty. Please upload some images or videos.</p>
                     </div>
                 @endforelse
             </div>
+
+            <nav class="mt-4">
+                <ul class="pagination justify-content-end">
+                    <li>{!! $galleries->links('pagination::bootstrap-5') !!}</li>
+                </ul>
+            </nav>
 
         </div>
     </div>
@@ -113,8 +112,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Upload New Media</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title fw-bold text-wrap me-3">Upload New Media</h5>
+                    <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('admin.gallery.store') }}" method="POST" enctype="multipart/form-data">
@@ -125,21 +124,23 @@
                                 style="cursor: pointer;">
                                 <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
                                 <p class="mb-0 fw-bold">Click to browse file</p>
-                                <input type="file" name="media_file" id="mediaFile" class="d-none" required
+                                <input type="file" name="media_file" id="mediaFile" class="d-none @error('media_file') is-invalid @enderror" required
                                     onchange="previewUpload(this)">
                             </div>
+                            @error('media_file') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             <div id="preview-container" class="mt-2 text-center d-none">
                                 <small class="text-success fw-bold">File Selected!</small>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Date</label>
-                            <input type="date" name="event_date" class="form-control" required>
+                            <input type="date" name="event_date" class="form-control @error('event_date') is-invalid @enderror" value="{{ old('event_date') }}" required>
+                            @error('event_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
-                        <div class="d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary px-4">Upload</button>
+                        <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
+                            <button type="button" class="btn btn-light text-nowrap" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary px-4 text-nowrap">Upload</button>
                         </div>
                     </form>
                 </div>
@@ -159,19 +160,36 @@
         </div>
     </div>
 
+    @foreach ($galleries as $gallery)
+        <div class="modal fade" id="deleteGalleryModal{{ $gallery->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center pb-4">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger" style="font-size: 4rem;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">Are you sure?</h4>
+                        <p class="text-muted mb-4">You are about to delete this image from the gallery.<br>This action cannot be undone.</p>
+                        
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{{ route('admin.gallery.delete', $gallery->id) }}" method="post" class="m-0">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
     <script>
-        // Sidebar Logic
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const toggleBtn = document.getElementById('sidebarToggle');
-        if (toggleBtn) {
-            function toggleSidebar() {
-                sidebar.classList.toggle('active');
-                overlay.classList.toggle('active');
-            }
-            toggleBtn.addEventListener('click', toggleSidebar);
-            overlay.addEventListener('click', toggleSidebar);
-        }
+
 
         // Dynamic View Image Modal
         document.addEventListener('DOMContentLoaded', function() {

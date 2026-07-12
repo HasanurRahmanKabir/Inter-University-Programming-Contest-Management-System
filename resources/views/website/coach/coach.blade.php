@@ -16,15 +16,15 @@
 <body>
     <div class="dashboard-header">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start gap-3">
                 <div>
                     <h1><i class="fas fa-tachometer-alt me-2"></i>Coach Dashboard</h1>
                     <p class="subtitle mb-0">
-                        {{ $contest->title ?? 'SUBIUPC 2026 - Inter University Programming Contest' }}
+                        {{ ($contest && $contest->status == 1 && !empty($contest->title)) ? $contest->title : 'Your Contest Title' }}
                     </p>
                 </div>
-                <div>
-                    <button class="btn btn-light btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2 mt-2 mt-md-0 w-100 w-md-auto">
+                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                         <i class="fas fa-edit me-1"></i>Edit Profile
                     </button>
                     <form action="{{ route('user.logout') }}" method="POST" class="d-inline">
@@ -48,8 +48,8 @@
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <div class="stat-card" style="border-left-color: #10b981">
-                    <i class="fas fa-check-circle fa-2x text-success"></i>
+                <div class="stat-card" style="border-left-color: {{ $user->is_paid ? '#10b981' : '#ef4444' }};">
+                    <i class="fas {{ $user->is_paid ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }} fa-2x"></i>
                     <h3>{{ $user->is_paid ? 'Paid' : 'Unpaid' }}</h3>
                     <p>Payment Status</p>
                 </div>
@@ -68,18 +68,18 @@
                 <i class="fas fa-university"></i>
                 <h5>Team & Institution Information</h5>
             </div>
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-6">
                     <div class="info-label">Team Name</div>
-                    <div class="info-value">{{ $user->team_name }}</div>
+                    <div class="info-value text-break">{{ $user->team_name }}</div>
                 </div>
                 <div class="col-md-6">
                     <div class="info-label">Institution Name</div>
-                    <div class="info-value">{{ $user->institute_name }}</div>
+                    <div class="info-value text-break">{{ $user->institute_name }}</div>
                 </div>
                 <div class="col-md-6">
                     <div class="info-label">Team ID</div>
-                    <div class="info-value">#{{ $user->team_id }}</div>
+                    <div class="info-value text-break">#{{ $user->team_id }}</div>
                 </div>
                 <div class="col-md-6">
                     <div class="info-label">Selection Status</div>
@@ -99,27 +99,27 @@
                 <i class="fas fa-chalkboard-teacher"></i>
                 <h5>Coach Information</h5>
             </div>
-            <div class="row">
-                <div class="col-md-3 text-center">
+            <div class="row g-3">
+                <div class="col-md-3 text-center mb-3 mb-md-0">
                     @if ($user->coach_photo)
-                        <img src="{{ asset($user->coach_photo) }}" alt="Coach Photo" class="profile-image" />
+                        <img src="{{ asset($user->coach_photo) }}" alt="Coach Photo" class="profile-image img-fluid rounded" />
                     @else
-                        <img src="https://via.placeholder.com/150" alt="Coach Photo" class="profile-image" />
+                        <img src="https://via.placeholder.com/150" alt="Coach Photo" class="profile-image img-fluid rounded" />
                     @endif
                 </div>
                 <div class="col-md-9">
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-6">
                             <div class="info-label">Coach Name</div>
-                            <div class="info-value">{{ $user->coach_name }}</div>
+                            <div class="info-value text-break">{{ $user->coach_name }}</div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-label">Coach Email</div>
-                            <div class="info-value">{{ $user->coach_email }}</div>
+                            <div class="info-value text-break">{{ $user->coach_email }}</div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-label">Coach Phone</div>
-                            <div class="info-value">{{ $user->coach_phone }}</div>
+                            <div class="info-value text-break">{{ $user->coach_phone }}</div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-label">T-Shirt Size</div>
@@ -135,21 +135,21 @@
                 <i class="fas fa-users"></i>
                 <h5>Team Members</h5>
             </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
+            <div class="row g-3">
+                <div class="col-md-4">
                     <div class="member-card">
                         <img src="{{ $user->mem_1_photo ? asset($user->mem_1_photo) : 'https://via.placeholder.com/100' }}"
-                            class="member-image" />
-                        <h6>{{ $user->mem_1_name }}</h6>
-                        <div class="text-start mt-3">
+                            class="member-image img-fluid rounded" />
+                        <h6 class="text-break px-2">{{ $user->mem_1_name }}</h6>
+                        <div class="text-start mt-3 px-2">
                             <div class="info-label">Student ID</div>
-                            <div class="info-value">{{ $user->mem_1_student_id }}</div>
+                            <div class="info-value text-break">{{ $user->mem_1_student_id }}</div>
 
                             <div class="info-label">Email</div>
-                            <div class="info-value">{{ $user->mem_1_email }}</div>
+                            <div class="info-value text-break">{{ $user->mem_1_email }}</div>
 
                             <div class="info-label">Phone</div>
-                            <div class="info-value">{{ $user->mem_1_phone }}</div>
+                            <div class="info-value text-break">{{ $user->mem_1_phone }}</div>
 
                             <div class="info-label">T-Shirt</div>
                             <div class="info-value">{{ $user->mem_1_t_shirt }}</div>
@@ -157,20 +157,20 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4">
                     <div class="member-card">
                         <img src="{{ $user->mem_2_photo ? asset($user->mem_2_photo) : 'https://via.placeholder.com/100' }}"
-                            class="member-image" />
-                        <h6>{{ $user->mem_2_name }}</h6>
-                        <div class="text-start mt-3">
+                            class="member-image img-fluid rounded" />
+                        <h6 class="text-break px-2">{{ $user->mem_2_name }}</h6>
+                        <div class="text-start mt-3 px-2">
                             <div class="info-label">Student ID</div>
-                            <div class="info-value">{{ $user->mem_2_student_id }}</div>
+                            <div class="info-value text-break">{{ $user->mem_2_student_id }}</div>
 
                             <div class="info-label">Email</div>
-                            <div class="info-value">{{ $user->mem_2_email }}</div>
+                            <div class="info-value text-break">{{ $user->mem_2_email }}</div>
 
                             <div class="info-label">Phone</div>
-                            <div class="info-value">{{ $user->mem_2_phone }}</div>
+                            <div class="info-value text-break">{{ $user->mem_2_phone }}</div>
 
                             <div class="info-label">T-Shirt</div>
                             <div class="info-value">{{ $user->mem_2_t_shirt }}</div>
@@ -178,20 +178,20 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4">
                     <div class="member-card">
                         <img src="{{ $user->mem_3_photo ? asset($user->mem_3_photo) : 'https://via.placeholder.com/100' }}"
-                            class="member-image" />
-                        <h6>{{ $user->mem_3_name }}</h6>
-                        <div class="text-start mt-3">
+                            class="member-image img-fluid rounded" />
+                        <h6 class="text-break px-2">{{ $user->mem_3_name }}</h6>
+                        <div class="text-start mt-3 px-2">
                             <div class="info-label">Student ID</div>
-                            <div class="info-value">{{ $user->mem_3_student_id }}</div>
+                            <div class="info-value text-break">{{ $user->mem_3_student_id }}</div>
 
                             <div class="info-label">Email</div>
-                            <div class="info-value">{{ $user->mem_3_email }}</div>
+                            <div class="info-value text-break">{{ $user->mem_3_email }}</div>
 
                             <div class="info-label">Phone</div>
-                            <div class="info-value">{{ $user->mem_3_phone }}</div>
+                            <div class="info-value text-break">{{ $user->mem_3_phone }}</div>
 
                             <div class="info-label">T-Shirt</div>
                             <div class="info-value">{{ $user->mem_3_t_shirt }}</div>
@@ -204,16 +204,25 @@
 
             @if ($payment && $payment->transaction_id)
 
-                <div class="transaction-section mt-4">
-                    <div class="alert alert-info border-0 shadow-sm">
-                        <h5 class="alert-heading fw-bold"><i class="fas fa-check-circle me-2"></i>Payment Submitted!
-                        </h5>
-                        <p>You have successfully submitted your payment details. Please wait for admin verification.</p>
+                <div class="transaction-section mt-4 overflow-hidden w-100">
+                    @if ($payment->payment_status == 1)
+                        <div class="alert alert-success border-0 shadow-sm overflow-hidden text-break text-wrap">
+                            <h5 class="alert-heading fw-bold"><i class="fas fa-check-circle me-2"></i>Payment Approved!</h5>
+                            <p class="mb-0">Congratulations! Your payment has been successfully verified and approved by the administration.</p>
+                    @elseif ($payment->payment_status == 2)
+                        <div class="alert alert-danger border-0 shadow-sm overflow-hidden text-break text-wrap">
+                            <h5 class="alert-heading fw-bold"><i class="fas fa-times-circle me-2"></i>Payment Rejected!</h5>
+                            <p class="mb-0">Unfortunately, your payment verification failed. Please contact the administration or submit a valid transaction ID.</p>
+                    @else
+                        <div class="alert alert-info border-0 shadow-sm overflow-hidden text-break text-wrap">
+                            <h5 class="alert-heading fw-bold"><i class="fas fa-clock me-2"></i>Payment Pending Review</h5>
+                            <p class="mb-0">You have successfully submitted your payment details. Please wait for admin verification.</p>
+                    @endif
                         <hr>
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-4">
                                 <strong>Transaction ID:</strong> <br>
-                                <span class="badge bg-light text-dark border">{{ $payment->transaction_id }}</span>
+                                <span class="badge bg-light text-dark border text-wrap text-break">{{ $payment->transaction_id }}</span>
                             </div>
                             <div class="col-md-4">
                                 <strong>Method:</strong> <br> {{ $payment->platform ?? 'N/A' }}
@@ -222,6 +231,8 @@
                                 <strong>Status:</strong> <br>
                                 @if ($payment->payment_status == 1)
                                     <span class="badge bg-success">Approved</span>
+                                @elseif ($payment->payment_status == 2)
+                                    <span class="badge bg-danger">Rejected</span>
                                 @else
                                     <span class="badge bg-warning text-dark">Pending Review</span>
                                 @endif
@@ -298,7 +309,7 @@
 
                     <div class="modal-body">
 
-                        <ul class="nav nav-tabs mb-3" id="profileTabs" role="tablist">
+                        <ul class="nav nav-tabs mb-3 flex-nowrap text-nowrap overflow-x-auto pb-1" id="profileTabs" role="tablist" style="scrollbar-width: none; -webkit-overflow-scrolling: touch;">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active fw-bold" id="coach-tab" data-bs-toggle="tab"
                                     data-bs-target="#coach" type="button" role="tab">Coach Info</button>
@@ -359,6 +370,11 @@
                                             value="{{ $user->mem_1_name }}">
                                     </div>
                                     <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Student ID</label>
+                                        <input type="text" class="form-control" name="mem_1_student_id"
+                                            value="{{ $user->mem_1_student_id }}">
+                                    </div>
+                                    <div class="col-md-6">
                                         <label class="form-label small fw-bold">Email</label>
                                         <input type="email" class="form-control" name="mem_1_email"
                                             value="{{ $user->mem_1_email }}">
@@ -395,6 +411,11 @@
                                             value="{{ $user->mem_2_name }}">
                                     </div>
                                     <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Student ID</label>
+                                        <input type="text" class="form-control" name="mem_2_student_id"
+                                            value="{{ $user->mem_2_student_id }}">
+                                    </div>
+                                    <div class="col-md-6">
                                         <label class="form-label small fw-bold">Email</label>
                                         <input type="email" class="form-control" name="mem_2_email"
                                             value="{{ $user->mem_2_email }}">
@@ -429,6 +450,11 @@
                                         <label class="form-label small fw-bold">Name</label>
                                         <input type="text" class="form-control" name="mem_3_name"
                                             value="{{ $user->mem_3_name }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Student ID</label>
+                                        <input type="text" class="form-control" name="mem_3_student_id"
+                                            value="{{ $user->mem_3_student_id }}">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Email</label>

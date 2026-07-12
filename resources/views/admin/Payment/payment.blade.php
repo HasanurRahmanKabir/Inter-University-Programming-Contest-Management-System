@@ -7,7 +7,7 @@
                 <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h5 class="mb-0 text-secondary">Payment Verification</h5>
+                <h5 class="mb-0 text-secondary d-none d-sm-block">Payment Verification</h5>
                 <div class="ms-auto d-flex align-items-center">
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark"
@@ -35,6 +35,20 @@
         </nav>
 
         <div class="container-fluid p-4">
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <div class="row g-4 mb-4">
                 <div class="col-md-4">
@@ -139,7 +153,7 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($payment as $data)
+                            @forelse ($payment as $data)
                                 <tr class="table-warning bg-opacity-10 align-middle">
                                     <td>{{ $data->payment_id }}</td>
                                     <td class="fw-bold">{{ $data->team_name }}</td>
@@ -168,9 +182,21 @@
                                         </button>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted py-5">
+                                        <i class="fas fa-wallet mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                                        <h5 class="fw-bold mb-1">No payments found</h5>
+                                        <p class="mb-0 small">There are no payment records matching your search or filter.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-end">
+                    {{ $payment->appends(request()->query())->links('pagination::bootstrap-5') }}
                 </div>
             </div>
 
@@ -251,17 +277,5 @@
         </div>
     @endforeach
 
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const toggleBtn = document.getElementById('sidebarToggle');
-
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('active');
-                if (overlay) overlay.classList.toggle('active');
-            });
-        }
-    </script>
 @endsection
 
