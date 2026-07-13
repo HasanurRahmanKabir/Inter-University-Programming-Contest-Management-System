@@ -15,6 +15,16 @@ class ContestController extends Controller
     }
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'contest_start_date' => 'required|date',
+            'contest_end_date' => 'required|date|after_or_equal:contest_start_date',
+            'registration_start_date' => 'required|date',
+            'registration_end_date' => 'required|date|after_or_equal:registration_start_date',
+            'status' => 'required|boolean',
+        ]);
+
         $insert = Contest::create([
             'contest_id' => $request->contest_id,
             'title' => $request->title,
@@ -29,9 +39,21 @@ class ContestController extends Controller
 
         return redirect('admin/dashboard/contest')->with('success', 'Contest Added Successfully');
     }
+    
     public function update(Request $request, $contest_id)
     {
         $contest = Contest::findOrFail($contest_id);
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'contest_start_date' => 'required|date',
+            'contest_end_date' => 'required|date|after_or_equal:contest_start_date',
+            'registration_start_date' => 'required|date',
+            'registration_end_date' => 'required|date|after_or_equal:registration_start_date',
+            'status' => 'required|boolean',
+        ]);
+
         $contest->update([
             'title' => $request->title,
             'description' => $request->description,

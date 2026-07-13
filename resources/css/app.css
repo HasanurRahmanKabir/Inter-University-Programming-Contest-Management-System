@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-/* যদি এই প্যাকেজটি ইনস্টল করা না থাকে তবে এরর দিতে পারে, তাই সাবধানে ব্যবহার করুন */
 @import "tw-animate-css";
 
 @source '../views';
@@ -35,7 +34,6 @@
     --color-input: var(--input);
     --color-ring: var(--ring);
 
-    /* সাউন্ডবার বা সাইডবার কনফিগারেশন */
     --color-sidebar: var(--sidebar);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar-primary: var(--sidebar-primary);
@@ -47,7 +45,7 @@
 }
 
 :root {
-    --background: 0 0% 100%; /* oklch এর বদলে সহজ করার জন্য HSL/Hex ব্যবহার করা যেতে পারে, তবে v4 এ এটি কাজ করে */
+    --background: 0 0% 100%; 
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -68,7 +66,6 @@
     --ring: 240 5.9% 10%;
     --radius: 0.625rem;
     
-    /* সাইডবার */
     --sidebar: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -100,7 +97,6 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     
-    /* সাইডবার ডার্ক মোড */
     --sidebar: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

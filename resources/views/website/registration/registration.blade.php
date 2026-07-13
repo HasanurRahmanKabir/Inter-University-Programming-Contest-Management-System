@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Team Registration</title>
+    <link rel="icon" type="image/x-icon" href="{{ !empty($setting->favicon) ? asset($setting->favicon) : asset('content/website/image/favicon.ico') }}">
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
@@ -56,13 +57,11 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Team Name <span
                                     class="required-star">*</span></label>
-                            <input type="text" class="form-control check-db" name="team_name"
-                                placeholder="Enter unique team name" required>
+                            <input type="text" class="form-control check-db" name="team_name" placeholder="Enter unique team name" value="{{ old('team_name') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Institution Name</label>
-                            <input type="text" class="form-control" name="institute_name"
-                                placeholder="University / College Name">
+                            <input type="text" class="form-control" name="institute_name" placeholder="University / College Name" value="{{ old('institute_name') }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Password (For Team Login) <span
@@ -88,7 +87,7 @@
                     <div class="row g-4">
                         <div class="col-md-3 text-center">
                             <label class="form-label fw-bold small text-muted mb-2">Coach Photo</label>
-                            <div class="image-upload-box" onclick="document.getElementById('coachPhoto').click()">
+                            <div class="image-upload-box mx-auto" onclick="document.getElementById('coachPhoto').click()">
                                 <span class="text-muted small text-center px-2"><i
                                         class="fas fa-camera fa-2x mb-2 d-block"></i>Click to Upload</span>
                                 <img id="coachPreview">
@@ -101,27 +100,27 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold small text-muted">Coach Name</label>
-                                    <input type="text" class="form-control" name="coach_name">
+                                    <input type="text" class="form-control" name="coach_name" value="{{ old('coach_name') }}">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold small text-muted">Email <span
                                             class="required-star">*</span></label>
-                                    <input type="email" class="form-control check-db" name="coach_email" required>
+                                    <input type="email" class="form-control check-db" name="coach_email" value="{{ old('coach_email') }}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold small text-muted">Phone Number <span
                                             class="required-star">*</span></label>
-                                    <input type="text" class="form-control check-db" name="coach_phone" required>
+                                    <input type="text" class="form-control check-db" name="coach_phone" value="{{ old('coach_phone') }}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold small text-muted">T-Shirt Size</label>
                                     <select class="form-select" name="coach_t_shirt">
                                         <option value="" selected disabled>Select Size</option>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                        <option value="XXL">XXL</option>
+                                        <option value="S" {{ old('coach_t_shirt') == 'S' ? 'selected' : '' }}>S</option>
+                                        <option value="M" {{ old('coach_t_shirt') == 'M' ? 'selected' : '' }}>M</option>
+                                        <option value="L" {{ old('coach_t_shirt') == 'L' ? 'selected' : '' }}>L</option>
+                                        <option value="XL" {{ old('coach_t_shirt') == 'XL' ? 'selected' : '' }}>XL</option>
+                                        <option value="XXL" {{ old('coach_t_shirt') == 'XXL' ? 'selected' : '' }}>XXL</option>
                                     </select>
                                 </div>
                             </div>
@@ -130,14 +129,14 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="form-card h-100">
                         <div class="form-header bg-white border-bottom-0">
                             <i class="fas fa-user"></i> Member 01
                         </div>
                         <div class="form-body pt-0">
-                            <div class="image-upload-box" onclick="document.getElementById('mem1Photo').click()">
+                            <div class="image-upload-box mx-auto" onclick="document.getElementById('mem1Photo').click()">
                                 <span class="text-muted small text-center px-2"><i
                                         class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
                                 <img id="mem1Preview">
@@ -148,34 +147,34 @@
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
                                         class="required-star">*</span></label>
-                                <input type="text" class="form-control form-control-sm" name="mem_1_name" required>
+                                <input type="text" class="form-control form-control-sm" name="mem_1_name" value="{{ old('mem_1_name') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Student ID <span
                                         class="required-star">*</span></label>
                                 <input type="text" class="form-control form-control-sm check-id check-db"
-                                    name="mem_1_student_id" required>
+                                    name="mem_1_student_id" value="{{ old('mem_1_student_id') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Email <span
                                         class="required-star">*</span></label>
                                 <input type="email" class="form-control form-control-sm check-email check-db"
-                                    name="mem_1_email" required>
+                                    name="mem_1_email" value="{{ old('mem_1_email') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Phone</label>
                                 <input type="text" class="form-control form-control-sm check-phone check-db"
-                                    name="mem_1_phone">
+                                    name="mem_1_phone" value="{{ old('mem_1_phone') }}">
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">T-Shirt Size</label>
                                 <select class="form-select form-select-sm" name="mem_1_t_shirt">
                                     <option value="">Select</option>
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="XXL">XXL</option>
+                                    <option value="S" {{ old('mem_1_t_shirt') == 'S' ? 'selected' : '' }}>S</option>
+                                    <option value="M" {{ old('mem_1_t_shirt') == 'M' ? 'selected' : '' }}>M</option>
+                                    <option value="L" {{ old('mem_1_t_shirt') == 'L' ? 'selected' : '' }}>L</option>
+                                    <option value="XL" {{ old('mem_1_t_shirt') == 'XL' ? 'selected' : '' }}>XL</option>
+                                    <option value="XXL" {{ old('mem_1_t_shirt') == 'XXL' ? 'selected' : '' }}>XXL</option>
                                 </select>
                             </div>
                         </div>
@@ -188,7 +187,7 @@
                             <i class="fas fa-user"></i> Member 02
                         </div>
                         <div class="form-body pt-0">
-                            <div class="image-upload-box" onclick="document.getElementById('mem2Photo').click()">
+                            <div class="image-upload-box mx-auto" onclick="document.getElementById('mem2Photo').click()">
                                 <span class="text-muted small text-center px-2"><i
                                         class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
                                 <img id="mem2Preview">
@@ -199,34 +198,34 @@
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
                                         class="required-star">*</span></label>
-                                <input type="text" class="form-control form-control-sm" name="mem_2_name" required>
+                                <input type="text" class="form-control form-control-sm" name="mem_2_name" value="{{ old('mem_2_name') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Student ID <span
                                         class="required-star">*</span></label>
                                 <input type="text" class="form-control form-control-sm check-id check-db"
-                                    name="mem_2_student_id" required>
+                                    name="mem_2_student_id" value="{{ old('mem_2_student_id') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Email <span
                                         class="required-star">*</span></label>
                                 <input type="email" class="form-control form-control-sm check-email check-db"
-                                    name="mem_2_email" required>
+                                    name="mem_2_email" value="{{ old('mem_2_email') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Phone</label>
                                 <input type="text" class="form-control form-control-sm check-phone check-db"
-                                    name="mem_2_phone">
+                                    name="mem_2_phone" value="{{ old('mem_2_phone') }}">
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">T-Shirt Size</label>
                                 <select class="form-select form-select-sm" name="mem_2_t_shirt">
                                     <option value="">Select</option>
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="XXL">XXL</option>
+                                    <option value="S" {{ old('mem_2_t_shirt') == 'S' ? 'selected' : '' }}>S</option>
+                                    <option value="M" {{ old('mem_2_t_shirt') == 'M' ? 'selected' : '' }}>M</option>
+                                    <option value="L" {{ old('mem_2_t_shirt') == 'L' ? 'selected' : '' }}>L</option>
+                                    <option value="XL" {{ old('mem_2_t_shirt') == 'XL' ? 'selected' : '' }}>XL</option>
+                                    <option value="XXL" {{ old('mem_2_t_shirt') == 'XXL' ? 'selected' : '' }}>XXL</option>
                                 </select>
                             </div>
                         </div>
@@ -239,7 +238,7 @@
                             <i class="fas fa-user"></i> Member 03
                         </div>
                         <div class="form-body pt-0">
-                            <div class="image-upload-box" onclick="document.getElementById('mem3Photo').click()">
+                            <div class="image-upload-box mx-auto" onclick="document.getElementById('mem3Photo').click()">
                                 <span class="text-muted small text-center px-2"><i
                                         class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
                                 <img id="mem3Preview">
@@ -250,34 +249,34 @@
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
                                         class="required-star">*</span></label>
-                                <input type="text" class="form-control form-control-sm" name="mem_3_name" required>
+                                <input type="text" class="form-control form-control-sm" name="mem_3_name" value="{{ old('mem_3_name') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Student ID <span
                                         class="required-star">*</span></label>
                                 <input type="text" class="form-control form-control-sm check-id check-db"
-                                    name="mem_3_student_id" required>
+                                    name="mem_3_student_id" value="{{ old('mem_3_student_id') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Email <span
                                         class="required-star">*</span></label>
                                 <input type="email" class="form-control form-control-sm check-email check-db"
-                                    name="mem_3_email" required>
+                                    name="mem_3_email" value="{{ old('mem_3_email') }}" required>
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Phone</label>
                                 <input type="text" class="form-control form-control-sm check-phone check-db"
-                                    name="mem_3_phone">
+                                    name="mem_3_phone" value="{{ old('mem_3_phone') }}">
                             </div>
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">T-Shirt Size</label>
                                 <select class="form-select form-select-sm" name="mem_3_t_shirt">
                                     <option value="">Select</option>
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="XXL">XXL</option>
+                                    <option value="S" {{ old('mem_3_t_shirt') == 'S' ? 'selected' : '' }}>S</option>
+                                    <option value="M" {{ old('mem_3_t_shirt') == 'M' ? 'selected' : '' }}>M</option>
+                                    <option value="L" {{ old('mem_3_t_shirt') == 'L' ? 'selected' : '' }}>L</option>
+                                    <option value="XL" {{ old('mem_3_t_shirt') == 'XL' ? 'selected' : '' }}>XL</option>
+                                    <option value="XXL" {{ old('mem_3_t_shirt') == 'XXL' ? 'selected' : '' }}>XXL</option>
                                 </select>
                             </div>
                         </div>
@@ -300,13 +299,15 @@
 
                     <input type="hidden" name="captcha_verified" id="captcha_verified" value="0">
 
-                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" id="refreshCaptcha">
-                        <i class="fas fa-redo me-1"></i> New
-                    </button>
-                    <button type="button" class="btn btn-sm btn-primary ms-2" id="verifyCaptcha">
-                        <i class="fas fa-check me-1"></i> Verify
-                    </button>
-                    <div id="captchaMessage"></div>
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="refreshCaptcha">
+                            <i class="fas fa-redo me-1"></i> New
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary" id="verifyCaptcha">
+                            <i class="fas fa-check me-1"></i> Verify
+                        </button>
+                    </div>
+                    <div id="captchaMessage" class="mt-2"></div>
                 </div>
 
                 <div class="form-check d-inline-block mb-3">
@@ -315,11 +316,11 @@
                         I agree to the <a href="{{ url('/rules') }}">Contest Rules</a>.
                     </label>
                 </div>
-                <br>
-
-                <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill fw-bold shadow">
-                    <i class="fas fa-paper-plane me-2"></i> Submit Registration
-                </button>
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-primary btn-lg px-4 rounded-pill fw-bold shadow w-100" style="max-width: 350px;">
+                        <i class="fas fa-paper-plane me-2"></i> Submit Registration
+                    </button>
+                </div>
             </div>
         </form>
     </div>
@@ -477,3 +478,4 @@
 </body>
 
 </html>
+

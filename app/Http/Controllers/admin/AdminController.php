@@ -16,6 +16,14 @@ class AdminController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:admin_infos,email',
+            'phone' => 'nullable|string|max:20',
+            'pass' => 'required|min:6',
+            'role' => 'required|in:0,1',
+            'status' => 'required|in:0,1',
+        ]);
 
         $insert = Admin::create([
             'name' => $request->name,
@@ -26,24 +34,39 @@ class AdminController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect('admin/dashboard/admin')->with('success', 'admin added successfully');
+        return redirect('admin/dashboard/admin')->with('success', 'Admin Added Successfully');
     }
+
     public function update(Request $request, $admin_id)
     {
         $admin = Admin::findOrFail($admin_id);
-        $admin->update([
+        
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:admin_infos,email,' . $admin_id . ',admin_id',
+            'phone' => 'nullable|string|max:20',
+            'pass' => 'nullable|min:6',
+            'status' => 'required|in:0,1',
+        ]);
+
+        $updateData = [
             'name' => $request->full_name,
             'email' => $request->email,
             'phone' => $request->phone,
             'status' => $request->status,
-        ]);
-        
-        return redirect('admin/dashboard/admin')->with('success', 'Admin updated successfully');
+        ];
+
+        if ($request->filled('pass')) {
+            $updateData['password'] = bcrypt($request->pass);
+        }
+
+        $admin->update($updateData);
+        return redirect('admin/dashboard/admin')->with('success', 'Admin Updated Successfully');
     }
     public function destroy($id)
     {
         Admin::where('admin_id', $id)->delete();
-        return back()->with('success', 'Admin deleted successfully');
+        return back()->with('success', 'Admin Deleted Successfully');
     }
 
 }

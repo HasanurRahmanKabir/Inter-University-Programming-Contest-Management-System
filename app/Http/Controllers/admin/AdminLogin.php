@@ -29,20 +29,25 @@ class AdminLogin extends Controller
 
         if (Auth::guard('admin')->attempt($credentials, $remember)) {
 
+            if (Auth::guard('admin')->user()->status == 0) {
+                Auth::guard('admin')->logout();
+                return back()->with('inactive_account', 'Your Account is Currently Inactive. Please Contact With Administrators To Active Your Account and Access your account.');
+            }
+
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.dashboard'))
-                ->with('success', 'Welcome back, Admin!');
+                ->with('success', 'Welcome Back, Admin!');
         }
 
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'The Provided Credentials Do Not Match Our Records.',
         ])->withInput($request->only('email'));
     }
     public function logout()
     {
         Auth::guard('admin')->logout();
-        return redirect('/admin/admin_login')->with('success', 'Logged out successfully.');
+        return redirect('/admin/admin_login')->with('success', 'Logged Out Successfully.');
     }
 }

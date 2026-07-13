@@ -34,7 +34,7 @@ class UserLogin extends Controller
     {
 
         $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 

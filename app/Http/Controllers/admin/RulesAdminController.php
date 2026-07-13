@@ -16,6 +16,12 @@ class RulesAdminController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'rules_headline' => 'required|string|max:255',
+            'rules_description' => 'required|string',
+            'is_published' => 'required|boolean',
+        ]);
+
         Rules::create([
             'rules_headline' => $request->rules_headline,
             'rules_description' => $request->rules_description,
@@ -27,6 +33,12 @@ class RulesAdminController extends Controller
 
     public function update(Request $request, $rules_id)
     {
+        $request->validate([
+            'rules_headline' => 'required|string|max:255',
+            'rules_description' => 'required|string',
+            'is_published' => 'required|boolean',
+        ]);
+
         $rule = Rules::findOrFail($rules_id);
         $rule->update([
             'rules_headline' => $request->rules_headline,

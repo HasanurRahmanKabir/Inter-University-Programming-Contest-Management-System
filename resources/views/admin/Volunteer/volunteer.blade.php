@@ -134,6 +134,18 @@
                 <div class="modal-body">
                     <form action="{{ url('admin/dashboard/volunteer/store') }}" method="post">
                         @csrf
+                        <input type="hidden" name="modal_id" value="addVolunteerModal">
+                        
+                        @if ($errors->any() && old('modal_id') == 'addVolunteerModal')
+                            <div class="alert alert-danger small shadow-sm">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Full Name</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Enter full name" value="{{ old('name') }}" required>
@@ -186,6 +198,18 @@
                         <form action="{{ route('admin.volunteer.update', $data->volunteer_id) }}" method="post">
                             @csrf
                             @method('put')
+                            <input type="hidden" name="modal_id" value="editVolunteerModal{{ $data->volunteer_id }}">
+                            
+                            @if ($errors->any() && old('modal_id') == 'editVolunteerModal' . $data->volunteer_id)
+                                <div class="alert alert-danger small shadow-sm">
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             <input type="hidden" name="volunteer_notice" value="{{ $data->volunteer_notice }}">
                             <div class="mb-3">
                                 <label for="editVolunteerName" class="form-label text-muted small fw-bold">Edit Full
@@ -237,11 +261,22 @@
                     <form action="{{ route('admin.volunteer.update', $data->volunteer_id) }}" method="post">
                         @csrf
                         @method('put')
+                        <input type="hidden" name="modal_id" value="noticeModal{{ $data->volunteer_id }}">
                         <input type="hidden" name="name" value="{{ $data->name }}">
                         <input type="hidden" name="email" value="{{ $data->email }}">
                         <input type="hidden" name="phone" value="{{ $data->phone }}">
                         <input type="hidden" name="status" value="{{ $data->status }}">
                         <div class="modal-body">
+                            @if ($errors->any() && old('modal_id') == 'noticeModal' . $data->volunteer_id)
+                                <div class="alert alert-danger small shadow-sm">
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             <div class="alert alert-primary d-flex align-items-center small" role="alert">
                                 <i class="fas fa-info-circle me-2"></i>
                                 <div>This message will be visible on the volunteer's dashboard.</div>
@@ -254,7 +289,7 @@
                                 <label class="form-label text-muted small fw-bold">Special Instruction
                                     (volunteer_notice)</label>
                                 <textarea name="volunteer_notice" class="form-control" rows="4"
-                                    placeholder="Ex: Report to Room 204 at 8:00 AM for kit distribution duty...">{{ $data->volunteer_notice }}</textarea>
+                                    placeholder="Ex: Report to Room 204 at 8:00 AM for kit distribution duty...">{{ old('volunteer_notice', $data->volunteer_notice) }}</textarea>
                             </div>
                         </div>
                         <div class="modal-footer">

@@ -30,6 +30,73 @@
         }
         .btn-register:hover { background-color: #2563eb; color: white; }
 
+        /* Logo Styles (matching homepage) */
+        .logo-wrapper { text-decoration: none !important; color: inherit !important; }
+        .custom-logo { height: 40px; width: auto; object-fit: contain; }
+        .custom-logo-placeholder {
+            min-height: 40px; display: flex; align-items: center; justify-content: center;
+            background: #f8f9fa; border: 1px dashed #ced4da; padding: 4px 10px;
+            color: #6c757d !important; font-size: 14px; font-weight: 500; border-radius: 4px;
+            text-align: center; line-height: 1.2;
+        }
+
+        /* Navbar Toggler Fix */
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 4px 8px;
+        }
+        .navbar-toggler:focus { box-shadow: none; }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* Mobile Navbar Spacing */
+        @media (max-width: 991.98px) {
+            .navbar { padding: 10px 0; }
+            .navbar .container { padding-left: 15px; padding-right: 15px; }
+            
+            .logo-wrapper {
+                max-width: calc(100% - 70px);
+                margin-right: 0;
+            }
+            
+            .logo-wrapper .custom-logo {
+                max-width: 100%;
+                height: auto;
+                max-height: 40px;
+            }
+
+            .navbar-collapse {
+                background-color: #0f172a; padding: 15px; margin-top: 10px;
+                border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .navbar-nav .nav-link {
+                padding: 10px 0 !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                margin-left: 0;
+            }
+
+            .navbar-nav .nav-link:last-child {
+                border-bottom: none;
+            }
+
+            .navbar-nav .btn-register {
+                display: inline-block;
+                margin-top: 10px;
+            }
+        }
+
+        /* Extreme Small Screens Fix (165px - 320px) */
+        @media (max-width: 320px) {
+            .page-header h1.display-4 { font-size: 1.5rem !important; }
+            .page-header p.lead { font-size: 0.9rem !important; }
+            .custom-logo-placeholder { padding: 2px 5px; font-size: 11px; }
+            .navbar .container { padding-left: 5px; padding-right: 5px; }
+            .btn { font-size: 0.8rem; padding: 5px 10px; }
+            body { overflow-wrap: break-word; word-wrap: break-word; }
+        }
+
         /* --- Page Header --- */
         .page-header {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);

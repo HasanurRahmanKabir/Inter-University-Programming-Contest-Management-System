@@ -4,63 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $setting->website_name ?? 'Your Website Name' }}</title>
+    <link rel="icon" type="image/x-icon" href="{{ !empty($setting->favicon) ? asset($setting->favicon) : asset('content/website/image/favicon.ico') }}">
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/homepage.css">
-    <style>
-        .gallery-img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            background-color: #000;
-
-
-        }
-
-        .carousel-item {
-            text-align: center;
-        }
-
-        .sponsor-logo {
-            height: 80px;
-            width: auto;
-            transition: all 0.3s ease-in-out;
-            border-radius: 8px;
-            background: #ffffff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 5px;
-        }
-
-        .sponsor-logo:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-        }
-    </style>
-
-
 </head>
 
 <body>
 
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            @if(!empty($setting->header_logo))
-                <img src="{{ asset($setting->header_logo) }}" alt="Logo" style="height: 40px;">
-            @else
-                <div
-                    style="height: 40px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border: 1px dashed #ced4da; padding: 0 10px; color: #6c757d; font-size: 14px; font-weight: 500; border-radius: 4px;">
-                    Upload Your Logo
-                </div>
-            @endif
+            <a class="logo-wrapper" href="{{ url('/') }}" style="display: inline-block; line-height: 0;">
+                @if(!empty($setting->header_logo))
+                    <img src="{{ asset($setting->header_logo) }}" alt="Logo" class="img-fluid custom-logo">
+                @else
+                    <div class="custom-logo-placeholder">
+                        Upload Your Logo
+                    </div>
+                @endif
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon bg-light rounded"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     @if ($isRegistrationOpen)
                         <li class="nav-item"><a class="nav-link" href="{{ url('/registration-info') }}">Registered
                                 Teams</a>
@@ -155,7 +127,7 @@
                     </p>
                     <div class="row mt-4 g-3">
 
-                        <div class="col-6">
+                        <div class="col-12 col-sm-6">
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-users fa-2x text-primary me-3"></i>
                                 <div>
@@ -164,7 +136,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-sm-6">
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-trophy fa-2x text-warning me-3"></i>
                                 <div>
@@ -247,7 +219,7 @@
                 @foreach ($notice as $data)
                     <div class="col-lg-6">
                         <div class="card notice-card p-3">
-                            <div class="d-flex justify-content-between mb-2">
+                            <div class="d-flex justify-content-between flex-wrap gap-1 mb-2">
                                 <span class="badge bg-primary">{{ $data->audience }}</span>
                                 <small class="text-muted">{{ $data->notice_date }}</small>
                             </div>
@@ -259,12 +231,9 @@
 
             </div>
 
-        </div>
-        <div class="text-center mt-4">
-            <a href="{{ url('notice-info') }}">
-                <button class="btn btn-outline-primary rounded-pill">View All Notices</button>
-            </a>
-        </div>
+            <div class="text-center mt-4">
+                <a href="{{ url('notice-info') }}" class="btn btn-outline-primary rounded-pill">View All Notices</a>
+            </div>
         </div>
     </section>
 
@@ -305,12 +274,12 @@
         <div class="container">
             <p class="text-center text-dark fw-bold mb-4 fs-3">Our Official Partners</p>
 
-            <div class="d-flex justify-content-center align-items-center flex-wrap gap-5">
+            <div class="d-flex justify-content-center align-items-center flex-wrap gap-4 gap-md-5">
 
                 @foreach ($sponsors as $sponsor)
                     @if ($sponsor->logo)
                         @if ($sponsor->link)
-                            <a href="{{ $sponsor->link }}" target="_blank" title="Visit {{ $sponsor->name }}">
+                            <a href="{{ $sponsor->link }}" target="_blank" rel="noopener noreferrer" title="Visit {{ $sponsor->name }}">
                                 <img src="{{ asset($sponsor->logo) }}" alt="{{ $sponsor->name }}" class="sponsor-logo"
                                     style="max-height: 80px; max-width: 150px; object-fit: contain;">
                             </a>
@@ -334,15 +303,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    @if(!empty($setting->footer_logo))
-                        <img src="{{ asset($setting->footer_logo) }}" alt="University Logo" class="navbar-logo"
-                            style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px;">
-                    @else
-                        <div
-                            style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px; display: inline-flex; align-items: center; justify-content: center; background: #f8f9fa; border: 1px dashed #ced4da; padding: 0 15px; border-radius: 4px; color: #6c757d; font-size: 14px; font-weight: 500;">
-                            Upload Your Logo
-                        </div>
-                    @endif
+                    <a class="logo-wrapper" href="{{ url('/') }}" style="display: inline-block; line-height: 0; margin-bottom: 25px;">
+                        @if(!empty($setting->footer_logo))
+                            <img src="{{ asset($setting->footer_logo) }}" alt="University Logo" class="img-fluid custom-logo">
+                        @else
+                            <div class="custom-logo-placeholder">
+                                Upload Your Logo
+                            </div>
+                        @endif
+                    </a>
 
                     <p class="small text-white-50">
                         {{ !empty($setting->footer_description) ? $setting->footer_description : 'Your Footer Description' }}

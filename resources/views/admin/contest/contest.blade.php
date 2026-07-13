@@ -142,6 +142,18 @@
                 <div class="modal-body">
                     <form action="{{ url('admin/dashboard/contest/store') }}" method="post">
                         @csrf
+                        <input type="hidden" name="modal_id" value="addContestModal">
+                        
+                        @if ($errors->any() && old('modal_id') == 'addContestModal')
+                            <div class="alert alert-danger small shadow-sm">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="row g-3">
                             <div class="col-md-12">
                                 <label class="form-label text-muted small fw-bold">Contest Title</label>
@@ -211,6 +223,18 @@
                         <form action="{{ route('admin.contest.update', $data->contest_id) }}" method="post">
                             @csrf
                             @method('put')
+                            <input type="hidden" name="modal_id" value="editContestModal{{ $data->contest_id }}">
+                            
+                            @if ($errors->any() && old('modal_id') == 'editContestModal' . $data->contest_id)
+                                <div class="alert alert-danger small shadow-sm">
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             <div class="row g-3">
                                 <div class="col-md-12">
                                     <label for="editContestTitle{{ $data->contest_id }}" class="form-label text-muted small fw-bold">Edit Contest Title</label>

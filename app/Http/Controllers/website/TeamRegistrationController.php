@@ -124,7 +124,7 @@ class TeamRegistrationController extends Controller
             'is_selected' => 0,
         ]);
 
-        return redirect()->route('user.login')->with('success', 'Team registration completed successfully! Please login.');
+        return redirect()->route('user.login')->with('success', 'Team Registration Completed Successfully! Please Login.');
     }
 
     private function uploadImage($file, $prefix)

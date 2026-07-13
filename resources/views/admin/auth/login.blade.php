@@ -13,11 +13,11 @@
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="login-card">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100 px-3 px-sm-0">
+        <div class="login-card p-4 p-sm-5 mx-auto w-100">
             <div class="brand-logo">
                 @if(!empty($setting->header_logo))
-                    <img src="{{ asset($setting->header_logo) }}" alt="SUBIUPC Logo" class="w-100 h-100 rounded-circle">
+                    <img src="{{ asset($setting->header_logo) }}" alt="Your Logo" class="w-100 h-100 rounded-circle" style="object-fit: contain;">
                 @else
                     <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border"
                         style="background: #f8f9fa; color: #6c757d; font-size: 10px; text-align: center;">
@@ -27,9 +27,16 @@
             </div>
 
             <h4 class="text-center fw-bold mb-1">Welcome Back!</h4>
-            <p class="text-center text-muted small mb-4">
+            <p class="text-center text-muted small mb-4 text-break">
                 Sign in to manage {{ $setting->website_name ?? 'Your Website Name' }} Admin Panel
             </p>
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show small" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             @if(session('error'))
                 <div class="alert alert-danger alert-dismissible fade show small" role="alert">
@@ -37,6 +44,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+
+
 
             @if($errors->any())
                 <div class="alert alert-danger small">
@@ -76,7 +85,6 @@
                         <input type="checkbox" name="remember" value="1" class="form-check-input" id="rememberCheck" />
                         <label class="form-check-label small text-muted" for="rememberCheck">Remember me</label>
                     </div>
-                    <a href="#" class="small text-decoration-none text-primary fw-bold">Forgot Password?</a>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 rounded-pill mb-3">
@@ -108,6 +116,34 @@
             }
         }
     </script>
+
+    @if(session('inactive_account'))
+        <!-- Inactive Account Modal -->
+        <div class="modal fade" id="inactiveAccountModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered px-3">
+                <div class="modal-content border-0 shadow-lg" style="border-radius: 1rem;">
+                    <div class="modal-header border-0 pb-0 justify-content-center mt-4">
+                        <div class="text-danger bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-user-lock fa-3x opacity-75"></i>
+                        </div>
+                    </div>
+                    <div class="modal-body text-center pb-5 pt-4 px-sm-5">
+                        <h4 class="fw-bold text-dark mb-3">Account Inactive</h4>
+                        <p class="text-muted mb-4" style="line-height: 1.6;">
+                            {{ session('inactive_account') }}
+                        </p>
+                        <button type="button" class="btn btn-danger px-5 py-2 rounded-pill fw-medium shadow-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var inactiveModal = new bootstrap.Modal(document.getElementById('inactiveAccountModal'));
+                inactiveModal.show();
+            });
+        </script>
+    @endif
 </body>
 
 </html>

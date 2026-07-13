@@ -23,7 +23,7 @@ use App\Http\Controllers\website\WebsiteController;
 use App\Http\Controllers\website\RegisterInfoController;
 use App\Http\Controllers\website\NoticeInfoController;
 use App\Http\Controllers\website\RulesController;
-use App\Http\Controllers\Admin\WebsiteSettingController;
+use App\Http\Controllers\admin\WebsiteSettingController;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan; 
@@ -197,5 +197,3 @@ Route::get('/run-seeder', function () {
         return "Error occurred while running seeder: " . $e->getMessage();
     }
 });
-
-require __DIR__ . '/settings.php';

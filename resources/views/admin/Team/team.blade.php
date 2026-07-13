@@ -159,7 +159,17 @@
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-
+                            <input type="hidden" name="modal_id" value="editTeamModal{{ $data->team_id }}">
+                            
+                            @if ($errors->any() && old('modal_id') == 'editTeamModal' . $data->team_id)
+                                <div class="alert alert-danger small shadow-sm">
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             
                             <div class="card border-0 shadow-sm mb-4">
                                 <div class="card-header bg-white fw-bold">Coach & Institute Information</div>

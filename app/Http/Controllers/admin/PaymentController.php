@@ -49,6 +49,13 @@ class PaymentController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'platform' => 'required|string|max:255',
+            'transaction_id' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:0',
+            'payment_status' => 'required|boolean',
+        ]);
+
         $payment = Payment::findOrFail($id);
         $payment->platform = $request->platform;
         $payment->transaction_id = $request->transaction_id;

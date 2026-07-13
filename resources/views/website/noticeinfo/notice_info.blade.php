@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ $contest->website_name ?? 'Your Website Name' }} - Notices</title>
+    <title>{{ $setting->website_name ?? 'Your Website Name' }} - Notices</title>
+    <link rel="icon" type="image/x-icon" href="{{ !empty($setting->favicon) ? asset($setting->favicon) : asset('content/website/image/favicon.ico') }}">
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
@@ -17,22 +18,21 @@
 
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a href="{{ url('') }}" class="text-decoration-none">
+            <a class="logo-wrapper" href="{{ url('/') }}" style="display: block; line-height: 0;">
                 @if(!empty($setting->header_logo))
-                    <img src="{{ asset($setting->header_logo) }}" alt="University Logo" class="navbar-logo"
-                        style="height: 40px; margin-left: 15px; vertical-align: middle;">
+                    <img src="{{ asset($setting->header_logo) }}" alt="Logo" class="img-fluid custom-logo">
                 @else
-                    <div
-                        style="height: 40px; margin-left: 15px; vertical-align: middle; display: inline-flex; align-items: center; justify-content: center; background: #f8f9fa; border: 1px dashed #ced4da; padding: 0 15px; border-radius: 4px; color: #6c757d; font-size: 14px; font-weight: 500;">
+                    <div class="custom-logo-placeholder">
                         Upload Your Logo
                     </div>
                 @endif
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon bg-light rounded"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
                     @if($isRegistrationOpen)
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/registration-info') }}">Registered Teams</a>
@@ -72,9 +72,9 @@
                     @if($activeNotices->count() > 0)
                         @foreach ($activeNotices as $data)
                             <div class="card notice-card p-3 mb-3 shadow-sm border-0">
-                                <div class="d-flex justify-content-between mb-2">
+                                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
                                     <span class="badge bg-primary">{{ $data->audience }}</span>
-                                    <small class="text-muted"><i
+                                    <small class="text-muted" style="white-space: nowrap;"><i
                                             class="fas fa-calendar-alt me-1"></i>{{ $data->notice_date }}</small>
                                 </div>
                                 <h5 class="fw-bold mb-1">{{ $data->title }}</h5>
@@ -108,15 +108,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    @if(!empty($setting->footer_logo))
-                        <img src="{{ asset($setting->footer_logo) }}" alt="University Logo" class="navbar-logo"
-                            style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px;">
-                    @else
-                        <div
-                            style="height: 40px; margin-left: 15px; vertical-align: middle; margin-bottom: 25px; display: inline-flex; align-items: center; justify-content: center; background: #f8f9fa; border: 1px dashed #ced4da; padding: 0 15px; border-radius: 4px; color: #6c757d; font-size: 14px; font-weight: 500;">
-                            Upload Your Logo
-                        </div>
-                    @endif
+                    <a class="logo-wrapper" href="{{ url('/') }}" style="display: inline-block; line-height: 0; margin-bottom: 25px;">
+                        @if(!empty($setting->footer_logo))
+                            <img src="{{ asset($setting->footer_logo) }}" alt="University Logo" class="img-fluid custom-logo">
+                        @else
+                            <div class="custom-logo-placeholder">
+                                Upload Your Logo
+                            </div>
+                        @endif
+                    </a>
 
                     <p class="small text-white-50">
                         {{ $setting->footer_description ?? 'Your Footer Description' }}
@@ -171,15 +171,15 @@
                     </p>
                     <div class="mt-3">
                         <a href="{{ !empty($setting->facebook_link) ? $setting->facebook_link : 'javascript:void(0)' }}"
-                            class="me-3 text-white">
+                            class="me-3 text-white" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-facebook fa-lg"></i>
                         </a>
                         <a href="{{ !empty($setting->linkedin_link) ? $setting->linkedin_link : 'javascript:void(0)' }}"
-                            class="me-3 text-white">
+                            class="me-3 text-white" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-linkedin fa-lg"></i>
                         </a>
                         <a href="{{ !empty($setting->youtube_link) ? $setting->youtube_link : 'javascript:void(0)' }}"
-                            class="me-3 text-white">
+                            class="me-3 text-white" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube fa-lg"></i>
                         </a>
                     </div>
@@ -209,6 +209,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
         body {

@@ -90,3 +90,14 @@
             margin: 0 10px;
         }
         .step.active { background: #3b82f6; color: white; box-shadow: 0 4px 10px rgba(59,130,246,0.3); }
+
+        /* Extreme Small Screens Fix (165px - 320px) */
+        @media (max-width: 320px) {
+            body { overflow-wrap: break-word; word-wrap: break-word; }
+            .form-body { padding: 15px; }
+            .form-header { padding: 10px 15px; font-size: 14px; }
+            .captcha-box { padding: 15px !important; }
+            .captcha-box .d-flex { flex-wrap: wrap; gap: 5px !important; }
+            .btn { white-space: normal; height: auto; line-height: 1.3; }
+            .rounded-pill { border-radius: 8px !important; }
+        }

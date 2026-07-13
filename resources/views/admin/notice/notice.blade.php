@@ -184,6 +184,17 @@
                 <div class="modal-body">
                     <form action="{{ url('admin/dashboard/notice/store') }}" method="post">
                         @csrf
+                        <input type="hidden" name="modal_id" value="createNoticeModal">
+                        
+                        @if ($errors->any() && old('modal_id') == 'createNoticeModal')
+                            <div class="alert alert-danger small shadow-sm">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Notice Title</label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Enter title" value="{{ old('title') }}" required>
@@ -245,6 +256,17 @@
                     <form id="editNoticeForm" action="" method="post">
                         @csrf
                         @method('put')
+                        <input type="hidden" name="modal_id" value="editNoticeModal">
+                        
+                        @if ($errors->any() && old('modal_id') == 'editNoticeModal')
+                            <div class="alert alert-danger small shadow-sm">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="mb-3">
                             <label for="editNoticeTitle" class="form-label text-muted small fw-bold">Edit Notice Title</label>
                             <input type="text" id="editNoticeTitle" name="title" class="form-control"

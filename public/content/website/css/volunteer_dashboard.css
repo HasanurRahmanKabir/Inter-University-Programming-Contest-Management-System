@@ -189,3 +189,36 @@
                 height: 120px;
             }
         }
+
+        /* Extreme Small Screens Fix (165px - 320px) */
+        @media (max-width: 320px) {
+            body { overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; }
+            .dashboard-header h1 { font-size: 18px; }
+            .dashboard-header .subtitle { font-size: 11px; }
+            .info-card { padding: 12px; }
+            .stat-card { padding: 15px 10px; }
+            .stat-card h3 { font-size: 24px; }
+            
+            /* Card Headers */
+            .info-card-header i { font-size: 18px; margin-right: 8px; }
+            .info-card-header h5 { font-size: 15px; line-height: 1.2; word-wrap: break-word; overflow-wrap: break-word; }
+            
+            /* Special Instruction Alert */
+            .alert i.fa-bullhorn { font-size: 16px; margin-right: 8px !important; }
+            .alert h6 { font-size: 13px; word-wrap: break-word; }
+            .alert p { font-size: 12px; }
+            
+            /* Table Fixes: Prevent squishing, allow horizontal scroll */
+            table th, table td { white-space: nowrap !important; font-size: 13px; padding: 8px !important; }
+            
+            /* Button Fixes */
+            .btn { white-space: normal; height: auto; line-height: 1.3; font-size: 13px; }
+            .table-responsive .d-flex.justify-content-end {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .table-responsive .d-flex.justify-content-end .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }

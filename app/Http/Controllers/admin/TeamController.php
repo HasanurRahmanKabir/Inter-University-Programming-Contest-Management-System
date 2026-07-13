@@ -50,6 +50,29 @@ class TeamController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'team_name' => 'required|string|max:255',
+            'institute_name' => 'required|string|max:255',
+            'coach_name' => 'required|string|max:255',
+            'coach_email' => 'required|email|max:255',
+            'coach_phone' => 'required|string|max:20',
+            'coach_t_shirt' => 'required|string',
+            
+            'mem_1_name' => 'required|string|max:255',
+            'mem_1_t_shirt' => 'required|string',
+            
+            'mem_2_name' => 'required|string|max:255',
+            'mem_2_t_shirt' => 'required|string',
+            
+            'mem_3_name' => 'nullable|string|max:255',
+            'mem_3_t_shirt' => 'nullable|string',
+            
+            'coach_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'mem_1_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'mem_2_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'mem_3_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
         $team = TeamRegistration::findOrFail($id);
         $input = $request->except(['coach_photo', 'mem_1_photo', 'mem_2_photo', 'mem_3_photo']);
         if (!$request->has('is_selected')) {

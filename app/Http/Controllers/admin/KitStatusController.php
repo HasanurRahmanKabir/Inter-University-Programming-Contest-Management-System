@@ -59,6 +59,14 @@ class KitStatusController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'kitid' => 'nullable|string|max:255',
+            'teamid' => 'required|exists:team_registration_infos,team_id',
+            'kitreceived' => 'required|boolean',
+            'receiveddate' => 'nullable|date',
+            'comments' => 'nullable|string'
+        ]);
+
         $insert = KitStatus::create([
             'kit_id' => $request->kitid,
             'team_id' => $request->teamid,
@@ -72,6 +80,12 @@ class KitStatusController extends Controller
 
     public function update(Request $request, $team_id)
     {
+        $request->validate([
+            'kit_received' => 'required|boolean',
+            'received_date' => 'nullable|date',
+            'comments' => 'nullable|string'
+        ]);
+
         KitStatus::updateOrCreate(
             ['team_id' => $team_id],
             [

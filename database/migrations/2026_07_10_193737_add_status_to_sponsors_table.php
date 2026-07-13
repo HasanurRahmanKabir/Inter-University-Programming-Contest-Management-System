@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sponsor_infos', function (Blueprint $table) {
-            $table->tinyInteger('status')->default(1)->after('details'); // 1 = Active, 0 = Inactive
+            $table->tinyInteger('status')->default(1)->after('details'); 
         });
     }
 

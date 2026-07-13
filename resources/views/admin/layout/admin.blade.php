@@ -76,7 +76,17 @@
                 </div>
                 <form action="{{ route('admin.profile.update') }}" method="POST">
                     @csrf
+                    <input type="hidden" name="modal_id" value="profileModal">
                     <div class="modal-body">
+                        @if ($errors->any() && old('modal_id') == 'profileModal')
+                            <div class="alert alert-danger small shadow-sm">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="text-center mb-3">
                             <img id="profileAvatar"
                                 src="https://ui-avatars.com/api/?name={{ urlencode(Auth::guard('admin')->user()->name) }}&background=0D8ABC&color=fff"
@@ -129,23 +139,39 @@
                     <h5 class="modal-title fw-bold">Account Settings</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('admin.profile.password') }}" method="POST">
+                <form action="{{ route('admin.profile.password') }}" method="POST" autocomplete="off">
                     @csrf
+                    <input type="hidden" name="modal_id" value="settingsModal">
                     <div class="modal-body">
+                        @if ($errors->any() && old('modal_id') == 'settingsModal')
+                            <div class="alert alert-danger small shadow-sm">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label text-muted small fw-bold">Current Password</label>
                             <input type="password" name="current_password" id="currentPassword" class="form-control"
-                                placeholder="Enter current password" required />
+                                placeholder="Enter current password" required autocomplete="new-password" />
+                            @error('current_password')
+                                <div class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="newPassword" class="form-label text-muted small fw-bold">New Password</label>
                             <input type="password" name="new_password" id="newPassword" class="form-control"
-                                placeholder="Enter new password" required />
+                                placeholder="Enter new password" required autocomplete="new-password" />
+                            @error('new_password')
+                                <div class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="confirmPassword" class="form-label text-muted small fw-bold">Confirm New Password</label>
                             <input type="password" name="new_password_confirmation" id="confirmPassword" class="form-control"
-                                placeholder="Confirm new password" required />
+                                placeholder="Confirm new password" required autocomplete="new-password" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -162,6 +188,30 @@
     </div>
     <script src="{{ asset('content/admin') }}/js/app.js"></script>
     <script src="{{ asset('content/admin') }}/js/bootstrap.bundle.min.js"></script>
+
+    @if(session('profile_success'))
+        <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-4 shadow-lg" style="z-index: 9999;" role="alert">
+            <i class="fas fa-check-circle me-2"></i> <strong>Success!</strong> {{ session('profile_success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+
+
+    @if(old('modal_id'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(function() {
+                    var modalId = '{{ old('modal_id') }}';
+                    var modalEl = document.getElementById(modalId);
+                    if(modalEl) {
+                        var modal = new bootstrap.Modal(modalEl);
+                        modal.show();
+                    }
+                }, 500);
+            });
+        </script>
+    @endif
 </body>
 
 </html>

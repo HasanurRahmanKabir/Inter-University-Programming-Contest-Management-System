@@ -77,17 +77,28 @@
 
                    <form action="{{ url('/admin/dashboard/rules_admin/store') }}" method="post">
                        @csrf
+                       <input type="hidden" name="modal_id" value="addRuleModal">
+                        
+                       @if ($errors->any() && old('modal_id') == 'addRuleModal')
+                           <div class="alert alert-danger small shadow-sm">
+                               <ul class="mb-0 ps-3">
+                                   @foreach ($errors->all() as $error)
+                                       <li>{{ $error }}</li>
+                                   @endforeach
+                               </ul>
+                           </div>
+                       @endif
                        <div class="mb-3">
                            <label for="ruleHeadline" class="form-label fw-bold">Rules Headline</label>
                            <input type="text" id="ruleHeadline" class="form-control" name="rules_headline"
-                               placeholder="e.g., General Rules, Team Requirements, Scoring Rules" required>
+                               placeholder="e.g., General Rules, Team Requirements, Scoring Rules" value="{{ old('rules_headline') }}" required>
                        </div>
 
                        <div class="mb-3">
                            <label for="ruleLines" class="form-label fw-bold">Rules Description (One per line)</label>
                            <textarea id="ruleLines" class="form-control" name="rules_description" rows="6"
                                placeholder="Enter each rule on a new line&#10;Example:&#10;- All team members must arrive 15 minutes before the contest&#10;- Cheating will result in disqualification&#10;- Mobile phones are not allowed during the contest"
-                               required></textarea>
+                               required>{{ old('rules_description') }}</textarea>
                            <small class="text-muted">Enter each rule on a separate line. Prepend with '- ' for automatic
                                formatting.</small>
                        </div>
@@ -168,6 +179,17 @@
                                                            method="post">
                                                            @csrf
                                                            @method('put')
+                                                           <input type="hidden" name="modal_id" value="editRuleModal{{ $rule->rules_id }}">
+                                                           
+                                                           @if ($errors->any() && old('modal_id') == 'editRuleModal' . $rule->rules_id)
+                                                               <div class="alert alert-danger small shadow-sm">
+                                                                   <ul class="mb-0 ps-3">
+                                                                       @foreach ($errors->all() as $error)
+                                                                           <li>{{ $error }}</li>
+                                                                       @endforeach
+                                                                   </ul>
+                                                               </div>
+                                                           @endif
 
                                                            <div class="mb-3">
                                                                <label for="editRuleHeadline{{ $rule->rules_id }}"

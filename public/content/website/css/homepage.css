@@ -11,6 +11,102 @@
             transition: all 0.3s;
         }
 
+        /* Mobile navbar toggler & dropdown */
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 4px 8px;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .logo-wrapper {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
+        .custom-logo {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .custom-logo-placeholder {
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border: 1px dashed #ced4da;
+            padding: 4px 10px;
+            color: #6c757d !important;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Extreme Small Screens Fix (165px - 320px) */
+        @media (max-width: 320px) {
+            .custom-logo-placeholder {
+                padding: 2px 5px;
+                font-size: 11px;
+            }
+            .navbar .container {
+                padding-left: 5px; padding-right: 5px;
+            }
+            body {
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar {
+                padding: 10px 0;
+            }
+
+            .navbar .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .logo-wrapper {
+                max-width: calc(100% - 70px); /* Leave room for toggler */
+                margin-right: 0;
+            }
+
+            .logo-wrapper .custom-logo {
+                max-width: 100%;
+                height: auto;
+                max-height: 40px;
+            }
+
+            .navbar-collapse {
+                background-color: #0f172a;
+                padding: 15px;
+                margin-top: 10px;
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .navbar-nav .nav-link {
+                padding: 10px 0 !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .navbar-nav .nav-link:last-child {
+                border-bottom: none;
+            }
+
+            .navbar-nav .btn-register {
+                display: inline-block;
+                margin-top: 10px;
+            }
+        }
+
         .navbar-brand {
             font-weight: 700;
             font-size: 1.5rem;
@@ -70,10 +166,18 @@
             background: rgba(255, 255, 255, 0.1);
             padding: 15px 10px;
             border-radius: 10px;
-            min-width: 70px;
+            min-width: 0; /* Remove min-width to allow shrinking on tiny screens */
+            width: calc(50% - 0.5rem); /* Default to 2x2 grid on mobile */
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 250px) {
+            .countdown-item {
+                width: 100%; /* Switch to 1 column on extremely small devices */
+                margin-bottom: 0.5rem;
+            }
         }
 
         /* Countdown numbers smaller on mobile */
@@ -96,6 +200,11 @@
             font-size: 0.9rem;
         }
 
+        body, html {
+            overflow-x: hidden;
+            word-wrap: break-word;
+        }
+
         /* Media query for tablets and above */
         @media (min-width: 768px) {
             .hero-section h1 {
@@ -108,6 +217,7 @@
 
             .countdown-item {
                 min-width: 100px;
+                width: auto; /* Reset width from mobile */
                 padding: 20px;
                 margin-bottom: 0;
             }
@@ -197,10 +307,15 @@
         /* --- Gallery --- */
         .gallery-img {
             width: 100%;
-            height: 250px;
-            object-fit: cover;
+            height: auto;
+            object-fit: contain;
+            background-color: #000;
             border-radius: 10px;
             transition: transform 0.3s;
+        }
+
+        .carousel-item {
+            text-align: center;
         }
 
         .gallery-img:hover {
@@ -209,7 +324,8 @@
 
         /* --- Sponsors --- */
         .sponsor-logo {
-            max-height: 140px;
+            height: 80px;
+            width: auto;
             transition: all 0.3s ease-in-out;
             border-radius: 8px;
             background: #ffffff;

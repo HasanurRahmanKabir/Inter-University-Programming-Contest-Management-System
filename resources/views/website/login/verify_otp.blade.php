@@ -46,8 +46,8 @@
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="login-card">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100 px-3 px-sm-0">
+        <div class="login-card p-4 p-sm-5 mx-auto w-100">
             <div class="brand-logo">
                 @if(!empty($setting->header_logo))
                     <img src="{{ asset($setting->header_logo) }}" alt="Header Logo" class="w-100 h-100 rounded-circle">

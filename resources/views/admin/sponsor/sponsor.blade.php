@@ -217,6 +217,18 @@
                 <div class="modal-body">
                     <form action="{{ url('/admin/dashboard/sponsor/store') }}" method="post" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="modal_id" value="addSponsorModal">
+                        
+                        @if ($errors->any() && old('modal_id') == 'addSponsorModal')
+                            <div class="alert alert-danger small shadow-sm">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Sponsor Name</label>
                             <input type="text" class="form-control" name="name" placeholder="Enter company name"
@@ -288,10 +300,21 @@
                             enctype="multipart/form-data">
                             @csrf
                             @method('put')
+                            <input type="hidden" name="modal_id" value="editSponsorModal{{ $data->sponsor_id }}">
+                            
+                            @if ($errors->any() && old('modal_id') == 'editSponsorModal' . $data->sponsor_id)
+                                <div class="alert alert-danger small shadow-sm">
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
                             <div class="mb-3">
                                 <label class="form-label text-muted small fw-bold">Edit Sponsor Name</label>
-                                <input type="text" class="form-control" value="{{ $data->name }}" name="name"
+                                <input type="text" class="form-control" value="{{ old('name', $data->name) }}" name="name"
                                     required>
                             </div>
 
@@ -315,7 +338,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="fas fa-link text-muted"></i></span>
                                     <input type="url" class="form-control" name="link"
-                                        value="{{ $data->link }}" placeholder="https://example.com">
+                                        value="{{ old('link', $data->link) }}" placeholder="https://example.com">
                                 </div>
                             </div>
 

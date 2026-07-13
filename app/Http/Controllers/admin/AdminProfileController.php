@@ -25,7 +25,7 @@ class AdminProfileController extends Controller
             'phone' => $request->phone,
         ]);
 
-        return back()->with('success', 'Profile updated successfully.');
+        return back()->with('profile_success', 'Profile Updated Successfully.');
     }
 
     public function updatePassword(Request $request)
@@ -38,13 +38,13 @@ class AdminProfileController extends Controller
         ]);
 
         if (!Hash::check($request->current_password, $admin->password)) {
-            return back()->withErrors(['current_password' => 'Current password does not match.']);
+            return back()->withErrors(['current_password' => 'Current Password Does Not Match.']);
         }
 
         $admin->update([
             'password' => Hash::make($request->new_password),
         ]);
 
-        return back()->with('success', 'Password changed successfully.');
+        return back()->with('profile_success', 'Password Changed Successfully.');
     }
 }

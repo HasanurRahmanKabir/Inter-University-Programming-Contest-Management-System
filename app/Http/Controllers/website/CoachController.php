@@ -36,7 +36,7 @@ class CoachController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success', 'Payment info submitted successfully! Wait for verification.');
+        return redirect()->back()->with('success', 'Payment Info Submitted Successfully! Wait for Verification.');
     }
 
     public function updateProfile(Request $request)
@@ -100,6 +100,6 @@ class CoachController extends Controller
 
         $team->update($data);
 
-        return redirect()->back()->with('success', 'Profile and Team information updated successfully!');
+        return redirect()->back()->with('success', 'Profile & Team Information Updated Successfully!');
     }
 }

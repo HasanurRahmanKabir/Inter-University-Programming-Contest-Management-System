@@ -206,3 +206,29 @@
         padding: 20px;
       }
     }
+
+    /* Extreme Small Screens Fix (165px - 320px) */
+    @media (max-width: 320px) {
+      body { overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; }
+      .dashboard-header h1 { font-size: 18px; }
+      .dashboard-header .subtitle { font-size: 11px; }
+      
+      .info-card { padding: 12px; }
+      .stat-card { padding: 15px 10px; }
+      .stat-card h3 { font-size: 24px; }
+      
+      /* Card Headers */
+      .info-card-header i { font-size: 18px; margin-right: 8px; }
+      .info-card-header h5 { font-size: 14px; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word; }
+      
+      /* Member Cards inside modal and dashboard */
+      .member-card { padding: 10px; }
+      .member-card h6 { font-size: 13px; }
+      
+      /* Buttons and Inputs */
+      .btn { white-space: normal; height: auto; line-height: 1.3; font-size: 13px; padding: 6px 10px; }
+      
+      /* Modal fixes */
+      .modal-body { padding: 10px; }
+      .nav-tabs .nav-link { padding: 8px 10px; font-size: 13px; }
+    }
