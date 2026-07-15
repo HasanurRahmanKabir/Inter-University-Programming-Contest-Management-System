@@ -26,7 +26,7 @@ use App\Http\Controllers\website\RulesController;
 use App\Http\Controllers\admin\WebsiteSettingController;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan; 
+use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\admin\AdminProfileController;
@@ -147,7 +147,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/dashboard/website-settings', [WebsiteSettingController::class, 'index']);
     Route::post('/dashboard/website-settings/update', [WebsiteSettingController::class, 'update'])->name('admin.settings.update');
     Route::get('/dashboard/website-settings/delete-image/{field}', [WebsiteSettingController::class, 'deleteImage'])->name('admin.settings.deleteImage');
-
 });
 
 //Coach & Volunteer Dashboard Routes
@@ -157,7 +156,6 @@ Route::group(['prefix' => 'coach', 'middleware' => 'auth:team'], function () {
     Route::get('/dashboard', [CoachController::class, 'index'])->name('coach.dashboard');
     Route::post('/payment/store', [CoachController::class, 'storePayment'])->name('coach.payment.store');
     Route::put('/profile/update', [CoachController::class, 'updateProfile'])->name('coach.profile.update');
-
 });
 
 // Volunteer Dashboard
@@ -189,11 +187,28 @@ Route::get('/run-seeder', function () {
             '--class' => 'Database\\Seeders\\DatabaseSeeder',
             '--force' => true
         ]);
-        
+
         return "Congratulations! Seeder executed successfully.<br>
                 Email: superadmin@gmail.com <br>
                 Password: admin123";
     } catch (\Exception $e) {
         return "Error occurred while running seeder: " . $e->getMessage();
+    }
+});
+Route::get('/speed-up', function () {
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:cache');
+    \Illuminate\Support\Facades\Artisan::call('view:cache');
+    return 'Site is fully optimized and super fast now!';
+});
+Route::get('/fresh-seed', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
+            '--seed' => true,
+            '--force' => true
+        ]);
+        return "Database wiped and seeded perfectly!";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
     }
 });

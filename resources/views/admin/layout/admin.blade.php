@@ -12,6 +12,8 @@
 </head>
 
 <body>
+<div class="flex min-h-screen">
+
     <div class="overlay" id="overlay"></div>
 
     <nav class="sidebar" id="sidebar">
@@ -186,6 +188,17 @@
             </div>
         </div>
     </div>
+
+
+    <div style="position:fixed;bottom:20px;right:20px;z-index:9999;">
+        <a href="{{ url('/') }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-success rounded-pill shadow">
+            <i class="fas fa-globe me-2"></i> Live
+        </a>
+    </div>
+</div>
     <script src="{{ asset('content/admin') }}/js/app.js"></script>
     <script src="{{ asset('content/admin') }}/js/bootstrap.bundle.min.js"></script>
 
@@ -215,4 +228,3 @@
 </body>
 
 </html>
-
