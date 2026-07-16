@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\AdminLogin;
+use App\Http\Controllers\admin\AdminProfileController;
 use App\Http\Controllers\admin\ContestController;
 use App\Http\Controllers\admin\DownloadDetailsController;
 use App\Http\Controllers\admin\GalleryController;
@@ -13,23 +14,18 @@ use App\Http\Controllers\admin\SponsorController;
 use App\Http\Controllers\admin\TeamController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\VolunteerController;
+use App\Http\Controllers\admin\WebsiteSettingController;
 use App\Http\Controllers\website\CoachController;
-use App\Http\Controllers\website\TeamMemberController;
+use App\Http\Controllers\website\ForgotPasswordController;
+use App\Http\Controllers\website\NoticeInfoController;
+use App\Http\Controllers\website\RegisterInfoController;
+use App\Http\Controllers\website\RulesController;
 use App\Http\Controllers\website\TeamRegistrationController;
 use App\Http\Controllers\website\UserLogin;
-use App\Http\Controllers\website\ForgotPasswordController;
 use App\Http\Controllers\website\VolunteersController;
 use App\Http\Controllers\website\WebsiteController;
-use App\Http\Controllers\website\RegisterInfoController;
-use App\Http\Controllers\website\NoticeInfoController;
-use App\Http\Controllers\website\RulesController;
-use App\Http\Controllers\admin\WebsiteSettingController;
-
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use Inertia\Inertia;
-use Laravel\Fortify\Features;
-use App\Http\Controllers\admin\AdminProfileController;
+use Illuminate\Support\Facades\Route;
 
 // Homepage
 Route::get('', [WebsiteController::class, 'index']);
@@ -62,15 +58,13 @@ Route::post('forgot-password/verify-otp', [ForgotPasswordController::class, 'ver
 Route::get('forgot-password/reset-password', [ForgotPasswordController::class, 'showResetForm'])->name('forgot.password.reset');
 Route::post('forgot-password/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgot.password.reset.submit');
 
-
-//Admin Authentication
+// Admin Authentication
 Route::group(['prefix' => 'admin', 'middleware' => 'guest:admin'], function () {
     Route::get('/admin_login', [AdminLogin::class, 'index'])->name('admin.login');
     Route::post('/admin_login_submit', [AdminLogin::class, 'login'])->name('admin.login.submit');
 });
 
-
-//Admin Dashboard Routes
+// Admin Dashboard Routes
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // Logout
@@ -149,7 +143,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/dashboard/website-settings/delete-image/{field}', [WebsiteSettingController::class, 'deleteImage'])->name('admin.settings.deleteImage');
 });
 
-//Coach & Volunteer Dashboard Routes
+// Coach & Volunteer Dashboard Routes
 
 // Coach Dashboard
 Route::group(['prefix' => 'coach', 'middleware' => 'auth:team'], function () {
@@ -164,20 +158,18 @@ Route::group(['prefix' => 'volunteer', 'middleware' => 'auth:volunteer'], functi
     Route::post('/kit/save', [VolunteersController::class, 'saveKitStatus'])->name('volunteer.kit.save');
 });
 
-
-
 // System/Utility Routes
 Route::get('/_boost/browser-logs', function () {
     return response('', 204);
 });
 
-
 Route::get('/fix-database', function () {
     try {
         Artisan::call('migrate:fresh', ['--force' => true]);
-        return "Congratulations! All tables have been recreated successfully.";
+
+        return 'Congratulations! All tables have been recreated successfully.';
     } catch (\Exception $e) {
-        return "Error occurred: " . $e->getMessage();
+        return 'Error occurred: '.$e->getMessage();
     }
 });
 
@@ -185,30 +177,33 @@ Route::get('/run-seeder', function () {
     try {
         Artisan::call('db:seed', [
             '--class' => 'Database\\Seeders\\DatabaseSeeder',
-            '--force' => true
+            '--force' => true,
         ]);
 
-        return "Congratulations! Seeder executed successfully.<br>
+        return 'Congratulations! Seeder executed successfully.<br>
                 Email: superadmin@gmail.com <br>
-                Password: admin123";
+                Password: admin123';
     } catch (\Exception $e) {
-        return "Error occurred while running seeder: " . $e->getMessage();
+        return 'Error occurred while running seeder: '.$e->getMessage();
     }
 });
-Route::get('/speed-up', function () {
+Route::get('/optimize-clear', function () {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     \Illuminate\Support\Facades\Artisan::call('config:cache');
+    \Illuminate\Support\Facades\Artisan::call('route:cache');
     \Illuminate\Support\Facades\Artisan::call('view:cache');
-    return 'Site is fully optimized and super fast now!';
+
+    return 'System cache cleared and performance optimized successfully!';
 });
-Route::get('/fresh-seed', function () {
+Route::get('/databasefresh-seed', function () {
     try {
         \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
             '--seed' => true,
-            '--force' => true
+            '--force' => true,
         ]);
-        return "Database wiped and seeded perfectly!";
+
+        return 'Database reset and seeded successfully!';
     } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+        return 'Error: '.$e->getMessage();
     }
 });
