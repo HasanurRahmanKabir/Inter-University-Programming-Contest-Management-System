@@ -31,6 +31,42 @@
                 Sign in to manage {{ $setting->website_name ?? 'Your Website Name' }} Admin Panel
             </p>
 
+            <!-- Theme-Matched Professional Demo Credentials Block -->
+            <div class="w-100 mb-4 overflow-hidden rounded-4 shadow-sm" style="border: 1px solid #e2e8f0; border-left: 4px solid #3b82f6;">
+                <div class="overflow-auto w-100" style="-ms-overflow-style: none; scrollbar-width: none;">
+                    <div class="demo-credentials-block p-3" style="min-width: 260px; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
+                        
+                        <div class="d-flex align-items-center flex-wrap justify-content-between gap-2 mb-3 w-100">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box d-flex align-items-center justify-content-center rounded-circle me-2 shadow-sm flex-shrink-0" style="width: 30px; height: 30px; background-color: #eff6ff; border: 1px solid #bfdbfe; color: #3b82f6;">
+                                    <i class="fas fa-shield-alt" style="font-size: 13px;"></i>
+                                </div>
+                                <span class="fw-bold text-nowrap" style="color: #1e293b; font-size: 14px;">Demo Access</span>
+                            </div>
+                            <span class="badge shadow-sm text-nowrap" style="background-color: #ffffff; color: #3b82f6; font-size: 10px; font-weight: 600; border: 1px solid #bfdbfe; padding: 6px 8px;">ONE CLICK COPY</span>
+                        </div>
+                        
+                        <div class="credential-item p-2 mb-2 rounded-3 border w-100" style="background-color: #ffffff; border-color: #e2e8f0; cursor: pointer; transition: all 0.25s;" onclick="copyDemoText('superadmin@gmail.com', this)" onmouseover="this.style.borderColor='#3b82f6'; this.style.backgroundColor='#eff6ff'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.backgroundColor='#ffffff'">
+                            <div class="d-flex align-items-center mb-1">
+                                <i class="fas fa-envelope text-primary opacity-75 me-2 flex-shrink-0" style="font-size: 13px;"></i>
+                                <span class="text-muted small fw-medium text-nowrap">Email:</span>
+                                <i class="far fa-copy text-primary opacity-50 copy-icon ms-auto flex-shrink-0" style="font-size: 13px;"></i>
+                            </div>
+                            <div class="fw-bold ps-4 text-nowrap" style="color: #0f172a; font-size: 13px;">superadmin@gmail.com</div>
+                        </div>
+                        
+                        <div class="credential-item p-2 rounded-3 border w-100" style="background-color: #ffffff; border-color: #e2e8f0; cursor: pointer; transition: all 0.25s;" onclick="copyDemoText('12345678', this)" onmouseover="this.style.borderColor='#3b82f6'; this.style.backgroundColor='#eff6ff'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.backgroundColor='#ffffff'">
+                            <div class="d-flex align-items-center mb-1">
+                                <i class="fas fa-key text-primary opacity-75 me-2 flex-shrink-0" style="font-size: 13px;"></i>
+                                <span class="text-muted small fw-medium text-nowrap">Password:</span>
+                                <i class="far fa-copy text-primary opacity-50 copy-icon ms-auto flex-shrink-0" style="font-size: 13px;"></i>
+                            </div>
+                            <div class="fw-bold ps-4 text-nowrap" style="color: #0f172a; font-size: 13px; letter-spacing: 1px;">12345678</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show small" role="alert">
                     {{ session('success') }}
@@ -114,6 +150,20 @@
                 toggleIcon.classList.remove("fa-eye");
                 toggleIcon.classList.add("fa-eye-slash");
             }
+        }
+
+        function copyDemoText(text, element) {
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = element.querySelector('.copy-icon');
+                if (icon) {
+                    icon.classList.remove('fa-copy', 'far');
+                    icon.classList.add('fa-check', 'fas', 'text-success');
+                    setTimeout(() => {
+                        icon.classList.remove('fa-check', 'fas', 'text-success');
+                        icon.classList.add('fa-copy', 'far');
+                    }, 2000);
+                }
+            });
         }
     </script>
 

@@ -46,9 +46,9 @@ Route::post('/check-duplicate-db', [TeamRegistrationController::class, 'checkDup
 Route::post('team/registration/store', [TeamRegistrationController::class, 'store']);
 
 // User Login Routes
-Route::get('website/user_login', [UserLogin::class, 'index'])->name('user.login');
-Route::post('website/user_login_submit', [UserLogin::class, 'login'])->name('user.login.submit');
-Route::post('website/user_logout', [UserLogin::class, 'logout'])->name('user.logout');
+Route::get('/login', [UserLogin::class, 'index'])->name('user.login');
+Route::post('/login/submit', [UserLogin::class, 'login'])->name('user.login.submit');
+Route::post('/logout', [UserLogin::class, 'logout'])->name('user.logout');
 
 // Forgot Password Routes
 Route::get('forgot-password', [ForgotPasswordController::class, 'showEmailForm'])->name('forgot.password');
@@ -60,8 +60,8 @@ Route::post('forgot-password/reset-password', [ForgotPasswordController::class, 
 
 // Admin Authentication
 Route::group(['prefix' => 'admin', 'middleware' => 'guest:admin'], function () {
-    Route::get('/admin_login', [AdminLogin::class, 'index'])->name('admin.login');
-    Route::post('/admin_login_submit', [AdminLogin::class, 'login'])->name('admin.login.submit');
+    Route::get('/login', [AdminLogin::class, 'index'])->name('admin.login');
+    Route::post('/login/submit', [AdminLogin::class, 'login'])->name('admin.login.submit');
 });
 
 // Admin Dashboard Routes
@@ -112,10 +112,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::delete('/dashboard/notice/delete/{notice_id}', [NoticeController::class, 'destroy']);
 
     // Rules Management
-    Route::get('/dashboard/rules_admin', [RulesAdminController::class, 'index']);
-    Route::post('/dashboard/rules_admin/store', [RulesAdminController::class, 'store']);
-    Route::put('/dashboard/rules_admin/update/{rules_id}', [RulesAdminController::class, 'update'])->name('admin.rules.update');
-    Route::delete('/dashboard/rules_admin/delete/{rules_id}', [RulesAdminController::class, 'destroy']);
+    Route::get('/dashboard/rules', [RulesAdminController::class, 'index']);
+    Route::post('/dashboard/rules/store', [RulesAdminController::class, 'store']);
+    Route::put('/dashboard/rules/update/{rules_id}', [RulesAdminController::class, 'update'])->name('admin.rules.update');
+    Route::delete('/dashboard/rules/delete/{rules_id}', [RulesAdminController::class, 'destroy']);
 
     // Download Details
     Route::get('/dashboard/downloaddetails', [DownloadDetailsController::class, 'index']);
@@ -163,30 +163,6 @@ Route::get('/_boost/browser-logs', function () {
     return response('', 204);
 });
 
-Route::get('/fix-database', function () {
-    try {
-        Artisan::call('migrate:fresh', ['--force' => true]);
-
-        return 'Congratulations! All tables have been recreated successfully.';
-    } catch (\Exception $e) {
-        return 'Error occurred: '.$e->getMessage();
-    }
-});
-
-Route::get('/run-seeder', function () {
-    try {
-        Artisan::call('db:seed', [
-            '--class' => 'Database\\Seeders\\DatabaseSeeder',
-            '--force' => true,
-        ]);
-
-        return 'Congratulations! Seeder executed successfully.<br>
-                Email: superadmin@gmail.com <br>
-                Password: admin123';
-    } catch (\Exception $e) {
-        return 'Error occurred while running seeder: '.$e->getMessage();
-    }
-});
 Route::get('/optimize-clear', function () {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     \Illuminate\Support\Facades\Artisan::call('config:cache');

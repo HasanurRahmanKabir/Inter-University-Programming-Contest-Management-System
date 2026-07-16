@@ -45,8 +45,8 @@
             <a class="{{ Request::is('admin/dashboard/downloaddetails') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/downloaddetails') }}"><i class="fas fa-download fa-lg me-2"></i>
                 Download Details</a>
-            <a class="{{ Request::is('admin/dashboard/rules_admin') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/rules_admin') }}"><i class="fas fa-clipboard-list"></i> Rules</a>
+            <a class="{{ Request::is('admin/dashboard/rules') ? 'active' : '' }}"
+                href=" {{ url('admin/dashboard/rules') }}"><i class="fas fa-clipboard-list"></i> Rules</a>
             <a class="{{ Request::is('admin/dashboard/admin') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/admin') }}"><i class="fas fa-user-cog"></i> Admins</a>
             <a class="{{ Request::is('admin/dashboard/website-settings') ? 'active' : '' }}" 

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'phone' => '01700000000',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make('12345678'),
                 'role' => 0,
                 'status' => 1,
             ]

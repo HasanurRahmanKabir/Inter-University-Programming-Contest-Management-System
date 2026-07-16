@@ -36,7 +36,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/notice-info') }}">Notices</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/rules') }}">Rules</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('website/user_login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('user.login') }}">Login</a></li>
                     <li class="nav-item ms-lg-3">
                         <a href="{{ url('team/registration') }}" class="btn btn-register shadow">Register Now</a>
                     </li>
@@ -339,11 +339,65 @@
                 row.style.display = '';
             });
         });
+
+        // Scroll to Top functionality - Independent Block
+        document.addEventListener('DOMContentLoaded', function () {
+            const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+            
+            if (scrollToTopBtn) {
+                window.addEventListener("scroll", function() {
+                    if (window.scrollY > 100) {
+                        scrollToTopBtn.classList.add("show");
+                    } else {
+                        scrollToTopBtn.classList.remove("show");
+                    }
+                });
+
+                scrollToTopBtn.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                });
+            }
+        });
     </script>
+
+    <!-- Scroll to Top Button -->
+    <a href="#" id="scrollToTopBtn" class="scroll-to-top shadow-lg" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Mobile Bottom Navigation Bar (Visible only on mobile/tablet) -->
+    <div class="mobile-bottom-nav d-lg-none fixed-bottom shadow-lg" style="padding-bottom: env(safe-area-inset-bottom); z-index: 1040;">
+        <div class="d-flex justify-content-around align-items-center py-2 px-2">
+            <a href="{{ url('/') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
+                <i class="fas fa-home fs-5 mb-1"></i>
+                <span>Home</span>
+            </a>
+            <a href="{{ url('/notice-info') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
+                <i class="fas fa-bullhorn fs-5 mb-1"></i>
+                <span>Notice</span>
+            </a>
+            <a href="{{ url('/rules') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
+                <i class="fas fa-gavel fs-5 mb-1"></i>
+                <span>Rules</span>
+            </a>
+            <a href="{{ url('/registration-info') }}" class="nav-item text-center text-decoration-none text-primary d-flex flex-column align-items-center">
+                <i class="fas fa-users fs-5 mb-1"></i>
+                <span>Teams</span>
+            </a>
+            <a href="{{ route('user.login') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
+                <i class="fas fa-user-circle fs-5 mb-1"></i>
+                <span>Login</span>
+            </a>
+        </div>
+    </div>
     <style>
         html,
         body {
-            height: 100%;
+            min-height: 100vh;
             margin: 0;
             overflow-x: hidden;
             word-wrap: break-word;
@@ -366,6 +420,90 @@
             transform: scale(1.1);
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             opacity: 0.9;
+        }
+
+        /* Mobile App Navbar Styles */
+        @media (max-width: 991.98px) {
+            footer {
+                padding-bottom: 75px !important;
+            }
+        }
+        
+        .mobile-bottom-nav {
+            background-color: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
+        }
+        
+        .mobile-bottom-nav .nav-item {
+            width: 20%;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .mobile-bottom-nav .nav-item span {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        
+        .mobile-bottom-nav .nav-item i {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .mobile-bottom-nav .nav-item:hover, .mobile-bottom-nav .nav-item:active {
+            color: #0d6efd !important;
+        }
+
+        .mobile-bottom-nav .nav-item:hover i, .mobile-bottom-nav .nav-item:active i {
+            transform: scale(1.15) translateY(-2px);
+        }
+
+        /* Scroll to Top Button Styles */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 15px; /* Moved further right */
+            background-color: #0d6efd; /* Primary Theme Color */
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4) !important;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1050;
+        }
+
+        .scroll-to-top:hover {
+            background-color: #0b5ed7;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Adjust position on mobile to prevent overlapping with bottom nav */
+        @media (max-width: 991.98px) {
+            .scroll-to-top {
+                bottom: 85px; /* Above the mobile nav bar */
+                right: 10px; /* Moved further right for mobile */
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
         }
     </style>
 </body>

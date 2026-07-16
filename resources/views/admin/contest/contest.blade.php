@@ -135,11 +135,96 @@
     <div class="modal fade" id="addContestModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Create New Contest</h5>
+                <div class="modal-header border-0 pb-0 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        <h5 class="modal-title fw-bold mb-0">Create New Contest</h5>
+                        <button type="button" class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm" style="width: 24px; height: 24px; padding: 0; display: flex; align-items: center; justify-content: center;" data-bs-toggle="collapse" data-bs-target="#addContestGuide" aria-expanded="false" title="Click for instructions">
+                            <i class="fas fa-info" style="font-size: 11px;"></i>
+                        </button>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    
+                    <div class="collapse mb-4" id="addContestGuide">
+                        <div class="w-100" style="overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;">
+                            <div class="guide-block bg-white rounded-4 shadow-sm border position-relative overflow-hidden w-100" style="border-left: 4px solid #3b82f6 !important; padding: 1.25rem; box-sizing: border-box; min-width: 280px;">
+                            <!-- Decorative Background Element -->
+                            <div class="position-absolute top-0 end-0 p-3" style="pointer-events: none; opacity: 0.05;">
+                                <i class="fas fa-lightbulb" style="font-size: 5rem; color: #3b82f6; transform: rotate(15deg);"></i>
+                            </div>
+                            
+                            <h6 class="fw-bold text-dark mb-4 d-flex align-items-center position-relative z-1" style="font-size: 1.05rem;">
+                                <div class="icon-box text-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 36px; height: 36px; background-color: rgba(13, 110, 253, 0.1);">
+                                    <i class="fas fa-book" style="font-size: 0.9rem;"></i>
+                                </div>
+                                Contest Setup Guide (Must Read)
+                            </h6>
+                            
+                            <div class="row g-4 position-relative z-1">
+                                <!-- Rule 1 -->
+                                <div class="col-md-12">
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <i class="fas fa-calendar-check text-success" style="font-size: 1.1rem;"></i>
+                                        </div>
+                                        <div class="ms-3 flex-grow-1">
+                                            <h6 class="fw-bold mb-2 text-dark" style="font-size: 0.95rem;">1. Registration Date <span class="badge text-success ms-2 fw-semibold border border-success" style="letter-spacing: 0.5px; background-color: rgba(25, 135, 84, 0.1);">CONTROLS HOMEPAGE</span></h6>
+                                            <div class="small text-muted" style="line-height: 1.7;">
+                                                <div class="mb-2 d-flex align-items-start">
+                                                    <i class="fas fa-play text-success mt-1 me-2 flex-shrink-0" style="font-size: 0.65rem; opacity: 0.75;"></i>
+                                                    <div><strong class="text-dark">Start Date:</strong> The exact time when teams can start registering. Before this, the registration system remains closed.</div>
+                                                </div>
+                                                <div class="d-flex align-items-start">
+                                                    <i class="fas fa-stop text-danger mt-1 me-2 flex-shrink-0" style="font-size: 0.65rem; opacity: 0.75;"></i>
+                                                    <div><strong class="text-dark">End Date:</strong> When registration permanently closes. Once passed, the <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">Countdown Timer stops</span> and the <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">"Register Now" button</span> along with the <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">"Registered Teams" page</span> will automatically vanish from the website.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Rule 2 -->
+                                <div class="col-md-12">
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <i class="fas fa-flag-checkered text-warning" style="font-size: 1.1rem;"></i>
+                                        </div>
+                                        <div class="ms-3 flex-grow-1">
+                                            <h6 class="fw-bold mb-1 text-dark" style="font-size: 0.95rem;">2. Contest Date</h6>
+                                            <div class="small text-muted mt-1" style="line-height: 1.6;">
+                                                This is the date of the actual programming event. It should be after registration ends. This date <em class="text-dark fw-medium border-bottom border-dark">does not</em> affect the homepage timer.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Rule 3 -->
+                                <div class="col-md-12">
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <i class="fas fa-toggle-on text-primary" style="font-size: 1.1rem;"></i>
+                                        </div>
+                                        <div class="ms-3 flex-grow-1">
+                                            <h6 class="fw-bold mb-2 text-dark" style="font-size: 0.95rem;">3. Status (Active/Inactive)</h6>
+                                            <div class="small text-muted" style="line-height: 1.7;">
+                                                <div class="mb-2 d-flex align-items-start">
+                                                    <i class="fas fa-check-circle text-primary mt-1 me-2 flex-shrink-0" style="font-size: 0.8rem; opacity: 0.75;"></i>
+                                                    <div><strong class="text-dark">Active:</strong> This contest will go live on the website.</div>
+                                                </div>
+                                                <div class="d-flex align-items-start">
+                                                    <i class="fas fa-times-circle text-danger mt-1 me-2 flex-shrink-0" style="font-size: 0.8rem; opacity: 0.75;"></i>
+                                                    <div><strong class="text-dark">Inactive:</strong> The contest is completely hidden. The <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">Homepage Countdown Timer</span>, <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">"Register Now" button</span> and <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">"Registered Teams" page</span> will immediately disappear from the entire website!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
                     <form action="{{ url('admin/dashboard/contest/store') }}" method="post">
                         @csrf
                         <input type="hidden" name="modal_id" value="addContestModal">
@@ -215,11 +300,96 @@
         <div class="modal fade" id="editContestModal{{ $data->contest_id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header border-0 pb-0">
-                        <h5 class="modal-title fw-bold">Edit Contest Info</h5>
+                    <div class="modal-header border-0 pb-0 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="modal-title fw-bold mb-0">Edit Contest Info</h5>
+                            <button type="button" class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm" style="width: 24px; height: 24px; padding: 0; display: flex; align-items: center; justify-content: center;" data-bs-toggle="collapse" data-bs-target="#editContestGuide{{ $data->contest_id }}" aria-expanded="false" title="Click for instructions">
+                                <i class="fas fa-info" style="font-size: 11px;"></i>
+                            </button>
+                        </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        
+                        <div class="collapse mb-4" id="editContestGuide{{ $data->contest_id }}">
+                            <div class="w-100" style="overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;">
+                                <div class="guide-block bg-white rounded-4 shadow-sm border position-relative overflow-hidden w-100" style="border-left: 4px solid #3b82f6 !important; padding: 1.25rem; box-sizing: border-box; min-width: 280px;">
+                                <!-- Decorative Background Element -->
+                                <div class="position-absolute top-0 end-0 p-3" style="pointer-events: none; opacity: 0.05;">
+                                    <i class="fas fa-lightbulb" style="font-size: 5rem; color: #3b82f6; transform: rotate(15deg);"></i>
+                                </div>
+                                
+                                <h6 class="fw-bold text-dark mb-4 d-flex align-items-center position-relative z-1" style="font-size: 1.05rem;">
+                                    <div class="icon-box text-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 36px; height: 36px; background-color: rgba(13, 110, 253, 0.1);">
+                                        <i class="fas fa-book" style="font-size: 0.9rem;"></i>
+                                    </div>
+                                    Contest Setup Guide (Must Read)
+                                </h6>
+                                
+                                <div class="row g-4 position-relative z-1">
+                                    <!-- Rule 1 -->
+                                    <div class="col-md-12">
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-shrink-0 mt-1">
+                                                <i class="fas fa-calendar-check text-success" style="font-size: 1.1rem;"></i>
+                                            </div>
+                                            <div class="ms-3 flex-grow-1">
+                                                <h6 class="fw-bold mb-2 text-dark" style="font-size: 0.95rem;">1. Registration Date <span class="badge text-success ms-2 fw-semibold border border-success" style="letter-spacing: 0.5px; background-color: rgba(25, 135, 84, 0.1);">CONTROLS HOMEPAGE</span></h6>
+                                                <div class="small text-muted" style="line-height: 1.7;">
+                                                    <div class="mb-2 d-flex align-items-start">
+                                                        <i class="fas fa-play text-success mt-1 me-2 flex-shrink-0" style="font-size: 0.65rem; opacity: 0.75;"></i>
+                                                        <div><strong class="text-dark">Start Date:</strong> The exact time when teams can start registering. Before this, the registration system remains closed.</div>
+                                                    </div>
+                                                    <div class="d-flex align-items-start">
+                                                        <i class="fas fa-stop text-danger mt-1 me-2 flex-shrink-0" style="font-size: 0.65rem; opacity: 0.75;"></i>
+                                                        <div><strong class="text-dark">End Date:</strong> When registration permanently closes. Once passed, the <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">Countdown Timer stops</span> and the <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">"Register Now" button</span> along with the <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">"Registered Teams" page</span> will automatically vanish from the website.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Rule 2 -->
+                                    <div class="col-md-12">
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-shrink-0 mt-1">
+                                                <i class="fas fa-flag-checkered text-warning" style="font-size: 1.1rem;"></i>
+                                            </div>
+                                            <div class="ms-3 flex-grow-1">
+                                                <h6 class="fw-bold mb-1 text-dark" style="font-size: 0.95rem;">2. Contest Date</h6>
+                                                <div class="small text-muted mt-1" style="line-height: 1.6;">
+                                                    This is the date of the actual programming event. It should be after registration ends. This date <em class="text-dark fw-medium border-bottom border-dark">does not</em> affect the homepage timer.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Rule 3 -->
+                                    <div class="col-md-12">
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-shrink-0 mt-1">
+                                                <i class="fas fa-toggle-on text-primary" style="font-size: 1.1rem;"></i>
+                                            </div>
+                                            <div class="ms-3 flex-grow-1">
+                                                <h6 class="fw-bold mb-2 text-dark" style="font-size: 0.95rem;">3. Status (Active/Inactive)</h6>
+                                                <div class="small text-muted" style="line-height: 1.7;">
+                                                    <div class="mb-2 d-flex align-items-start">
+                                                        <i class="fas fa-check-circle text-primary mt-1 me-2 flex-shrink-0" style="font-size: 0.8rem; opacity: 0.75;"></i>
+                                                        <div><strong class="text-dark">Active:</strong> This contest will go live on the website.</div>
+                                                    </div>
+                                                    <div class="d-flex align-items-start">
+                                                        <i class="fas fa-times-circle text-danger mt-1 me-2 flex-shrink-0" style="font-size: 0.8rem; opacity: 0.75;"></i>
+                                                        <div><strong class="text-dark">Inactive:</strong> The contest is completely hidden. The <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">Homepage Countdown Timer</span>, <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">"Register Now" button</span> and <span class="text-danger fw-semibold" style="background-color: rgba(220, 53, 69, 0.08); padding: 2px 6px; border-radius: 4px;">"Registered Teams" page</span> will immediately disappear from the entire website!</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
                         <form action="{{ route('admin.contest.update', $data->contest_id) }}" method="post">
                             @csrf
                             @method('put')

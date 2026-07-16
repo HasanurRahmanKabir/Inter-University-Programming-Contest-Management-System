@@ -122,6 +122,72 @@
             }
         }
     </script>
+
+    <!-- Mobile Bottom Navigation Bar (Visible only on mobile/tablet) -->
+    <div class="mobile-bottom-nav d-lg-none fixed-bottom shadow-lg" style="padding-bottom: env(safe-area-inset-bottom); z-index: 1040;">
+        <div class="d-flex justify-content-around align-items-center py-2 px-2">
+            <a href="{{ url('/') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
+                <i class="fas fa-home fs-5 mb-1"></i>
+                <span>Home</span>
+            </a>
+            <a href="{{ url('/notice-info') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
+                <i class="fas fa-bullhorn fs-5 mb-1"></i>
+                <span>Notice</span>
+            </a>
+            <a href="{{ url('/rules') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
+                <i class="fas fa-gavel fs-5 mb-1"></i>
+                <span>Rules</span>
+            </a>
+            <a href="{{ url('/registration-info') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
+                <i class="fas fa-users fs-5 mb-1"></i>
+                <span>Teams</span>
+            </a>
+            <a href="{{ route('user.login') }}" class="nav-item text-center text-decoration-none text-primary d-flex flex-column align-items-center">
+                <i class="fas fa-user-circle fs-5 mb-1"></i>
+                <span>Login</span>
+            </a>
+        </div>
+    </div>
+
+    <style>
+        /* Mobile App Navbar Styles */
+        @media (max-width: 991.98px) {
+            .container.min-vh-100 {
+                padding-bottom: 54px !important; /* Exactly matches navbar height to avoid extra gap */
+            }
+        }
+
+        .mobile-bottom-nav {
+            background-color: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
+        }
+        
+        .mobile-bottom-nav .nav-item {
+            width: 20%;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .mobile-bottom-nav .nav-item span {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        
+        .mobile-bottom-nav .nav-item i {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .mobile-bottom-nav .nav-item:hover, .mobile-bottom-nav .nav-item:active {
+            color: #0d6efd !important;
+        }
+
+        .mobile-bottom-nav .nav-item:hover i, .mobile-bottom-nav .nav-item:active i {
+            transform: scale(1.15) translateY(-2px);
+        }
+    </style>
 </body>
 
 </html>
