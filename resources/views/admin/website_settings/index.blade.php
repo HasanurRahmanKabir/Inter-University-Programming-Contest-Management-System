@@ -10,6 +10,7 @@
                 <h5 class="mb-0 text-secondary d-none d-sm-block">Website Settings</h5>
 
                 <div class="ms-auto d-flex align-items-center">
+
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark"
                             id="userDropdown" data-bs-toggle="dropdown">
@@ -243,6 +244,25 @@
                 </form>
             </div>
         </div>
+    <!-- Custom Alert Modal -->
+    <div class="modal fade" id="customAlertModal" tabindex="-1" aria-labelledby="customAlertModalLabel" aria-hidden="true" style="z-index: 9999;">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h6 class="modal-title fw-bold" id="customAlertModalLabel">
+                        <i class="fas fa-exclamation-triangle text-warning me-2"></i><span id="customAlertTitle">Alert</span>
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3 pb-3 text-center">
+                    <p id="customAlertMessage" class="mb-0 text-muted" style="font-size: 14px;">Message goes here.</p>
+                </div>
+                <div class="modal-footer border-top-0 pt-0 justify-content-center pb-3">
+                    <button type="button" class="btn btn-primary rounded-pill px-4 btn-sm" data-bs-dismiss="modal">OK, Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
         <script>
             //Sidebar Logic
@@ -265,6 +285,13 @@
                 overlay.addEventListener('click', toggleSidebar);
             }
 
+            function showCustomAlert(title, message) {
+                document.getElementById('customAlertTitle').innerText = title;
+                document.getElementById('customAlertMessage').innerText = message;
+                var alertModal = new bootstrap.Modal(document.getElementById('customAlertModal'));
+                alertModal.show();
+            }
+
             //Profile Settings
             const saveProfileBtn = document.getElementById('saveProfileBtn');
 
@@ -275,13 +302,13 @@
                     const email = document.getElementById('adminEmail')?.value.trim();
 
                     if (firstName && lastName && email) {
-                        alert('Profile updated successfully!');
+                        showCustomAlert('Success', 'Profile updated successfully!');
                         const profileModal = bootstrap.Modal.getInstance(
                             document.getElementById('profileModal')
                         );
                         profileModal?.hide();
                     } else {
-                        alert('Please fill in all required fields.');
+                        showCustomAlert('Warning', 'Please fill in all required fields.');
                     }
                 });
             }
@@ -296,21 +323,21 @@
                     const confirmPassword = document.getElementById('confirmPassword')?.value.trim();
 
                     if (!currentPassword || !newPassword || !confirmPassword) {
-                        alert('Please fill in all password fields!');
+                        showCustomAlert('Warning', 'Please fill in all password fields!');
                         return;
                     }
 
                     if (newPassword !== confirmPassword) {
-                        alert('Passwords do not match!');
+                        showCustomAlert('Error', 'Passwords do not match!');
                         return;
                     }
 
                     if (newPassword.length < 6) {
-                        alert('Password must be at least 6 characters long!');
+                        showCustomAlert('Warning', 'Password must be at least 6 characters long!');
                         return;
                     }
 
-                    alert('Password updated successfully!');
+                    showCustomAlert('Success', 'Password updated successfully!');
                     const settingsModal = bootstrap.Modal.getInstance(
                         document.getElementById('settingsModal')
                     );

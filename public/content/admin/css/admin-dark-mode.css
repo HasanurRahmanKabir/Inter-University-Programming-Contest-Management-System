@@ -1,0 +1,822 @@
+/* ============================================
+   Admin Panel Dark Mode - Complete Stylesheet
+   ============================================ */
+
+/* === Base Body === */
+body[data-theme="dark"] {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+/* === Sidebar === */
+body[data-theme="dark"] .sidebar {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body[data-theme="dark"] .sidebar-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body[data-theme="dark"] .sidebar-menu a {
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .sidebar-menu a:hover,
+body[data-theme="dark"] .sidebar-menu a.active {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body[data-theme="dark"] .sidebar-menu a.text-danger {
+    color: #ef4444 !important;
+}
+
+body[data-theme="dark"] .sidebar-menu a.text-danger:hover {
+    color: #f87171 !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* === Top Navbar === */
+body[data-theme="dark"] .top-navbar {
+    background-color: #1e293b !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+body[data-theme="dark"] .top-navbar h5,
+body[data-theme="dark"] .top-navbar .text-secondary {
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .top-navbar .text-dark {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .top-navbar .fw-medium {
+    color: #e2e8f0 !important;
+}
+
+/* === Dropdown Menus === */
+body[data-theme="dark"] .dropdown-menu {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+body[data-theme="dark"] .dropdown-item {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .dropdown-item:hover,
+body[data-theme="dark"] .dropdown-item:focus {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .dropdown-item.text-danger {
+    color: #ef4444 !important;
+}
+
+body[data-theme="dark"] .dropdown-item.text-danger:hover {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: #f87171 !important;
+}
+
+body[data-theme="dark"] .dropdown-divider {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* === Stat Cards === */
+body[data-theme="dark"] .stat-card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body[data-theme="dark"] .stat-card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+body[data-theme="dark"] .stat-card .text-muted {
+    color: #94a3b8 !important;
+}
+
+/* === Glass Card & Generic Card === */
+body[data-theme="dark"] .glass-card,
+body[data-theme="dark"] .card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body[data-theme="dark"] .card-header {
+    background-color: #334155 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .card-body {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .card-footer {
+    background-color: #1e293b !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* === Custom Table Card === */
+body[data-theme="dark"] .custom-table-card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+    color: #e2e8f0 !important;
+}
+
+/* === Tables === */
+body[data-theme="dark"] .table {
+    color: #e2e8f0 !important;
+    --bs-table-bg: transparent !important;
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.03) !important;
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.05) !important;
+}
+
+body[data-theme="dark"] .table thead th {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .table tbody td {
+    background-color: transparent !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .table-hover tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+body[data-theme="dark"] .table tbody td .text-muted {
+    color: #64748b !important;
+}
+
+/* === Background Overrides === */
+body[data-theme="dark"] .bg-white {
+    background-color: #1e293b !important;
+}
+
+body[data-theme="dark"] .bg-light {
+    background-color: #0f172a !important;
+}
+
+/* === Text Color Overrides === */
+body[data-theme="dark"] .text-dark {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .text-muted {
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .text-secondary {
+    color: #94a3b8 !important;
+}
+
+/* === Headings === */
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] h5,
+body[data-theme="dark"] h6 {
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] p {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] label,
+body[data-theme="dark"] .form-label {
+    color: #e2e8f0 !important;
+}
+
+/* === Forms & Inputs === */
+body[data-theme="dark"] .form-control,
+body[data-theme="dark"] .form-select,
+body[data-theme="dark"] .input-group-text {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .form-control::placeholder {
+    color: #64748b !important;
+}
+
+body[data-theme="dark"] .form-control:focus,
+body[data-theme="dark"] .form-select:focus {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
+
+body[data-theme="dark"] .form-check-label {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] textarea.form-control {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+/* === Buttons === */
+body[data-theme="dark"] .btn-light {
+    background-color: #334155 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .btn-light:hover {
+    background-color: #475569 !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .btn-outline-secondary {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .btn-outline-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* === Modals === */
+body[data-theme="dark"] .modal-content {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .modal-title {
+    color: #ffffff !important;
+}
+
+
+
+/* === Pagination === */
+body[data-theme="dark"] .pagination .page-link {
+    background-color: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .pagination .page-link:hover {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .pagination .page-item.active .page-link {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .pagination .page-item.disabled .page-link {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    color: #475569 !important;
+}
+
+/* === Gallery / Media Cards === */
+body[data-theme="dark"] .gallery-card,
+body[data-theme="dark"] .media-card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* === Border overrides === */
+body[data-theme="dark"] .border {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .border-secondary {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .border-bottom {
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .border-top {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] hr {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    opacity: 1 !important;
+}
+
+/* === Links in content area === */
+body[data-theme="dark"] .main-content a:not(.btn):not(.dropdown-item):not(.nav-link):not(.sidebar-menu a):not(.page-link):not(.theme-toggle-btn) {
+    color: #60a5fa !important;
+}
+
+/* === Overlay === */
+body[data-theme="dark"] .overlay.active {
+    background: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* === Scrollbar (Webkit) === */
+body[data-theme="dark"]::-webkit-scrollbar {
+    width: 8px;
+}
+
+body[data-theme="dark"]::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+body[data-theme="dark"]::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+
+body[data-theme="dark"]::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* === List Group === */
+body[data-theme="dark"] .list-group-item {
+    background-color: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #e2e8f0 !important;
+}
+
+/* === Breadcrumb === */
+body[data-theme="dark"] .breadcrumb {
+    background-color: transparent !important;
+}
+
+body[data-theme="dark"] .breadcrumb-item a {
+    color: #60a5fa !important;
+}
+
+body[data-theme="dark"] .breadcrumb-item.active {
+    color: #94a3b8 !important;
+}
+
+/* === Accordion === */
+body[data-theme="dark"] .accordion-item {
+    background-color: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body[data-theme="dark"] .accordion-button {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .accordion-button:not(.collapsed) {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .accordion-body {
+    background-color: #1e293b !important;
+    color: #cbd5e1 !important;
+}
+
+/* === Tooltip / Popover === */
+body[data-theme="dark"] .tooltip-inner {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+/* === Floating Live Button === */
+body[data-theme="dark"] .btn-success {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+}
+
+/* === Selection highlight === */
+body[data-theme="dark"] ::selection {
+    background-color: rgba(59, 130, 246, 0.4);
+    color: #ffffff;
+}
+
+/* ============================================
+   Theme Toggle Button Styles (Admin Sidebar)
+   ============================================ */
+.theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Light mode: show moon, hide lightbulb */
+.theme-toggle-icon-light {
+    display: none;
+}
+
+.theme-toggle-icon-dark {
+    display: inline-block;
+}
+
+/* Dark mode: show lightbulb, hide moon */
+body[data-theme="dark"] .theme-toggle-icon-light {
+    display: inline-block;
+    color: #fbbf24;
+}
+
+body[data-theme="dark"] .theme-toggle-icon-dark {
+    display: none;
+}
+
+/* === Website Settings Page Specifics === */
+body[data-theme="dark"] .form-text {
+    color: #64748b !important;
+}
+
+body[data-theme="dark"] .input-group .btn {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body[data-theme="dark"] .form-check-input {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+body[data-theme="dark"] .form-check-input:checked {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+}
+
+/* === Image/file upload areas === */
+body[data-theme="dark"] .image-upload-box,
+body[data-theme="dark"] .upload-box,
+body[data-theme="dark"] .file-upload-area {
+    background-color: #0f172a !important;
+    border: 2px dashed rgba(255, 255, 255, 0.15) !important;
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .image-upload-box:hover,
+body[data-theme="dark"] .upload-box:hover,
+body[data-theme="dark"] .file-upload-area:hover {
+    border-color: #0d6efd !important;
+    background-color: #1e293b !important;
+}
+
+/* === Tabs / Nav-tabs === */
+body[data-theme="dark"] .nav-tabs {
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .nav-tabs .nav-link {
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .nav-tabs .nav-link.active {
+    background-color: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1) #1e293b !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .nav-tabs .nav-link:hover {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+/* === Shadow adjustments === */
+body[data-theme="dark"] .shadow,
+body[data-theme="dark"] .shadow-sm,
+body[data-theme="dark"] .shadow-lg {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ============================================
+   Page-Specific Dark Mode Overrides
+   ============================================ */
+
+/* === Gallery Page === */
+body[data-theme="dark"] .gallery-card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body[data-theme="dark"] .gallery-card .card-body {
+    background-color: #1e293b !important;
+}
+
+body[data-theme="dark"] .upload-area {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .upload-area:hover {
+    border-color: #0d6efd !important;
+    background-color: #1e293b !important;
+}
+
+body[data-theme="dark"] .upload-area i {
+    color: #64748b !important;
+}
+
+body[data-theme="dark"] .upload-area p,
+body[data-theme="dark"] .upload-area small {
+    color: #94a3b8 !important;
+}
+
+/* === Rules Admin Page === */
+body[data-theme="dark"] .custom-card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body[data-theme="dark"] .form-section {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body[data-theme="dark"] .rules-display {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+body[data-theme="dark"] .rule-item {
+    background-color: #0f172a !important;
+    border-left-color: #0d6efd !important;
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .rule-headline {
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .rule-line {
+    color: #cbd5e1 !important;
+}
+
+/* === Admin Avatar === */
+body[data-theme="dark"] .admin-avatar {
+    background-color: #334155 !important;
+}
+
+/* === Sponsor Page === */
+body[data-theme="dark"] .sponsor-card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* === Kit Status Page === */
+body[data-theme="dark"] .kit-card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* === Website Settings Page === */
+body[data-theme="dark"] .settings-card {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+
+
+/* ============================================
+   DELETE / CONFIRM MODAL - Dark Mode Fix
+   ============================================ */
+/* Modals with border-0 class still need dark background */
+body[data-theme="dark"] .modal-content.border-0 {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7) !important;
+}
+
+body[data-theme="dark"] .modal-header.border-0 {
+    background-color: #1e293b !important;
+    border-bottom: none !important;
+}
+
+body[data-theme="dark"] .modal-body {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+/* ============================================
+   SPONSOR PAGE - Logo Box Dark Mode
+   ============================================ */
+body[data-theme="dark"] .bg-white.rounded.border {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ============================================
+   INLINE TEXT-DARK OVERRIDE (Table cells)
+   ============================================ */
+body[data-theme="dark"] td .text-dark,
+body[data-theme="dark"] td .fw-bold.text-dark,
+body[data-theme="dark"] .fw-bold.text-dark {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] td .fw-bold {
+    color: #e2e8f0 !important;
+}
+
+/* ============================================
+   INPUT GROUP TEXT - Dark Mode
+   ============================================ */
+body[data-theme="dark"] .input-group-text.bg-white {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #94a3b8 !important;
+}
+
+/* ============================================
+   SMALL / TRUNCATE TEXT IN TABLES
+   ============================================ */
+body[data-theme="dark"] td small,
+body[data-theme="dark"] td .small {
+    color: #94a3b8 !important;
+}
+
+/* ============================================
+   RESPONSIVE DARK MODE - Small Devices
+   ============================================ */
+@media (max-width: 576px) {
+
+    body[data-theme="dark"] .modal-content,
+    body[data-theme="dark"] .modal-content.border-0 {
+        margin: 0.5rem !important;
+        border-radius: 12px !important;
+    }
+
+    body[data-theme="dark"] .btn-light.text-primary,
+    body[data-theme="dark"] .btn-light.text-danger {
+        min-width: 32px !important;
+        min-height: 32px !important;
+        padding: 0.35rem 0.5rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    body[data-theme="dark"] .top-navbar {
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    body[data-theme="dark"] .custom-table-card {
+        padding: 0.75rem !important;
+    }
+}
+
+/* ============================================
+   FIX FOR ACTION BUTTONS (Edit/Delete in btn-light)
+   ============================================ */
+/* We must override .btn-light's white color to restore the original light-mode Bootstrap colors */
+body[data-theme="dark"] .btn-light.text-primary,
+body[data-theme="dark"] .btn.btn-light.text-primary {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+    color: #0d6efd !important;
+    border-color: rgba(13, 110, 253, 0.2) !important;
+}
+
+body[data-theme="dark"] .btn-light.text-primary:hover,
+body[data-theme="dark"] .btn.btn-light.text-primary:hover {
+    background-color: rgba(13, 110, 253, 0.2) !important;
+}
+
+body[data-theme="dark"] .btn-light.text-danger,
+body[data-theme="dark"] .btn.btn-light.text-danger {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+    color: #dc3545 !important;
+    border-color: rgba(220, 53, 69, 0.2) !important;
+}
+
+body[data-theme="dark"] .btn-light.text-danger:hover,
+body[data-theme="dark"] .btn.btn-light.text-danger:hover {
+    background-color: rgba(220, 53, 69, 0.2) !important;
+}
+
+body[data-theme="dark"] .btn-light.text-success,
+body[data-theme="dark"] .btn.btn-light.text-success {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+    color: #198754 !important;
+}
+
+body[data-theme="dark"] .btn-light.text-warning,
+body[data-theme="dark"] .btn.btn-light.text-warning {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+    color: #ffc107 !important;
+}
+
+body[data-theme="dark"] .btn-light.text-info,
+body[data-theme="dark"] .btn.btn-light.text-info {
+    background-color: rgba(13, 202, 240, 0.1) !important;
+    color: #0dcaf0 !important;
+}
+
+
+/* ============================================
+   TABLE-WARNING ROW (Payment / Kit Status)
+   ============================================ */
+body[data-theme="dark"] tr.table-warning {
+    --bs-table-accent-bg: rgba(245, 158, 11, 0.08) !important;
+    background-color: rgba(245, 158, 11, 0.08) !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] tr.table-warning td {
+    background-color: transparent !important;
+    color: #e2e8f0 !important;
+    border-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+/* ============================================
+   MODAL BODY bg-light (Team Details Modal)
+   ============================================ */
+body[data-theme="dark"] .modal-body.bg-light {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+/* ============================================
+   CARD HEADER bg-white in Modals
+   ============================================ */
+body[data-theme="dark"] .card-header.bg-white {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+
+
+/* ============================================
+   ULTRA PREMIUM MICRO-INTERACTIONS & POLISH
+   ============================================ */
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .stat-card,
+body[data-theme="dark"] .custom-table-card {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+body[data-theme="dark"] .stat-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(59, 130, 246, 0.1) !important;
+}
+
+body[data-theme="dark"] .btn {
+    transition: all 0.3s ease !important;
+}
+
+body[data-theme="dark"] .sidebar-menu a.active {
+    box-shadow: inset 3px 0 0 #0d6efd !important;
+    background: linear-gradient(90deg, rgba(13, 110, 253, 0.15) 0%, transparent 100%) !important;
+}
+
+body[data-theme="dark"] .table-hover tbody tr {
+    transition: background-color 0.2s ease !important;
+}
+
+body[data-theme="dark"] .table-hover tbody tr:hover td {
+    background-color: rgba(13, 110, 253, 0.05) !important;
+}
+
+body[data-theme="dark"] .form-control:focus,
+body[data-theme="dark"] .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15), 0 0 10px rgba(13, 110, 253, 0.1) !important;
+}

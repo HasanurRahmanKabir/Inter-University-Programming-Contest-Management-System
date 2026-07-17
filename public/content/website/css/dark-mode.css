@@ -1,0 +1,663 @@
+/* ============================================
+   Website Dark Mode - Complete Stylesheet
+   ============================================ */
+
+/* === Base Body === */
+body[data-theme="dark"] {
+    background-color: #020617 !important;
+    /* Ultra dark background for contrast */
+    color: #e2e8f0 !important;
+}
+
+/* === Background Overrides === */
+body[data-theme="dark"] .bg-white,
+body[data-theme="dark"] .bg-light,
+body[data-theme="dark"] .glass-panel {
+    background-color: #0f172a !important;
+}
+
+/* === Logo Placeholder === */
+body[data-theme="dark"] .custom-logo-placeholder {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* === Text Overrides === */
+body[data-theme="dark"] .text-dark,
+body[data-theme="dark"] .text-muted,
+body[data-theme="dark"] .nav-link,
+body[data-theme="dark"] .nav-item span {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .nav-link:hover,
+body[data-theme="dark"] .nav-link.active,
+body[data-theme="dark"] .nav-item.active,
+body[data-theme="dark"] .nav-item.active span {
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] p {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .text-secondary {
+    color: #94a3b8 !important;
+}
+
+/* === Headings === */
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] h5,
+body[data-theme="dark"] h6 {
+    color: #ffffff !important;
+}
+
+/* === Navbar / Glassmorphism === */
+body[data-theme="dark"] .navbar {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* === Mobile Bottom Navigation === */
+body[data-theme="dark"] .mobile-bottom-nav {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* === Cards === */
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .login-card,
+body[data-theme="dark"] .notice-card,
+body[data-theme="dark"] .rules-card,
+body[data-theme="dark"] .registration-card,
+body[data-theme="dark"] .form-card,
+body[data-theme="dark"] .stat-card,
+body[data-theme="dark"] .info-card,
+body[data-theme="dark"] .member-card {
+    background-color: #0f172a !important;
+    /* Elevated card background */
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    /* Softer border */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+    color: #e2e8f0 !important;
+}
+
+/* === Form Header === */
+body[data-theme="dark"] .form-header {
+    background-color: #1e293b !important;
+    /* Lighter than card to stand out */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .form-header.bg-white {
+    background-color: transparent !important;
+    /* Blend into card body */
+}
+
+body[data-theme="dark"] .form-header.border-bottom-0 {
+    border-bottom: none !important;
+    /* Remove hard edge */
+}
+
+body[data-theme="dark"] .form-header i {
+    color: #60a5fa !important;
+}
+
+/* === Form Body === */
+body[data-theme="dark"] .form-body {
+    background-color: #0f172a !important;
+}
+
+/* === Image Upload Box === */
+body[data-theme="dark"] .image-upload-box {
+    background-color: #1e293b !important;
+    /* Lighter background so it stands out */
+    border: 2px dashed rgba(255, 255, 255, 0.3) !important;
+    /* More visible border */
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .image-upload-box:hover {
+    border-color: #3b82f6 !important;
+    background-color: #334155 !important;
+}
+
+body[data-theme="dark"] .image-upload-box i {
+    color: #64748b !important;
+}
+
+body[data-theme="dark"] .image-upload-box p,
+body[data-theme="dark"] .image-upload-box small {
+    color: #94a3b8 !important;
+}
+
+/* === Inputs and Forms === */
+body[data-theme="dark"] .form-control,
+body[data-theme="dark"] .form-select,
+body[data-theme="dark"] .input-group-text,
+body[data-theme="dark"] .otp-input {
+    background-color: #020617 !important;
+    /* Darkest for inset feel */
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .form-control::placeholder {
+    color: #64748b !important;
+}
+
+body[data-theme="dark"] .form-control:focus,
+body[data-theme="dark"] .form-select:focus,
+body[data-theme="dark"] .otp-input:focus {
+    background-color: #020617 !important;
+    color: #ffffff !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+}
+
+body[data-theme="dark"] .form-label {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .form-text {
+    color: #64748b !important;
+}
+
+body[data-theme="dark"] textarea.form-control {
+    background-color: #020617 !important;
+    color: #e2e8f0 !important;
+}
+
+/* === Modal === */
+body[data-theme="dark"] .modal-content {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .modal-header,
+body[data-theme="dark"] .modal-footer {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .modal-title {
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* === Table === */
+body[data-theme="dark"] .table {
+    color: #e2e8f0 !important;
+    --bs-table-bg: transparent !important;
+}
+
+body[data-theme="dark"] .table th {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .table tbody tr,
+body[data-theme="dark"] .table td,
+body[data-theme="dark"] .table tbody th {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .table-hover tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* === Dashboard Header (Coach/Volunteer) === */
+body[data-theme="dark"] .dashboard-header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+}
+
+/* === Section Background Override === */
+body[data-theme="dark"] .section-title h2 {
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .section-title p {
+    color: #94a3b8 !important;
+}
+
+/* === Footer === */
+body[data-theme="dark"] footer {
+    background: #0f172a !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* === Alerts === */
+body[data-theme="dark"] .alert-success {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    color: #6ee7b7 !important;
+}
+
+body[data-theme="dark"] .alert-danger {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+    color: #fca5a5 !important;
+}
+
+body[data-theme="dark"] .alert-warning {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+    color: #fcd34d !important;
+}
+
+body[data-theme="dark"] .alert-info {
+    background-color: rgba(14, 165, 233, 0.15) !important;
+    border-color: rgba(14, 165, 233, 0.3) !important;
+    color: #7dd3fc !important;
+}
+
+/* === Buttons === */
+body[data-theme="dark"] .btn-light {
+    background-color: #334155 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .btn-light:hover {
+    background-color: #475569 !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .btn-outline-secondary {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .btn-outline-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+/* === Dropdown Menu === */
+body[data-theme="dark"] .dropdown-menu {
+    background-color: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .dropdown-item {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+/* === Pagination === */
+body[data-theme="dark"] .pagination .page-link {
+    background-color: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .pagination .page-link:hover {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .pagination .page-item.active .page-link {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+/* === Badges === */
+body[data-theme="dark"] .badge.bg-success {
+    background-color: rgba(16, 185, 129, 0.2) !important;
+    color: #6ee7b7 !important;
+}
+
+body[data-theme="dark"] .badge.bg-danger {
+    background-color: rgba(239, 68, 68, 0.2) !important;
+    color: #fca5a5 !important;
+}
+
+body[data-theme="dark"] .badge.bg-warning {
+    background-color: rgba(245, 158, 11, 0.2) !important;
+    color: #fcd34d !important;
+}
+
+/* === Border Overrides === */
+body[data-theme="dark"] .border {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] hr {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    opacity: 1 !important;
+}
+
+/* === Accordion === */
+body[data-theme="dark"] .accordion-item {
+    background-color: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body[data-theme="dark"] .accordion-button {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .accordion-button:not(.collapsed) {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .accordion-body {
+    background-color: #1e293b !important;
+    color: #cbd5e1 !important;
+}
+
+/* === Notice Info & Rules Specifics === */
+body[data-theme="dark"] .notice-card .card-body,
+body[data-theme="dark"] .rule-card .card-body {
+    color: #cbd5e1 !important;
+}
+
+/* === Registration Info Table === */
+body[data-theme="dark"] .registration-table-card {
+    background-color: #1e293b !important;
+}
+
+/* === Login Page Floating Toggle Button === */
+body[data-theme="dark"] .theme-toggle-btn.bg-white {
+    background-color: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* === Login Card Specific === */
+body[data-theme="dark"] .login-card .brand-logo div {
+    background: #0f172a !important;
+    color: #94a3b8 !important;
+}
+
+/* === Admin Login Credentials Block === */
+body[data-theme="dark"] .demo-credentials-block {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .demo-access-title {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .credential-item {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .credential-item:hover {
+    background-color: rgba(59, 130, 246, 0.15) !important;
+    border-color: #3b82f6 !important;
+}
+
+body[data-theme="dark"] .credential-item .fw-bold {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .icon-box {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+body[data-theme="dark"] .demo-credentials-block .badge {
+    background-color: #0f172a !important;
+    color: #60a5fa !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* ============================================
+   Theme Toggle Button Styles
+   ============================================ */
+.theme-toggle-btn {
+    color: inherit;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+/* Dashboard Header Toggle Button Override */
+.dashboard-header .theme-toggle-btn {
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dashboard-header .theme-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Light mode: show moon, hide lightbulb */
+.theme-toggle-icon-light {
+    display: none;
+}
+
+.theme-toggle-icon-dark {
+    display: block;
+    color: inherit;
+}
+
+/* Inherits from parent (white or gray) */
+
+/* Dark mode: show lightbulb, hide moon */
+body[data-theme="dark"] .theme-toggle-icon-light {
+    display: block;
+    color: #fbbf24;
+}
+
+body[data-theme="dark"] .theme-toggle-icon-dark {
+    display: none;
+}
+
+/* Responsive Toggle Button for Extremely Small Screens */
+@media (max-width: 400px) {
+    .theme-toggle-btn.position-fixed {
+        width: 40px !important;
+        height: 40px !important;
+        top: auto !important;
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+
+    .theme-toggle-btn.position-fixed i {
+        font-size: 1rem !important;
+    }
+}
+
+/* Responsive Mobile Bottom Nav for Extremely Small Screens */
+@media (max-width: 360px) {
+    .mobile-bottom-nav .nav-item {
+        padding: 0 2px !important;
+    }
+
+    .mobile-bottom-nav .nav-item i {
+        font-size: 1.1rem !important;
+        margin-bottom: 2px !important;
+    }
+
+    .mobile-bottom-nav .nav-item span {
+        font-size: 10px !important;
+    }
+}
+
+/* ============================================
+   Registration Page - Dark Mode Fixes
+   ============================================ */
+
+/* Captcha Box - has inline background: #f8f9fa, needs !important override */
+body[data-theme="dark"] .captcha-box {
+    background: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body[data-theme="dark"] .captcha-box p {
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .captcha-box .text-dark {
+    color: #e2e8f0 !important;
+}
+
+/* Form Check (I agree checkbox area) */
+body[data-theme="dark"] .form-check-label {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .form-check-input {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+body[data-theme="dark"] .form-check-input:checked {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+}
+
+/* Browser Autofill Override (Chrome fills input with blue/white bg) */
+body[data-theme="dark"] input:-webkit-autofill,
+body[data-theme="dark"] input:-webkit-autofill:hover,
+body[data-theme="dark"] input:-webkit-autofill:focus,
+body[data-theme="dark"] select:-webkit-autofill,
+body[data-theme="dark"] textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important;
+    -webkit-text-fill-color: #e2e8f0 !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Small text labels (e.g. "Click to Upload", "Photo") */
+body[data-theme="dark"] .small.text-muted,
+body[data-theme="dark"] small.text-muted {
+    color: #94a3b8 !important;
+}
+
+/* Links inside dark mode */
+body[data-theme="dark"] a:not(.btn):not(.nav-link):not(.theme-toggle-btn) {
+    color: #60a5fa !important;
+}
+
+body[data-theme="dark"] a:not(.btn):not(.nav-link):not(.theme-toggle-btn):hover {
+    color: #93c5fd !important;
+}
+
+/* ============================================
+   Coach Dashboard - Dark Mode Fixes
+   ============================================ */
+
+/* Modal Tabs */
+body[data-theme="dark"] .nav-tabs {
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .nav-tabs .nav-link {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .nav-tabs .nav-link:hover {
+    border-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1) transparent !important;
+    color: #ffffff !important;
+}
+
+body[data-theme="dark"] .nav-tabs .nav-link.active {
+    background-color: #0f172a !important;
+    /* Match modal body or card */
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1) #0f172a !important;
+}
+
+/* Coach Dashboard Text Colors */
+body[data-theme="dark"] .info-card-header h5,
+body[data-theme="dark"] .member-card h6,
+body[data-theme="dark"] .info-value {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .info-card-header i {
+    color: #60a5fa !important;
+}
+
+body[data-theme="dark"] .info-label {
+    color: #94a3b8 !important;
+}
+
+/* Transaction Section */
+body[data-theme="dark"] .transaction-section {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .transaction-input {
+    background: #020617 !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+body[data-theme="dark"] .transaction-input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
+}
+
+body[data-theme="dark"] .submit-btn {
+    background: #334155 !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="dark"] .submit-btn:hover {
+    background: #475569 !important;
+    color: #ffffff !important;
+}
+
+/* ============================================
+   Volunteer Dashboard - Dark Mode Fixes
+   ============================================ */
+
+body[data-theme="dark"] .admin-empty-box {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+body[data-theme="dark"] .admin-message-box {
+    background-color: rgba(14, 165, 233, 0.15) !important;
+    /* Match alert-info */
+    border-left-color: #0ea5e9 !important;
+}
+
+body[data-theme="dark"] .admin-message-title,
+body[data-theme="dark"] .admin-message-text {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .view-only-notice {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border-left-color: #f59e0b !important;
+    color: #fcd34d !important;
+}
+
+body[data-theme="dark"] .view-only-notice strong {
+    color: #fef3c7 !important;
+}

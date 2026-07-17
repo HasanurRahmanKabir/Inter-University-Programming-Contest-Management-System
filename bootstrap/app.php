@@ -23,6 +23,22 @@ return Application::configure(basePath: dirname(__DIR__))
             return route('user.login');
         });
 
+        $middleware->redirectUsersTo(function (Request $request) {
+            if ($request->is('admin/*')) {
+                return route('admin.dashboard');
+            }
+            
+            if (\Illuminate\Support\Facades\Auth::guard('team')->check()) {
+                return route('coach.dashboard');
+            }
+            
+            if (\Illuminate\Support\Facades\Auth::guard('volunteer')->check()) {
+                return route('volunteer.dashboard');
+            }
+
+            return url('/');
+        });
+
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         $middleware->web(append: [

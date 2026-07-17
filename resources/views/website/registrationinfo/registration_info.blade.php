@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/registrationinfo.css">
+    <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
 </head>
 
 <body>
@@ -37,8 +38,15 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/notice-info') }}">Notices</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/rules') }}">Rules</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('user.login') }}">Login</a></li>
+                    
                     <li class="nav-item ms-lg-3">
                         <a href="{{ url('team/registration') }}" class="btn btn-register shadow">Register Now</a>
+                    </li>
+                    <li class="nav-item ms-lg-2 d-none d-lg-block">
+                        <a href="#" class="nav-link theme-toggle-btn d-flex align-items-center">
+                            <i class="fas fa-lightbulb theme-toggle-icon-light"></i>
+                            <i class="fas fa-moon theme-toggle-icon-dark"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -108,6 +116,13 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                <tr id="noDataRow" style="display: none;">
+                                    <td colspan="5" class="text-center py-5 text-muted">
+                                        <i class="fas fa-search fa-3x mb-3 opacity-50" style="color: #94a3b8;"></i>
+                                        <h5 class="fw-bold mb-1">No Teams Found</h5>
+                                        <p class="mb-0">Try adjusting your search or filter criteria.</p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -261,6 +276,7 @@
                         row.style.display = 'none';
                     }
                 });
+                updateNoDataMessage();
             });
 
             searchInput.addEventListener('keypress', function(event) {
@@ -273,10 +289,11 @@
             searchInput.addEventListener('input', function() {
                 if (this.value.trim() === '') {
                     if (resetSearchBtn) resetSearchBtn.classList.add('d-none');
-                    let rows = document.querySelectorAll('#teamTableBody tr');
+                    let rows = document.querySelectorAll('#teamTableBody tr:not(#noDataRow)');
                     rows.forEach(row => {
                         row.style.display = '';
                     });
+                    updateNoDataMessage();
                 } else {
                     if (resetSearchBtn) resetSearchBtn.classList.remove('d-none');
                 }
@@ -286,7 +303,11 @@
                 resetSearchBtn.addEventListener('click', function() {
                     searchInput.value = '';
                     resetSearchBtn.classList.add('d-none');
-                    searchInput.dispatchEvent(new Event('input'));
+                    let rows = document.querySelectorAll('#teamTableBody tr:not(#noDataRow)');
+                    rows.forEach(row => {
+                        row.style.display = '';
+                    });
+                    updateNoDataMessage();
                 });
             }
         }
@@ -300,7 +321,7 @@
                 if(resetSearchBtn) resetSearchBtn.classList.add('d-none');
                 
                 let filterText = this.textContent.trim().toLowerCase();
-                let rows = document.querySelectorAll('#teamTableBody tr');
+                let rows = document.querySelectorAll('#teamTableBody tr:not(#noDataRow)');
 
                 rows.forEach(row => {
                     if (filterText === 'all') {
@@ -326,6 +347,7 @@
                         row.style.display = 'none';
                     }
                 });
+                updateNoDataMessage();
             });
         });
 
@@ -334,11 +356,32 @@
             if (searchInput) {
                 searchInput.value = '';
             }
-            let rows = document.querySelectorAll('#teamTableBody tr');
+            let rows = document.querySelectorAll('#teamTableBody tr:not(#noDataRow)');
             rows.forEach(row => {
                 row.style.display = '';
             });
+            updateNoDataMessage();
         });
+
+        // Helper function for no data message
+        function updateNoDataMessage() {
+            let rows = document.querySelectorAll('#teamTableBody tr:not(#noDataRow)');
+            let noDataRow = document.getElementById('noDataRow');
+            if(!noDataRow) return;
+            
+            let visibleCount = 0;
+            rows.forEach(row => {
+                if (row.style.display !== 'none') {
+                    visibleCount++;
+                }
+            });
+            
+            if (visibleCount === 0) {
+                noDataRow.style.display = '';
+            } else {
+                noDataRow.style.display = 'none';
+            }
+        }
 
         // Scroll to Top functionality - Independent Block
         document.addEventListener('DOMContentLoaded', function () {
@@ -391,6 +434,12 @@
             <a href="{{ route('user.login') }}" class="nav-item text-center text-decoration-none text-secondary d-flex flex-column align-items-center">
                 <i class="fas fa-user-circle fs-5 mb-1"></i>
                 <span>Login</span>
+            </a>
+
+            <a href="#" class="nav-item theme-toggle-btn text-center text-decoration-none text-secondary d-flex flex-column align-items-center justify-content-center p-0 m-0 border-0" style="background:transparent;">
+                <i class="fas fa-lightbulb theme-toggle-icon-light fs-5 mb-1"></i>
+                <i class="fas fa-moon theme-toggle-icon-dark fs-5 mb-1"></i>
+                <span>Theme</span>
             </a>
         </div>
     </div>
@@ -506,6 +555,8 @@
             }
         }
     </style>
+    
+    <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
 </body>
 
 </html>

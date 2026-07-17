@@ -10,16 +10,22 @@
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/admin_login.css">
+    <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
 </head>
 
 <body>
+    <a href="#" class="btn theme-toggle-btn position-fixed d-flex" style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 50px; height: 50px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.9); color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.5); backdrop-filter: blur(8px); transition: all 0.3s ease;">
+        <i class="fas fa-lightbulb theme-toggle-icon-light" style="font-size: 1.2rem;"></i>
+        <i class="fas fa-moon theme-toggle-icon-dark" style="font-size: 1.2rem;"></i>
+    </a>
+
     <div class="container d-flex justify-content-center align-items-center min-vh-100 px-3 px-sm-0">
         <div class="login-card p-4 p-sm-5 mx-auto w-100">
             <div class="brand-logo">
                 @if(!empty($setting->header_logo))
                     <img src="{{ asset($setting->header_logo) }}" alt="Your Logo" class="w-100 h-100 rounded-circle" style="object-fit: contain;">
                 @else
-                    <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border"
+                    <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border custom-logo-placeholder"
                         style="background: #f8f9fa; color: #6c757d; font-size: 10px; text-align: center;">
                         Upload Your Logo
                     </div>
@@ -41,7 +47,7 @@
                                 <div class="icon-box d-flex align-items-center justify-content-center rounded-circle me-2 shadow-sm flex-shrink-0" style="width: 30px; height: 30px; background-color: #eff6ff; border: 1px solid #bfdbfe; color: #3b82f6;">
                                     <i class="fas fa-shield-alt" style="font-size: 13px;"></i>
                                 </div>
-                                <span class="fw-bold text-nowrap" style="color: #1e293b; font-size: 14px;">Demo Access</span>
+                                <span class="fw-bold text-nowrap demo-access-title" style="color: #1e293b; font-size: 14px;">Demo Access</span>
                             </div>
                             <span class="badge shadow-sm text-nowrap" style="background-color: #ffffff; color: #3b82f6; font-size: 10px; font-weight: 600; border: 1px solid #bfdbfe; padding: 6px 8px;">ONE CLICK COPY</span>
                         </div>
@@ -194,6 +200,7 @@
             });
         </script>
     @endif
+    <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
 </body>
 
 </html>

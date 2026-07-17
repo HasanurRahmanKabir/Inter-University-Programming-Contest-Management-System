@@ -10,6 +10,7 @@
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/volunteer_dashboard.css">
+    <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
 </head>
 
 <body>
@@ -30,6 +31,10 @@
                             <i class="fas fa-sign-out-alt me-1"></i>Logout
                         </button>
                     </form>
+                    <button class="btn btn-outline-light btn-sm theme-toggle-btn d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; border-radius: 50%; padding: 0;">
+                        <i class="fas fa-lightbulb theme-toggle-icon-light m-0"></i>
+                        <i class="fas fa-moon theme-toggle-icon-dark m-0"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -95,15 +100,15 @@
             <div class="row">
                 <div class="col-md-12">
                     @if(!empty($volunteer->volunteer_notice))
-                        <div class="alert alert-info d-flex align-items-start mb-0" role="alert" style="border-left: 4px solid #0ea5e9; background-color: #f0f9ff; border-radius: 0.5rem;">
+                        <div class="alert alert-info d-flex align-items-start mb-0 admin-message-box" role="alert" style="border-left: 4px solid #0ea5e9; border-radius: 0.5rem;">
                             <i class="fas fa-bullhorn fa-lg me-3 mt-1" style="color: #0ea5e9;"></i>
                             <div>
-                                <h6 class="fw-bold mb-1" style="color: #0369a1;">Special Instruction</h6>
-                                <p class="mb-0" style="color: #0c4a6e;">{{ $volunteer->volunteer_notice }}</p>
+                                <h6 class="fw-bold mb-1 admin-message-title">Special Instruction</h6>
+                                <p class="mb-0 admin-message-text">{{ $volunteer->volunteer_notice }}</p>
                             </div>
                         </div>
                     @else
-                        <div class="text-center py-4 text-muted border rounded" style="background-color: #f9fafb;">
+                        <div class="text-center py-4 text-muted border rounded admin-empty-box">
                             <i class="fas fa-envelope-open-text fa-2x mb-2" style="color: #9ca3af;"></i>
                             <p class="mb-0 fw-medium">No new messages from admin at the moment.</p>
                         </div>
@@ -292,7 +297,7 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
 
 </body>
 

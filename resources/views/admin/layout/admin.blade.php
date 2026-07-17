@@ -4,11 +4,18 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSRF Token for AJAX -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- No-Cache: Prevent browser from serving stale pages with old CSRF tokens -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Premium Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/style.css">
+    <link rel="stylesheet" href="{{ asset('content/admin') }}/css/admin-dark-mode.css">
 </head>
 
 <body>
@@ -53,7 +60,14 @@
                 href="{{ url('admin/dashboard/website-settings') }}">
                 <i class="fas fa-cogs"></i> Website Settings</a>    
 
-            <div class="mt-5 border-top border-secondary pt-3">
+            <!-- Theme Toggle -->
+            <a href="#" class="theme-toggle-btn w-100 text-start ps-3 py-2 mt-2" style="border-radius: 8px;">
+                <i class="fas fa-lightbulb theme-toggle-icon-light"></i>
+                <i class="fas fa-moon theme-toggle-icon-dark"></i>
+                <span class="ms-2">Toggle Theme</span>
+            </a>
+
+            <div class="mt-4 border-top border-secondary pt-3">
                 <a href="{{ route('admin.logout') }}" class="text-danger"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt"></i> Logout
@@ -201,6 +215,7 @@
 </div>
     <script src="{{ asset('content/admin') }}/js/app.js"></script>
     <script src="{{ asset('content/admin') }}/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('content/admin') }}/js/admin-dark-mode.js"></script>
 
     @if(session('profile_success'))
         <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-4 shadow-lg" style="z-index: 9999;" role="alert">
@@ -225,6 +240,43 @@
             });
         </script>
     @endif
+    <script>
+        // ============================================
+        // SESSION KEEP-ALIVE: Ping server every 10 min
+        // Prevents 419 Page Expired from stale CSRF token
+        // ============================================
+        (function() {
+            var keepAliveInterval = 10 * 60 * 1000; // 10 minutes in ms
+
+            function pingServer() {
+                fetch('/admin/dashboard', {
+                    method: 'HEAD',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                }).catch(function() {
+                    // Silent fail - just keeping session alive
+                });
+            }
+
+            // Start pinging every 10 minutes
+            setInterval(pingServer, keepAliveInterval);
+
+            // Also refresh CSRF token in all forms when page becomes visible again
+            // (e.g., user switched tabs and came back)
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    // Page is visible again - refresh token in all forms
+                    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    document.querySelectorAll('input[name="_token"]').forEach(function(input) {
+                        input.value = token;
+                    });
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>

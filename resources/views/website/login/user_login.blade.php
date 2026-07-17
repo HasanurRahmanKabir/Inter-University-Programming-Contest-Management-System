@@ -11,17 +11,23 @@
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/userlogin.css">
+    <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
 </head>
 
 <body>
+    <a href="#" class="btn theme-toggle-btn d-none d-lg-flex" style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 50px; height: 50px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.9); color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.5); backdrop-filter: blur(8px); transition: all 0.3s ease;">
+        <i class="fas fa-lightbulb theme-toggle-icon-light" style="font-size: 1.2rem;"></i>
+        <i class="fas fa-moon theme-toggle-icon-dark" style="font-size: 1.2rem;"></i>
+    </a>
+
     <div class="container d-flex justify-content-center align-items-center min-vh-100 px-3 px-sm-0">
         <div class="login-card p-4 p-sm-5 mx-auto w-100">
             <div class="brand-logo">
                 @if(!empty($setting->header_logo))
                     <img src="{{ asset($setting->header_logo) }}" alt="Header Logo" class="w-100 h-100 rounded-circle">
                 @else
-                    <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border"
-                        style="background: #f8f9fa; color: #6c757d; font-size: 10px; text-align: center;">
+                    <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border custom-logo-placeholder fw-bold"
+                        style="background: #f8f9fa; color: #495057; font-size: 12px; text-align: center;">
                         Upload Your Logo
                     </div>
                 @endif
@@ -146,6 +152,11 @@
                 <i class="fas fa-user-circle fs-5 mb-1"></i>
                 <span>Login</span>
             </a>
+            <a href="#" class="nav-item theme-toggle-btn text-center text-decoration-none text-secondary d-flex flex-column align-items-center justify-content-center p-0 m-0 border-0" style="background:transparent;">
+                <i class="fas fa-lightbulb theme-toggle-icon-light fs-5 mb-1"></i>
+                <i class="fas fa-moon theme-toggle-icon-dark fs-5 mb-1"></i>
+                <span>Theme</span>
+            </a>
         </div>
     </div>
 
@@ -188,6 +199,7 @@
             transform: scale(1.15) translateY(-2px);
         }
     </style>
+    <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
 </body>
 
 </html>

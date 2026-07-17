@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/homepage.css">
+    <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
 </head>
 
 <body>
@@ -41,10 +42,17 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/notice-info') }}">Notice</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/rules') }}">Rules</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('user.login') }}">Login</a></li>
+                    
                     <li class="nav-item ms-lg-3">
                         @if ($isRegistrationOpen)
                             <a href="{{ url('/team/registration') }}" class="btn btn-register shadow">Register Now</a>
                         @endif
+                    </li>
+                    <li class="nav-item ms-lg-2 d-none d-lg-block">
+                        <a href="#" class="nav-link theme-toggle-btn d-flex align-items-center">
+                            <i class="fas fa-lightbulb theme-toggle-icon-light"></i>
+                            <i class="fas fa-moon theme-toggle-icon-dark"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -508,6 +516,12 @@
                 <i class="fas fa-user-circle fs-5 mb-1"></i>
                 <span>Login</span>
             </a>
+            
+            <a href="#" class="nav-item theme-toggle-btn text-center text-decoration-none text-secondary d-flex flex-column align-items-center justify-content-center p-0 m-0 border-0" style="background:transparent;">
+                <i class="fas fa-lightbulb theme-toggle-icon-light fs-5 mb-1"></i>
+                <i class="fas fa-moon theme-toggle-icon-dark fs-5 mb-1"></i>
+                <span>Theme</span>
+            </a>
         </div>
     </div>
     
@@ -597,6 +611,7 @@
         }
     </style>
 
+    <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
 </body>
 
 </html>

@@ -12,18 +12,30 @@
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/registration.css">
+    <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
 </head>
 
 <body>
 
-    <div class="page-header">
-        <div class="container position-relative">
+    <div class="page-header position-relative">
+        <div class="container">
             <h2 class="fw-bold mb-2">Team Registration</h2>
             <p class="opacity-75 mb-0">
                 {{ (!empty($contest) && $contest->status == 1 && !empty($contest->title)) ? $contest->title : 'Your Contest Title' }}
             </p>
         </div>
+        <!-- Desktop Theme Toggle Button (Inside Header) -->
+        <a href="#" class="btn theme-toggle-btn position-absolute d-none d-md-flex" style="top: 20px; right: 20px; width: 45px; height: 45px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
+            <i class="fas fa-lightbulb theme-toggle-icon-light"></i>
+            <i class="fas fa-moon theme-toggle-icon-dark"></i>
+        </a>
     </div>
+
+    <!-- Mobile Floating Theme Toggle Button (Bottom Right) -->
+    <a href="#" class="btn theme-toggle-btn d-flex d-md-none" style="position: fixed; bottom: 30px; right: 20px; z-index: 1050; width: 50px; height: 50px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.9); color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.5); backdrop-filter: blur(8px); transition: all 0.3s ease;">
+        <i class="fas fa-lightbulb theme-toggle-icon-light" style="font-size: 1.2rem;"></i>
+        <i class="fas fa-moon theme-toggle-icon-dark" style="font-size: 1.2rem;"></i>
+    </a>
 
     <div class="container pb-5">
 
@@ -325,10 +337,37 @@
         </form>
     </div>
 
+    <!-- Custom Alert Modal -->
+    <div class="modal fade" id="customAlertModal" tabindex="-1" aria-labelledby="customAlertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h6 class="modal-title fw-bold" id="customAlertModalLabel">
+                        <i class="fas fa-exclamation-triangle text-warning me-2"></i><span id="customAlertTitle">Alert</span>
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3 pb-3 text-center">
+                    <p id="customAlertMessage" class="mb-0 text-muted" style="font-size: 14px;">Message goes here.</p>
+                </div>
+                <div class="modal-footer border-top-0 pt-0 justify-content-center pb-3">
+                    <button type="button" class="btn btn-primary rounded-pill px-4 btn-sm" data-bs-dismiss="modal">OK, Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+        function showCustomAlert(title, message) {
+            document.getElementById('customAlertTitle').innerText = title;
+            document.getElementById('customAlertMessage').innerText = message;
+            var alertModal = new bootstrap.Modal(document.getElementById('customAlertModal'));
+            alertModal.show();
+        }
+
         // --- 1. CSRF Setup ---
         $.ajaxSetup({
             headers: {
@@ -395,7 +434,7 @@
                             inputField.after(
                                 '<small class="text-danger db-error fw-bold" style="font-size: 11px;">⚠️ ' +
                                 response.message + '</small>');
-                            alert("⚠️ Warning: " + response.message);
+                            showCustomAlert("Duplicate Found", response.message);
                         } else {
                             if (inputField.next('.local-error').length === 0) {
                                 inputField.removeClass('is-invalid');
@@ -461,12 +500,12 @@
         document.getElementById('registrationForm').addEventListener('submit', function (e) {
             if (!isCaptchaVerified) {
                 e.preventDefault();
-                alert('Please verify the CAPTCHA.');
+                showCustomAlert("Verification Required", "Please verify the CAPTCHA before submitting.");
                 return;
             }
             if ($('.is-invalid').length > 0) {
                 e.preventDefault();
-                alert('Please fix validation errors.');
+                showCustomAlert("Validation Error", "Please fix the highlighted errors before submitting.");
                 $('html, body').animate({
                     scrollTop: $(".is-invalid").first().offset().top - 100
                 }, 500);
@@ -475,6 +514,7 @@
 
         window.addEventListener('load', generateCaptcha);
     </script>
+    <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
 </body>
 
 </html>

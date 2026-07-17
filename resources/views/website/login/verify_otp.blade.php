@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/userlogin.css">
+    <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
     <style>
         .otp-input {
             width: 45px;
@@ -52,7 +53,7 @@
                 @if(!empty($setting->header_logo))
                     <img src="{{ asset($setting->header_logo) }}" alt="Header Logo" class="w-100 h-100 rounded-circle">
                 @else
-                    <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border"
+                    <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center border custom-logo-placeholder fw-bold"
                         style="background: #f8f9fa; color: #6c757d; font-size: 10px; text-align: center;">
                         Upload Your Logo
                     </div>
@@ -159,6 +160,7 @@
             window.location.href = "{{ route('user.login') }}";
         }, 300000);
     </script>
+    <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
 </body>
 
 </html>
