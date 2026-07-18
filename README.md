@@ -1,321 +1,170 @@
-🏆 **Inter University Programming Contest Management System**
+# 🏆 Inter University Programming Contest Management System
 
-A centralized, secure and scalable web based platform for managing Inter University Programming Contests, covering the complete lifecycle from contest creation and team registration to payment verification and on site logistics management.
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
+![License](https://img.shields.io/badge/License-Academic-blue?style=for-the-badge)
 
+A centralized, secure and highly scalable web-based platform for managing Inter University Programming Contests. This system covers the complete lifecycle of a contest from dynamic website management and team registration to payment verification, team approval and on-site logistics tracking.
 
-📑 **Table of Contents**
+---
 
-📌 Overview
+## 📑 Table of Contents
+- [📌 Overview](#-overview)
+- [✨ Key Features](#-key-features)
+- [🌐 Live Demo & Access](#-live-demo--access)
+- [👥 User Roles & Access](#-user-roles--access)
+- [🏗️ System Architecture](#️-system-architecture)
+- [🛠️ Technology Stack](#️-technology-stack)
+- [🔐 Security & Optimization](#-security--optimization)
+- [⚙️ Installation & Setup](#️-installation--setup)
+- [👨‍💻 Contributors](#-contributors)
+- [📜 License](#-license)
 
-❗ Problem Statement
+---
 
-💡 Solution Summary
+## 📌 Overview
+Organizing large scale programming contests manually leads to scattered data, difficult payment verification and high administrative overhead. This platform modernizes the workflow by providing a **100% Fully Dynamic & Centralized Digital Ecosystem** where Administrators, Coaches and Volunteers collaborate in real time. 
 
-🚀 Key Features
+**Every single element of this website is fully dynamic.** From the logo and hero banner to the text, images, schedules and footer everything is controlled and updated directly from the Admin Panel. No code changes are required to manage the platforms content. Designed with scalability in mind, the system significantly reduces human error, guarantees data integrity and provides a highly responsive user interface.
 
-👥 User Roles & Responsibilities
+---
 
-🏗️ System Architecture
+## ✨ Key Features
 
-🛠️ Technology Stack
+### 🚀 100% Fully Dynamic Website (Admin Managed)
+- **A to Z Dynamic Content:** The entire frontend is database driven. Administrators can dynamically update the websites Header, Logos, Hero Banner, About Section, Prize Pool, Event Schedule, Sponsors, Galleries and Footer directly from the Admin Panel.
+- **Dynamic Registration Timer:** The countdown timer automatically calculates and displays real time deadlines based on the contest start and end dates set in the admin dashboard.
+- **Dynamic Notice & Rule Board:** Publish, edit or delete targeted announcements and contest rules instantly to the homepage.
 
-🔐 Security Implementation
+### 📝 Registration, Authentication & Finance
+- **OTP-Based Password Recovery:** A secure, automated 6-digit OTP email system for Coaches and Volunteers to reset their passwords safely.
+- **Coach-Led Team Registration:** Secure, structured form handling allowing coaches to register teams and manage member profiles.
+- **Integrated Payment Verification:** Built-in workflow for processing bKash, Nagad and Rocket transaction IDs.
 
-🗄️ Database Design Overview
+### 📊 Logistics & Administration
+- **Sponsor & Gallery Management:** Easily upload partner logos and past contest memories.
+- **Volunteer Logistics Dashboard:** Dedicated portal for volunteers to track and update kit distribution on-site.
+- **Excel Data Export:** One click data export for administrative reporting.
 
-🔄 Workflow Description
+### 🎨 Modern UI/UX
+- **Dark Mode UI:** Built-in Dark Mode using vanilla CSS variables, allowing users to switch themes instantly.
+- **Mobile-First Navigation:** Specialized bottom navigation bar for mobile devices, ensuring ease of use on smaller screens.
 
-⚙️ Installation & Setup
+---
 
-🔮 Future Enhancements
+## 🌐 Live Demo & Access
 
-👨‍💻 Contributors
+Experience the fully functional application live:
 
-📜 License
+- **Public Website:** [https://iupc-website.infinityfree.me/](https://iupc-website.infinityfree.me/)
+- **Admin Panel:** [https://iupc-website.infinityfree.me/admin/login](https://iupc-website.infinityfree.me/admin/login)
 
+**Demo Admin Credentials:**
+- **Email:** `superadmin@gmail.com`
+- **Password:** `12345678`
 
-📌 **Overview**
+---
 
-The Inter University Programming Contest Management System is a web application developed to modernize and automate the organizational workflow of large scale academic programming contests.
+## 👥 User Roles & Access
 
-The platform eliminates dependency on spreadsheets, manual verification and scattered communication by providing a centralized system where administrators, coaches and volunteers collaboratively manage contest operations in a structured and secure manner.
+| Role | Responsibilities |
+|---|---|
+| **🛡️ Super Admin** | Create and manage Admin accounts, control system level access. |
+| **🧑‍💼 Admin** | Create contests, verify payments, approve teams, manage website content (CMS), assign volunteers. |
+| **🎓 Coach** | Register teams, submit participant data and payment proofs, track real time approval status. |
+| **🧢 Volunteer** | View assigned teams, update and monitor on-site kit distribution status. |
 
-Inter University Programming Contest Management System ensures data integrity, operational transparency and efficient logistics handling through role based access control and a robust backend architecture.
+---
 
+## 🏗️ System Architecture
+The platform strictly follows the **MVC (Model–View–Controller)** architectural pattern ensuring separation of concerns, high scalability and clean maintainability.
 
-❗ **Problem Statement**
+---
 
-Organizing Inter University Programming Contests using traditional manual methods leads to:
+## 🛠️ Technology Stack
 
-Data duplication and inconsistency
+**Backend:**
+- **PHP** (>= 8.5)
+- **Laravel** (12.x)
+- **MySQL** (Database)
 
-Difficult payment verification
+**Frontend:**
+- HTML5, CSS3, JavaScript (Vanilla)
+- **Bootstrap 5.3.0**
+- FontAwesome Icons
 
-Inefficient team validation
+**Tools:** Composer, XAMPP, VS Code
 
-Lack of centralized tracking
+---
 
-High administrative overhead
+## 🔐 Security & Optimization
 
-As contest scale increases, these issues directly affect reliability, transparency and overall event quality.
+As an industry standard application, the system incorporates enterprise grade security and performance techniques:
 
+- **Role Based Access Control (RBAC):** Strict middleware based route protection across all dashboards.
+- **Advanced Caching (`Cache::remember`):** Heavy homepage queries are natively cached, reducing database load by ~90%. This makes the application heavily optimized for both Free Shared Hosting and Paid VPS environments.
+- **Fault-Tolerant Database Transactions:** Complex operations (e.g., team registration with photo uploads) are wrapped in `DB::transaction()` with `try-catch` blocks. This ensures data consistency and automatically deletes orphaned uploaded files if a server crash occurs.
+- **Session Stability (Keep-Alive):** Background token refreshing prevents `419 Page Expired` issues during long administrative sessions.
+- **XSS & SQLi Prevention:** Complete reliance on Laravel's Eloquent ORM and Blade templating to sanitize inputs/outputs.
+- **Bcrypt Password Hashing & CSRF Protection.**
 
-💡 **Solution Summary**
+---
 
-Inter University Programming Contest Management System introduces a centralized digital platform that:
+## ⚙️ Installation & Setup
 
-Digitizes team registration through verified coaches
+### 📋 Prerequisites
+- PHP >= 8.5
+- Composer
+- MySQL Database
 
-Provides structured payment verification
+### 🚀 Setup Steps
 
-Enables real time logistics tracking
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/HasanurRahmanKabir/Inter-University-Programming-Contest-Management-System.git
+   cd Inter-University-Programming-Contest-Management-System
+   ```
 
-Applies role based access control
+2. **Install dependencies**
+   ```bash
+   composer install
+   ```
 
-Stores all contest data in a secure relational database
+4. **Configure environment variables**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   *Edit `.env` and configure your `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD`.*  
+   *Make sure to also configure your `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, and `MAIL_FROM_ADDRESS` so that the OTP Password Recovery system works properly.*
 
-The system significantly reduces human error, administrative effort and operational complexity.
+4. **Run Database Migrations**
+   ```bash
+   php artisan migrate
+   ```
 
+5. **Start the local server**
+   ```bash
+   php artisan serve
+   ```
+   **Access the application:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-🚀 **Key Features**
+> ⚠️ **Production Warning:** Always ensure `APP_DEBUG=false` in your `.env` file before deploying to a live server to prevent the exposure of sensitive credentials.
 
-Multi role authentication system
+---
 
-Coach led team registration
+## 👨‍💻 Contributors
+- **Hasanur Rahman Anik**
+- **Md. Abrar Faiyz Chowdhury**
+- **Shabnur Akter**
+- **Nure Jannat Nina**
 
-Secure payment verification (bKash, Nagad, Rocket)
+**Department of Computer Science & Engineering**  
+*State University of Bangladesh*
 
-Contest creation and scheduling
+---
 
-Team approval and status tracking
-
-Volunteer logistics dashboard
-
-Kit distribution monitoring
-
-Notice and rule management
-
-Sponsor and gallery management
-
-Data export (Excel)
-
-
-👥 **User Roles & Responsibilities**
-
-
-🛡️ Super Admin
-
-Create and manage Admin accounts
-
-Control system level access
-
-
-🧑‍💼 Admin
-
-Create contests
-
-Verify payments
-
-Approve teams
-
-Manage notices, sponsors, gallery and rules
-
-Add volunteers
-
-
-🎓 Coach
-
-Register teams
-
-Provide participant details
-
-Submit payment transaction ID
-
-View team status
-
-
-🧢 Volunteer
-
-View assigned teams
-
-Update kit distribution status
-
-
-🏗️ **System Architecture**
-
-The platform follows the Model–View–Controller (MVC) architectural pattern:
-
-Model → Database interaction
-
-View → User interface
-
-Controller → Business logic
-
-This architecture ensures separation of concerns, scalability and maintainability.
-
-
-🛠️ **Technology Stack**
-
-🔧 **Backend**
-
-PHP (Laravel Framework)
-
-
-🎨 **Frontend**
-
-HTML5
-
-CSS3
-
-Bootstrap 5
-
-JavaScript
-
-
-🗄️ **Database**
-
-MySQL
-
-
-🧰 **Development Tools**
-
-VS Code
-
-XAMPP
-
-phpMyAdmin
-
-
-🔐 **Security Implementation**
-
-Role Based Access Control (RBAC)
-
-Bcrypt password hashing
-
-CSRF protection
-
-SQL Injection prevention
-
-Input validation
-
-
-🗄️ **Database Design Overview**
-
-The system uses a relational database containing tables such as:
-
-super_admin_infos
-
-admin_infos
-
-team_registration_infos
-
-payment_infos
-
-contest_infos
-
-notices
-
-volunteer_infos
-
-kit_statuses
-
-rules
-
-galleries
-
-sponsor_infos
-
-All relationships are maintained using foreign keys to ensure data consistency and integrity.
-
-
-🔄 **Workflow Description**
-
-Admin creates contest
-
-Coach registers team
-
-Coach submits payment information
-
-Admin verifies payment
-
-Admin approves team
-
-Volunteer distributes kits
-
-Volunteer updates kit status
-
-
-⚙️ **Installation & Setup**
-
-📋 **Prerequisites**
-
-PHP >= 8.2.12
-
-Composer
-
-MySQL
-
-XAMPP or similar server
-
-
-🧪 **Setup Steps**
-
-
-git clone (https://github.com/HasanurRahmanKabir/Inter-University-Programming-Contest-Management-System)
-
-cd Inter-University-Programming-Contest-Management-System
-
-composer install
-
-cp .env.example .env
-
-php artisan key:generate
-
-
-Configure database credentials in .env
-
-php artisan migrate
-php artisan serve
-
-
-🔗 **Access the application:**
-
-http://127.0.0.1:8000
-
-
-🔮 **Future Enhancements**
-
-
-Online judge integration
-
-Real time scoreboard
-
-Certificate generation (PDF)
-
-Email & SMS notifications
-
-Two factor authentication
-
-Mobile application
-
-
-👨‍💻 **Contributors**
-
-
-Hasanur Rahman Anik
-
-Md. Abrar Faiyz Chowdhury
-
-Shabnur Akter
-
-Nure Jannat Nina
-
-
-Department of Computer Science & Engineering
-State University of Bangladesh
-
-
-📜 **License**
-
-
+## 📜 License
 This project is developed for academic and educational purposes.

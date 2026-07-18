@@ -37,6 +37,9 @@ class ContestController extends Controller
 
         ]);
 
+        cache()->forget('homepage_contest_latest');
+        cache()->forget('homepage_contest_info');
+
         return redirect('admin/dashboard/contest')->with('success', 'Contest Added Successfully');
     }
     
@@ -64,6 +67,9 @@ class ContestController extends Controller
             'status' => $request->status,
         ]);
 
+        cache()->forget('homepage_contest_latest');
+        cache()->forget('homepage_contest_info');
+
         return redirect('admin/dashboard/contest')->with('success', 'Contest Updated Successfully');
     }
 
@@ -71,6 +77,10 @@ class ContestController extends Controller
     public function destroy($id)
     {
         Contest::where('contest_id', $id)->delete();
+        
+        cache()->forget('homepage_contest_latest');
+        cache()->forget('homepage_contest_info');
+        
         return back()->with('success', 'Contest Deleted Successfully');
     }
 

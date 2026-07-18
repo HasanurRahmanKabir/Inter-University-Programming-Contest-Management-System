@@ -26,24 +26,33 @@ class SponsorController extends Controller
 
         $logoPath = null;
 
-        if ($request->hasFile('logo')) {
-            $file = $request->file('logo');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $path = 'uploads/sponsors/';
-            $file->move(public_path($path), $filename);
-            $logoPath = $path . $filename;
+        try {
+            if ($request->hasFile('logo')) {
+                $file = $request->file('logo');
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/sponsors/';
+                $file->move(public_path($path), $filename);
+                $logoPath = $path . $filename;
+            }
+
+            Sponsor::create([
+                'name' => $request->name,
+                'logo' => $logoPath,
+                'sponsor_category' => $request->sponsor_category,
+                'details' => $request->details,
+                'link' => $request->link,
+                'status' => $request->status,
+            ]);
+
+            cache()->forget('homepage_sponsors');
+
+            return redirect()->back()->with('success', 'Sponsor Added Successfully!');
+        } catch (\Exception $e) {
+            if ($logoPath && \Illuminate\Support\Facades\File::exists(public_path($logoPath))) {
+                \Illuminate\Support\Facades\File::delete(public_path($logoPath));
+            }
+            return redirect()->back()->withInput()->with('error', 'Failed to add sponsor due to a server error.');
         }
-
-        Sponsor::create([
-            'name' => $request->name,
-            'logo' => $logoPath,
-            'sponsor_category' => $request->sponsor_category,
-            'details' => $request->details,
-            'link' => $request->link,
-            'status' => $request->status,
-        ]);
-
-        return redirect()->back()->with('success', 'Sponsor Added Successfully!');
     }
     public function update(Request $request, $sponsor_id)
     {
@@ -71,6 +80,8 @@ class SponsorController extends Controller
 
         $sponsor->update($updateData);
 
+        cache()->forget('homepage_sponsors');
+
         return redirect('/admin/dashboard/sponsor')->with('success', 'Sponsor Updated Successfully');
     }
     public function destroy($id)
@@ -82,6 +93,9 @@ class SponsorController extends Controller
             }
             $sponsor->delete();
         }
+        
+        cache()->forget('homepage_sponsors');
+        
         return back()->with('success', 'Sponsor Deleted Successfully');
     }
 }

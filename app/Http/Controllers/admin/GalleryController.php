@@ -35,6 +35,8 @@ class GalleryController extends Controller
                 'event_date' => $request->event_date,
             ]);
 
+            cache()->forget('homepage_galleries');
+
             return redirect()->back()->with('success', 'Media Uploaded Successfully!');
         }
 
@@ -50,6 +52,8 @@ class GalleryController extends Controller
         }
 
         $gallery->delete();
+
+        cache()->forget('homepage_galleries');
 
         return redirect()->back()->with('success', 'Media Deleted Successfully!');
     }

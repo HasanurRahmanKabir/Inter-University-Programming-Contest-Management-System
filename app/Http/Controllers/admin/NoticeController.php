@@ -52,6 +52,8 @@ class NoticeController extends Controller
             'status' => $request->boolean('status'),
         ]);
 
+        cache()->forget('homepage_notices');
+
         return redirect('admin/dashboard/notice')->with('success', 'Notice Added Successfully');
     }
     public function update(Request $request, $notice_id)
@@ -72,11 +74,14 @@ class NoticeController extends Controller
             'status' => $request->status,
         ]);
 
+        cache()->forget('homepage_notices');
+
         return redirect('admin/dashboard/notice')->with('success', 'Notice Updated Successfully');
     }
     public function destroy($id)
     {
         Notice::where('notice_id', $id)->delete();
+        cache()->forget('homepage_notices');
         return back()->with('success', 'Notice Deleted Successfully');
     }
 }

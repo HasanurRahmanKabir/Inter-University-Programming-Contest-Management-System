@@ -83,48 +83,79 @@ class TeamRegistrationController extends Controller
             'mem_3_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $team = TeamRegistration::create([
-            // Team Info
-            'team_name' => $request->team_name,
-            'institute_name' => $request->institute_name,
-            'password' => Hash::make($request->password),
+        $uploadedFiles = [];
 
-            // Coach Info
-            'coach_name' => $request->coach_name,
-            'coach_email' => $request->coach_email,
-            'coach_phone' => $request->coach_phone,
-            'coach_t_shirt' => $request->coach_t_shirt,
-            'coach_photo' => $this->uploadImage($request->file('coach_photo'), 'coach'),
+        try {
+            \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // Member 1 Info
-            'mem_1_name' => $request->mem_1_name,
-            'mem_1_student_id' => $request->mem_1_student_id,
-            'mem_1_email' => $request->mem_1_email,
-            'mem_1_phone' => $request->mem_1_phone,
-            'mem_1_t_shirt' => $request->mem_1_t_shirt,
-            'mem_1_photo' => $this->uploadImage($request->file('mem_1_photo'), 'mem1'),
+            $coachPhoto = $this->uploadImage($request->file('coach_photo'), 'coach');
+            if ($coachPhoto) $uploadedFiles[] = $coachPhoto;
 
-            // Member 2 Info
-            'mem_2_name' => $request->mem_2_name,
-            'mem_2_student_id' => $request->mem_2_student_id,
-            'mem_2_email' => $request->mem_2_email,
-            'mem_2_phone' => $request->mem_2_phone,
-            'mem_2_t_shirt' => $request->mem_2_t_shirt,
-            'mem_2_photo' => $this->uploadImage($request->file('mem_2_photo'), 'mem2'),
+            $mem1Photo = $this->uploadImage($request->file('mem_1_photo'), 'mem1');
+            if ($mem1Photo) $uploadedFiles[] = $mem1Photo;
 
-            // Member 3 Info
-            'mem_3_name' => $request->mem_3_name,
-            'mem_3_student_id' => $request->mem_3_student_id,
-            'mem_3_email' => $request->mem_3_email,
-            'mem_3_phone' => $request->mem_3_phone,
-            'mem_3_t_shirt' => $request->mem_3_t_shirt,
-            'mem_3_photo' => $this->uploadImage($request->file('mem_3_photo'), 'mem3'),
+            $mem2Photo = $this->uploadImage($request->file('mem_2_photo'), 'mem2');
+            if ($mem2Photo) $uploadedFiles[] = $mem2Photo;
 
-            'is_paid' => 0,
-            'is_selected' => 0,
-        ]);
+            $mem3Photo = $this->uploadImage($request->file('mem_3_photo'), 'mem3');
+            if ($mem3Photo) $uploadedFiles[] = $mem3Photo;
 
-        return redirect()->route('user.login')->with('success', 'Team Registration Completed Successfully! Please Login.');
+            $team = TeamRegistration::create([
+                // Team Info
+                'team_name' => $request->team_name,
+                'institute_name' => $request->institute_name,
+                'password' => Hash::make($request->password),
+
+                // Coach Info
+                'coach_name' => $request->coach_name,
+                'coach_email' => $request->coach_email,
+                'coach_phone' => $request->coach_phone,
+                'coach_t_shirt' => $request->coach_t_shirt,
+                'coach_photo' => $coachPhoto,
+
+                // Member 1 Info
+                'mem_1_name' => $request->mem_1_name,
+                'mem_1_student_id' => $request->mem_1_student_id,
+                'mem_1_email' => $request->mem_1_email,
+                'mem_1_phone' => $request->mem_1_phone,
+                'mem_1_t_shirt' => $request->mem_1_t_shirt,
+                'mem_1_photo' => $mem1Photo,
+
+                // Member 2 Info
+                'mem_2_name' => $request->mem_2_name,
+                'mem_2_student_id' => $request->mem_2_student_id,
+                'mem_2_email' => $request->mem_2_email,
+                'mem_2_phone' => $request->mem_2_phone,
+                'mem_2_t_shirt' => $request->mem_2_t_shirt,
+                'mem_2_photo' => $mem2Photo,
+
+                // Member 3 Info
+                'mem_3_name' => $request->mem_3_name,
+                'mem_3_student_id' => $request->mem_3_student_id,
+                'mem_3_email' => $request->mem_3_email,
+                'mem_3_phone' => $request->mem_3_phone,
+                'mem_3_t_shirt' => $request->mem_3_t_shirt,
+                'mem_3_photo' => $mem3Photo,
+
+                'is_paid' => 0,
+                'is_selected' => 0,
+            ]);
+
+            \Illuminate\Support\Facades\DB::commit();
+            return redirect()->route('user.login')->with('success', 'Team Registration Completed Successfully! Please Login.');
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+
+            // Delete uploaded files if database insertion fails
+            foreach ($uploadedFiles as $file) {
+                if (\Illuminate\Support\Facades\File::exists(public_path($file))) {
+                    \Illuminate\Support\Facades\File::delete(public_path($file));
+                }
+            }
+
+            return redirect()->back()->withInput()->with('error', 'Registration failed due to a server error. Please try again.');
+        }
     }
 
     private function uploadImage($file, $prefix)

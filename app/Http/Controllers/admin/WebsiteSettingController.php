@@ -53,6 +53,8 @@ class WebsiteSettingController extends Controller
 
         $setting->fill($data)->save();
 
+        cache()->forget('homepage_settings');
+
         return back()->with('success', 'Website Settings Updated Successfully!');
     }
 
@@ -67,6 +69,9 @@ class WebsiteSettingController extends Controller
                 }
             }
             $setting->delete();
+            
+            cache()->forget('homepage_settings');
+            
             return back()->with('success', 'Settings Reset Successfully!');
         }
         return back()->with('error', 'No Settings Found to Delete.');
@@ -83,6 +88,8 @@ class WebsiteSettingController extends Controller
 
             $setting->$field = null;
             $setting->save();
+
+            cache()->forget('homepage_settings');
 
             return back()->with('success', 'Image Removed Successfully!');
         }

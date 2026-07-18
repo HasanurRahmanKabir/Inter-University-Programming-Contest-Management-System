@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- CSRF Token for AJAX -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- No-Cache: Prevent browser from serving stale pages with old CSRF tokens -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -241,12 +239,9 @@
         </script>
     @endif
     <script>
-        // ============================================
-        // SESSION KEEP-ALIVE: Ping server every 10 min
-        // Prevents 419 Page Expired from stale CSRF token
-        // ============================================
+        
         (function() {
-            var keepAliveInterval = 10 * 60 * 1000; // 10 minutes in ms
+            var keepAliveInterval = 10 * 60 * 1000;
 
             function pingServer() {
                 fetch('/admin/dashboard', {
@@ -257,18 +252,13 @@
                     },
                     credentials: 'same-origin'
                 }).catch(function() {
-                    // Silent fail - just keeping session alive
                 });
             }
 
-            // Start pinging every 10 minutes
             setInterval(pingServer, keepAliveInterval);
 
-            // Also refresh CSRF token in all forms when page becomes visible again
-            // (e.g., user switched tabs and came back)
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
-                    // Page is visible again - refresh token in all forms
                     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                     document.querySelectorAll('input[name="_token"]').forEach(function(input) {
                         input.value = token;
