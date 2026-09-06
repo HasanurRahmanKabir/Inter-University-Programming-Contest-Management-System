@@ -157,9 +157,9 @@ As an industry standard application, the system incorporates enterprise grade se
 
 ## 👨‍💻 Contributors
 - **Hasanur Rahman Anik**
-- **Md. Abrar Faiyz Chowdhury**
 - **Shabnur Akter**
 - **Nure Jannat Nina**
+- **Md. Abrar Faiyz Chowdhury**
 
 **Department of Computer Science & Engineering**  
 *State University of Bangladesh*
