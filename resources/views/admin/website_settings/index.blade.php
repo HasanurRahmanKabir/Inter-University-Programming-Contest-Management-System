@@ -77,7 +77,7 @@
 
                     <h6 class="text-primary fw-bold mt-4 mb-3"><i class="fas fa-images me-2"></i>Branding & Media</h6>
                     <div class="row g-3">
-                        @php $images = ['header_logo' => 'Header Logo', 'footer_logo' => 'Footer Logo', 'hero_banner' => 'Hero Banner', 'about_image' => 'About Us Image']; @endphp
+                        @php $images = ['website_favicon' => 'Website Favicon', 'admin_favicon' => 'Admin Favicon', 'header_logo' => 'Header Logo', 'footer_logo' => 'Footer Logo', 'hero_banner' => 'Hero Banner', 'about_image' => 'About Us Image']; @endphp
 
                         @foreach($images as $key => $label)
                             <div class="col-12 col-sm-6 col-lg-3">
@@ -101,7 +101,9 @@
                                 @endif
 
                                 <input type="file" name="{{ $key }}" class="form-control shadow-none mb-1">
-                                @if($key === 'header_logo' || $key === 'footer_logo')
+                                @if($key === 'website_favicon' || $key === 'admin_favicon')
+                                    <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="fas fa-info-circle me-1 text-primary"></i>Ratio: 1:1 (e.g. 32x32px or 512x512px). Max: 1MB.</small>
+                                @elseif($key === 'header_logo' || $key === 'footer_logo')
                                     <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="fas fa-info-circle me-1 text-primary"></i>Ratio: 3:1 or 4:1 (e.g. 250x80px). Max: 2MB.</small>
                                 @elseif($key === 'hero_banner')
                                     <small class="text-muted d-block" style="font-size: 0.75rem;"><i class="fas fa-info-circle me-1 text-primary"></i>Ratio: 16:9 (e.g. 1920x1080px). Max: 5MB.</small>

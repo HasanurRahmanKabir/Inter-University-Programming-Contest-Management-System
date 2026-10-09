@@ -18,8 +18,8 @@ class WebsiteSettingController extends Controller
     public function update(Request $request)
     {
         $setting = WebsiteSetting::first() ?? new WebsiteSetting();
-        $data = $request->except(['header_logo', 'footer_logo', 'hero_banner', 'about_image', 'delete_images']);
-        $images = ['header_logo', 'footer_logo', 'hero_banner', 'about_image'];
+        $data = $request->except(['favicon', 'website_favicon', 'admin_favicon', 'header_logo', 'footer_logo', 'hero_banner', 'about_image', 'delete_images']);
+        $images = ['website_favicon', 'admin_favicon', 'header_logo', 'footer_logo', 'hero_banner', 'about_image'];
 
         if ($request->has('delete_images')) {
             foreach ($request->delete_images as $del_img) {
@@ -62,7 +62,7 @@ class WebsiteSettingController extends Controller
     {
         $setting = WebsiteSetting::first();
         if ($setting) {
-            $images = ['header_logo', 'footer_logo', 'hero_banner', 'about_image'];
+            $images = ['website_favicon', 'admin_favicon', 'header_logo', 'footer_logo', 'hero_banner', 'about_image'];
             foreach ($images as $img) {
                 if (!empty($setting->$img) && File::exists(public_path($setting->$img))) {
                     File::delete(public_path($setting->$img));
@@ -79,7 +79,7 @@ class WebsiteSettingController extends Controller
     public function deleteImage($field)
     {
         $setting = WebsiteSetting::first();
-        $allowedFields = ['header_logo', 'footer_logo', 'hero_banner', 'about_image'];
+        $allowedFields = ['website_favicon', 'admin_favicon', 'header_logo', 'footer_logo', 'hero_banner', 'about_image'];
 
         if ($setting && in_array($field, $allowedFields) && !empty($setting->$field)) {
             if (File::exists(public_path($setting->$field))) {

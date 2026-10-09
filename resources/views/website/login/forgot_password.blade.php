@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Forgot Password</title>
-    <link rel="icon" type="image/x-icon" href="{{ !empty($setting->favicon) ? asset($setting->favicon) : asset('content/website/image/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ !empty($setting->website_favicon) ? asset($setting->website_favicon) : asset('content/website/image/favicon.ico') }}">
 
     <link href="{{ asset('content/website') }}/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css" />

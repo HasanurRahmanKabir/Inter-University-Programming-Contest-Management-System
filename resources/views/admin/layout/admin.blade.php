@@ -9,6 +9,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Premium Admin Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="{{ !empty($setting->admin_favicon) ? asset($setting->admin_favicon) : asset('content/website/image/favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('content/admin') }}/css/bootstrap.min.css">

@@ -20,6 +20,8 @@ class WebsiteSetting extends Model
      */
     protected $fillable = [
         'website_name',
+        'website_favicon',
+        'admin_favicon',
         'header_logo',
         'footer_logo',
         'hero_banner',
