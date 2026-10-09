@@ -141,6 +141,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/dashboard/website-settings', [WebsiteSettingController::class, 'index']);
     Route::post('/dashboard/website-settings/update', [WebsiteSettingController::class, 'update'])->name('admin.settings.update');
     Route::get('/dashboard/website-settings/delete-image/{field}', [WebsiteSettingController::class, 'deleteImage'])->name('admin.settings.deleteImage');
+
+    // Clear Cache
+    Route::get('/dashboard/clear-cache', function () {
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        
+        return back()->with('cache_success', 'System cache cleared and performance optimized successfully!');
+    })->name('admin.clear.cache');
 });
 
 // Coach & Volunteer Dashboard Routes

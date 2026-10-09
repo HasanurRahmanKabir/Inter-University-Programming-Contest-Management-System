@@ -28,36 +28,42 @@
                 Admin <span style="color: #3b82f6">Panel</span>
             </h4>
         </div>
-        <div class="sidebar-menu">
+        <div class="sidebar-menu" style="padding-bottom: 80px; position: relative; min-height: calc(100vh - 70px);">
             <a class="{{ Request::is('admin/dashboard') ? 'active' : '' }}" href="{{ url('admin/dashboard') }}"><i
                     class="fas fa-th-large"></i> Dashboard</a>
+
             <a class="{{ Request::is('admin/dashboard/contest') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/contest') }}"><i class="fas fa-trophy"></i> Contests</a>
             <a class="{{ Request::is('admin/dashboard/team') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/team') }}"><i class="fas fa-users"></i> Teams</a>
-
             <a class="{{ Request::is('admin/dashboard/payment') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/payment') }}"><i class="fas fa-credit-card"></i> Payments</a>
-            <a class="{{ Request::is('admin/dashboard/volunteer') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/volunteer') }}"><i class="fas fa-hand-holding-heart"></i> Volunteers</a>
-            <a class="{{ Request::is('admin/dashboard/notice') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/notice') }}"><i class="fas fa-bullhorn"></i> Notices</a>
-            <a class="{{ Request::is('admin/dashboard/gallery') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/gallery') }}"><i class="fas fa-images"></i> Gallery</a>
             <a class="{{ Request::is('admin/dashboard/kitstatus') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/kitstatus') }}"><i class="fas fa-gift"></i> Kit Status</a>
-            <a class="{{ Request::is('admin/dashboard/sponsor') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/sponsor') }}"><i class="fas fa-ad"></i> Sponsors</a>
             <a class="{{ Request::is('admin/dashboard/downloaddetails') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/downloaddetails') }}"><i class="fas fa-download fa-lg me-2"></i>
                 Download Details</a>
+
+            <a class="{{ Request::is('admin/dashboard/volunteer') ? 'active' : '' }}"
+                href=" {{ url('admin/dashboard/volunteer') }}"><i class="fas fa-hand-holding-heart"></i> Volunteers</a>
+            <a class="{{ Request::is('admin/dashboard/sponsor') ? 'active' : '' }}"
+                href=" {{ url('admin/dashboard/sponsor') }}"><i class="fas fa-ad"></i> Sponsors</a>
+            <a class="{{ Request::is('admin/dashboard/notice') ? 'active' : '' }}"
+                href=" {{ url('admin/dashboard/notice') }}"><i class="fas fa-bullhorn"></i> Notices</a>
             <a class="{{ Request::is('admin/dashboard/rules') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/rules') }}"><i class="fas fa-clipboard-list"></i> Rules</a>
+            <a class="{{ Request::is('admin/dashboard/gallery') ? 'active' : '' }}"
+                href=" {{ url('admin/dashboard/gallery') }}"><i class="fas fa-images"></i> Gallery</a>
+
             <a class="{{ Request::is('admin/dashboard/admin') ? 'active' : '' }}"
                 href=" {{ url('admin/dashboard/admin') }}"><i class="fas fa-user-cog"></i> Admins</a>
             <a class="{{ Request::is('admin/dashboard/website-settings') ? 'active' : '' }}" 
                 href="{{ url('admin/dashboard/website-settings') }}">
                 <i class="fas fa-cogs"></i> Website Settings</a>    
+
+            <!-- Clear Cache -->
+            <a href="{{ route('admin.clear.cache') }}">
+                <i class="fas fa-broom"></i> Clear Cache</a>
 
             <!-- Theme Toggle -->
             <a href="#" class="theme-toggle-btn w-100 text-start ps-3 py-2 mt-2" style="border-radius: 8px;">
@@ -66,7 +72,7 @@
                 <span class="ms-2">Toggle Theme</span>
             </a>
 
-            <div class="mt-4 border-top border-secondary pt-3">
+            <div class="border-top border-secondary pt-2 pb-0 mb-0" style="position: absolute; bottom: 0; left: 0; width: 100%; background: inherit;">
                 <a href="{{ route('admin.logout') }}" class="text-danger"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt"></i> Logout
@@ -221,6 +227,23 @@
             <i class="fas fa-check-circle me-2"></i> <strong>Success!</strong> {{ session('profile_success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    @endif
+
+    @if(session('cache_success'))
+        <div id="global-cache-alert" style="display: none;" class="alert alert-success alert-dismissible fade show shadow-sm mt-3 mx-3 mx-md-4 mb-0" role="alert">
+            <i class="fas fa-check-circle me-2"></i>{{ session('cache_success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var alertEl = document.getElementById('global-cache-alert');
+                var mainContainer = document.querySelector('.main-content');
+                if (mainContainer && alertEl) {
+                    alertEl.style.display = 'block';
+                    mainContainer.insertBefore(alertEl, mainContainer.children[1] || mainContainer.firstChild);
+                }
+            });
+        </script>
     @endif
 
 
