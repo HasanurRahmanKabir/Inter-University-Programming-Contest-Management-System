@@ -22,6 +22,8 @@ class WebsiteSetting extends Model
         'website_name',
         'website_favicon',
         'admin_favicon',
+        'coach_favicon',
+        'volunteer_favicon',
         'header_logo',
         'footer_logo',
         'hero_banner',

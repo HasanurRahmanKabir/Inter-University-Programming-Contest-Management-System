@@ -172,14 +172,17 @@ Route::get('/optimize-clear', function () {
     return 'System cache cleared and performance optimized successfully!';
 });
 
-Route::get('/storage-link', function () {
-    try {
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
-        return 'Storage link created successfully!';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
+Route::get('storage/{filename}', function ($filename) {
+    $path = storage_path('app/public/' . $filename);
+    if (!\Illuminate\Support\Facades\File::exists($path)) {
+        abort(404);
     }
-});
+    $file = \Illuminate\Support\Facades\File::get($path);
+    $type = \Illuminate\Support\Facades\File::mimeType($path);
+    $response = response()->make($file, 200);
+    $response->header("Content-Type", $type);
+    return $response;
+})->where('filename', '.*');
 Route::get('/databasefresh-seed', function () {
     try {
         \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
