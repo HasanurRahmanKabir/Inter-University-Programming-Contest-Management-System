@@ -171,6 +171,15 @@ Route::get('/optimize-clear', function () {
 
     return 'System cache cleared and performance optimized successfully!';
 });
+
+Route::get('/storage-link', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        return 'Storage link created successfully!';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
 Route::get('/databasefresh-seed', function () {
     try {
         \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
@@ -180,6 +189,6 @@ Route::get('/databasefresh-seed', function () {
 
         return 'Database reset and seeded successfully!';
     } catch (\Exception $e) {
-        return 'Error: '.$e->getMessage();
+        return 'Error: ' . $e->getMessage();
     }
 });
