@@ -58,7 +58,7 @@ Organizing large scale programming contests manually leads to scattered data, di
 
 Experience the fully functional application live:
 
-- **Public Website:** [https://iupc-website.infinityfree.me/](https://iupc-website.infinityfree.me/)
+- **Public Website:** [https://iupc-website.infinityfree.me/](https://iupc-website.infinityfree.me)
 - **Admin Panel:** [https://iupc-website.infinityfree.me/admin/login](https://iupc-website.infinityfree.me/admin/login)
 
 **Demo Admin Credentials:**
