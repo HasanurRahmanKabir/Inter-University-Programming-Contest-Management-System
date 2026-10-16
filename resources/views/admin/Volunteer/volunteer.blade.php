@@ -163,8 +163,13 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Password</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Set default password" required>
-                            @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            <div class="input-group has-validation volunteer-password-group">
+                                <input type="password" class="form-control border-end-0 @error('password') is-invalid @enderror" id="volunteerPassword" name="password" placeholder="Set default password" required>
+                                <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleVolunteerPassword" onclick="toggleVolunteerPasswordVisibility()" title="Show/Hide Password" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye-slash" id="volunteerPasswordIcon"></i>
+                                </button>
+                                @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Status</label>
@@ -331,5 +336,72 @@
         </div>
     @endforeach
 
+    <style>
+        .volunteer-password-group .form-control {
+            border-color: #dee2e6;
+            box-shadow: none !important;
+        }
+        .volunteer-password-group .password-toggle-btn {
+            background-color: transparent !important;
+            border-color: #dee2e6 !important;
+            color: #6c757d;
+            box-shadow: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.375rem 0.75rem;
+            cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .volunteer-password-group .password-toggle-btn:hover,
+        .volunteer-password-group .password-toggle-btn:focus {
+            background-color: transparent !important;
+            color: #3b82f6 !important;
+            box-shadow: none !important;
+        }
+        .volunteer-password-group:focus-within .form-control,
+        .volunteer-password-group:focus-within .password-toggle-btn {
+            border-color: #86b7fe !important;
+        }
+        .volunteer-password-group .form-control.is-invalid ~ .password-toggle-btn {
+            border-color: #dc3545 !important;
+        }
+        body[data-theme="dark"] .volunteer-password-group .form-control {
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            background-color: #0f172a !important;
+        }
+        body[data-theme="dark"] .volunteer-password-group .password-toggle-btn {
+            background-color: #0f172a !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            color: #94a3b8;
+        }
+        body[data-theme="dark"] .volunteer-password-group .password-toggle-btn:hover,
+        body[data-theme="dark"] .volunteer-password-group .password-toggle-btn:focus {
+            background-color: #0f172a !important;
+            color: #60a5fa !important;
+        }
+        body[data-theme="dark"] .volunteer-password-group:focus-within .form-control,
+        body[data-theme="dark"] .volunteer-password-group:focus-within .password-toggle-btn {
+            border-color: #3b82f6 !important;
+        }
+    </style>
+
+    <script>
+        function toggleVolunteerPasswordVisibility() {
+            const passwordInput = document.getElementById('volunteerPassword');
+            const passwordIcon = document.getElementById('volunteerPasswordIcon');
+            if (!passwordInput || !passwordIcon) return;
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
 @endsection
 
