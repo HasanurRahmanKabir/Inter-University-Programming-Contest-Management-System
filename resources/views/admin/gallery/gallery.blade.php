@@ -148,13 +148,19 @@
         </div>
     </div>
 
-    <div class="modal fade" id="viewImageModal" tabindex="-1" aria-hidden="true">
+    <!-- View Image Lightbox Modal -->
+    <div class="modal fade" id="viewImageModal" tabindex="-1" aria-hidden="true" style="backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content bg-transparent border-0">
-                <div class="modal-body p-0 position-relative">
-                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-                        data-bs-dismiss="modal"></button>
-                    <img src="" id="modalImage" class="img-fluid rounded shadow-lg w-100">
+            <div class="modal-content bg-transparent border-0 shadow-none">
+                <div class="modal-body p-0 text-center">
+                    <div class="position-relative d-inline-block" style="max-width: 100%;">
+                        <!-- Floating Close Button at Top-Right Corner of Image -->
+                        <button type="button" class="btn-gallery-lightbox-close" data-bs-dismiss="modal" aria-label="Close" title="Close Preview (Esc)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <img src="" id="modalImage" class="img-fluid rounded-4 shadow-lg"
+                            style="max-height: 80vh; width: auto; max-width: 100%; object-fit: contain; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: block;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -211,5 +217,54 @@
             }
         }
     </script>
+
+    <style>
+        .btn-gallery-lightbox-close {
+            position: absolute;
+            top: -16px;
+            right: -16px;
+            z-index: 1090;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.95);
+            color: #ffffff !important;
+            border: 2px solid rgba(255, 255, 255, 0.65);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            padding: 0;
+        }
+
+        .btn-gallery-lightbox-close:hover {
+            background: #ef4444;
+            color: #ffffff !important;
+            border-color: #ef4444;
+            transform: scale(1.12) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.65);
+        }
+
+        .btn-gallery-lightbox-close:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 576px) {
+            .btn-gallery-lightbox-close {
+                top: -14px;
+                right: -14px;
+                width: 38px;
+                height: 38px;
+                font-size: 1.05rem;
+            }
+        }
+    </style>
 @endsection
 
