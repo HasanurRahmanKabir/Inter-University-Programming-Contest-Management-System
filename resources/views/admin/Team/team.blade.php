@@ -50,32 +50,39 @@
                 </div>
             @endif
 
-            <form method="GET" action="{{ route('admin.teamregistration.index') }}" class="row mb-4 g-3">
-                <div class="col-md-4">
-                    <input type="text" name="q" value="{{ request('q') }}" class="form-control"
-                        placeholder="Search by Team Name, Institute...">
+            @php
+                $hasFilter = request()->filled('q') || (request()->has('filter') && request('filter') !== '' && request('filter') !== null);
+            @endphp
+            <form method="GET" action="{{ route('admin.teamregistration.index') }}" class="row mb-4 g-2" id="teamFilterForm">
+                <div class="col-md-5 col-12">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+                        <input type="text" name="q" id="teamSearchInput" value="{{ request('q') }}" class="form-control border-start-0"
+                            placeholder="Search by Team Name, Institute, Coach...">
+                    </div>
                 </div>
 
-                <div class="col-md-3">
-                    <select name="filter" class="form-select">
-                        <option value=""
-                            {{ request('filter') === null || request('filter') === '' ? 'selected' : '' }}>Filter by
-                            Selection</option>
+                <div class="col-md-3 col-12">
+                    <select name="filter" id="teamFilterSelect" class="form-select">
+                        <option value="" {{ request('filter') === null || request('filter') === '' ? 'selected' : '' }}>Filter by Selection</option>
                         <option value="1" {{ request('filter') === '1' ? 'selected' : '' }}>Selected</option>
                         <option value="0" {{ request('filter') === '0' ? 'selected' : '' }}>Not Selected</option>
                     </select>
                 </div>
-                <div class="col-md-3 d-flex align-items-stretch gap-2">
-                    <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-search me-2"></i>
-                        Search
+
+                <div class="col-md-2 col-6">
+                    <button type="submit" id="teamSearchBtn" class="btn btn-primary w-100 d-flex align-items-center justify-content-center" title="Search">
+                        <i class="fas fa-search me-2"></i> Search
                     </button>
-                    @if(request()->has('q') || request('filter') !== null)
-                    <a href="{{ route('admin.teamregistration.index') }}" class="btn btn-light border w-100 d-flex align-items-center justify-content-center text-decoration-none text-secondary">
-                        <i class="fas fa-times me-2"></i>
-                        Clear
-                    </a>
-                    @endif
+                </div>
+
+                <div class="col-md-2 col-6">
+                    <button type="button" id="teamResetBtn"
+                        class="btn btn-light border w-100 d-flex align-items-center justify-content-center team-reset-btn {{ !$hasFilter ? 'is-disabled' : '' }}"
+                        title="{{ $hasFilter ? 'Clear All Filters' : 'No filters applied' }}"
+                        {{ !$hasFilter ? 'disabled' : '' }}>
+                        <i class="fas fa-sync-alt text-muted me-2"></i> Clear
+                    </button>
                 </div>
             </form>
 
@@ -417,5 +424,107 @@
         </div>
     @endforeach
 
+    <style>
+        .team-reset-btn {
+            transition: all 0.2s ease;
+        }
+        .team-reset-btn:disabled,
+        .team-reset-btn.is-disabled {
+            opacity: 0.55;
+            cursor: not-allowed !important;
+            pointer-events: auto !important;
+        }
+        .team-reset-btn:not(:disabled):hover {
+            background-color: #f1f5f9;
+        }
+        .team-reset-btn:not(:disabled):hover i {
+            color: #ef4444 !important;
+            transform: rotate(-180deg);
+            transition: transform 0.3s ease, color 0.2s ease;
+        }
+        body[data-theme="dark"] .team-reset-btn {
+            background-color: #1e293b !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #e2e8f0 !important;
+        }
+        body[data-theme="dark"] .team-reset-btn i {
+            color: #94a3b8 !important;
+        }
+        body[data-theme="dark"] .team-reset-btn:not(:disabled):hover {
+            background-color: #334155 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        body[data-theme="dark"] .team-reset-btn:not(:disabled):hover i {
+            color: #f87171 !important;
+        }
+        body[data-theme="dark"] .input-group-text.bg-white {
+            background-color: #1e293b !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #94a3b8 !important;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterForm = document.getElementById('teamFilterForm');
+            const searchInput = document.getElementById('teamSearchInput');
+            const filterSelect = document.getElementById('teamFilterSelect');
+            const resetBtn = document.getElementById('teamResetBtn');
+
+            if (!filterForm || !searchInput || !filterSelect || !resetBtn) return;
+
+            const hasActiveUrlFilter = {{ $hasFilter ? 'true' : 'false' }};
+            const cleanUrl = "{{ route('admin.teamregistration.index') }}";
+
+            function updateResetButtonState() {
+                const hasClientValues = (searchInput.value.trim() !== '') || 
+                                        (filterSelect.value !== '');
+
+                if (hasActiveUrlFilter || hasClientValues) {
+                    resetBtn.removeAttribute('disabled');
+                    resetBtn.classList.remove('is-disabled');
+                    resetBtn.setAttribute('title', 'Clear Filters');
+                } else {
+                    resetBtn.setAttribute('disabled', 'disabled');
+                    resetBtn.classList.add('is-disabled');
+                    resetBtn.setAttribute('title', 'No filters applied');
+                }
+            }
+
+            searchInput.addEventListener('input', updateResetButtonState);
+            filterSelect.addEventListener('change', updateResetButtonState);
+
+            resetBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                if (resetBtn.hasAttribute('disabled')) {
+                    return;
+                }
+
+                if (hasActiveUrlFilter) {
+                    window.location.href = cleanUrl;
+                } else {
+                    searchInput.value = '';
+                    filterSelect.value = '';
+                    updateResetButtonState();
+                }
+            });
+
+            filterForm.addEventListener('submit', function (e) {
+                const hasValues = (searchInput.value.trim() !== '') || 
+                                  (filterSelect.value !== '');
+
+                if (!hasValues) {
+                    e.preventDefault();
+                    if (hasActiveUrlFilter) {
+                        window.location.href = cleanUrl;
+                    }
+                    return false;
+                }
+            });
+
+            updateResetButtonState();
+        });
+    </script>
 @endsection
 
