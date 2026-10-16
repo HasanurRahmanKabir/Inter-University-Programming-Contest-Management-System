@@ -239,6 +239,18 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="editVolunteerPassword{{ $data->volunteer_id }}" class="form-label text-muted small fw-bold">Edit Password</label>
+                                <div class="input-group has-validation volunteer-password-group">
+                                    <input type="password" id="editVolunteerPassword{{ $data->volunteer_id }}" class="form-control border-end-0 @error('password') is-invalid @enderror"
+                                        placeholder="Leave blank to keep current password" name="password">
+                                    <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleEditVolunteerPassword{{ $data->volunteer_id }}" onclick="toggleVolunteerPasswordVisibility('editVolunteerPassword{{ $data->volunteer_id }}', 'editVolunteerPasswordIcon{{ $data->volunteer_id }}')" title="Show/Hide Password" aria-label="Toggle password visibility">
+                                        <i class="fas fa-eye-slash" id="editVolunteerPasswordIcon{{ $data->volunteer_id }}"></i>
+                                    </button>
+                                    @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="editVolunteerStatus"
                                     class="form-label text-muted small fw-bold">Status</label>
                                 <select id="editVolunteerStatus" class="form-select" name="status">
@@ -387,9 +399,9 @@
     </style>
 
     <script>
-        function toggleVolunteerPasswordVisibility() {
-            const passwordInput = document.getElementById('volunteerPassword');
-            const passwordIcon = document.getElementById('volunteerPasswordIcon');
+        function toggleVolunteerPasswordVisibility(inputId = 'volunteerPassword', iconId = 'volunteerPasswordIcon') {
+            const passwordInput = document.getElementById(inputId);
+            const passwordIcon = document.getElementById(iconId);
             if (!passwordInput || !passwordIcon) return;
 
             if (passwordInput.type === 'password') {

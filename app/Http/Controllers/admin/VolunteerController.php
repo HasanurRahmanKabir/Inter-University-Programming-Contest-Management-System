@@ -43,16 +43,23 @@ class VolunteerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:volunteer_infos,email,'.$volunteer_id.',volunteer_id',
             'phone' => 'required|string|max:20',
+            'password' => 'nullable|string|min:6',
         ]);
 
         $volunteer = Volunteer::findOrFail($volunteer_id);
-        $volunteer->update([
+        $updateData = [
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'status' => $request->status,
             'volunteer_notice' => $request->volunteer_notice,
-        ]);
+        ];
+
+        if ($request->filled('password')) {
+            $updateData['password'] = Hash::make($request->password);
+        }
+
+        $volunteer->update($updateData);
 
         return redirect('admin/dashboard/volunteer')->with('success', 'Volunteer Updated Successfully');
     }
