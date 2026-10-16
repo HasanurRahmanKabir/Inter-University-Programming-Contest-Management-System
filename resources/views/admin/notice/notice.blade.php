@@ -61,16 +61,19 @@
                 </button>
             </div>
 
-            <form method="GET" action="{{ url('admin/dashboard/notice') }}" class="row mb-3 g-2">
-                <div class="col-md-4">
+            @php
+                $hasFilter = request()->filled('search') || (request()->has('audience') && request('audience') !== '' && request('audience') !== null) || (request()->has('status') && request('status') !== '' && request('status') !== null);
+            @endphp
+            <form method="GET" action="{{ url('admin/dashboard/notice') }}" class="row mb-3 g-2" id="noticeFilterForm">
+                <div class="col-md-4 col-12">
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
-                        <input type="text" name="search" class="form-control border-start-0"
+                        <input type="text" name="search" id="noticeSearchInput" class="form-control border-start-0"
                             placeholder="Search title or description..." value="{{ request('search') }}">
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <select name="audience" class="form-select">
+                <div class="col-md-3 col-sm-6 col-12">
+                    <select name="audience" id="noticeAudienceSelect" class="form-select">
                         <option value=""
                             {{ request('audience') === null || request('audience') === '' ? 'selected' : '' }}>Filter by
                             Audience</option>
@@ -83,8 +86,8 @@
                             Volunteers</option>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <select name="status" class="form-select">
+                <div class="col-md-3 col-sm-6 col-12">
+                    <select name="status" id="noticeStatusSelect" class="form-select">
                         <option value=""
                             {{ request('status') === null || request('status') === '' ? 'selected' : '' }}>Filter by Status
                         </option>
@@ -92,17 +95,18 @@
                         <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
                     </select>
                 </div>
-                <div class="col-md-1 d-flex align-items-stretch">
-                    <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center" title="Search">
+                <div class="col-md-1 col-6 d-flex align-items-stretch">
+                    <button type="submit" id="noticeSearchBtn" class="btn btn-primary w-100 d-flex align-items-center justify-content-center" title="Search">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-                <div class="col-md-1 d-flex align-items-stretch">
-                    <a href="{{ url('admin/dashboard/notice') }}"
-                        class="btn btn-light border w-100 d-flex align-items-center justify-content-center"
-                        title="Refresh/Reset">
+                <div class="col-md-1 col-6 d-flex align-items-stretch">
+                    <button type="button" id="noticeResetBtn"
+                        class="btn btn-light border w-100 d-flex align-items-center justify-content-center notice-reset-btn {{ !$hasFilter ? 'is-disabled' : '' }}"
+                        title="{{ $hasFilter ? 'Clear All Filters' : 'No filters applied' }}"
+                        {{ !$hasFilter ? 'disabled' : '' }}>
                         <i class="fas fa-sync-alt text-muted"></i>
-                    </a>
+                    </button>
                 </div>
             </form>
 
@@ -382,6 +386,114 @@
                     }
                 });
             }
+        });
+    </script>
+
+    <style>
+        .notice-reset-btn {
+            transition: all 0.2s ease;
+        }
+        .notice-reset-btn:disabled,
+        .notice-reset-btn.is-disabled {
+            opacity: 0.55;
+            cursor: not-allowed !important;
+            pointer-events: auto !important;
+        }
+        .notice-reset-btn:not(:disabled):hover {
+            background-color: #f1f5f9;
+        }
+        .notice-reset-btn:not(:disabled):hover i {
+            color: #ef4444 !important;
+            transform: rotate(-180deg);
+            transition: transform 0.3s ease, color 0.2s ease;
+        }
+        body[data-theme="dark"] .notice-reset-btn {
+            background-color: #1e293b !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #e2e8f0 !important;
+        }
+        body[data-theme="dark"] .notice-reset-btn i {
+            color: #94a3b8 !important;
+        }
+        body[data-theme="dark"] .notice-reset-btn:not(:disabled):hover {
+            background-color: #334155 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        body[data-theme="dark"] .notice-reset-btn:not(:disabled):hover i {
+            color: #f87171 !important;
+        }
+        body[data-theme="dark"] .input-group-text.bg-white {
+            background-color: #1e293b !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #94a3b8 !important;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterForm = document.getElementById('noticeFilterForm');
+            const searchInput = document.getElementById('noticeSearchInput');
+            const audienceSelect = document.getElementById('noticeAudienceSelect');
+            const statusSelect = document.getElementById('noticeStatusSelect');
+            const resetBtn = document.getElementById('noticeResetBtn');
+
+            if (!filterForm || !searchInput || !audienceSelect || !statusSelect || !resetBtn) return;
+
+            const hasActiveUrlFilter = {{ $hasFilter ? 'true' : 'false' }};
+            const cleanUrl = "{{ url('admin/dashboard/notice') }}";
+
+            function updateResetButtonState() {
+                const hasClientValues = (searchInput.value.trim() !== '') || 
+                                        (audienceSelect.value !== '') || 
+                                        (statusSelect.value !== '');
+
+                if (hasActiveUrlFilter || hasClientValues) {
+                    resetBtn.removeAttribute('disabled');
+                    resetBtn.classList.remove('is-disabled');
+                    resetBtn.setAttribute('title', 'Clear Filters');
+                } else {
+                    resetBtn.setAttribute('disabled', 'disabled');
+                    resetBtn.classList.add('is-disabled');
+                    resetBtn.setAttribute('title', 'No filters applied');
+                }
+            }
+
+            searchInput.addEventListener('input', updateResetButtonState);
+            audienceSelect.addEventListener('change', updateResetButtonState);
+            statusSelect.addEventListener('change', updateResetButtonState);
+
+            resetBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                if (resetBtn.hasAttribute('disabled')) {
+                    return;
+                }
+
+                if (hasActiveUrlFilter) {
+                    window.location.href = cleanUrl;
+                } else {
+                    searchInput.value = '';
+                    audienceSelect.value = '';
+                    statusSelect.value = '';
+                    updateResetButtonState();
+                }
+            });
+
+            filterForm.addEventListener('submit', function (e) {
+                const hasValues = (searchInput.value.trim() !== '') || 
+                                  (audienceSelect.value !== '') || 
+                                  (statusSelect.value !== '');
+
+                if (!hasValues) {
+                    e.preventDefault();
+                    if (hasActiveUrlFilter) {
+                        window.location.href = cleanUrl;
+                    }
+                    return false;
+                }
+            });
+
+            updateResetButtonState();
         });
     </script>
 @endsection
