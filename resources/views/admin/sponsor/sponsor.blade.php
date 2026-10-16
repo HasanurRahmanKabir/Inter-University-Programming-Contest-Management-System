@@ -163,33 +163,6 @@
                                         </button>
                                     </td>
                                 </tr>
-
-                                {{-- Delete Confirmation Modal --}}
-                                <div class="modal fade" id="deleteSponsorModal{{ $data->sponsor_id }}" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content border-0 shadow">
-                                            <div class="modal-header border-0 pb-0">
-                                                <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body text-center pb-4">
-                                                <div class="text-danger mb-3">
-                                                    <i class="fas fa-exclamation-circle fa-4x opacity-75"></i>
-                                                </div>
-                                                <h5 class="fw-bold text-dark mb-2">Delete Sponsor?</h5>
-                                                <p class="text-muted mb-4">Are you sure you want to delete <strong>{{ $data->name }}</strong>? This action cannot be undone and will remove their logo and details permanently.</p>
-                                                
-                                                <div class="d-flex justify-content-center gap-2 flex-wrap">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                                    <form action="{{ url('/admin/dashboard/sponsor/delete/' . $data->sponsor_id) }}" method="post" class="m-0">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button type="submit" class="btn btn-danger px-4">Yes, Delete</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             @empty
                                 <tr>
                                     <td colspan="6" class="text-center py-5">
@@ -376,6 +349,33 @@
                                 <button type="submit" class="btn btn-primary px-4">Update Sponsor</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Delete Confirmation Modal (Placed outside table for valid DOM structure) --}}
+        <div class="modal fade" id="deleteSponsorModal{{ $data->sponsor_id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center pb-4">
+                        <div class="text-danger mb-3">
+                            <i class="fas fa-exclamation-circle fa-4x opacity-75"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Delete Sponsor?</h5>
+                        <p class="text-muted mb-4">Are you sure you want to delete <strong>{{ $data->name }}</strong>? This action cannot be undone and will remove their logo and details permanently.</p>
+                        
+                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{{ url('/admin/dashboard/sponsor/delete/' . $data->sponsor_id) }}" method="post" class="m-0">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger px-4">Yes, Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
