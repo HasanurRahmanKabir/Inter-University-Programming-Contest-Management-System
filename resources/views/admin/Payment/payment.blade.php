@@ -88,19 +88,22 @@
                 </div>
             </div>
 
-            <form action="{{ url('admin/dashboard/payment') }}" method="GET">
+            @php
+                $hasFilter = request()->filled('search') || request()->filled('status') || request()->filled('platform');
+            @endphp
+            <form action="{{ url('admin/dashboard/payment') }}" method="GET" id="paymentFilterForm">
 
                 <div class="row mb-3 g-2">
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
-                            <input type="text" name="search" class="form-control border-start-0"
+                            <input type="text" name="search" id="paymentSearchInput" class="form-control border-start-0"
                                 placeholder="Search Transaction ID or Team Name..." value="{{ request('search') }}">
                         </div>
                     </div>
 
                     <div class="col-md-3">
-                        <select class="form-select" name="status">
+                        <select class="form-select" name="status" id="paymentStatusSelect">
                             <option value="">Status</option>
                             <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Pending</option>
                             <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Approved</option>
@@ -109,7 +112,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <select class="form-select" name="platform">
+                        <select class="form-select" name="platform" id="paymentPlatformSelect">
                             <option value="">Platform</option>
                             <option value="bKash" {{ request('platform') == 'bKash' ? 'selected' : '' }}>bKash</option>
                             <option value="Nagad" {{ request('platform') == 'Nagad' ? 'selected' : '' }}>Nagad</option>
@@ -126,12 +129,12 @@
                     </div>
 
                     <div class="col-md-1 d-flex align-items-stretch">
-
-                        <a href="{{ url('admin/dashboard/payment') }}"
-                            class="btn btn-light border w-100 d-flex align-items-center justify-content-center"
-                            title="Refresh/Reset">
+                        <button type="button" id="paymentResetBtn"
+                            class="btn btn-light border w-100 d-flex align-items-center justify-content-center payment-reset-btn {{ !$hasFilter ? 'is-disabled' : '' }}"
+                            title="{{ $hasFilter ? 'Clear All Filters' : 'No filters applied' }}"
+                            {{ !$hasFilter ? 'disabled' : '' }}>
                             <i class="fas fa-sync-alt text-muted"></i>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -277,5 +280,106 @@
         </div>
     @endforeach
 
+    <style>
+        .payment-reset-btn {
+            transition: all 0.2s ease;
+        }
+        .payment-reset-btn:disabled,
+        .payment-reset-btn.is-disabled {
+            opacity: 0.55;
+            cursor: not-allowed !important;
+            pointer-events: auto !important;
+        }
+        .payment-reset-btn:not(:disabled):hover {
+            background-color: #f1f5f9;
+        }
+        .payment-reset-btn:not(:disabled):hover i {
+            color: #ef4444 !important;
+            transform: rotate(-180deg);
+            transition: transform 0.3s ease, color 0.2s ease;
+        }
+        body[data-theme="dark"] .payment-reset-btn {
+            background-color: #1e293b !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        body[data-theme="dark"] .payment-reset-btn i {
+            color: #94a3b8 !important;
+        }
+        body[data-theme="dark"] .payment-reset-btn:not(:disabled):hover {
+            background-color: #334155 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        body[data-theme="dark"] .payment-reset-btn:not(:disabled):hover i {
+            color: #f87171 !important;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterForm = document.getElementById('paymentFilterForm');
+            const searchInput = document.getElementById('paymentSearchInput');
+            const statusSelect = document.getElementById('paymentStatusSelect');
+            const platformSelect = document.getElementById('paymentPlatformSelect');
+            const resetBtn = document.getElementById('paymentResetBtn');
+
+            if (!filterForm || !searchInput || !statusSelect || !platformSelect || !resetBtn) return;
+
+            const hasActiveUrlFilter = {{ $hasFilter ? 'true' : 'false' }};
+            const cleanUrl = "{{ url('admin/dashboard/payment') }}";
+
+            function updateResetButtonState() {
+                const hasClientValues = (searchInput.value.trim() !== '') || 
+                                        (statusSelect.value !== '') || 
+                                        (platformSelect.value !== '');
+
+                if (hasActiveUrlFilter || hasClientValues) {
+                    resetBtn.removeAttribute('disabled');
+                    resetBtn.classList.remove('is-disabled');
+                    resetBtn.setAttribute('title', 'Clear Filters');
+                } else {
+                    resetBtn.setAttribute('disabled', 'disabled');
+                    resetBtn.classList.add('is-disabled');
+                    resetBtn.setAttribute('title', 'No filters applied');
+                }
+            }
+
+            searchInput.addEventListener('input', updateResetButtonState);
+            statusSelect.addEventListener('change', updateResetButtonState);
+            platformSelect.addEventListener('change', updateResetButtonState);
+
+            resetBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                if (resetBtn.hasAttribute('disabled')) {
+                    return;
+                }
+
+                if (hasActiveUrlFilter) {
+                    window.location.href = cleanUrl;
+                } else {
+                    searchInput.value = '';
+                    statusSelect.value = '';
+                    platformSelect.value = '';
+                    updateResetButtonState();
+                }
+            });
+
+            filterForm.addEventListener('submit', function (e) {
+                const hasValues = (searchInput.value.trim() !== '') || 
+                                  (statusSelect.value !== '') || 
+                                  (platformSelect.value !== '');
+
+                if (!hasValues) {
+                    e.preventDefault();
+                    if (hasActiveUrlFilter) {
+                        window.location.href = cleanUrl;
+                    }
+                    return false;
+                }
+            });
+
+            updateResetButtonState();
+        });
+    </script>
 @endsection
 
