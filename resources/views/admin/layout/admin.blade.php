@@ -66,10 +66,8 @@
                 <i class="fas fa-broom"></i> Clear Cache</a>
 
             <!-- Theme Toggle -->
-            <a href="#" class="theme-toggle-btn w-100 text-start ps-3 py-2 mt-2" style="border-radius: 8px;">
-                <i class="fas fa-lightbulb theme-toggle-icon-light"></i>
-                <i class="fas fa-moon theme-toggle-icon-dark"></i>
-                <span class="ms-2">Toggle Theme</span>
+            <a href="#" class="theme-toggle-btn">
+                <i class="fas fa-lightbulb theme-toggle-icon-light"></i><i class="fas fa-moon theme-toggle-icon-dark"></i> Toggle Theme
             </a>
 
             <div class="border-top border-secondary pt-2 pb-0 mb-0" style="position: absolute; bottom: 0; left: 0; width: 100%; background: inherit;">
