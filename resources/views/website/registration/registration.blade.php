@@ -116,6 +116,21 @@
         body[data-theme="dark"] .image-remove-btn:hover {
             background: #dc2626;
         }
+
+        /* Image Upload Info Hint */
+        .image-upload-hint {
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+            margin-top: 6px;
+            line-height: 1.4;
+            display: block;
+            letter-spacing: 0.1px;
+            text-align: center;
+        }
+        body[data-theme="dark"] .image-upload-hint {
+            color: #94a3b8;
+        }
     </style>
 </head>
 
@@ -224,6 +239,7 @@
                             </div>
                             <input type="file" id="coachPhoto" name="coach_photo" class="d-none"
                                 onchange="previewImage(this, 'coachPreview', 'coachRemoveBtn')">
+                            <span class="image-upload-hint">300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
                         </div>
 
                         <div class="col-md-9">
@@ -277,6 +293,7 @@
                             </div>
                             <input type="file" id="mem1Photo" name="mem_1_photo" class="d-none"
                                 onchange="previewImage(this, 'mem1Preview', 'mem1RemoveBtn')">
+                            <span class="image-upload-hint mb-2">300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -332,6 +349,7 @@
                             </div>
                             <input type="file" id="mem2Photo" name="mem_2_photo" class="d-none"
                                 onchange="previewImage(this, 'mem2Preview', 'mem2RemoveBtn')">
+                            <span class="image-upload-hint mb-2">300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -387,6 +405,7 @@
                             </div>
                             <input type="file" id="mem3Photo" name="mem_3_photo" class="d-none"
                                 onchange="previewImage(this, 'mem3Preview', 'mem3RemoveBtn')">
+                            <span class="image-upload-hint mb-2">300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
