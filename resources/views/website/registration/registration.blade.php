@@ -268,7 +268,7 @@
                         <div class="form-body pt-0">
                             <div class="image-upload-wrapper">
                                 <div class="image-upload-box" onclick="document.getElementById('mem1Photo').click()">
-                                    <span class="upload-placeholder text-muted small px-2"><i class="fas fa-user-circle fa-2x mb-2"></i>Photo</span>
+                                    <span class="upload-placeholder text-muted small px-2"><i class="fas fa-camera fa-2x mb-2"></i>Click to Upload</span>
                                     <img id="mem1Preview">
                                 </div>
                                 <button type="button" class="image-remove-btn" id="mem1RemoveBtn" onclick="removeImage('mem1Photo', 'mem1Preview', 'mem1RemoveBtn', event)" title="Remove Photo" aria-label="Remove Photo">
@@ -323,7 +323,7 @@
                         <div class="form-body pt-0">
                             <div class="image-upload-wrapper">
                                 <div class="image-upload-box" onclick="document.getElementById('mem2Photo').click()">
-                                    <span class="upload-placeholder text-muted small px-2"><i class="fas fa-user-circle fa-2x mb-2"></i>Photo</span>
+                                    <span class="upload-placeholder text-muted small px-2"><i class="fas fa-camera fa-2x mb-2"></i>Click to Upload</span>
                                     <img id="mem2Preview">
                                 </div>
                                 <button type="button" class="image-remove-btn" id="mem2RemoveBtn" onclick="removeImage('mem2Photo', 'mem2Preview', 'mem2RemoveBtn', event)" title="Remove Photo" aria-label="Remove Photo">
@@ -378,7 +378,7 @@
                         <div class="form-body pt-0">
                             <div class="image-upload-wrapper">
                                 <div class="image-upload-box" onclick="document.getElementById('mem3Photo').click()">
-                                    <span class="upload-placeholder text-muted small px-2"><i class="fas fa-user-circle fa-2x mb-2"></i>Photo</span>
+                                    <span class="upload-placeholder text-muted small px-2"><i class="fas fa-camera fa-2x mb-2"></i>Click to Upload</span>
                                     <img id="mem3Preview">
                                 </div>
                                 <button type="button" class="image-remove-btn" id="mem3RemoveBtn" onclick="removeImage('mem3Photo', 'mem3Preview', 'mem3RemoveBtn', event)" title="Remove Photo" aria-label="Remove Photo">
