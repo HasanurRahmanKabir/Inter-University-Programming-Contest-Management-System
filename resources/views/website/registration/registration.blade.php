@@ -48,6 +48,55 @@
         body[data-theme="dark"] .password-toggle-btn i {
             color: inherit !important;
         }
+
+        /* Image Upload Box & Remove Button */
+        .image-upload-wrapper {
+            position: relative;
+            width: 150px;
+            margin: 0 auto 10px;
+        }
+        .image-upload-box {
+            position: relative;
+            overflow: hidden;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto !important;
+        }
+        .image-remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease-in-out;
+            padding: 0;
+            line-height: 1;
+        }
+        .image-remove-btn:hover {
+            background: #dc2626;
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+        body[data-theme="dark"] .image-remove-btn {
+            background: #ef4444;
+            color: #ffffff;
+            border: 2px solid #0f172a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        body[data-theme="dark"] .image-remove-btn:hover {
+            background: #dc2626;
+        }
     </style>
 </head>
 
@@ -145,13 +194,18 @@
                     <div class="row g-4">
                         <div class="col-md-3 text-center">
                             <label class="form-label fw-bold small text-muted mb-2">Coach Photo</label>
-                            <div class="image-upload-box mx-auto" onclick="document.getElementById('coachPhoto').click()">
-                                <span class="text-muted small text-center px-2"><i
-                                        class="fas fa-camera fa-2x mb-2 d-block"></i>Click to Upload</span>
-                                <img id="coachPreview">
+                            <div class="image-upload-wrapper">
+                                <div class="image-upload-box" onclick="document.getElementById('coachPhoto').click()">
+                                    <span class="text-muted small text-center px-2"><i
+                                            class="fas fa-camera fa-2x mb-2 d-block"></i>Click to Upload</span>
+                                    <img id="coachPreview">
+                                </div>
+                                <button type="button" class="image-remove-btn" id="coachRemoveBtn" onclick="removeImage('coachPhoto', 'coachPreview', 'coachRemoveBtn', event)" title="Remove Photo" aria-label="Remove Photo">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                             <input type="file" id="coachPhoto" name="coach_photo" class="d-none"
-                                onchange="previewImage(this, 'coachPreview')">
+                                onchange="previewImage(this, 'coachPreview', 'coachRemoveBtn')">
                         </div>
 
                         <div class="col-md-9">
@@ -194,13 +248,18 @@
                             <i class="fas fa-user"></i> Member 01
                         </div>
                         <div class="form-body pt-0">
-                            <div class="image-upload-box mx-auto" onclick="document.getElementById('mem1Photo').click()">
-                                <span class="text-muted small text-center px-2"><i
-                                        class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
-                                <img id="mem1Preview">
+                            <div class="image-upload-wrapper">
+                                <div class="image-upload-box" onclick="document.getElementById('mem1Photo').click()">
+                                    <span class="text-muted small text-center px-2"><i
+                                            class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
+                                    <img id="mem1Preview">
+                                </div>
+                                <button type="button" class="image-remove-btn" id="mem1RemoveBtn" onclick="removeImage('mem1Photo', 'mem1Preview', 'mem1RemoveBtn', event)" title="Remove Photo" aria-label="Remove Photo">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                             <input type="file" id="mem1Photo" name="mem_1_photo" class="d-none"
-                                onchange="previewImage(this, 'mem1Preview')">
+                                onchange="previewImage(this, 'mem1Preview', 'mem1RemoveBtn')">
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -245,13 +304,18 @@
                             <i class="fas fa-user"></i> Member 02
                         </div>
                         <div class="form-body pt-0">
-                            <div class="image-upload-box mx-auto" onclick="document.getElementById('mem2Photo').click()">
-                                <span class="text-muted small text-center px-2"><i
-                                        class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
-                                <img id="mem2Preview">
+                            <div class="image-upload-wrapper">
+                                <div class="image-upload-box" onclick="document.getElementById('mem2Photo').click()">
+                                    <span class="text-muted small text-center px-2"><i
+                                            class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
+                                    <img id="mem2Preview">
+                                </div>
+                                <button type="button" class="image-remove-btn" id="mem2RemoveBtn" onclick="removeImage('mem2Photo', 'mem2Preview', 'mem2RemoveBtn', event)" title="Remove Photo" aria-label="Remove Photo">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                             <input type="file" id="mem2Photo" name="mem_2_photo" class="d-none"
-                                onchange="previewImage(this, 'mem2Preview')">
+                                onchange="previewImage(this, 'mem2Preview', 'mem2RemoveBtn')">
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -296,13 +360,18 @@
                             <i class="fas fa-user"></i> Member 03
                         </div>
                         <div class="form-body pt-0">
-                            <div class="image-upload-box mx-auto" onclick="document.getElementById('mem3Photo').click()">
-                                <span class="text-muted small text-center px-2"><i
-                                        class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
-                                <img id="mem3Preview">
+                            <div class="image-upload-wrapper">
+                                <div class="image-upload-box" onclick="document.getElementById('mem3Photo').click()">
+                                    <span class="text-muted small text-center px-2"><i
+                                            class="fas fa-user-circle fa-2x mb-2 d-block"></i>Photo</span>
+                                    <img id="mem3Preview">
+                                </div>
+                                <button type="button" class="image-remove-btn" id="mem3RemoveBtn" onclick="removeImage('mem3Photo', 'mem3Preview', 'mem3RemoveBtn', event)" title="Remove Photo" aria-label="Remove Photo">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                             <input type="file" id="mem3Photo" name="mem_3_photo" class="d-none"
-                                onchange="previewImage(this, 'mem3Preview')">
+                                onchange="previewImage(this, 'mem3Preview', 'mem3RemoveBtn')">
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -507,7 +576,7 @@
             document.getElementById('captcha_verified').value = 0;
         }
 
-        function previewImage(input, previewId) {
+        function previewImage(input, previewId, removeBtnId) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
@@ -515,9 +584,34 @@
                     preview.src = e.target.result;
                     preview.style.display = 'block';
                     preview.previousElementSibling.style.display = 'none';
+
+                    if (removeBtnId) {
+                        var removeBtn = document.getElementById(removeBtnId);
+                        if (removeBtn) removeBtn.style.display = 'flex';
+                    }
                 }
                 reader.readAsDataURL(input.files[0]);
             }
+        }
+
+        function removeImage(inputId, previewId, removeBtnId, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            var fileInput = document.getElementById(inputId);
+            var preview = document.getElementById(previewId);
+            var removeBtn = document.getElementById(removeBtnId);
+
+            if (fileInput) fileInput.value = '';
+            if (preview) {
+                preview.src = '';
+                preview.style.display = 'none';
+                if (preview.previousElementSibling) {
+                    preview.previousElementSibling.style.display = 'block';
+                }
+            }
+            if (removeBtn) removeBtn.style.display = 'none';
         }
 
         document.getElementById('refreshCaptcha').addEventListener('click', generateCaptcha);
