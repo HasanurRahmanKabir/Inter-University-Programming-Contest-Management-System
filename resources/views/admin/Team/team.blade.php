@@ -184,14 +184,33 @@
                                     
                                     <div class="row mb-3">
                                         <div class="col-12 text-center">
-                                            <div class="mb-2">
-                                                <img src="{{ !empty($data->coach_photo) && file_exists(public_path($data->coach_photo)) ? asset($data->coach_photo) : 'https://ui-avatars.com/api/?name=' . urlencode($data->coach_name) }}"
-                                                    class="rounded-circle border shadow-sm"
+                                            @php
+                                                $hasCoachPhoto = !empty($data->coach_photo) && file_exists(public_path($data->coach_photo));
+                                                $coachAvatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode($data->coach_name) . '&background=0D8ABC&color=fff';
+                                                $coachImgSrc = $hasCoachPhoto ? asset($data->coach_photo) : $coachAvatarUrl;
+                                            @endphp
+                                            <div class="d-inline-block position-relative mb-2 admin-photo-wrapper">
+                                                <img src="{{ $coachImgSrc }}"
+                                                    id="coachPhotoPreview{{ $data->team_id }}"
+                                                    data-default="{{ $coachAvatarUrl }}"
+                                                    class="rounded-circle border shadow-sm admin-team-photo-img"
                                                     style="width: 80px; height: 80px; object-fit: cover;">
+                                                <button type="button" 
+                                                    class="admin-photo-remove-btn {{ $hasCoachPhoto ? '' : 'd-none' }}" 
+                                                    id="coachPhotoRemoveBtn{{ $data->team_id }}"
+                                                    title="Remove Coach Photo"
+                                                    onclick="removeAdminTeamPhoto('{{ $data->team_id }}', 'coach')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
                                             </div>
-                                            <label class="small text-muted fw-bold">Coach Photo</label>
-                                            <input type="file" class="form-control form-control-sm w-50 mx-auto mt-1 @error('coach_photo') is-invalid @enderror"
-                                                name="coach_photo" accept="image/*">
+                                            <input type="hidden" name="remove_coach_photo" id="remove_coach_photo_{{ $data->team_id }}" value="0">
+                                            <label class="small text-muted fw-bold d-block">Coach Photo</label>
+                                            <input type="file" 
+                                                class="form-control form-control-sm w-50 mx-auto mt-1 @error('coach_photo') is-invalid @enderror"
+                                                name="coach_photo" 
+                                                id="coach_photo_input_{{ $data->team_id }}"
+                                                accept="image/*"
+                                                onchange="previewAdminTeamPhoto(this, 'coachPhotoPreview{{ $data->team_id }}', 'coachPhotoRemoveBtn{{ $data->team_id }}', 'remove_coach_photo_{{ $data->team_id }}')">
                                             @error('coach_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
@@ -261,11 +280,32 @@
                                 <div class="col-md-4">
                                     <div class="card border-0 shadow-sm p-3 h-100">
                                         <div class="text-center mb-2">
-                                            <img src="{{ !empty($data->mem_1_photo) && file_exists(public_path($data->mem_1_photo)) ? asset($data->mem_1_photo) : 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_1_name) }}"
-                                                class="member-card-img mx-auto"
-                                                style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
-                                            <input type="file" class="form-control form-control-sm mt-2 @error('mem_1_photo') is-invalid @enderror"
-                                                name="mem_1_photo" accept="image/*">
+                                            @php
+                                                $hasMem1Photo = !empty($data->mem_1_photo) && file_exists(public_path($data->mem_1_photo));
+                                                $mem1AvatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_1_name) . '&background=0D8ABC&color=fff';
+                                                $mem1ImgSrc = $hasMem1Photo ? asset($data->mem_1_photo) : $mem1AvatarUrl;
+                                            @endphp
+                                            <div class="d-inline-block position-relative admin-photo-wrapper">
+                                                <img src="{{ $mem1ImgSrc }}"
+                                                    id="mem1PhotoPreview{{ $data->team_id }}"
+                                                    data-default="{{ $mem1AvatarUrl }}"
+                                                    class="member-card-img mx-auto admin-team-photo-img"
+                                                    style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
+                                                <button type="button" 
+                                                    class="admin-photo-remove-btn admin-photo-remove-btn-sm {{ $hasMem1Photo ? '' : 'd-none' }}" 
+                                                    id="mem1PhotoRemoveBtn{{ $data->team_id }}"
+                                                    title="Remove Member 01 Photo"
+                                                    onclick="removeAdminTeamPhoto('{{ $data->team_id }}', 'mem_1')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <input type="hidden" name="remove_mem_1_photo" id="remove_mem_1_photo_{{ $data->team_id }}" value="0">
+                                            <input type="file" 
+                                                class="form-control form-control-sm mt-2 @error('mem_1_photo') is-invalid @enderror"
+                                                name="mem_1_photo" 
+                                                id="mem_1_photo_input_{{ $data->team_id }}"
+                                                accept="image/*"
+                                                onchange="previewAdminTeamPhoto(this, 'mem1PhotoPreview{{ $data->team_id }}', 'mem1PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_1_photo_{{ $data->team_id }}')">
                                             @error('mem_1_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
                                         <h6 class="fw-bold mb-2 text-center">Member 01</h6>
@@ -297,11 +337,32 @@
                                 <div class="col-md-4">
                                     <div class="card border-0 shadow-sm p-3 h-100">
                                         <div class="text-center mb-2">
-                                            <img src="{{ !empty($data->mem_2_photo) && file_exists(public_path($data->mem_2_photo)) ? asset($data->mem_2_photo) : 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_2_name) }}"
-                                                class="member-card-img mx-auto"
-                                                style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
-                                            <input type="file" class="form-control form-control-sm mt-2 @error('mem_2_photo') is-invalid @enderror"
-                                                name="mem_2_photo" accept="image/*">
+                                            @php
+                                                $hasMem2Photo = !empty($data->mem_2_photo) && file_exists(public_path($data->mem_2_photo));
+                                                $mem2AvatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_2_name) . '&background=0D8ABC&color=fff';
+                                                $mem2ImgSrc = $hasMem2Photo ? asset($data->mem_2_photo) : $mem2AvatarUrl;
+                                            @endphp
+                                            <div class="d-inline-block position-relative admin-photo-wrapper">
+                                                <img src="{{ $mem2ImgSrc }}"
+                                                    id="mem2PhotoPreview{{ $data->team_id }}"
+                                                    data-default="{{ $mem2AvatarUrl }}"
+                                                    class="member-card-img mx-auto admin-team-photo-img"
+                                                    style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
+                                                <button type="button" 
+                                                    class="admin-photo-remove-btn admin-photo-remove-btn-sm {{ $hasMem2Photo ? '' : 'd-none' }}" 
+                                                    id="mem2PhotoRemoveBtn{{ $data->team_id }}"
+                                                    title="Remove Member 02 Photo"
+                                                    onclick="removeAdminTeamPhoto('{{ $data->team_id }}', 'mem_2')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <input type="hidden" name="remove_mem_2_photo" id="remove_mem_2_photo_{{ $data->team_id }}" value="0">
+                                            <input type="file" 
+                                                class="form-control form-control-sm mt-2 @error('mem_2_photo') is-invalid @enderror"
+                                                name="mem_2_photo" 
+                                                id="mem_2_photo_input_{{ $data->team_id }}"
+                                                accept="image/*"
+                                                onchange="previewAdminTeamPhoto(this, 'mem2PhotoPreview{{ $data->team_id }}', 'mem2PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_2_photo_{{ $data->team_id }}')">
                                             @error('mem_2_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
                                         <h6 class="fw-bold mb-2 text-center">Member 02</h6>
@@ -333,11 +394,32 @@
                                 <div class="col-md-4">
                                     <div class="card border-0 shadow-sm p-3 h-100">
                                         <div class="text-center mb-2">
-                                            <img src="{{ !empty($data->mem_3_photo) && file_exists(public_path($data->mem_3_photo)) ? asset($data->mem_3_photo) : 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_3_name) }}"
-                                                class="member-card-img mx-auto"
-                                                style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
-                                            <input type="file" class="form-control form-control-sm mt-2 @error('mem_3_photo') is-invalid @enderror"
-                                                name="mem_3_photo" accept="image/*">
+                                            @php
+                                                $hasMem3Photo = !empty($data->mem_3_photo) && file_exists(public_path($data->mem_3_photo));
+                                                $mem3AvatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode($data->mem_3_name) . '&background=0D8ABC&color=fff';
+                                                $mem3ImgSrc = $hasMem3Photo ? asset($data->mem_3_photo) : $mem3AvatarUrl;
+                                            @endphp
+                                            <div class="d-inline-block position-relative admin-photo-wrapper">
+                                                <img src="{{ $mem3ImgSrc }}"
+                                                    id="mem3PhotoPreview{{ $data->team_id }}"
+                                                    data-default="{{ $mem3AvatarUrl }}"
+                                                    class="member-card-img mx-auto admin-team-photo-img"
+                                                    style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
+                                                <button type="button" 
+                                                    class="admin-photo-remove-btn admin-photo-remove-btn-sm {{ $hasMem3Photo ? '' : 'd-none' }}" 
+                                                    id="mem3PhotoRemoveBtn{{ $data->team_id }}"
+                                                    title="Remove Member 03 Photo"
+                                                    onclick="removeAdminTeamPhoto('{{ $data->team_id }}', 'mem_3')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <input type="hidden" name="remove_mem_3_photo" id="remove_mem_3_photo_{{ $data->team_id }}" value="0">
+                                            <input type="file" 
+                                                class="form-control form-control-sm mt-2 @error('mem_3_photo') is-invalid @enderror"
+                                                name="mem_3_photo" 
+                                                id="mem_3_photo_input_{{ $data->team_id }}"
+                                                accept="image/*"
+                                                onchange="previewAdminTeamPhoto(this, 'mem3PhotoPreview{{ $data->team_id }}', 'mem3PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_3_photo_{{ $data->team_id }}')">
                                             @error('mem_3_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
                                         <h6 class="fw-bold mb-2 text-center">Member 03</h6>
@@ -462,9 +544,111 @@
             border-color: rgba(255, 255, 255, 0.12) !important;
             color: #94a3b8 !important;
         }
+
+        /* Admin Team Photo Removal Button & Wrapper */
+        .admin-photo-wrapper {
+            display: inline-block;
+            position: relative;
+        }
+        .admin-photo-remove-btn {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease-in-out;
+            padding: 0;
+            line-height: 1;
+        }
+        .admin-photo-remove-btn:hover {
+            background: #dc2626;
+            color: #ffffff;
+            transform: scale(1.15);
+        }
+        .admin-photo-remove-btn-sm {
+            width: 22px;
+            height: 22px;
+            font-size: 10px;
+            top: -4px;
+            right: -4px;
+        }
+        body[data-theme="dark"] .admin-photo-remove-btn {
+            background: #ef4444;
+            color: #ffffff;
+            border: 2px solid #1e293b;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        body[data-theme="dark"] .admin-photo-remove-btn:hover {
+            background: #dc2626;
+        }
     </style>
 
     <script>
+        // Photo Preview for Admin Team Modal
+        function previewAdminTeamPhoto(input, previewId, removeBtnId, hiddenRemoveInputId) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var preview = document.getElementById(previewId);
+                    if (preview) {
+                        preview.src = e.target.result;
+                    }
+                    var removeBtn = document.getElementById(removeBtnId);
+                    if (removeBtn) {
+                        removeBtn.classList.remove('d-none');
+                    }
+                    var hiddenInput = document.getElementById(hiddenRemoveInputId);
+                    if (hiddenInput) {
+                        hiddenInput.value = '0';
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Photo Removal for Admin Team Modal
+        function removeAdminTeamPhoto(teamId, role) {
+            // Support both camelCase and snake_case role (e.g., 'mem_1' or 'mem1')
+            var cleanRole = role.replace('_', ''); // e.g., 'mem1', 'mem2', 'mem3', 'coach'
+            var snakeRole = role.includes('_') ? role : (role.startsWith('mem') ? 'mem_' + role.replace('mem', '') : role); // e.g., 'mem_1', 'coach'
+
+            var preview = document.getElementById(cleanRole + 'PhotoPreview' + teamId) || 
+                          document.getElementById(role + 'PhotoPreview' + teamId);
+            var removeBtn = document.getElementById(cleanRole + 'PhotoRemoveBtn' + teamId) || 
+                            document.getElementById(role + 'PhotoRemoveBtn' + teamId);
+            var fileInput = document.getElementById(snakeRole + '_photo_input_' + teamId) || 
+                            document.getElementById(cleanRole + '_photo_input_' + teamId);
+            var hiddenInput = document.getElementById('remove_' + snakeRole + '_photo_' + teamId) || 
+                              document.getElementById('remove_' + cleanRole + '_photo_' + teamId);
+
+            if (fileInput) {
+                fileInput.value = '';
+            }
+            if (hiddenInput) {
+                hiddenInput.value = '1';
+            }
+            if (preview) {
+                var defaultAvatar = preview.getAttribute('data-default');
+                if (defaultAvatar) {
+                    preview.src = defaultAvatar;
+                }
+            }
+            if (removeBtn) {
+                removeBtn.classList.add('d-none');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const filterForm = document.getElementById('teamFilterForm');
             const searchInput = document.getElementById('teamSearchInput');

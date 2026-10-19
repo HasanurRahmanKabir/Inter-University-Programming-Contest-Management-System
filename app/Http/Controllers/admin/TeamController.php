@@ -80,6 +80,7 @@ class TeamController extends Controller
         } else {
             $input['is_selected'] = 1;
         }
+        // Handle Coach Photo
         if ($request->hasFile('coach_photo')) {
             if (!empty($team->coach_photo) && File::exists(public_path($team->coach_photo))) {
                 File::delete(public_path($team->coach_photo));
@@ -88,7 +89,14 @@ class TeamController extends Controller
             $filename = 'coach_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/teams/'), $filename);
             $input['coach_photo'] = 'uploads/teams/' . $filename;
+        } elseif ($request->filled('remove_coach_photo') && $request->remove_coach_photo == '1') {
+            if (!empty($team->coach_photo) && File::exists(public_path($team->coach_photo))) {
+                File::delete(public_path($team->coach_photo));
+            }
+            $input['coach_photo'] = null;
         }
+
+        // Handle Member 1 Photo
         if ($request->hasFile('mem_1_photo')) {
             if (!empty($team->mem_1_photo) && File::exists(public_path($team->mem_1_photo))) {
                 File::delete(public_path($team->mem_1_photo));
@@ -97,7 +105,14 @@ class TeamController extends Controller
             $filename = 'mem1_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/teams/'), $filename);
             $input['mem_1_photo'] = 'uploads/teams/' . $filename;
+        } elseif ($request->filled('remove_mem_1_photo') && $request->remove_mem_1_photo == '1') {
+            if (!empty($team->mem_1_photo) && File::exists(public_path($team->mem_1_photo))) {
+                File::delete(public_path($team->mem_1_photo));
+            }
+            $input['mem_1_photo'] = null;
         }
+
+        // Handle Member 2 Photo
         if ($request->hasFile('mem_2_photo')) {
             if (!empty($team->mem_2_photo) && File::exists(public_path($team->mem_2_photo))) {
                 File::delete(public_path($team->mem_2_photo));
@@ -106,8 +121,14 @@ class TeamController extends Controller
             $filename = 'mem2_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/teams/'), $filename);
             $input['mem_2_photo'] = 'uploads/teams/' . $filename;
+        } elseif ($request->filled('remove_mem_2_photo') && $request->remove_mem_2_photo == '1') {
+            if (!empty($team->mem_2_photo) && File::exists(public_path($team->mem_2_photo))) {
+                File::delete(public_path($team->mem_2_photo));
+            }
+            $input['mem_2_photo'] = null;
         }
 
+        // Handle Member 3 Photo
         if ($request->hasFile('mem_3_photo')) {
             if (!empty($team->mem_3_photo) && File::exists(public_path($team->mem_3_photo))) {
                 File::delete(public_path($team->mem_3_photo));
@@ -116,6 +137,11 @@ class TeamController extends Controller
             $filename = 'mem3_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/teams/'), $filename);
             $input['mem_3_photo'] = 'uploads/teams/' . $filename;
+        } elseif ($request->filled('remove_mem_3_photo') && $request->remove_mem_3_photo == '1') {
+            if (!empty($team->mem_3_photo) && File::exists(public_path($team->mem_3_photo))) {
+                File::delete(public_path($team->mem_3_photo));
+            }
+            $input['mem_3_photo'] = null;
         }
 
         $team->update($input);
