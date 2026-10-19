@@ -123,13 +123,42 @@
             font-weight: 500;
             color: #64748b;
             margin-top: 6px;
-            line-height: 1.4;
+            line-height: 1.5;
             display: block;
             letter-spacing: 0.1px;
             text-align: center;
+            max-width: 220px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .image-upload-hint .hint-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            background: #2563eb;
+            color: #ffffff !important;
+            border-radius: 50%;
+            font-size: 9.5px;
+            font-weight: 700;
+            line-height: 14px;
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-style: normal;
+            margin-right: 5px;
+            vertical-align: -1px;
+            flex-shrink: 0;
+            user-select: none;
         }
         body[data-theme="dark"] .image-upload-hint {
-            color: #94a3b8;
+            color: #e2e8f0 !important;
+            font-weight: 500;
+        }
+        body[data-theme="dark"] .image-upload-hint .hint-info-icon {
+            background: #38bdf8 !important;
+            color: #0b132b !important;
+            font-weight: 800;
         }
     </style>
 </head>
@@ -239,7 +268,7 @@
                             </div>
                             <input type="file" id="coachPhoto" name="coach_photo" class="d-none"
                                 onchange="previewImage(this, 'coachPreview', 'coachRemoveBtn')">
-                            <span class="image-upload-hint">300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
+                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
                         </div>
 
                         <div class="col-md-9">
@@ -293,7 +322,7 @@
                             </div>
                             <input type="file" id="mem1Photo" name="mem_1_photo" class="d-none"
                                 onchange="previewImage(this, 'mem1Preview', 'mem1RemoveBtn')">
-                            <span class="image-upload-hint mb-2">300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
+                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -349,7 +378,7 @@
                             </div>
                             <input type="file" id="mem2Photo" name="mem_2_photo" class="d-none"
                                 onchange="previewImage(this, 'mem2Preview', 'mem2RemoveBtn')">
-                            <span class="image-upload-hint mb-2">300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
+                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -405,7 +434,7 @@
                             </div>
                             <input type="file" id="mem3Photo" name="mem_3_photo" class="d-none"
                                 onchange="previewImage(this, 'mem3Preview', 'mem3RemoveBtn')">
-                            <span class="image-upload-hint mb-2">300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
+                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
