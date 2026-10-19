@@ -642,7 +642,7 @@
                 preview.src = '';
                 preview.style.display = 'none';
                 if (preview.previousElementSibling) {
-                    preview.previousElementSibling.style.display = 'block';
+                    preview.previousElementSibling.style.display = 'flex';
                 }
             }
             if (removeBtn) removeBtn.style.display = 'none';
