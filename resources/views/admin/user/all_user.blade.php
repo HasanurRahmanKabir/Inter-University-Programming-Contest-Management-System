@@ -97,7 +97,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <img src="https://ui-avatars.com/api/?name={{ urlencode($data->name) }}"
-                                                class="admin-avatar px-2">
+                                                class="admin-avatar me-2" alt="Avatar">
                                             <div>
                                                 <div class="fw-bold">{{ $data->name }}</div>
                                                 <small class="text-muted">{{ $data->email }}</small>

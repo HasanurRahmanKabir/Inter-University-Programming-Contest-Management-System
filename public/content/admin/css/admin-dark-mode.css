@@ -605,7 +605,8 @@ body[data-theme="dark"] .rule-line {
 
 /* === Admin Avatar === */
 body[data-theme="dark"] .admin-avatar {
-    background-color: #334155 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 
 /* === Sponsor Page === */
