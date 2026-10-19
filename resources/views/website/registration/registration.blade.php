@@ -13,6 +13,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/registration.css">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
+    <style>
+        .password-toggle-btn {
+            background-color: #ffffff;
+            border-color: #dee2e6;
+            color: #6c757d;
+            padding: 0.375rem 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease-in-out;
+        }
+        .password-toggle-btn:hover {
+            background-color: #f8f9fa;
+            color: #0d6efd;
+            border-color: #dee2e6;
+        }
+        .input-group:focus-within .password-toggle-btn {
+            border-color: #86b7fe;
+        }
+        body[data-theme="dark"] .password-toggle-btn {
+            background-color: #020617 !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            color: #94a3b8 !important;
+        }
+        body[data-theme="dark"] .password-toggle-btn:hover {
+            background-color: #0f172a !important;
+            color: #38bdf8 !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+        }
+        body[data-theme="dark"] .input-group:focus-within .password-toggle-btn {
+            border-color: #3b82f6 !important;
+        }
+        body[data-theme="dark"] .password-toggle-btn i {
+            color: inherit !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -78,14 +114,24 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Password (For Team Login) <span
                                     class="required-star">*</span></label>
-                            <input type="password" class="form-control" name="password"
-                                placeholder="Set a secure password" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control border-end-0" id="teamPassword" name="password"
+                                    placeholder="Set a secure password" required>
+                                <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleTeamPassword" onclick="togglePasswordVisibility('teamPassword', 'teamPasswordIcon')" title="Show/Hide Password" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye-slash text-muted" id="teamPasswordIcon"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Confirm Password <span
                                     class="required-star">*</span></label>
-                            <input type="password" class="form-control" name="password_confirmation"
-                                placeholder="Retype password" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control border-end-0" id="teamPasswordConfirmation" name="password_confirmation"
+                                    placeholder="Retype password" required>
+                                <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleTeamPasswordConfirmation" onclick="togglePasswordVisibility('teamPasswordConfirmation', 'teamPasswordConfirmationIcon')" title="Show/Hide Password" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye-slash text-muted" id="teamPasswordConfirmationIcon"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -513,6 +559,22 @@
         });
 
         window.addEventListener('load', generateCaptcha);
+
+        function togglePasswordVisibility(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const passwordIcon = document.getElementById(iconId);
+            if (!passwordInput || !passwordIcon) return;
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            }
+        }
     </script>
     <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
 </body>
