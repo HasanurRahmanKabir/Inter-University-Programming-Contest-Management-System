@@ -50,6 +50,10 @@ class TeamController extends Controller
 
     public function update(Request $request, $id)
     {
+        if ($request->isMethod('get')) {
+            return redirect()->route('admin.teamregistration.index');
+        }
+
         $request->validate([
             'team_name' => 'required|string|max:255',
             'institute_name' => 'required|string|max:255',
