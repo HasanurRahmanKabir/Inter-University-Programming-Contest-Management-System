@@ -146,6 +146,6 @@ class TeamController extends Controller
 
         $team->update($input);
 
-        return redirect()->back()->with('success', 'Team Updated Successfully');
+        return redirect()->route('admin.teamregistration.index')->with('success', 'Team Updated Successfully');
     }
 }

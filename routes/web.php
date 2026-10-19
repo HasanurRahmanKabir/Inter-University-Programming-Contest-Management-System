@@ -92,7 +92,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     // Team Management
     Route::get('/dashboard/team', [TeamController::class, 'index'])->name('admin.teamregistration.index');
     Route::get('/dashboard/team/{id}', [TeamController::class, 'show'])->name('admin.team.show');
-    Route::put('/dashboard/team/update/{team_id}', [TeamController::class, 'update'])->name('team.update');
+    Route::match(['put', 'post'], '/dashboard/team/update/{team_id}', [TeamController::class, 'update'])->name('team.update');
     Route::delete('/dashboard/team/delete/{team_id}', [TeamController::class, 'destroy']);
 
     // Payment Management
