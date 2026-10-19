@@ -592,6 +592,31 @@
         body[data-theme="dark"] .admin-photo-remove-btn:hover {
             background: #dc2626;
         }
+
+        /* Mobile Responsive Adjustments for Team Modal Footer */
+        @media (max-width: 575.98px) {
+            .modal-footer {
+                padding: 0.75rem 0.75rem !important;
+                gap: 0.5rem !important;
+            }
+            .modal-footer .btn {
+                font-size: 0.85rem !important;
+                height: 38px !important;
+                min-height: 38px !important;
+                max-height: 38px !important;
+                padding: 0 0.75rem !important;
+                line-height: 1 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                white-space: nowrap !important;
+                box-sizing: border-box !important;
+            }
+            .modal-footer .btn-primary.px-4 {
+                padding-left: 0.85rem !important;
+                padding-right: 0.85rem !important;
+            }
+        }
     </style>
 
     <script>

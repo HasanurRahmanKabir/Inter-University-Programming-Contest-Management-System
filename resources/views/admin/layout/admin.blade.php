@@ -215,7 +215,7 @@
     </div>
 
 
-    <div style="position:fixed;bottom:20px;right:20px;z-index:9999;">
+    <div style="position:fixed;bottom:20px;right:20px;z-index:1040;">
         <a href="{{ url('/') }}"
         target="_blank"
         rel="noopener noreferrer"
