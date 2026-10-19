@@ -182,8 +182,13 @@
 
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Password</label>
-                            <input type="password" class="form-control" name="pass"
-                                placeholder="Enter a secure password" required>
+                            <div class="input-group admin-password-group">
+                                <input type="password" class="form-control border-end-0" id="createAdminPassword" name="pass"
+                                    placeholder="Enter a secure password" required>
+                                <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleCreateAdminPassword" onclick="toggleAdminPasswordVisibility('createAdminPassword', 'createAdminPasswordIcon')" title="Show/Hide Password" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye-slash" id="createAdminPasswordIcon"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -259,8 +264,13 @@
 
                             <div class="mb-3">
                                 <label class="form-label text-muted small fw-bold">Update Password <span class="text-secondary fw-normal">(Optional)</span></label>
-                                <input type="password" id="editAdminPassword" class="form-control"
-                                    placeholder="Leave blank to keep current password" name="pass">
+                                <div class="input-group admin-password-group">
+                                    <input type="password" id="editAdminPassword{{ $data->admin_id }}" class="form-control border-end-0"
+                                        placeholder="Leave blank to keep current password" name="pass">
+                                    <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleEditAdminPassword{{ $data->admin_id }}" onclick="toggleAdminPasswordVisibility('editAdminPassword{{ $data->admin_id }}', 'editAdminPasswordIcon{{ $data->admin_id }}')" title="Show/Hide Password" aria-label="Toggle password visibility">
+                                        <i class="fas fa-eye-slash" id="editAdminPasswordIcon{{ $data->admin_id }}"></i>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -313,7 +323,71 @@
             </div>
         </div>
     @endforeach
+    <style>
+        .admin-password-group .form-control {
+            border-color: #dee2e6;
+            box-shadow: none !important;
+        }
+        .admin-password-group .password-toggle-btn {
+            background-color: transparent !important;
+            border-color: #dee2e6 !important;
+            color: #6c757d;
+            box-shadow: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.375rem 0.75rem;
+            cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .admin-password-group .password-toggle-btn:hover,
+        .admin-password-group .password-toggle-btn:focus {
+            background-color: transparent !important;
+            color: #3b82f6 !important;
+            box-shadow: none !important;
+        }
+        .admin-password-group:focus-within .form-control,
+        .admin-password-group:focus-within .password-toggle-btn {
+            border-color: #86b7fe !important;
+        }
+        body[data-theme="dark"] .admin-password-group .form-control {
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            background-color: #0f172a !important;
+            color: #e2e8f0 !important;
+        }
+        body[data-theme="dark"] .admin-password-group .password-toggle-btn {
+            background-color: #0f172a !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            color: #94a3b8;
+        }
+        body[data-theme="dark"] .admin-password-group .password-toggle-btn:hover,
+        body[data-theme="dark"] .admin-password-group .password-toggle-btn:focus {
+            background-color: #0f172a !important;
+            color: #60a5fa !important;
+        }
+        body[data-theme="dark"] .admin-password-group:focus-within .form-control,
+        body[data-theme="dark"] .admin-password-group:focus-within .password-toggle-btn {
+            border-color: #3b82f6 !important;
+        }
+    </style>
+
     <script>
+        function toggleAdminPasswordVisibility(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const passwordIcon = document.getElementById(iconId);
+            if (!passwordInput || !passwordIcon) return;
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            }
+        }
+
         // Sidebar Logic
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
@@ -323,8 +397,12 @@
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
         }
-        toggleBtn.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', toggleSidebar);
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', toggleSidebar);
+        }
+        if (overlay) {
+            overlay.addEventListener('click', toggleSidebar);
+        }
     </script>
 @endsection
 
