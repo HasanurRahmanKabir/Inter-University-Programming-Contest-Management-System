@@ -127,13 +127,15 @@
                             <div class="upload-area" onclick="document.getElementById('mediaFile').click()"
                                 style="cursor: pointer;">
                                 <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
-                                <p class="mb-0 fw-bold">Click to browse file</p>
-                                <input type="file" name="media_file" id="mediaFile" class="d-none @error('media_file') is-invalid @enderror" required
+                                <p class="mb-1 fw-bold">Click to browse file</p>
+                                <small class="text-muted d-block gallery-upload-hint">Recommended: 16:9 ratio (1920x1080px or 1200x675px)</small>
+                                <small class="text-muted d-block gallery-upload-subhint">JPG, PNG, WebP up to 5MB</small>
+                                <input type="file" name="media_file" id="mediaFile" accept="image/jpeg,image/png,image/jpg,image/webp,image/gif" class="d-none @error('media_file') is-invalid @enderror" required
                                     onchange="previewUpload(this)">
                             </div>
                             @error('media_file') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             <div id="preview-container" class="mt-2 text-center d-none">
-                                <small class="text-success fw-bold">File Selected!</small>
+                                <small class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i><span id="preview-filename">File Selected!</span></small>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -214,9 +216,14 @@
             });
         });
 
-        // Simple File Upload Preview Text
+        // File Upload Preview & Filename Display
         function previewUpload(input) {
             if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                const previewText = document.getElementById('preview-filename');
+                if (previewText) {
+                    previewText.textContent = fileName;
+                }
                 document.getElementById('preview-container').classList.remove('d-none');
             }
         }
@@ -256,10 +263,6 @@
             box-shadow: 0 6px 20px rgba(239, 68, 68, 0.65);
         }
 
-        .btn-gallery-lightbox-close:active {
-            transform: scale(0.95);
-        }
-
         @media (max-width: 576px) {
             .btn-gallery-lightbox-close {
                 top: -14px;
@@ -270,6 +273,11 @@
             }
         }
 
+        body[data-theme="dark"] .gallery-upload-hint,
+        body[data-theme="dark"] .gallery-upload-subhint {
+            color: #94a3b8 !important;
+            opacity: 0.95;
+        }
     </style>
 @endsection
 
