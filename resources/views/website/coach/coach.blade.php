@@ -27,6 +27,138 @@
         body[data-theme="dark"] .coach-phone-alert {
             color: #f87171 !important;
         }
+        
+        /* Modal Photo Upload & Preview Styling - Modern Industry Standard */
+        .photo-upload-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .photo-upload-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .modal-photo-preview-box {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        .modal-photo-preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.2s;
+        }
+        .modal-photo-preview-box .preview-overlay-tag {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.75);
+            color: #ffffff;
+            font-size: 0.65rem;
+            text-align: center;
+            padding: 2px 0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .image-specs-badge {
+            font-size: 0.72rem;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        .remove-photo-check {
+            font-size: 0.75rem;
+            color: #ef4444;
+            cursor: pointer;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            transition: all 0.2s ease;
+        }
+        .remove-photo-check:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.35);
+        }
+        .remove-photo-check .form-check-input {
+            margin: 0 !important;
+            float: none !important;
+            cursor: pointer;
+            width: 14px;
+            height: 14px;
+            accent-color: #ef4444;
+        }
+        .remove-photo-check .form-check-label {
+            margin: 0 !important;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            line-height: 1;
+        }
+        .remove-photo-check input:checked ~ .form-check-label span {
+            text-decoration: line-through;
+            color: #dc2626;
+            font-weight: 600;
+        }
+        body[data-theme="dark"] .photo-upload-card {
+            background: #0b1120 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body[data-theme="dark"] .photo-upload-card:hover {
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        body[data-theme="dark"] .modal-photo-preview-box {
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            background-color: #020617 !important;
+        }
+        body[data-theme="dark"] .image-specs-badge {
+            background: #1e293b !important;
+            color: #94a3b8 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        body[data-theme="dark"] .remove-photo-check {
+            background: rgba(239, 68, 68, 0.12) !important;
+            border-color: rgba(239, 68, 68, 0.25) !important;
+            color: #f87171 !important;
+        }
+        body[data-theme="dark"] .remove-photo-check:hover {
+            background: rgba(239, 68, 68, 0.22) !important;
+            border-color: rgba(239, 68, 68, 0.4) !important;
+        }
+
+        /* Floating Alert/Toast matching Admin Panel and Website standard */
+        .website-floating-alert {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            margin: 1.5rem !important;
+            z-index: 999999 !important;
+            min-width: 300px;
+            max-width: 450px;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 
@@ -429,10 +561,40 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Photo</label>
-                                        <input type="file" class="form-control" name="coach_photo"
-                                            accept="image/*">
+                                    <div class="col-12">
+                                        <div class="photo-upload-card">
+                                            @php
+                                                $hasCoachModalPhoto = !empty($user->coach_photo) && file_exists(public_path($user->coach_photo));
+                                            @endphp
+                                            <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                                                <div class="modal-photo-preview-box">
+                                                    <img id="coach-photo-preview"
+                                                        src="{{ $hasCoachModalPhoto ? asset($user->coach_photo) : $coachAvatar }}"
+                                                        data-default="{{ $coachAvatar }}"
+                                                        alt="Coach Preview">
+                                                    <span class="preview-overlay-tag">PREVIEW</span>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+                                                        <label class="form-label small fw-bold mb-0">Coach Photo</label>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1"></i>300×300 (Square, Max 2MB)</span>
+                                                    </div>
+                                                    <input type="file" class="form-control form-control-sm photo-input-with-preview" name="coach_photo"
+                                                        accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="coach-photo-preview">
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
+                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
+                                                        @if ($hasCoachModalPhoto)
+                                                            <div class="form-check remove-photo-check m-0">
+                                                                <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_coach_photo" value="1" id="removeCoachPhoto" data-preview="coach-photo-preview">
+                                                                <label class="form-check-label small" for="removeCoachPhoto">
+                                                                    <i class="fas fa-trash-alt me-1"></i> <span>Remove photo</span>
+                                                                </label>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -475,10 +637,37 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Photo</label>
-                                        <input type="file" class="form-control" name="mem_1_photo"
-                                            accept="image/*">
+                                    <div class="col-12">
+                                        <div class="photo-upload-card">
+                                            <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                                                <div class="modal-photo-preview-box">
+                                                    <img id="mem1-photo-preview"
+                                                        src="{{ $hasMem1Photo ? asset($user->mem_1_photo) : $mem1Avatar }}"
+                                                        data-default="{{ $mem1Avatar }}"
+                                                        alt="Member 1 Preview">
+                                                    <span class="preview-overlay-tag">PREVIEW</span>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+                                                        <label class="form-label small fw-bold mb-0">Member 1 Photo</label>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1"></i>300×300 (Square, Max 2MB)</span>
+                                                    </div>
+                                                    <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_1_photo"
+                                                        accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem1-photo-preview">
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
+                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
+                                                        @if ($hasMem1Photo)
+                                                            <div class="form-check remove-photo-check m-0">
+                                                                <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_1_photo" value="1" id="removeMem1Photo" data-preview="mem1-photo-preview">
+                                                                <label class="form-check-label small" for="removeMem1Photo">
+                                                                    <i class="fas fa-trash-alt me-1"></i> <span>Remove photo</span>
+                                                                </label>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -521,10 +710,37 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Photo</label>
-                                        <input type="file" class="form-control" name="mem_2_photo"
-                                            accept="image/*">
+                                    <div class="col-12">
+                                        <div class="photo-upload-card">
+                                            <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                                                <div class="modal-photo-preview-box">
+                                                    <img id="mem2-photo-preview"
+                                                        src="{{ $hasMem2Photo ? asset($user->mem_2_photo) : $mem2Avatar }}"
+                                                        data-default="{{ $mem2Avatar }}"
+                                                        alt="Member 2 Preview">
+                                                    <span class="preview-overlay-tag">PREVIEW</span>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+                                                        <label class="form-label small fw-bold mb-0">Member 2 Photo</label>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1"></i>300×300 (Square, Max 2MB)</span>
+                                                    </div>
+                                                    <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_2_photo"
+                                                        accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem2-photo-preview">
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
+                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
+                                                        @if ($hasMem2Photo)
+                                                            <div class="form-check remove-photo-check m-0">
+                                                                <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_2_photo" value="1" id="removeMem2Photo" data-preview="mem2-photo-preview">
+                                                                <label class="form-check-label small" for="removeMem2Photo">
+                                                                    <i class="fas fa-trash-alt me-1"></i> <span>Remove photo</span>
+                                                                </label>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -567,10 +783,37 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Photo</label>
-                                        <input type="file" class="form-control" name="mem_3_photo"
-                                            accept="image/*">
+                                    <div class="col-12">
+                                        <div class="photo-upload-card">
+                                            <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                                                <div class="modal-photo-preview-box">
+                                                    <img id="mem3-photo-preview"
+                                                        src="{{ $hasMem3Photo ? asset($user->mem_3_photo) : $mem3Avatar }}"
+                                                        data-default="{{ $mem3Avatar }}"
+                                                        alt="Member 3 Preview">
+                                                    <span class="preview-overlay-tag">PREVIEW</span>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+                                                        <label class="form-label small fw-bold mb-0">Member 3 Photo</label>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1"></i>300×300 (Square, Max 2MB)</span>
+                                                    </div>
+                                                    <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_3_photo"
+                                                        accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem3-photo-preview">
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
+                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
+                                                        @if ($hasMem3Photo)
+                                                            <div class="form-check remove-photo-check m-0">
+                                                                <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_3_photo" value="1" id="removeMem3Photo" data-preview="mem3-photo-preview">
+                                                                <label class="form-check-label small" for="removeMem3Photo">
+                                                                    <i class="fas fa-trash-alt me-1"></i> <span>Remove photo</span>
+                                                                </label>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -590,10 +833,58 @@
         </div>
     </div>
 
+    <!-- Bootstrap & App Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
     <script>
+        // Website Standard Floating Toast Notification (Identical to Admin Panel)
+        function showWebsiteToast(message, type = 'success', duration = 4000) {
+            const existingToasts = document.querySelectorAll('.website-floating-alert');
+            existingToasts.forEach(t => t.remove());
+
+            const isSuccess = (type === 'success');
+            const alertClass = isSuccess ? 'alert-success' : (type === 'warning' ? 'alert-warning' : 'alert-danger');
+            const iconClass = isSuccess ? 'fa-check-circle' : (type === 'warning' ? 'fa-exclamation-triangle' : 'fa-times-circle');
+            const title = isSuccess ? 'Success!' : (type === 'warning' ? 'Warning!' : 'Error!');
+
+            const toastEl = document.createElement('div');
+            toastEl.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-4 shadow-lg website-floating-alert`;
+            toastEl.setAttribute('role', 'alert');
+            toastEl.style.zIndex = '999999';
+            toastEl.innerHTML = `
+                <i class="fas ${iconClass} me-2"></i> <strong>${title}</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+
+            document.body.appendChild(toastEl);
+
+            setTimeout(function() {
+                if (toastEl && toastEl.parentElement) {
+                    toastEl.classList.remove('show');
+                    setTimeout(() => toastEl.remove(), 250);
+                }
+            }, duration);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Check for pending notification from previous AJAX reload
+            const pendingToast = sessionStorage.getItem('pending_toast');
+            if (pendingToast) {
+                try {
+                    const toastData = JSON.parse(pendingToast);
+                    showWebsiteToast(toastData.message, toastData.type || 'success');
+                } catch(e) {}
+                sessionStorage.removeItem('pending_toast');
+            }
+
+            @if (session('success'))
+                showWebsiteToast("{{ session('success') }}", 'success');
+            @endif
+
+            @if (session('error'))
+                showWebsiteToast("{{ session('error') }}", 'danger');
+            @endif
+
             // Coach Dashboard Phone Input Restriction (Digits, +, and - only)
             document.querySelectorAll('.coach-phone-input').forEach(function(input) {
                 const container = input.parentElement;
@@ -650,7 +941,7 @@
                 });
             });
 
-            // AJAX Form Submission for Profile Update (Preserves all inputs on failure)
+            // AJAX Form Submission for Profile Update (With Website Standard Floating Toast Notification)
             const profileForm = document.getElementById('editProfileForm');
             const submitBtn = document.getElementById('updateProfileSubmitBtn');
             const ajaxAlert = document.getElementById('modalAjaxAlert');
@@ -685,13 +976,24 @@
                         const data = await response.json().catch(function() { return {}; });
 
                         if (response.ok && data.success) {
-                            // Successfully updated: reload to reflect updated profile info & show success notification
-                            window.location.reload();
+                            // Set standard toast to show right after reload
+                            sessionStorage.setItem('pending_toast', JSON.stringify({
+                                type: 'success',
+                                message: data.message || 'Profile & Team Information Updated Successfully!'
+                            }));
+                            // Trigger immediate floating alert before reload
+                            showWebsiteToast(data.message || 'Profile & Team Information Updated Successfully!', 'success');
+                            
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 500);
                         } else {
-                            // Validation error (422) or server error - KEEP MODAL OPEN, KEEP ALL INPUT VALUES!
+                            // Validation error (422) or server error - KEEP MODAL OPEN, SHOW FLOATING TOAST & ALERT
                             submitBtn.disabled = false;
                             if (spinner) spinner.classList.add('d-none');
                             if (btnText) btnText.textContent = 'Update';
+
+                            showWebsiteToast('Please fix the errors in the form.', 'danger');
 
                             if (ajaxAlert && ajaxErrorList) {
                                 ajaxErrorList.innerHTML = '';
@@ -713,7 +1015,6 @@
                                     ajaxErrorList.appendChild(li);
                                 }
                                 ajaxAlert.classList.remove('d-none');
-                                // Scroll modal to top to make errors immediately visible
                                 const modalBody = profileForm.querySelector('.modal-body');
                                 if (modalBody) modalBody.scrollTop = 0;
                             }
@@ -724,6 +1025,8 @@
                         if (spinner) spinner.classList.add('d-none');
                         if (btnText) btnText.textContent = 'Update';
 
+                        showWebsiteToast('An unexpected error occurred. Please try again.', 'danger');
+
                         if (ajaxAlert && ajaxErrorList) {
                             ajaxErrorList.innerHTML = '<li>An unexpected error occurred. Please check your connection and try again.</li>';
                             ajaxAlert.classList.remove('d-none');
@@ -733,6 +1036,71 @@
                     });
                 });
             }
+
+            // Live Photo Preview and Client-side file type & size validation
+            document.querySelectorAll('.photo-input-with-preview').forEach(function(fileInput) {
+                fileInput.addEventListener('change', function() {
+                    const targetPreviewId = fileInput.getAttribute('data-preview');
+                    const imgEl = document.getElementById(targetPreviewId);
+                    const file = fileInput.files && fileInput.files[0];
+
+                    if (!file) return;
+
+                    // Strictly check file MIME type and extension
+                    const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+                    const validExts = ['.jpg', '.jpeg', '.png', '.webp'];
+                    const fileName = file.name.toLowerCase();
+                    const hasValidExt = validExts.some(function(ext) { return fileName.endsWith(ext); });
+
+                    if (!validTypes.includes(file.type) && !hasValidExt) {
+                        showWebsiteToast('Invalid file format! Only images (JPG, JPEG, PNG, WEBP) are allowed.', 'warning');
+                        fileInput.value = '';
+                        return;
+                    }
+
+                    // Max 2MB validation
+                    if (file.size > 2 * 1024 * 1024) {
+                        showWebsiteToast('Image size exceeds 2MB limit. Please upload a photo smaller than 2MB.', 'warning');
+                        fileInput.value = '';
+                        return;
+                    }
+
+                    if (imgEl) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imgEl.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+
+                        const container = fileInput.closest('.col-12, .col-md-6');
+                        if (container) {
+                            const removeCheck = container.querySelector('.remove-photo-trigger');
+                            if (removeCheck) removeCheck.checked = false;
+                        }
+                    }
+                });
+            });
+
+            // Remove photo checkbox handler
+            document.querySelectorAll('.remove-photo-trigger').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    const targetPreviewId = checkbox.getAttribute('data-preview');
+                    const imgEl = document.getElementById(targetPreviewId);
+                    const container = checkbox.closest('.col-12, .col-md-6');
+                    const fileInput = container ? container.querySelector('.photo-input-with-preview') : null;
+
+                    if (checkbox.checked) {
+                        if (fileInput) fileInput.value = '';
+                        if (imgEl && imgEl.hasAttribute('data-default')) {
+                            imgEl.src = imgEl.getAttribute('data-default');
+                        }
+                    } else {
+                        if (imgEl && imgEl.hasAttribute('data-default')) {
+                            imgEl.src = imgEl.getAttribute('data-default');
+                        }
+                    }
+                });
+            });
         });
     </script>
 </body>
