@@ -211,7 +211,7 @@
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Logo Upload</label>
                             <input type="file" name="logo" class="form-control" accept="image/*" required>
-                            <div class="form-text small">Recommended size: 200x200px (PNG/JPG)</div>
+                            <div class="form-text small sponsor-logo-hint">Recommended size: 200x200px (PNG/JPG)</div>
                         </div>
 
                         <div class="mb-3">
@@ -304,6 +304,7 @@
 
                                 <label class="form-label text-muted small fw-bold">Upload New Logo</label>
                                 <input type="file" name="logo" class="form-control" accept="image/*">
+                                <div class="form-text small sponsor-logo-hint">Recommended size: 200x200px (PNG/JPG)</div>
                             </div>
 
                             <div class="mb-3">
@@ -381,6 +382,13 @@
             </div>
         </div>
     @endforeach
+
+    <style>
+        body[data-theme="dark"] .sponsor-logo-hint {
+            color: #94a3b8 !important;
+            opacity: 0.95;
+        }
+    </style>
 
     <script>
         // Any custom sponsor logic can go here
