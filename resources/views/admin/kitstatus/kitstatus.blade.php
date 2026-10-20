@@ -219,7 +219,7 @@
 
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Edit Status</label>
-                            <select name="kit_received" id="editKitStatus" class="form-select fw-bold">
+                            <select name="kit_received" id="editKitStatus" class="form-select">
                                 <option value="1">Received</option>
                                 <option value="0">Not Received</option>
                             </select>
