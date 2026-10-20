@@ -92,17 +92,10 @@
                     </div>
                 @empty
                     <div class="col-12">
-                        <div class="gallery-empty-state text-center d-flex flex-column align-items-center justify-content-center">
-                            <div class="gallery-empty-icon-wrapper mb-3">
-                                <i class="fas fa-photo-video gallery-empty-icon"></i>
-                            </div>
-                            <h4 class="fw-bold mb-2 text-dark gallery-empty-title">No Media Uploaded Yet</h4>
-                            <p class="text-muted small mb-4 gallery-empty-desc" style="max-width: 440px;">
-                                Your event gallery is currently empty. Upload photos and videos from recent programming contests to showcase them on the public website.
-                            </p>
-                            <button type="button" class="btn btn-primary px-4 py-2 shadow-sm d-inline-flex align-items-center gallery-empty-btn" data-bs-toggle="modal" data-bs-target="#uploadMediaModal">
-                                <i class="fas fa-cloud-upload-alt me-2"></i> Upload First Media
-                            </button>
+                        <div class="custom-table-card text-center py-5">
+                            <i class="fas fa-images mb-3 text-secondary" style="font-size: 3rem; opacity: 0.5;"></i>
+                            <h5 class="fw-bold mb-1">No media found</h5>
+                            <p class="mb-0 small text-muted">There are no photos or videos uploaded in the gallery yet.</p>
                         </div>
                     </div>
                 @endforelse
@@ -277,68 +270,6 @@
             }
         }
 
-        /* Gallery Empty State - Centered Industry Standard */
-        .gallery-empty-state {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 4.5rem 1.5rem;
-            min-height: 420px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s ease;
-        }
-        .gallery-empty-icon-wrapper {
-            width: 88px;
-            height: 88px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 197, 253, 0.18) 100%);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(59, 130, 246, 0.18);
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
-        }
-        .gallery-empty-icon {
-            font-size: 2.5rem;
-            color: #3b82f6;
-        }
-        .gallery-empty-title {
-            letter-spacing: -0.3px;
-        }
-        .gallery-empty-desc {
-            color: #64748b !important;
-            line-height: 1.6;
-        }
-        .gallery-empty-btn {
-            font-weight: 500;
-            border-radius: 10px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .gallery-empty-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(59, 130, 246, 0.35) !important;
-        }
-
-        /* Dark Mode for Gallery Empty State */
-        body[data-theme="dark"] .gallery-empty-state {
-            background-color: #1e293b !important;
-            border-color: rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) !important;
-        }
-        body[data-theme="dark"] .gallery-empty-icon-wrapper {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(30, 41, 59, 0.5) 100%) !important;
-            border-color: rgba(59, 130, 246, 0.35) !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
-        }
-        body[data-theme="dark"] .gallery-empty-icon {
-            color: #60a5fa !important;
-        }
-        body[data-theme="dark"] .gallery-empty-title {
-            color: #ffffff !important;
-        }
-        body[data-theme="dark"] .gallery-empty-desc {
-            color: #94a3b8 !important;
-        }
     </style>
 @endsection
 
