@@ -10,7 +10,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $admin = Admin::all();
+        $admin = Admin::orderBy('admin_id', 'desc')->get();
         return view('admin.user.all_user', compact('admin'));
     }
 
@@ -19,10 +19,12 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:admin_infos,email',
-            'phone' => 'nullable|string|max:20',
+            'phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'pass' => 'required|min:6',
             'role' => 'required|in:0,1',
             'status' => 'required|in:0,1',
+        ], [
+            'phone.regex' => 'The phone number must contain only digits (0-9), +, and -.',
         ]);
 
         $insert = Admin::create([
@@ -44,9 +46,11 @@ class AdminController extends Controller
         $request->validate([
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:admin_infos,email,' . $admin_id . ',admin_id',
-            'phone' => 'nullable|string|max:20',
+            'phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'pass' => 'nullable|min:6',
             'status' => 'required|in:0,1',
+        ], [
+            'phone.regex' => 'The phone number must contain only digits (0-9), +, and -.',
         ]);
 
         $updateData = [
