@@ -135,7 +135,7 @@
     <div class="modal fade" id="addContestModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header border-0 pb-0 d-flex justify-content-between align-items-center">
+                <div class="modal-header d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-2">
                         <h5 class="modal-title fw-bold mb-0">Create New Contest</h5>
                         <button type="button" class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm" style="width: 24px; height: 24px; padding: 0; display: flex; align-items: center; justify-content: center;" data-bs-toggle="collapse" data-bs-target="#addContestGuide" aria-expanded="false" title="Click for instructions">
@@ -283,12 +283,12 @@
                                 @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
-                        <div class="modal-footer border-0 pt-0">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary px-4">Save Contest</button>
-                        </div>
-                    </form>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Save Contest</button>
+                </div>
+                </form>
 
             </div>
         </div>
@@ -300,7 +300,7 @@
         <div class="modal fade" id="editContestModal{{ $data->contest_id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header border-0 pb-0 d-flex justify-content-between align-items-center">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-2">
                             <h5 class="modal-title fw-bold mb-0">Edit Contest Info</h5>
                             <button type="button" class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm" style="width: 24px; height: 24px; padding: 0; display: flex; align-items: center; justify-content: center;" data-bs-toggle="collapse" data-bs-target="#editContestGuide{{ $data->contest_id }}" aria-expanded="false" title="Click for instructions">
@@ -460,7 +460,7 @@
                                 </div>
                             </div>
                     </div>
-                    <div class="modal-footer border-0 pt-0">
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary px-4">Update Contest</button>
                     </div>
