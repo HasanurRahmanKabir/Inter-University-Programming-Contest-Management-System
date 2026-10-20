@@ -166,9 +166,9 @@
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <input type="hidden" name="modal_id" value="editTeamModal{{ $data->team_id }}">
+                            <input type="hidden" name="modal_id" value="teamDetailModal{{ $data->team_id }}">
                             
-                            @if ($errors->any() && old('modal_id') == 'editTeamModal' . $data->team_id)
+                            @if ($errors->any() && old('modal_id') == 'teamDetailModal' . $data->team_id)
                                 <div class="alert alert-danger small shadow-sm">
                                     <ul class="mb-0 ps-3">
                                         @foreach ($errors->all() as $error)
@@ -242,10 +242,25 @@
                                             @error('coach_email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="small text-muted">Emergency Contact</label>
-                                            <input type="text" class="form-control @error('coach_phone') is-invalid @enderror" name="coach_phone"
-                                                value="{{ old('coach_phone', $data->coach_phone) }}">
-                                            @error('coach_phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                            <label class="small text-muted d-flex justify-content-between align-items-center mb-1">
+                                                <span>Emergency Contact</span>
+                                                <span class="badge bg-light text-secondary border fw-normal py-1 px-2" style="font-size: 0.68rem; letter-spacing: 0.2px;">Digits, +, - only</span>
+                                            </label>
+                                            <input type="text" class="form-control emergency-contact-input @error('coach_phone') is-invalid @enderror" 
+                                                name="coach_phone"
+                                                id="coach_phone_{{ $data->team_id }}"
+                                                value="{{ old('coach_phone', $data->coach_phone) }}"
+                                                pattern="^[0-9+\-]+$"
+                                                inputmode="tel"
+                                                maxlength="20"
+                                                placeholder="+8801XXXXXXXXX"
+                                                title="Only digits (0-9), +, and - are allowed."
+                                                required>
+                                            <div class="emergency-contact-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                                <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                            </div>
+                                            <div class="invalid-feedback client-phone-feedback d-none">Only digits (0-9), +, and - are allowed.</div>
+                                            @error('coach_phone') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <label class="small text-muted">Team T-Shirt Requirement</label>
@@ -617,6 +632,26 @@
                 padding-right: 0.85rem !important;
             }
         }
+
+        /* Emergency Contact Shake & Visual Feedback */
+        @keyframes subtleInputShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+        .emergency-input-shake {
+            animation: subtleInputShake 0.3s ease-in-out;
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
+        }
+        body[data-theme="dark"] .emergency-contact-alert {
+            color: #f87171 !important;
+        }
+        body[data-theme="dark"] label .badge.bg-light {
+            background-color: #1e293b !important;
+            color: #94a3b8 !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+        }
     </style>
 
     <script>
@@ -733,6 +768,91 @@
             });
 
             updateResetButtonState();
+
+            // Emergency Contact Validation (Digits, +, and - only with instant UX feedback)
+            document.querySelectorAll('.emergency-contact-input').forEach(function(input) {
+                const form = input.closest('form');
+                const feedback = input.parentElement.querySelector('.client-phone-feedback');
+                const alertNotice = input.parentElement.querySelector('.emergency-contact-alert');
+                let alertTimeout = null;
+
+                function showInvalidWarning() {
+                    if (alertNotice) {
+                        alertNotice.classList.remove('d-none');
+                    }
+                    input.classList.add('emergency-input-shake');
+                    clearTimeout(alertTimeout);
+                    alertTimeout = setTimeout(function() {
+                        input.classList.remove('emergency-input-shake');
+                        if (alertNotice) {
+                            alertNotice.classList.add('d-none');
+                        }
+                    }, 2800);
+                }
+
+                function sanitizeAndValidate() {
+                    const originalVal = input.value;
+                    const cleanedVal = originalVal.replace(/[^0-9+\-]/g, '');
+                    if (originalVal !== cleanedVal) {
+                        input.value = cleanedVal;
+                        showInvalidWarning();
+                    }
+
+                    const trimmed = input.value.trim();
+                    const isValid = /^[0-9+\-]+$/.test(trimmed);
+                    if (!isValid && trimmed.length > 0) {
+                        input.classList.add('is-invalid');
+                        if (feedback) feedback.classList.remove('d-none');
+                        input.setCustomValidity('Emergency contact must contain only digits (0-9), +, and -');
+                    } else {
+                        input.classList.remove('is-invalid');
+                        if (feedback) feedback.classList.add('d-none');
+                        input.setCustomValidity('');
+                    }
+                    return isValid;
+                }
+
+                input.addEventListener('input', sanitizeAndValidate);
+                input.addEventListener('blur', sanitizeAndValidate);
+
+                input.addEventListener('keypress', function(e) {
+                    const char = String.fromCharCode(e.which || e.keyCode);
+                    // If not a digit, +, - or special navigation keys
+                    if (!/[0-9+\-]/.test(char) && e.which !== 0 && e.which !== 8 && e.which !== 13) {
+                        e.preventDefault();
+                        showInvalidWarning();
+                    }
+                });
+
+                input.addEventListener('paste', function(e) {
+                    const pastedData = (e.clipboardData || window.clipboardData).getData('text');
+                    if (/[^0-9+\-]/.test(pastedData)) {
+                        e.preventDefault();
+                        const filteredData = pastedData.replace(/[^0-9+\-]/g, '');
+                        const start = input.selectionStart;
+                        const end = input.selectionEnd;
+                        const currentVal = input.value;
+                        const newVal = currentVal.substring(0, start) + filteredData + currentVal.substring(end);
+                        input.value = newVal.slice(0, 20);
+                        sanitizeAndValidate();
+                        showInvalidWarning();
+                    }
+                });
+
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        const val = input.value.trim();
+                        if (!/^[0-9+\-]+$/.test(val)) {
+                            e.preventDefault();
+                            input.classList.add('is-invalid');
+                            if (feedback) feedback.classList.remove('d-none');
+                            showInvalidWarning();
+                            input.focus();
+                            return false;
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endsection

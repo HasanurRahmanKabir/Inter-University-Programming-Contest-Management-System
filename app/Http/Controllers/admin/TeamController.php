@@ -59,7 +59,7 @@ class TeamController extends Controller
             'institute_name' => 'required|string|max:255',
             'coach_name' => 'required|string|max:255',
             'coach_email' => 'required|email|max:255',
-            'coach_phone' => 'required|string|max:20',
+            'coach_phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'coach_t_shirt' => 'required|string',
             
             'mem_1_name' => 'required|string|max:255',
@@ -75,6 +75,8 @@ class TeamController extends Controller
             'mem_1_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'mem_2_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'mem_3_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'coach_phone.regex' => 'The emergency contact number may only contain digits (0-9), +, and -.',
         ]);
 
         $team = TeamRegistration::findOrFail($id);
