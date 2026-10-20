@@ -173,7 +173,7 @@
                                         <button class="btn btn-light btn-sm text-primary edit-kit-btn"
                                             data-bs-toggle="modal" data-bs-target="#editKitStatusModal"
                                             data-id="{{ $kit->team_id }}" data-team="{{ $kit->team_name }}"
-                                            data-status="{{ $kit->kit_received }}"
+                                            data-status="{{ $kit->kit_received ? '1' : '0' }}"
                                             data-date="{{ $kit->received_date ? \Carbon\Carbon::parse($kit->received_date)->format('Y-m-d\TH:i') : '' }}"
                                             data-comments="{{ $kit->comments }}" title="Edit">
                                             <i class="fas fa-edit"></i>
@@ -293,10 +293,10 @@
                     const comments = this.getAttribute('data-comments');
 
                     // Populate Modal Fields
-                    editTeamName.value = team;
-                    editKitStatus.value = status;
-                    editReceivedDateTime.value = date;
-                    editKitComments.value = comments;
+                    editTeamName.value = team || '';
+                    editKitStatus.value = (status === '1' || status === 1) ? '1' : '0';
+                    editReceivedDateTime.value = date || '';
+                    editKitComments.value = comments || '';
 
                     // Set Form Action URL dynamically
                     editForm.action = "{{ url('/admin/dashboard/kitstatus/update') }}/" + id;
