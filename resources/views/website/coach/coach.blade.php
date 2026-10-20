@@ -13,6 +13,21 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/coachdashboard.css">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
+    <style>
+        @keyframes subtleCoachInputShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+        .coach-phone-shake {
+            animation: subtleCoachInputShake 0.3s ease-in-out;
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
+        }
+        body[data-theme="dark"] .coach-phone-alert {
+            color: #f87171 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -45,6 +60,32 @@
     </div>
 
     <div class="container py-4">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <div class="fw-bold mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Please fix the following errors:</div>
+                <ul class="mb-0 ps-3">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="row mb-4 justify-content-center">
             <div class="col-md-3 mb-3">
                 <div class="stat-card">
@@ -323,7 +364,7 @@
 
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <form action="{{ route('coach.profile.update') }}" method="POST" enctype="multipart/form-data">
+            <form id="editProfileForm" action="{{ route('coach.profile.update') }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
                 @method('PUT')
                 <div class="modal-content">
@@ -333,6 +374,11 @@
                     </div>
 
                     <div class="modal-body">
+                        <div id="modalAjaxAlert" class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-3 d-none" role="alert">
+                            <div class="fw-bold mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Please fix the following errors:</div>
+                            <ul id="modalAjaxErrorList" class="mb-0 ps-3 small"></ul>
+                            <button type="button" class="btn-close" onclick="document.getElementById('modalAjaxAlert').classList.add('d-none')"></button>
+                        </div>
 
                         <ul class="nav nav-tabs mb-3 flex-nowrap text-nowrap overflow-x-auto pb-1" id="profileTabs" role="tablist" style="scrollbar-width: none; -webkit-overflow-scrolling: touch;">
                             <li class="nav-item" role="presentation">
@@ -365,8 +411,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Phone</label>
-                                        <input type="text" class="form-control" name="coach_phone"
-                                            value="{{ $user->coach_phone }}" required>
+                                        <input type="text" class="form-control coach-phone-input" name="coach_phone"
+                                            value="{{ $user->coach_phone }}" required
+                                            inputmode="tel" maxlength="20"
+                                            placeholder="e.g., +8801700000000" autocomplete="tel">
+                                        <div class="coach-phone-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                            <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">T-Shirt Size</label>
@@ -406,8 +457,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Phone</label>
-                                        <input type="text" class="form-control" name="mem_1_phone"
-                                            value="{{ $user->mem_1_phone }}">
+                                        <input type="text" class="form-control coach-phone-input" name="mem_1_phone"
+                                            value="{{ $user->mem_1_phone }}"
+                                            inputmode="tel" maxlength="20"
+                                            placeholder="e.g., +8801700000000" autocomplete="tel">
+                                        <div class="coach-phone-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                            <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">T-Shirt Size</label>
@@ -447,8 +503,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Phone</label>
-                                        <input type="text" class="form-control" name="mem_2_phone"
-                                            value="{{ $user->mem_2_phone }}">
+                                        <input type="text" class="form-control coach-phone-input" name="mem_2_phone"
+                                            value="{{ $user->mem_2_phone }}"
+                                            inputmode="tel" maxlength="20"
+                                            placeholder="e.g., +8801700000000" autocomplete="tel">
+                                        <div class="coach-phone-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                            <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">T-Shirt Size</label>
@@ -488,8 +549,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Phone</label>
-                                        <input type="text" class="form-control" name="mem_3_phone"
-                                            value="{{ $user->mem_3_phone }}">
+                                        <input type="text" class="form-control coach-phone-input" name="mem_3_phone"
+                                            value="{{ $user->mem_3_phone }}"
+                                            inputmode="tel" maxlength="20"
+                                            placeholder="e.g., +8801700000000" autocomplete="tel">
+                                        <div class="coach-phone-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                            <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">T-Shirt Size</label>
@@ -514,7 +580,10 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary px-4">Update</button>
+                        <button type="submit" id="updateProfileSubmitBtn" class="btn btn-primary px-4">
+                            <span class="spinner-border spinner-border-sm me-1 d-none" role="status" aria-hidden="true"></span>
+                            <span class="btn-text">Update</span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -523,6 +592,149 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Coach Dashboard Phone Input Restriction (Digits, +, and - only)
+            document.querySelectorAll('.coach-phone-input').forEach(function(input) {
+                const container = input.parentElement;
+                const alertNotice = container ? container.querySelector('.coach-phone-alert') : null;
+                let alertTimeout = null;
+
+                function showInvalidWarning() {
+                    if (alertNotice) {
+                        alertNotice.classList.remove('d-none');
+                    }
+                    input.classList.add('coach-phone-shake');
+                    clearTimeout(alertTimeout);
+                    alertTimeout = setTimeout(function() {
+                        input.classList.remove('coach-phone-shake');
+                        if (alertNotice) {
+                            alertNotice.classList.add('d-none');
+                        }
+                    }, 2800);
+                }
+
+                function sanitize() {
+                    const originalVal = input.value;
+                    const cleanedVal = originalVal.replace(/[^0-9+\-]/g, '');
+                    if (originalVal !== cleanedVal) {
+                        input.value = cleanedVal;
+                        showInvalidWarning();
+                    }
+                }
+
+                input.addEventListener('input', sanitize);
+                input.addEventListener('blur', sanitize);
+
+                input.addEventListener('keypress', function(e) {
+                    const char = String.fromCharCode(e.which || e.keyCode);
+                    // Allow 0-9, +, - and control keys (backspace, enter, arrow keys)
+                    if (!/[0-9+\-]/.test(char) && e.which !== 0 && e.which !== 8 && e.which !== 13) {
+                        e.preventDefault();
+                        showInvalidWarning();
+                    }
+                });
+
+                input.addEventListener('paste', function(e) {
+                    const pastedData = (e.clipboardData || window.clipboardData).getData('text');
+                    if (/[^0-9+\-]/.test(pastedData)) {
+                        e.preventDefault();
+                        const filteredData = pastedData.replace(/[^0-9+\-]/g, '');
+                        const start = input.selectionStart || 0;
+                        const end = input.selectionEnd || 0;
+                        const currentVal = input.value;
+                        const newVal = currentVal.substring(0, start) + filteredData + currentVal.substring(end);
+                        input.value = newVal.slice(0, 20);
+                        showInvalidWarning();
+                    }
+                });
+            });
+
+            // AJAX Form Submission for Profile Update (Preserves all inputs on failure)
+            const profileForm = document.getElementById('editProfileForm');
+            const submitBtn = document.getElementById('updateProfileSubmitBtn');
+            const ajaxAlert = document.getElementById('modalAjaxAlert');
+            const ajaxErrorList = document.getElementById('modalAjaxErrorList');
+
+            if (profileForm && submitBtn) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Hide any previous error
+                    if (ajaxAlert) ajaxAlert.classList.add('d-none');
+                    if (ajaxErrorList) ajaxErrorList.innerHTML = '';
+
+                    // UI Loading state
+                    const spinner = submitBtn.querySelector('.spinner-border');
+                    const btnText = submitBtn.querySelector('.btn-text');
+                    submitBtn.disabled = true;
+                    if (spinner) spinner.classList.remove('d-none');
+                    if (btnText) btnText.textContent = 'Updating...';
+
+                    const formData = new FormData(profileForm);
+
+                    fetch(profileForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(async function(response) {
+                        const data = await response.json().catch(function() { return {}; });
+
+                        if (response.ok && data.success) {
+                            // Successfully updated: reload to reflect updated profile info & show success notification
+                            window.location.reload();
+                        } else {
+                            // Validation error (422) or server error - KEEP MODAL OPEN, KEEP ALL INPUT VALUES!
+                            submitBtn.disabled = false;
+                            if (spinner) spinner.classList.add('d-none');
+                            if (btnText) btnText.textContent = 'Update';
+
+                            if (ajaxAlert && ajaxErrorList) {
+                                ajaxErrorList.innerHTML = '';
+                                if (data.errors) {
+                                    Object.keys(data.errors).forEach(function(key) {
+                                        data.errors[key].forEach(function(msg) {
+                                            const li = document.createElement('li');
+                                            li.textContent = msg;
+                                            ajaxErrorList.appendChild(li);
+                                        });
+                                    });
+                                } else if (data.message) {
+                                    const li = document.createElement('li');
+                                    li.textContent = data.message;
+                                    ajaxErrorList.appendChild(li);
+                                } else {
+                                    const li = document.createElement('li');
+                                    li.textContent = 'Failed to update. Please review the inputs and try again.';
+                                    ajaxErrorList.appendChild(li);
+                                }
+                                ajaxAlert.classList.remove('d-none');
+                                // Scroll modal to top to make errors immediately visible
+                                const modalBody = profileForm.querySelector('.modal-body');
+                                if (modalBody) modalBody.scrollTop = 0;
+                            }
+                        }
+                    })
+                    .catch(function(error) {
+                        submitBtn.disabled = false;
+                        if (spinner) spinner.classList.add('d-none');
+                        if (btnText) btnText.textContent = 'Update';
+
+                        if (ajaxAlert && ajaxErrorList) {
+                            ajaxErrorList.innerHTML = '<li>An unexpected error occurred. Please check your connection and try again.</li>';
+                            ajaxAlert.classList.remove('d-none');
+                            const modalBody = profileForm.querySelector('.modal-body');
+                            if (modalBody) modalBody.scrollTop = 0;
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

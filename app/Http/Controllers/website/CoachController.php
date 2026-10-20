@@ -47,12 +47,32 @@ class CoachController extends Controller
             return redirect()->back()->with('error', 'Team not found or session expired.');
         }
 
+        $cleanedCoachPhone = $request->coach_phone ? preg_replace('/\s+/', '', $request->coach_phone) : null;
+        $cleanedMem1Phone = $request->mem_1_phone ? preg_replace('/\s+/', '', $request->mem_1_phone) : null;
+        $cleanedMem2Phone = $request->mem_2_phone ? preg_replace('/\s+/', '', $request->mem_2_phone) : null;
+        $cleanedMem3Phone = $request->mem_3_phone ? preg_replace('/\s+/', '', $request->mem_3_phone) : null;
+
+        $request->merge([
+            'coach_phone' => $cleanedCoachPhone,
+            'mem_1_phone' => $cleanedMem1Phone,
+            'mem_2_phone' => $cleanedMem2Phone,
+            'mem_3_phone' => $cleanedMem3Phone,
+        ]);
+
         $request->validate([
             'coach_name' => 'required|string|max:255',
-            'coach_phone' => 'required|string|max:20',
+            'coach_phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'coach_t_shirt' => 'required',
             'coach_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'mem_1_name' => 'required|string|max:255',
+            'mem_1_name' => 'nullable|string|max:255',
+            'mem_1_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+            'mem_2_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+            'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+        ], [
+            'coach_phone.regex' => 'Coach phone number must contain only digits (0-9), +, and -.',
+            'mem_1_phone.regex' => 'Member 1 phone number must contain only digits (0-9), +, and -.',
+            'mem_2_phone.regex' => 'Member 2 phone number must contain only digits (0-9), +, and -.',
+            'mem_3_phone.regex' => 'Member 3 phone number must contain only digits (0-9), +, and -.',
         ]);
 
         $data = $request->except(['coach_photo', 'mem_1_photo', 'mem_2_photo', 'mem_3_photo', '_token', '_method']);
@@ -99,6 +119,13 @@ class CoachController extends Controller
         }
 
         $team->update($data);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile & Team Information Updated Successfully!'
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Profile & Team Information Updated Successfully!');
     }
