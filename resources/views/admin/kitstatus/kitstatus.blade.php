@@ -213,12 +213,12 @@
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label class="form-label text-muted small fw-bold">Edit Team Name</label>
+                            <label class="form-label text-muted small fw-bold">Team Name</label>
                             <input type="text" id="editTeamName" class="form-control" readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label text-muted small fw-bold">Edit Status</label>
+                            <label class="form-label text-muted small fw-bold">Kit Status</label>
                             <select name="kit_received" id="editKitStatus" class="form-select">
                                 <option value="1">Received</option>
                                 <option value="0">Not Received</option>
@@ -226,13 +226,13 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label text-muted small fw-bold">Edit Received Date & Time</label>
+                            <label class="form-label text-muted small fw-bold">Received Date & Time</label>
                             <input type="datetime-local" name="received_date" id="editReceivedDateTime"
                                 class="form-control">
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label text-muted small fw-bold">Edit Comments (Optional)</label>
+                            <label class="form-label text-muted small fw-bold">Comments <span class="text-secondary fw-normal">(Optional)</span></label>
                             <textarea name="comments" id="editKitComments" class="form-control" rows="2"
                                 placeholder="Ex: Collected by Volunteer X..."></textarea>
                         </div>

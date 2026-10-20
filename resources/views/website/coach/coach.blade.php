@@ -107,11 +107,14 @@
             </div>
             <div class="row g-3">
                 <div class="col-md-3 text-center mb-3 mb-md-0">
-                    @if ($user->coach_photo)
-                        <img src="{{ asset($user->coach_photo) }}" alt="Coach Photo" class="profile-image img-fluid rounded" />
-                    @else
-                        <img src="https://via.placeholder.com/150" alt="Coach Photo" class="profile-image img-fluid rounded" />
-                    @endif
+                    @php
+                        $hasCoachPhoto = !empty($user->coach_photo) && file_exists(public_path($user->coach_photo));
+                        $coachAvatar = 'https://ui-avatars.com/api/?name=' . urlencode($user->coach_name ?: 'Coach') . '&background=0D8ABC&color=fff&size=200&bold=true';
+                    @endphp
+                    <img src="{{ $hasCoachPhoto ? asset($user->coach_photo) : $coachAvatar }}" 
+                        alt="{{ $user->coach_name }}" 
+                        class="profile-image img-fluid shadow-sm"
+                        onerror="this.onerror=null;this.src='{{ $coachAvatar }}';" />
                 </div>
                 <div class="col-md-9">
                     <div class="row g-3">
@@ -144,8 +147,14 @@
             <div class="row g-3">
                 <div class="col-md-4">
                     <div class="member-card">
-                        <img src="{{ $user->mem_1_photo ? asset($user->mem_1_photo) : 'https://via.placeholder.com/100' }}"
-                            class="member-image img-fluid rounded" />
+                        @php
+                            $hasMem1Photo = !empty($user->mem_1_photo) && file_exists(public_path($user->mem_1_photo));
+                            $mem1Avatar = 'https://ui-avatars.com/api/?name=' . urlencode($user->mem_1_name ?: 'Member 1') . '&background=0D8ABC&color=fff&size=150&bold=true';
+                        @endphp
+                        <img src="{{ $hasMem1Photo ? asset($user->mem_1_photo) : $mem1Avatar }}"
+                            alt="{{ $user->mem_1_name }}"
+                            class="member-image img-fluid shadow-sm"
+                            onerror="this.onerror=null;this.src='{{ $mem1Avatar }}';" />
                         <h6 class="text-break px-2">{{ $user->mem_1_name }}</h6>
                         <div class="text-start mt-3 px-2">
                             <div class="info-label">Student ID</div>
@@ -165,8 +174,14 @@
 
                 <div class="col-md-4">
                     <div class="member-card">
-                        <img src="{{ $user->mem_2_photo ? asset($user->mem_2_photo) : 'https://via.placeholder.com/100' }}"
-                            class="member-image img-fluid rounded" />
+                        @php
+                            $hasMem2Photo = !empty($user->mem_2_photo) && file_exists(public_path($user->mem_2_photo));
+                            $mem2Avatar = 'https://ui-avatars.com/api/?name=' . urlencode($user->mem_2_name ?: 'Member 2') . '&background=0D8ABC&color=fff&size=150&bold=true';
+                        @endphp
+                        <img src="{{ $hasMem2Photo ? asset($user->mem_2_photo) : $mem2Avatar }}"
+                            alt="{{ $user->mem_2_name }}"
+                            class="member-image img-fluid shadow-sm"
+                            onerror="this.onerror=null;this.src='{{ $mem2Avatar }}';" />
                         <h6 class="text-break px-2">{{ $user->mem_2_name }}</h6>
                         <div class="text-start mt-3 px-2">
                             <div class="info-label">Student ID</div>
@@ -186,8 +201,14 @@
 
                 <div class="col-md-4">
                     <div class="member-card">
-                        <img src="{{ $user->mem_3_photo ? asset($user->mem_3_photo) : 'https://via.placeholder.com/100' }}"
-                            class="member-image img-fluid rounded" />
+                        @php
+                            $hasMem3Photo = !empty($user->mem_3_photo) && file_exists(public_path($user->mem_3_photo));
+                            $mem3Avatar = 'https://ui-avatars.com/api/?name=' . urlencode($user->mem_3_name ?: 'Member 3') . '&background=0D8ABC&color=fff&size=150&bold=true';
+                        @endphp
+                        <img src="{{ $hasMem3Photo ? asset($user->mem_3_photo) : $mem3Avatar }}"
+                            alt="{{ $user->mem_3_name }}"
+                            class="member-image img-fluid shadow-sm"
+                            onerror="this.onerror=null;this.src='{{ $mem3Avatar }}';" />
                         <h6 class="text-break px-2">{{ $user->mem_3_name }}</h6>
                         <div class="text-start mt-3 px-2">
                             <div class="info-label">Student ID</div>

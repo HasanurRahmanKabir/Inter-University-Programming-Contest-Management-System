@@ -661,3 +661,9 @@ body[data-theme="dark"] .view-only-notice {
 body[data-theme="dark"] .view-only-notice strong {
     color: #fef3c7 !important;
 }
+
+/* === Coach Dashboard Image Borders in Dark Mode === */
+body[data-theme="dark"] .profile-image,
+body[data-theme="dark"] .member-image {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
