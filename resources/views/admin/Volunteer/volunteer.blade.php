@@ -441,9 +441,9 @@
             color: #f87171 !important;
         }
         body[data-theme="dark"] label .badge.bg-light {
-            background-color: #1e293b !important;
-            color: #94a3b8 !important;
-            border-color: rgba(255, 255, 255, 0.15) !important;
+            background-color: rgba(255, 255, 255, 0.08) !important;
+            color: #e2e8f0 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
         }
     </style>
 
