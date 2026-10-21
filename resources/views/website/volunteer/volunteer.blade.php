@@ -262,30 +262,30 @@
                             </tbody>
 
                         </table>
-                        @if($volunteer->status == 1)
-                        <div class="mt-3">
-                            <small class="text-muted">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Update the kit status for each team. Click "Save Changes" to save your updates.
-                            </small>
-                        </div>
-                        <div class="mt-3 kit-action-buttons-wrap d-flex flex-column-reverse flex-sm-row gap-2 justify-content-end">
-                            <button id="cancelKitBtn" class="btn btn-secondary" onclick="cancelKitChanges()" disabled>
-                                <i class="fas fa-times me-2"></i>Cancel
-                            </button>
-                            <button id="saveKitBtn" class="btn btn-primary" onclick="saveKitChanges()" disabled>
-                                <i class="fas fa-save me-2"></i>Save Changes
-                            </button>
-                        </div>
-                        @else
-                        <div class="mt-3">
-                            <small class="text-danger fw-medium">
-                                <i class="fas fa-exclamation-triangle me-1"></i>
-                                Your Account Is Currently Inactive. Please Contact The Administrator To Activate Your Account & Make Changes.
-                            </small>
-                        </div>
-                        @endif
                     </div>
+                    @if($volunteer->status == 1)
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Update the kit status for each team. Click "Save Changes" to save your updates.
+                        </small>
+                    </div>
+                    <div class="mt-3 kit-action-buttons-wrap d-flex flex-column-reverse flex-sm-row gap-2 justify-content-end">
+                        <button id="cancelKitBtn" class="btn btn-secondary" onclick="cancelKitChanges()" disabled>
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button id="saveKitBtn" class="btn btn-primary" onclick="saveKitChanges()" disabled>
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                    @else
+                    <div class="mt-3">
+                        <small class="text-danger fw-medium">
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                            Your Account Is Currently Inactive. Please Contact The Administrator To Activate Your Account & Make Changes.
+                        </small>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
