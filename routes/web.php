@@ -156,7 +156,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 Route::group(['prefix' => 'coach', 'middleware' => 'auth:team'], function () {
     Route::get('/dashboard', [CoachController::class, 'index'])->name('coach.dashboard');
     Route::post('/payment/store', [CoachController::class, 'storePayment'])->name('coach.payment.store');
-    Route::put('/profile/update', [CoachController::class, 'updateProfile'])->name('coach.profile.update');
+    Route::match(['put', 'post'], '/profile/update', [CoachController::class, 'updateProfile'])->name('coach.profile.update');
 });
 
 // Volunteer Dashboard

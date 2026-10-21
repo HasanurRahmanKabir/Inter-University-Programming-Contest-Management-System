@@ -640,7 +640,6 @@
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <form id="editProfileForm" action="{{ route('coach.profile.update') }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
-                @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title fw-bold">Edit Team Profile</h5>
@@ -1123,17 +1122,27 @@
                     if (btnText) btnText.textContent = 'Updating...';
 
                     const formData = new FormData(profileForm);
+                    const csrfToken = profileForm.querySelector('input[name="_token"]') ? profileForm.querySelector('input[name="_token"]').value : '';
 
                     fetch(profileForm.action, {
                         method: 'POST',
                         body: formData,
+                        credentials: 'same-origin',
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
                         }
                     })
                     .then(async function(response) {
-                        const data = await response.json().catch(function() { return {}; });
+                        let data = {};
+                        let rawText = '';
+                        try {
+                            rawText = await response.text();
+                            data = JSON.parse(rawText);
+                        } catch(e) {
+                            data = {};
+                        }
 
                         if (response.ok && data.success) {
                             // Set alert to show directly above stat cards right after reload
@@ -1144,28 +1153,47 @@
                             
                             window.location.reload();
                         } else {
-                            // Validation error (422) or server error - KEEP MODAL OPEN, SHOW ERRORS INSIDE MODAL
+                            // Validation error (422), session error (401/419) or server error (500)
                             submitBtn.disabled = false;
                             if (spinner) spinner.classList.add('d-none');
                             if (btnText) btnText.textContent = 'Update';
 
                             if (ajaxAlert && ajaxErrorList) {
                                 ajaxErrorList.innerHTML = '';
-                                if (data.errors) {
+                                if (data.errors && typeof data.errors === 'object') {
                                     Object.keys(data.errors).forEach(function(key) {
-                                        data.errors[key].forEach(function(msg) {
+                                        const err = data.errors[key];
+                                        if (Array.isArray(err)) {
+                                            err.forEach(function(msg) {
+                                                const li = document.createElement('li');
+                                                li.textContent = msg;
+                                                ajaxErrorList.appendChild(li);
+                                            });
+                                        } else if (typeof err === 'string') {
                                             const li = document.createElement('li');
-                                            li.textContent = msg;
+                                            li.textContent = err;
                                             ajaxErrorList.appendChild(li);
-                                        });
+                                        }
                                     });
                                 } else if (data.message) {
                                     const li = document.createElement('li');
                                     li.textContent = data.message;
                                     ajaxErrorList.appendChild(li);
+                                } else if (response.status === 419) {
+                                    const li = document.createElement('li');
+                                    li.textContent = 'CSRF token expired. Please refresh the page and try again.';
+                                    ajaxErrorList.appendChild(li);
+                                } else if (response.status === 401) {
+                                    const li = document.createElement('li');
+                                    li.textContent = 'Your session has expired. Please log in again.';
+                                    ajaxErrorList.appendChild(li);
+                                } else if (response.status >= 500) {
+                                    const li = document.createElement('li');
+                                    li.textContent = 'Server error (' + response.status + '). Please check server logs or upload all updated files.';
+                                    ajaxErrorList.appendChild(li);
                                 } else {
                                     const li = document.createElement('li');
-                                    li.textContent = 'Failed to update. Please review the inputs and try again.';
+                                    li.textContent = 'HTTP ' + response.status + ': Failed to update. Please review your inputs or refresh the page.';
                                     ajaxErrorList.appendChild(li);
                                 }
                                 ajaxAlert.classList.remove('d-none');
@@ -1180,7 +1208,7 @@
                         if (btnText) btnText.textContent = 'Update';
 
                         if (ajaxAlert && ajaxErrorList) {
-                            ajaxErrorList.innerHTML = '<li>An unexpected error occurred. Please check your connection and try again.</li>';
+                            ajaxErrorList.innerHTML = '<li>Network error: ' + (error.message || 'Please check your connection and try again.') + '</li>';
                             ajaxAlert.classList.remove('d-none');
                             const modalBody = profileForm.querySelector('.modal-body');
                             if (modalBody) modalBody.scrollTop = 0;

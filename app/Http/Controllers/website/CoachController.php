@@ -44,6 +44,12 @@ class CoachController extends Controller
         $team = Auth::guard('team')->user();
 
         if (!$team) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your session has expired. Please log in again.'
+                ], 401);
+            }
             return redirect()->back()->with('error', 'Team not found or session expired.');
         }
 
