@@ -11,6 +11,84 @@
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/volunteer_dashboard.css">
     <link rel="stylesheet" href="{{ asset('content/website') }}/css/dark-mode.css">
+    <style>
+        /* Exact Match with Website Standard Alert Style Toast */
+        .toast-container {
+            max-width: 100vw;
+            box-sizing: border-box;
+        }
+        #volunteerToast {
+            max-width: 360px;
+            width: auto;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+        /* Mobile / Small Screens Fix (even down to 200px - 320px) */
+        @media (max-width: 576px) {
+            .toast-container {
+                top: 10px !important;
+                right: 10px !important;
+                left: 10px !important;
+                padding: 0 !important;
+                width: calc(100% - 20px) !important;
+            }
+            #volunteerToast {
+                width: 100% !important;
+                max-width: 100% !important;
+                font-size: 0.85rem;
+            }
+            #volunteerToast .toast-body {
+                word-break: break-word;
+                overflow-wrap: break-word;
+                padding: 10px 12px;
+            }
+        }
+        /* Light Mode - Exact colors as 2nd picture */
+        #volunteerToast.bg-success {
+            background-color: #d1e7dd !important;
+            color: #0f5132 !important;
+            border: 1px solid #badbcc !important;
+        }
+        #volunteerToast.bg-danger {
+            background-color: #f8d7da !important;
+            color: #842029 !important;
+            border: 1px solid #f5c2c7 !important;
+        }
+        #volunteerToast.bg-warning {
+            background-color: #fff3cd !important;
+            color: #664d03 !important;
+            border: 1px solid #ffecb5 !important;
+        }
+
+        /* Dark Mode - Identical to 2nd picture alert style */
+        body[data-theme="dark"] #volunteerToast.bg-success {
+            background-color: #d1e7dd !important;
+            color: #0f5132 !important;
+            border: 1px solid #badbcc !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+        }
+        body[data-theme="dark"] #volunteerToast.bg-success i {
+            color: #0f5132 !important;
+        }
+        body[data-theme="dark"] #volunteerToast.bg-danger {
+            background-color: #f8d7da !important;
+            color: #842029 !important;
+            border: 1px solid #f5c2c7 !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+        }
+        body[data-theme="dark"] #volunteerToast.bg-warning {
+            background-color: #fff3cd !important;
+            color: #664d03 !important;
+            border: 1px solid #ffecb5 !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+        }
+        body[data-theme="dark"] #volunteerToast .btn-close {
+            filter: none !important;
+            opacity: 0.75 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -198,8 +276,8 @@
 
     </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+    <!-- Toast Container (Top-Right Corner) -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
         <div id="volunteerToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body" id="volunteerToastMessage">
@@ -214,25 +292,30 @@
         function showToast(message, type = 'success') {
             const toastEl = document.getElementById('volunteerToast');
             const toastMessage = document.getElementById('volunteerToastMessage');
-            const closeBtn = document.getElementById('volunteerToastClose');
             
-            // Remove previous classes
-            toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'text-white', 'text-dark');
-            closeBtn.classList.remove('btn-close-white');
+            // Remove previous type classes
+            toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning');
             
-            if(type === 'success') {
-                toastEl.classList.add('bg-success', 'text-white');
-                closeBtn.classList.add('btn-close-white');
-            } else if(type === 'error') {
-                toastEl.classList.add('bg-danger', 'text-white');
-                closeBtn.classList.add('btn-close-white');
-            } else if(type === 'warning') {
-                toastEl.classList.add('bg-warning', 'text-dark');
+            let iconClass = 'fa-check-circle me-2 text-success';
+            if (type === 'success') {
+                toastEl.classList.add('bg-success');
+                iconClass = 'fa-check-circle me-2';
+            } else if (type === 'error') {
+                toastEl.classList.add('bg-danger');
+                iconClass = 'fa-exclamation-circle me-2';
+            } else if (type === 'warning') {
+                toastEl.classList.add('bg-warning');
+                iconClass = 'fa-exclamation-triangle me-2';
             }
             
-            toastMessage.textContent = message;
-            const toast = bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3000 });
+            toastMessage.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
+            const toast = bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3500 });
             toast.show();
+        }
+
+        // Backward compatibility
+        function showWebsiteToast(message, type = 'success') {
+            showToast(message, type);
         }
 
         function cancelKitChanges() {
@@ -246,11 +329,13 @@
 
         function saveKitChanges() {
             const forms = document.querySelectorAll('.kit-form');
-            let promises = [];
+            const changedForms = [];
+            const promises = [];
 
             forms.forEach(form => {
                 const select = form.querySelector('.kit-status-select');
                 if (!select.disabled && select.value !== select.getAttribute('data-original')) {
+                    changedForms.push({ form, select, newValue: select.value });
                     const formData = new FormData(form);
 
                     promises.push(
@@ -267,33 +352,43 @@
             });
 
             if (promises.length === 0) {
+                showWebsiteToast('No changes to save.', 'warning', 3000);
                 return;
+            }
+
+            const saveBtn = document.querySelector('button[onclick="saveKitChanges()"]');
+            const originalBtnHtml = saveBtn ? saveBtn.innerHTML : '';
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
             }
 
             Promise.all(promises)
                 .then(results => {
-                    let failed = results.filter(r => !r.success);
+                    const failed = results.filter(r => !r.success);
                     if (failed.length === 0) {
-                        sessionStorage.setItem('kitSavedSuccess', 'true');
-                        location.reload();
+                        changedForms.forEach(item => {
+                            item.select.setAttribute('data-original', item.newValue);
+                            if (item.newValue === '1') {
+                                item.select.disabled = true;
+                            }
+                        });
+                        showWebsiteToast('Kit statuses saved successfully!', 'success', 4000);
                     } else {
-                        let messages = failed.map(r => r.message).filter(m => m).join('\n');
-                        console.error(failed);
-                        showToast('Some records failed to save!', 'error');
+                        showWebsiteToast('Some records failed to save. Please try again.', 'error', 5000);
                     }
                 })
                 .catch(err => {
                     console.error(err);
-                    showToast('Server error while saving kit statuses.', 'error');
+                    showWebsiteToast('Server error while saving kit statuses.', 'error', 5000);
+                })
+                .finally(() => {
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = originalBtnHtml;
+                    }
                 });
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            if (sessionStorage.getItem('kitSavedSuccess')) {
-                showToast('Kit statuses saved successfully!', 'success');
-                sessionStorage.removeItem('kitSavedSuccess');
-            }
-        });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
