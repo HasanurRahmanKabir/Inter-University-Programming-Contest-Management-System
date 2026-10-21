@@ -88,6 +88,22 @@
             filter: none !important;
             opacity: 0.75 !important;
         }
+
+        /* Kit Action Buttons - Mobile UX Optimization (Save on top, full width, touch friendly) */
+        @media (max-width: 575.98px) {
+            .kit-action-buttons-wrap {
+                width: 100%;
+            }
+            .kit-action-buttons-wrap .btn {
+                width: 100% !important;
+                padding: 10px 16px !important;
+                font-size: 0.95rem !important;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 
@@ -253,7 +269,7 @@
                                 Update the kit status for each team. Click "Save Changes" to save your updates.
                             </small>
                         </div>
-                        <div class="mt-3 d-flex gap-2 justify-content-end">
+                        <div class="mt-3 kit-action-buttons-wrap d-flex flex-column-reverse flex-sm-row gap-2 justify-content-end">
                             <button id="cancelKitBtn" class="btn btn-secondary" onclick="cancelKitChanges()" disabled>
                                 <i class="fas fa-times me-2"></i>Cancel
                             </button>
