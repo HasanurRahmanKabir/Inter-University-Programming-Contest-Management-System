@@ -62,31 +62,43 @@
             border: 1px solid #ffecb5 !important;
         }
 
-        /* Dark Mode - Identical to 2nd picture alert style */
+        /* Dark Mode - Exact Match with 2nd picture (Website Dark Mode Alert-Success Style) */
         body[data-theme="dark"] #volunteerToast.bg-success {
-            background-color: #d1e7dd !important;
-            color: #0f5132 !important;
-            border: 1px solid #badbcc !important;
+            background-color: rgba(16, 185, 129, 0.15) !important;
+            color: #6ee7b7 !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
         body[data-theme="dark"] #volunteerToast.bg-success i {
-            color: #0f5132 !important;
+            color: #34d399 !important;
         }
         body[data-theme="dark"] #volunteerToast.bg-danger {
-            background-color: #f8d7da !important;
-            color: #842029 !important;
-            border: 1px solid #f5c2c7 !important;
+            background-color: rgba(239, 68, 68, 0.15) !important;
+            color: #fca5a5 !important;
+            border: 1px solid rgba(239, 68, 68, 0.3) !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        body[data-theme="dark"] #volunteerToast.bg-danger i {
+            color: #f87171 !important;
         }
         body[data-theme="dark"] #volunteerToast.bg-warning {
-            background-color: #fff3cd !important;
-            color: #664d03 !important;
-            border: 1px solid #ffecb5 !important;
+            background-color: rgba(245, 158, 11, 0.15) !important;
+            color: #fcd34d !important;
+            border: 1px solid rgba(245, 158, 11, 0.3) !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        body[data-theme="dark"] #volunteerToast.bg-warning i {
+            color: #fbbf24 !important;
         }
         body[data-theme="dark"] #volunteerToast .btn-close {
-            filter: none !important;
-            opacity: 0.75 !important;
+            filter: invert(1) grayscale(100%) brightness(200%) !important;
+            opacity: 0.8 !important;
         }
 
         /* Kit Action Buttons - Mobile UX Optimization (Save on top, full width, touch friendly) */
