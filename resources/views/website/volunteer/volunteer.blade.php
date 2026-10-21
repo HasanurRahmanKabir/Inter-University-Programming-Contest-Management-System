@@ -420,16 +420,25 @@
                 if (!select.disabled && select.value !== select.getAttribute('data-original')) {
                     changedForms.push({ form, select, newValue: select.value });
                     const formData = new FormData(form);
+                    const urlEncodedData = new URLSearchParams(formData).toString();
 
                     promises.push(
                         fetch(form.action, {
                             method: 'POST',
                             headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
                                 'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json',
                                 'X-CSRF-TOKEN': formData.get('_token')
                             },
-                            body: formData
-                        }).then(res => res.json())
+                            body: urlEncodedData
+                        }).then(async res => {
+                            const data = await res.json().catch(() => null);
+                            if (!res.ok) {
+                                throw new Error((data && data.message) ? data.message : `HTTP error ${res.status}`);
+                            }
+                            return data || { success: true };
+                        })
                     );
                 }
             });
@@ -452,7 +461,7 @@
 
             Promise.all(promises)
                 .then(results => {
-                    const failed = results.filter(r => !r.success);
+                    const failed = results.filter(r => !r || !r.success);
                     if (failed.length === 0) {
                         changedForms.forEach(item => {
                             item.select.setAttribute('data-original', item.newValue);
@@ -462,12 +471,14 @@
                         });
                         showWebsiteToast('Kit statuses saved successfully!', 'success', 4000);
                     } else {
-                        showWebsiteToast('Some records failed to save. Please try again.', 'error', 5000);
+                        const errMsg = failed[0] && failed[0].message ? failed[0].message : 'Some records failed to save. Please try again.';
+                        showWebsiteToast(errMsg, 'error', 5000);
                     }
                 })
                 .catch(err => {
-                    console.error(err);
-                    showWebsiteToast('Server error while saving kit statuses.', 'error', 5000);
+                    console.error('Kit Save Error:', err);
+                    const msg = (err && err.message) ? `Server error: ${err.message}` : 'Server error while saving kit statuses.';
+                    showWebsiteToast(msg, 'error', 5000);
                 })
                 .finally(() => {
                     if (saveBtn) {
