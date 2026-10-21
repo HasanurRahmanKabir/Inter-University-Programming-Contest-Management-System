@@ -104,6 +104,47 @@
                 justify-content: center;
             }
         }
+
+        /* Kit Status Dropdown - Clean Industry Standard & Design Consistency */
+        /* Light Mode: Standard natural disabled & active form-select styles */
+        .kit-status-select:disabled {
+            background-color: #e9ecef !important;
+            color: #495057 !important;
+            border-color: #ced4da !important;
+            cursor: not-allowed !important;
+            opacity: 0.85 !important;
+        }
+
+        .kit-status-select:not(:disabled) {
+            background-color: #ffffff;
+            color: #212529;
+            border: 1px solid #0d6efd;
+            box-shadow: 0 1px 3px rgba(13, 110, 253, 0.15);
+            cursor: pointer;
+        }
+
+        /* Dark Mode: Perfect contrast without breaking website design consistency */
+        body[data-theme="dark"] .kit-status-select:disabled {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: #94a3b8 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
+            opacity: 0.7 !important;
+        }
+
+        body[data-theme="dark"] .kit-status-select:not(:disabled) {
+            background-color: #020617 !important;
+            color: #ffffff !important;
+            border: 1px solid #3b82f6 !important;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+            cursor: pointer !important;
+        }
+
+        body[data-theme="dark"] .kit-status-select:not(:disabled):hover {
+            border-color: #60a5fa !important;
+            box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.35) !important;
+        }
     </style>
 </head>
 
