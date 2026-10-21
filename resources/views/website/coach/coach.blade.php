@@ -148,16 +148,99 @@
             border-color: rgba(239, 68, 68, 0.4) !important;
         }
 
-        /* Floating Alert/Toast matching Admin Panel and Website standard */
-        .website-floating-alert {
-            position: fixed !important;
-            top: 0 !important;
-            right: 0 !important;
-            margin: 1.5rem !important;
-            z-index: 999999 !important;
-            min-width: 300px;
-            max-width: 450px;
-            font-size: 0.95rem;
+        /* Modal & Tabs Mobile Responsiveness - Industry Standard */
+        #editProfileModal .modal-dialog {
+            max-width: 800px;
+        }
+        #editProfileModal .modal-content {
+            max-width: 100%;
+            overflow: hidden;
+        }
+        #editProfileModal .modal-body {
+            overflow-x: hidden !important;
+            padding: 1.25rem;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        #editProfileModal .nav-tabs {
+            border-bottom: 2px solid #e2e8f0;
+            gap: 4px;
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
+        }
+        #editProfileModal .nav-tabs .nav-item {
+            flex-shrink: 0;
+        }
+        #editProfileModal .nav-tabs .nav-link {
+            border-radius: 8px 8px 0 0;
+            font-size: 0.88rem;
+            padding: 8px 14px;
+            color: #64748b;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+        #editProfileModal .nav-tabs .nav-link.active {
+            color: #2563eb;
+            font-weight: 600;
+            border-color: #e2e8f0 #e2e8f0 #ffffff;
+            background-color: #ffffff;
+        }
+        #editProfileModal .photo-upload-card {
+            max-width: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        #editProfileModal input[type="file"].form-control {
+            max-width: 100%;
+            min-width: 0;
+            font-size: 0.82rem;
+        }
+        #editProfileModal .image-specs-badge {
+            max-width: 100%;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+        @media (max-width: 576px) {
+            #editProfileModal .modal-dialog {
+                margin: 0.5rem auto;
+                width: calc(100% - 1rem);
+                max-width: calc(100% - 1rem);
+            }
+            #editProfileModal .modal-body {
+                padding: 0.85rem;
+            }
+            #editProfileModal .nav-tabs .nav-link {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            .photo-upload-card {
+                padding: 10px;
+            }
+            .modal-photo-preview-box {
+                width: 64px;
+                height: 64px;
+            }
+            .image-specs-badge {
+                font-size: 0.68rem;
+                padding: 3px 6px;
+            }
+        }
+        body[data-theme="dark"] #editProfileModal .nav-tabs {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+        body[data-theme="dark"] #editProfileModal .nav-tabs .nav-link {
+            color: #94a3b8;
+        }
+        body[data-theme="dark"] #editProfileModal .nav-tabs .nav-link.active {
+            color: #38bdf8;
+            background-color: #0b1120;
+            border-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1) #0b1120;
         }
     </style>
 </head>
@@ -192,31 +275,33 @@
     </div>
 
     <div class="container py-4">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
-                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+        <div id="dashboardAlertContainer">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                    <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
-                <div class="fw-bold mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Please fix the following errors:</div>
-                <ul class="mb-0 ps-3">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                    <div class="fw-bold mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Please fix the following errors:</div>
+                    <ul class="mb-0 ps-3">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
 
         <div class="row mb-4 justify-content-center">
             <div class="col-md-3 mb-3">
@@ -571,26 +656,25 @@
                                                     <img id="coach-photo-preview"
                                                         src="{{ $hasCoachModalPhoto ? asset($user->coach_photo) : $coachAvatar }}"
                                                         data-default="{{ $coachAvatar }}"
+                                                        data-saved-src="{{ $hasCoachModalPhoto ? asset($user->coach_photo) : '' }}"
                                                         alt="Coach Preview">
                                                     <span class="preview-overlay-tag">PREVIEW</span>
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
                                                         <label class="form-label small fw-bold mb-0">Coach Photo</label>
-                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1"></i>300×300 (Square, Max 2MB)</span>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="coach_photo"
                                                         accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="coach-photo-preview">
                                                     <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
                                                         <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
-                                                        @if ($hasCoachModalPhoto)
-                                                            <div class="form-check remove-photo-check m-0">
-                                                                <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_coach_photo" value="1" id="removeCoachPhoto" data-preview="coach-photo-preview">
-                                                                <label class="form-check-label small" for="removeCoachPhoto">
-                                                                    <i class="fas fa-trash-alt me-1"></i> <span>Remove photo</span>
-                                                                </label>
-                                                            </div>
-                                                        @endif
+                                                        <div class="form-check remove-photo-check m-0 {{ $hasCoachModalPhoto ? '' : 'd-none' }}" id="coachPhotoActionWrap">
+                                                            <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_coach_photo" value="1" id="removeCoachPhoto" data-preview="coach-photo-preview" data-saved="{{ $hasCoachModalPhoto ? '1' : '0' }}">
+                                                            <label class="form-check-label small" for="removeCoachPhoto" id="removeCoachPhotoLabel">
+                                                                <i class="fas fa-trash-alt me-1"></i> <span id="removeCoachPhotoText">{{ $hasCoachModalPhoto ? 'Remove photo' : 'Clear selection' }}</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -644,26 +728,25 @@
                                                     <img id="mem1-photo-preview"
                                                         src="{{ $hasMem1Photo ? asset($user->mem_1_photo) : $mem1Avatar }}"
                                                         data-default="{{ $mem1Avatar }}"
+                                                        data-saved-src="{{ $hasMem1Photo ? asset($user->mem_1_photo) : '' }}"
                                                         alt="Member 1 Preview">
                                                     <span class="preview-overlay-tag">PREVIEW</span>
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
                                                         <label class="form-label small fw-bold mb-0">Member 1 Photo</label>
-                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1"></i>300×300 (Square, Max 2MB)</span>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_1_photo"
                                                         accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem1-photo-preview">
                                                     <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
                                                         <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
-                                                        @if ($hasMem1Photo)
-                                                            <div class="form-check remove-photo-check m-0">
-                                                                <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_1_photo" value="1" id="removeMem1Photo" data-preview="mem1-photo-preview">
-                                                                <label class="form-check-label small" for="removeMem1Photo">
-                                                                    <i class="fas fa-trash-alt me-1"></i> <span>Remove photo</span>
-                                                                </label>
-                                                            </div>
-                                                        @endif
+                                                        <div class="form-check remove-photo-check m-0 {{ $hasMem1Photo ? '' : 'd-none' }}" id="mem1PhotoActionWrap">
+                                                            <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_1_photo" value="1" id="removeMem1Photo" data-preview="mem1-photo-preview" data-saved="{{ $hasMem1Photo ? '1' : '0' }}">
+                                                            <label class="form-check-label small" for="removeMem1Photo" id="removeMem1PhotoLabel">
+                                                                <i class="fas fa-trash-alt me-1"></i> <span id="removeMem1PhotoText">{{ $hasMem1Photo ? 'Remove photo' : 'Clear selection' }}</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -717,26 +800,25 @@
                                                     <img id="mem2-photo-preview"
                                                         src="{{ $hasMem2Photo ? asset($user->mem_2_photo) : $mem2Avatar }}"
                                                         data-default="{{ $mem2Avatar }}"
+                                                        data-saved-src="{{ $hasMem2Photo ? asset($user->mem_2_photo) : '' }}"
                                                         alt="Member 2 Preview">
                                                     <span class="preview-overlay-tag">PREVIEW</span>
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
                                                         <label class="form-label small fw-bold mb-0">Member 2 Photo</label>
-                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1"></i>300×300 (Square, Max 2MB)</span>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_2_photo"
                                                         accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem2-photo-preview">
                                                     <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
                                                         <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
-                                                        @if ($hasMem2Photo)
-                                                            <div class="form-check remove-photo-check m-0">
-                                                                <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_2_photo" value="1" id="removeMem2Photo" data-preview="mem2-photo-preview">
-                                                                <label class="form-check-label small" for="removeMem2Photo">
-                                                                    <i class="fas fa-trash-alt me-1"></i> <span>Remove photo</span>
-                                                                </label>
-                                                            </div>
-                                                        @endif
+                                                        <div class="form-check remove-photo-check m-0 {{ $hasMem2Photo ? '' : 'd-none' }}" id="mem2PhotoActionWrap">
+                                                            <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_2_photo" value="1" id="removeMem2Photo" data-preview="mem2-photo-preview" data-saved="{{ $hasMem2Photo ? '1' : '0' }}">
+                                                            <label class="form-check-label small" for="removeMem2Photo" id="removeMem2PhotoLabel">
+                                                                <i class="fas fa-trash-alt me-1"></i> <span id="removeMem2PhotoText">{{ $hasMem2Photo ? 'Remove photo' : 'Clear selection' }}</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -790,26 +872,25 @@
                                                     <img id="mem3-photo-preview"
                                                         src="{{ $hasMem3Photo ? asset($user->mem_3_photo) : $mem3Avatar }}"
                                                         data-default="{{ $mem3Avatar }}"
+                                                        data-saved-src="{{ $hasMem3Photo ? asset($user->mem_3_photo) : '' }}"
                                                         alt="Member 3 Preview">
                                                     <span class="preview-overlay-tag">PREVIEW</span>
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
                                                         <label class="form-label small fw-bold mb-0">Member 3 Photo</label>
-                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1"></i>300×300 (Square, Max 2MB)</span>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_3_photo"
                                                         accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem3-photo-preview">
                                                     <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
                                                         <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
-                                                        @if ($hasMem3Photo)
-                                                            <div class="form-check remove-photo-check m-0">
-                                                                <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_3_photo" value="1" id="removeMem3Photo" data-preview="mem3-photo-preview">
-                                                                <label class="form-check-label small" for="removeMem3Photo">
-                                                                    <i class="fas fa-trash-alt me-1"></i> <span>Remove photo</span>
-                                                                </label>
-                                                            </div>
-                                                        @endif
+                                                        <div class="form-check remove-photo-check m-0 {{ $hasMem3Photo ? '' : 'd-none' }}" id="mem3PhotoActionWrap">
+                                                            <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_3_photo" value="1" id="removeMem3Photo" data-preview="mem3-photo-preview" data-saved="{{ $hasMem3Photo ? '1' : '0' }}">
+                                                            <label class="form-check-label small" for="removeMem3Photo" id="removeMem3PhotoLabel">
+                                                                <i class="fas fa-trash-alt me-1"></i> <span id="removeMem3PhotoText">{{ $hasMem3Photo ? 'Remove photo' : 'Clear selection' }}</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -837,33 +918,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
     <script>
-        // Website Standard Floating Toast Notification (Identical to Admin Panel)
-        function showWebsiteToast(message, type = 'success', duration = 4000) {
-            const existingToasts = document.querySelectorAll('.website-floating-alert');
-            existingToasts.forEach(t => t.remove());
+        // Website In-Page Dashboard Alert (Rendered directly above cards)
+        function showWebsiteToast(message, type = 'success', duration = 6000) {
+            const container = document.getElementById('dashboardAlertContainer');
+            if (!container) return;
+
+            // Clear previous alerts
+            container.innerHTML = '';
 
             const isSuccess = (type === 'success');
             const alertClass = isSuccess ? 'alert-success' : (type === 'warning' ? 'alert-warning' : 'alert-danger');
-            const iconClass = isSuccess ? 'fa-check-circle' : (type === 'warning' ? 'fa-exclamation-triangle' : 'fa-times-circle');
-            const title = isSuccess ? 'Success!' : (type === 'warning' ? 'Warning!' : 'Error!');
+            const iconClass = isSuccess ? 'fa-check-circle' : (type === 'warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle');
 
-            const toastEl = document.createElement('div');
-            toastEl.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-4 shadow-lg website-floating-alert`;
-            toastEl.setAttribute('role', 'alert');
-            toastEl.style.zIndex = '999999';
-            toastEl.innerHTML = `
-                <i class="fas ${iconClass} me-2"></i> <strong>${title}</strong> ${message}
+            const alertEl = document.createElement('div');
+            alertEl.className = `alert ${alertClass} alert-dismissible fade show border-0 shadow-sm mb-4`;
+            alertEl.setAttribute('role', 'alert');
+            alertEl.innerHTML = `
+                <i class="fas ${iconClass} me-2"></i> ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             `;
 
-            document.body.appendChild(toastEl);
+            container.appendChild(alertEl);
 
-            setTimeout(function() {
-                if (toastEl && toastEl.parentElement) {
-                    toastEl.classList.remove('show');
-                    setTimeout(() => toastEl.remove(), 250);
-                }
-            }, duration);
+            // Smooth scroll to alert if needed
+            alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            if (duration > 0) {
+                setTimeout(function() {
+                    if (alertEl && alertEl.parentElement) {
+                        alertEl.classList.remove('show');
+                        setTimeout(() => alertEl.remove(), 250);
+                    }
+                }, duration);
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -876,14 +963,6 @@
                 } catch(e) {}
                 sessionStorage.removeItem('pending_toast');
             }
-
-            @if (session('success'))
-                showWebsiteToast("{{ session('success') }}", 'success');
-            @endif
-
-            @if (session('error'))
-                showWebsiteToast("{{ session('error') }}", 'danger');
-            @endif
 
             // Coach Dashboard Phone Input Restriction (Digits, +, and - only)
             document.querySelectorAll('.coach-phone-input').forEach(function(input) {
@@ -976,24 +1055,18 @@
                         const data = await response.json().catch(function() { return {}; });
 
                         if (response.ok && data.success) {
-                            // Set standard toast to show right after reload
+                            // Set alert to show directly above stat cards right after reload
                             sessionStorage.setItem('pending_toast', JSON.stringify({
                                 type: 'success',
                                 message: data.message || 'Profile & Team Information Updated Successfully!'
                             }));
-                            // Trigger immediate floating alert before reload
-                            showWebsiteToast(data.message || 'Profile & Team Information Updated Successfully!', 'success');
                             
-                            setTimeout(function() {
-                                window.location.reload();
-                            }, 500);
+                            window.location.reload();
                         } else {
-                            // Validation error (422) or server error - KEEP MODAL OPEN, SHOW FLOATING TOAST & ALERT
+                            // Validation error (422) or server error - KEEP MODAL OPEN, SHOW ERRORS INSIDE MODAL
                             submitBtn.disabled = false;
                             if (spinner) spinner.classList.add('d-none');
                             if (btnText) btnText.textContent = 'Update';
-
-                            showWebsiteToast('Please fix the errors in the form.', 'danger');
 
                             if (ajaxAlert && ajaxErrorList) {
                                 ajaxErrorList.innerHTML = '';
@@ -1025,8 +1098,6 @@
                         if (spinner) spinner.classList.add('d-none');
                         if (btnText) btnText.textContent = 'Update';
 
-                        showWebsiteToast('An unexpected error occurred. Please try again.', 'danger');
-
                         if (ajaxAlert && ajaxErrorList) {
                             ajaxErrorList.innerHTML = '<li>An unexpected error occurred. Please check your connection and try again.</li>';
                             ajaxAlert.classList.remove('d-none');
@@ -1053,50 +1124,111 @@
                     const hasValidExt = validExts.some(function(ext) { return fileName.endsWith(ext); });
 
                     if (!validTypes.includes(file.type) && !hasValidExt) {
-                        showWebsiteToast('Invalid file format! Only images (JPG, JPEG, PNG, WEBP) are allowed.', 'warning');
+                        if (ajaxAlert && ajaxErrorList) {
+                            ajaxErrorList.innerHTML = '<li>Invalid file format! Only images (JPG, JPEG, PNG, WEBP) are allowed.</li>';
+                            ajaxAlert.classList.remove('d-none');
+                            const modalBody = fileInput.closest('.modal-body');
+                            if (modalBody) modalBody.scrollTop = 0;
+                        }
                         fileInput.value = '';
                         return;
                     }
 
                     // Max 2MB validation
                     if (file.size > 2 * 1024 * 1024) {
-                        showWebsiteToast('Image size exceeds 2MB limit. Please upload a photo smaller than 2MB.', 'warning');
+                        if (ajaxAlert && ajaxErrorList) {
+                            ajaxErrorList.innerHTML = '<li>Image size exceeds 2MB limit. Please upload a photo smaller than 2MB.</li>';
+                            ajaxAlert.classList.remove('d-none');
+                            const modalBody = fileInput.closest('.modal-body');
+                            if (modalBody) modalBody.scrollTop = 0;
+                        }
                         fileInput.value = '';
                         return;
                     }
 
-                    if (imgEl) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
+                    // Show image preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if (imgEl) {
                             imgEl.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
+                        }
+                    };
+                    reader.readAsDataURL(file);
 
-                        const container = fileInput.closest('.col-12, .col-md-6');
-                        if (container) {
-                            const removeCheck = container.querySelector('.remove-photo-trigger');
-                            if (removeCheck) removeCheck.checked = false;
+                    // Reveal clear/remove option immediately
+                    const card = fileInput.closest('.photo-upload-card');
+                    const actionWrap = card ? card.querySelector('.remove-photo-check') : document.getElementById(targetPreviewId.replace('-preview', 'PhotoActionWrap'));
+                    const removeCheck = card ? card.querySelector('.remove-photo-trigger') : null;
+                    const labelSpan = card ? card.querySelector('.remove-photo-check label span') : null;
+
+                    if (actionWrap) {
+                        actionWrap.classList.remove('d-none');
+                        actionWrap.style.setProperty('display', 'inline-flex', 'important');
+                    }
+                    if (removeCheck) {
+                        removeCheck.checked = false;
+                        const hasSaved = removeCheck.getAttribute('data-saved') === '1';
+                        if (labelSpan) {
+                            labelSpan.textContent = hasSaved ? 'Cancel new photo' : 'Clear selection';
                         }
                     }
                 });
             });
 
-            // Remove photo checkbox handler
+            // Remove photo / Clear selection handler
             document.querySelectorAll('.remove-photo-trigger').forEach(function(checkbox) {
                 checkbox.addEventListener('change', function() {
                     const targetPreviewId = checkbox.getAttribute('data-preview');
                     const imgEl = document.getElementById(targetPreviewId);
-                    const container = checkbox.closest('.col-12, .col-md-6');
-                    const fileInput = container ? container.querySelector('.photo-input-with-preview') : null;
+                    const card = checkbox.closest('.photo-upload-card');
+                    const fileInput = card ? card.querySelector('.photo-input-with-preview') : null;
+                    const actionWrap = card ? card.querySelector('.remove-photo-check') : document.getElementById(targetPreviewId.replace('-preview', 'PhotoActionWrap'));
+                    const labelSpan = card ? card.querySelector('.remove-photo-check label span') : null;
+                    const hasSaved = checkbox.getAttribute('data-saved') === '1';
 
                     if (checkbox.checked) {
-                        if (fileInput) fileInput.value = '';
-                        if (imgEl && imgEl.hasAttribute('data-default')) {
-                            imgEl.src = imgEl.getAttribute('data-default');
+                        if (!hasSaved) {
+                            // No saved photo in DB: immediately clear chosen file and reset UI
+                            if (fileInput) fileInput.value = '';
+                            checkbox.checked = false;
+                            if (actionWrap) {
+                                actionWrap.classList.add('d-none');
+                                actionWrap.style.setProperty('display', 'none', 'important');
+                            }
+                            if (imgEl && imgEl.hasAttribute('data-default')) {
+                                imgEl.src = imgEl.getAttribute('data-default');
+                            }
+                        } else {
+                            // Saved photo exists in DB
+                            if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                                // Revert newly chosen file back to the saved DB photo
+                                fileInput.value = '';
+                                checkbox.checked = false;
+                                if (labelSpan) labelSpan.textContent = 'Remove photo';
+                                const origSavedSrc = imgEl ? imgEl.getAttribute('data-saved-src') : '';
+                                if (origSavedSrc && imgEl) {
+                                    imgEl.src = origSavedSrc;
+                                }
+                            } else {
+                                // User actively checked to delete the existing saved photo
+                                if (imgEl && imgEl.hasAttribute('data-default')) {
+                                    imgEl.src = imgEl.getAttribute('data-default');
+                                }
+                            }
                         }
                     } else {
-                        if (imgEl && imgEl.hasAttribute('data-default')) {
-                            imgEl.src = imgEl.getAttribute('data-default');
+                        // Unchecked
+                        if (hasSaved) {
+                            const origSavedSrc = imgEl ? imgEl.getAttribute('data-saved-src') : '';
+                            if (origSavedSrc && imgEl) {
+                                imgEl.src = origSavedSrc;
+                            } else if (imgEl && imgEl.hasAttribute('data-default')) {
+                                imgEl.src = imgEl.getAttribute('data-default');
+                            }
+                        } else {
+                            if (imgEl && imgEl.hasAttribute('data-default')) {
+                                imgEl.src = imgEl.getAttribute('data-default');
+                            }
                         }
                     }
                 });
