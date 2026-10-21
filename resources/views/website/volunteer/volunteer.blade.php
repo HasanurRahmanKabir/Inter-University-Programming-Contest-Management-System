@@ -254,10 +254,10 @@
                             </small>
                         </div>
                         <div class="mt-3 d-flex gap-2 justify-content-end">
-                            <button class="btn btn-secondary" onclick="cancelKitChanges()">
+                            <button id="cancelKitBtn" class="btn btn-secondary" onclick="cancelKitChanges()" disabled>
                                 <i class="fas fa-times me-2"></i>Cancel
                             </button>
-                            <button class="btn btn-primary" onclick="saveKitChanges()">
+                            <button id="saveKitBtn" class="btn btn-primary" onclick="saveKitChanges()" disabled>
                                 <i class="fas fa-save me-2"></i>Save Changes
                             </button>
                         </div>
@@ -318,6 +318,31 @@
             showToast(message, type);
         }
 
+        // Industry Standard Dirty-State Tracking for Action Buttons
+        function updateKitActionButtons() {
+            const selects = document.querySelectorAll('.kit-status-select');
+            let hasChanges = false;
+            selects.forEach(select => {
+                if (!select.disabled && select.value !== select.getAttribute('data-original')) {
+                    hasChanges = true;
+                }
+            });
+
+            const saveBtn = document.getElementById('saveKitBtn');
+            const cancelBtn = document.getElementById('cancelKitBtn');
+            if (saveBtn) saveBtn.disabled = !hasChanges;
+            if (cancelBtn) cancelBtn.disabled = !hasChanges;
+        }
+
+        // Attach change event listeners to all active selects
+        document.addEventListener('DOMContentLoaded', function () {
+            const selects = document.querySelectorAll('.kit-status-select');
+            selects.forEach(select => {
+                select.addEventListener('change', updateKitActionButtons);
+            });
+            updateKitActionButtons();
+        });
+
         function cancelKitChanges() {
             const selects = document.querySelectorAll('.kit-status-select');
             selects.forEach(select => {
@@ -325,6 +350,7 @@
                     select.value = select.getAttribute('data-original');
                 }
             });
+            updateKitActionButtons();
         }
 
         function saveKitChanges() {
@@ -356,11 +382,15 @@
                 return;
             }
 
-            const saveBtn = document.querySelector('button[onclick="saveKitChanges()"]');
+            const saveBtn = document.getElementById('saveKitBtn');
+            const cancelBtn = document.getElementById('cancelKitBtn');
             const originalBtnHtml = saveBtn ? saveBtn.innerHTML : '';
             if (saveBtn) {
                 saveBtn.disabled = true;
                 saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            }
+            if (cancelBtn) {
+                cancelBtn.disabled = true;
             }
 
             Promise.all(promises)
@@ -384,9 +414,9 @@
                 })
                 .finally(() => {
                     if (saveBtn) {
-                        saveBtn.disabled = false;
                         saveBtn.innerHTML = originalBtnHtml;
                     }
+                    updateKitActionButtons();
                 });
         }
     </script>
