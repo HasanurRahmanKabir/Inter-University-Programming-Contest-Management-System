@@ -223,25 +223,40 @@
                     <p>Stay updated with official announcements.</p>
                 </div>
 
-                <div class="row d-flex justify-content-center">
-                    @foreach ($notice as $data)
-                        <div class="col-lg-6">
-                            <div class="card notice-card p-3">
-                                <div class="d-flex justify-content-between flex-wrap gap-1 mb-2">
-                                    <span class="badge bg-primary">{{ $data->audience }}</span>
-                                    <small class="text-muted">{{ $data->notice_date }}</small>
+                @if($notice->isNotEmpty())
+                    <div class="row d-flex justify-content-center">
+                        @foreach ($notice as $data)
+                            <div class="col-lg-6">
+                                <div class="card notice-card p-3">
+                                    <div class="d-flex justify-content-between flex-wrap gap-1 mb-2">
+                                        <span class="badge bg-primary">{{ $data->audience }}</span>
+                                        <small class="text-muted">{{ $data->notice_date }}</small>
+                                    </div>
+                                    <h5 class="fw-bold">{{ $data->title }}</h5>
+                                    <p class="text-muted small mb-0">{{ $data->description }}</p>
                                 </div>
-                                <h5 class="fw-bold">{{ $data->title }}</h5>
-                                <p class="text-muted small mb-0">{{ $data->description }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="{{ url('notice-info') }}" class="btn btn-outline-primary rounded-pill">View All Notices</a>
+                    </div>
+                @else
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-md-8 text-center">
+                            <div class="card p-4 border-0 shadow-sm rounded-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-bell-slash fa-3x text-muted opacity-50"></i>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-2">No Notices Published Yet</h5>
+                                <p class="text-muted small mb-0">
+                                    Official announcements and contest updates will be posted here once available.
+                                </p>
                             </div>
                         </div>
-                    @endforeach
-
-                </div>
-
-                <div class="text-center mt-4">
-                    <a href="{{ url('notice-info') }}" class="btn btn-outline-primary rounded-pill">View All Notices</a>
-                </div>
+                    </div>
+                @endif
             </div>
         </section>
 
@@ -252,58 +267,84 @@
                     <p>Memories from previous contests.</p>
                 </div>
 
-                <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
+                @if($galleries->isNotEmpty())
+                    <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
 
-                    <div class="carousel-inner">
-                        @foreach ($galleries as $key => $gallery)
-                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                <img src="{{ asset($gallery->media_path) }}" class="d-block w-100 gallery-img"
-                                    alt="Gallery Image">
-                            </div>
-                        @endforeach
+                        <div class="carousel-inner">
+                            @foreach ($galleries as $key => $gallery)
+                                <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                    <img src="{{ asset($gallery->media_path) }}" class="d-block w-100 gallery-img"
+                                        alt="Gallery Image">
+                                </div>
+                            @endforeach
+                        </div>
+
+                        @if($galleries->count() > 1)
+                            <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        @endif
                     </div>
-
-
-                    <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-
-
-                    <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-                </div>
+                @else
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-md-8 text-center">
+                            <div class="card p-4 empty-gallery-card shadow-sm rounded-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-images fa-3x text-muted opacity-50"></i>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-2">No Photos Added Yet</h5>
+                                <p class="text-muted small mb-0">
+                                    Memorable event moments and contest photos will be showcased here soon.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </section>
 
-        <section class="py-5 bg-white border-top">
+        <section class="py-5 bg-light">
             <div class="container">
                 <p class="text-center text-dark fw-bold mb-4 fs-3">Our Official Partners</p>
 
-                <div class="d-flex justify-content-center align-items-center flex-wrap gap-4 gap-md-5">
-
-                    @foreach ($sponsors as $sponsor)
-                        @if ($sponsor->logo)
-                            @if ($sponsor->link)
-                                <a href="{{ $sponsor->link }}" target="_blank" rel="noopener noreferrer" title="Visit {{ $sponsor->name }}">
+                @if($sponsors->isNotEmpty())
+                    <div class="d-flex justify-content-center align-items-center flex-wrap gap-4 gap-md-5">
+                        @foreach ($sponsors as $sponsor)
+                            @if ($sponsor->logo)
+                                @if ($sponsor->link)
+                                    <a href="{{ $sponsor->link }}" target="_blank" rel="noopener noreferrer" title="Visit {{ $sponsor->name }}">
+                                        <img src="{{ asset($sponsor->logo) }}" alt="{{ $sponsor->name }}" class="sponsor-logo"
+                                         style="max-height: 80px; max-width: 150px; object-fit: contain;">
+                                    </a>
+                                @else
                                     <img src="{{ asset($sponsor->logo) }}" alt="{{ $sponsor->name }}" class="sponsor-logo"
+                                        title="{{ $sponsor->name }} ({{ $sponsor->sponsor_category }})"
                                         style="max-height: 80px; max-width: 150px; object-fit: contain;">
-                                </a>
-                            @else
-                                <img src="{{ asset($sponsor->logo) }}" alt="{{ $sponsor->name }}" class="sponsor-logo"
-                                    title="{{ $sponsor->name }} ({{ $sponsor->sponsor_category }})"
-                                    style="max-height: 80px; max-width: 150px; object-fit: contain;">
+                                @endif
                             @endif
-                        @endif
-                    @endforeach
-
-                    @if ($sponsors->isEmpty())
-                        <p class="text-muted small">No partners added yet.</p>
-                    @endif
-
-                </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-md-8 text-center">
+                            <div class="card p-4 border-0 shadow-sm rounded-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-handshake fa-3x text-muted opacity-50"></i>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-2">No Official Partners Yet</h5>
+                                <p class="text-muted small mb-0">
+                                    Official sponsors and collaborative partners will be displayed here once available.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </section>
 
