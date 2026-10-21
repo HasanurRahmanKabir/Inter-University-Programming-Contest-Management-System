@@ -146,9 +146,25 @@
             box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.35) !important;
         }
     </style>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 </head>
 
 <body>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 
     <div class="dashboard-header">
         <div class="container">
@@ -159,14 +175,14 @@
                         {{ ($contest && $contest->status == 1 && !empty($contest->title)) ? $contest->title : 'Your Contest Title' }}
                     </p>
                 </div>
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2 mt-2 mt-md-0 w-100 w-md-auto">
-                    <form action="{{ route('user.logout') }}" method="POST" class="d-inline">
+                <div class="d-flex flex-wrap justify-content-center justify-content-md-end align-items-center gap-2 mt-2 mt-md-0 w-100 w-md-auto">
+                    <form action="{{ route('user.logout') }}" method="POST" class="d-inline-flex align-items-center m-0">
                         @csrf
                         <button type="submit" class="btn btn-outline-light btn-sm">
                             <i class="fas fa-sign-out-alt me-1"></i>Logout
                         </button>
                     </form>
-                    <button class="btn btn-outline-light btn-sm theme-toggle-btn d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; border-radius: 50%; padding: 0;">
+                    <button class="btn btn-outline-light btn-sm theme-toggle-btn d-flex align-items-center justify-content-center" style="width: 31px; height: 31px; border-radius: 50%; padding: 0;">
                         <i class="fas fa-lightbulb theme-toggle-icon-light m-0"></i>
                         <i class="fas fa-moon theme-toggle-icon-dark m-0"></i>
                     </button>
