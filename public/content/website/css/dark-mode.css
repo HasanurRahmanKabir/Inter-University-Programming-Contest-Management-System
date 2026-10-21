@@ -667,3 +667,23 @@ body[data-theme="dark"] .profile-image,
 body[data-theme="dark"] .member-image {
     border-color: rgba(255, 255, 255, 0.15) !important;
 }
+
+/* === Scroll to Top Button in Dark Mode (Crystal Clear & Highly Visible) === */
+body[data-theme="dark"] .scroll-to-top {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5), 0 0 12px rgba(59, 130, 246, 0.35) !important;
+}
+
+body[data-theme="dark"] .scroll-to-top i {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+body[data-theme="dark"] .scroll-to-top:hover {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 6px 24px rgba(59, 130, 246, 0.65), 0 0 16px rgba(96, 165, 250, 0.5) !important;
+}
