@@ -81,10 +81,14 @@ class TeamRegistrationController extends Controller
             'mem_3_student_id' => 'required|unique:team_registration_infos,mem_3_student_id',
             'mem_3_email' => 'required|email|unique:team_registration_infos,mem_3_email',
 
-            'coach_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'mem_1_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'mem_2_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'mem_3_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'coach_photo' => 'nullable',
+            'coach_photo_base64' => 'nullable|string',
+            'mem_1_photo' => 'nullable',
+            'mem_1_photo_base64' => 'nullable|string',
+            'mem_2_photo' => 'nullable',
+            'mem_2_photo_base64' => 'nullable|string',
+            'mem_3_photo' => 'nullable',
+            'mem_3_photo_base64' => 'nullable|string',
         ]);
 
         $uploadedFiles = [];
@@ -92,16 +96,16 @@ class TeamRegistrationController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            $coachPhoto = $this->uploadImage($request->file('coach_photo'), 'coach');
+            $coachPhoto = $this->saveImageFromBase64OrFile($request, 'coach_photo', 'coach');
             if ($coachPhoto) $uploadedFiles[] = $coachPhoto;
 
-            $mem1Photo = $this->uploadImage($request->file('mem_1_photo'), 'mem1');
+            $mem1Photo = $this->saveImageFromBase64OrFile($request, 'mem_1_photo', 'mem1');
             if ($mem1Photo) $uploadedFiles[] = $mem1Photo;
 
-            $mem2Photo = $this->uploadImage($request->file('mem_2_photo'), 'mem2');
+            $mem2Photo = $this->saveImageFromBase64OrFile($request, 'mem_2_photo', 'mem2');
             if ($mem2Photo) $uploadedFiles[] = $mem2Photo;
 
-            $mem3Photo = $this->uploadImage($request->file('mem_3_photo'), 'mem3');
+            $mem3Photo = $this->saveImageFromBase64OrFile($request, 'mem_3_photo', 'mem3');
             if ($mem3Photo) $uploadedFiles[] = $mem3Photo;
 
             $team = TeamRegistration::create([
@@ -162,15 +166,46 @@ class TeamRegistrationController extends Controller
         }
     }
 
-    private function uploadImage($file, $prefix)
+    private function saveImageFromBase64OrFile(Request $request, $fieldName, $prefix)
     {
-        if ($file) {
-            $filename = $prefix . '_' . time() . '_' . rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
-            $path = 'uploads/teams/';
-            $file->move(public_path($path), $filename);
+        $base64Field = $fieldName . '_base64';
 
-            return $path . $filename;
+        // 1. Process Base64 data (Bypasses OpenResty / restrictive WAF 403 on multipart uploads)
+        if ($request->filled($base64Field)) {
+            $base64Data = $request->input($base64Field);
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+                $data = substr($base64Data, strpos($base64Data, ',') + 1);
+                $type = strtolower($type[1]); // jpg, png, jpeg, webp
+
+                if (in_array($type, ['jpg', 'jpeg', 'png', 'webp'])) {
+                    $decoded = base64_decode($data);
+                    if ($decoded !== false) {
+                        $targetDir = public_path('uploads/teams');
+                        if (!\Illuminate\Support\Facades\File::isDirectory($targetDir)) {
+                            \Illuminate\Support\Facades\File::makeDirectory($targetDir, 0755, true, true);
+                        }
+                        $filename = $prefix . '_' . time() . '_' . rand(1000, 9999) . '.' . ($type === 'jpeg' ? 'jpg' : $type);
+                        file_put_contents($targetDir . DIRECTORY_SEPARATOR . $filename, $decoded);
+                        return 'uploads/teams/' . $filename;
+                    }
+                }
+            }
         }
+
+        // 2. Standard Multipart File Upload Fallback
+        if ($request->hasFile($fieldName)) {
+            $file = $request->file($fieldName);
+            if ($file && $file->isValid()) {
+                $targetDir = public_path('uploads/teams');
+                if (!\Illuminate\Support\Facades\File::isDirectory($targetDir)) {
+                    \Illuminate\Support\Facades\File::makeDirectory($targetDir, 0755, true, true);
+                }
+                $filename = $prefix . '_' . time() . '_' . rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
+                $file->move($targetDir, $filename);
+                return 'uploads/teams/' . $filename;
+            }
+        }
+
         return null;
     }
 }

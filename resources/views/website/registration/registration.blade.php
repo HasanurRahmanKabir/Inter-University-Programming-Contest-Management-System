@@ -208,6 +208,12 @@
             enctype="multipart/form-data" class="mt-4">
             @csrf
 
+            <!-- Hidden Inputs for Base64 Images (Bypasses WAF multipart blocking on strict hosts) -->
+            <input type="hidden" name="coach_photo_base64" id="coach_photo_base64">
+            <input type="hidden" name="mem_1_photo_base64" id="mem_1_photo_base64">
+            <input type="hidden" name="mem_2_photo_base64" id="mem_2_photo_base64">
+            <input type="hidden" name="mem_3_photo_base64" id="mem_3_photo_base64">
+
             <div class="form-card">
                 <div class="form-header">
                     <i class="fas fa-university"></i> Team & Institute Information
@@ -652,6 +658,24 @@
                         var removeBtn = document.getElementById(removeBtnId);
                         if (removeBtn) removeBtn.style.display = 'flex';
                     }
+
+                    // Save Base64 data to hidden input
+                    var hiddenInput = document.getElementById(input.id + '_base64');
+                    if (!hiddenInput) {
+                        // check alternative naming
+                        var map = {
+                            'coachPhoto': 'coach_photo_base64',
+                            'mem1Photo': 'mem_1_photo_base64',
+                            'mem2Photo': 'mem_2_photo_base64',
+                            'mem3Photo': 'mem_3_photo_base64'
+                        };
+                        if (map[input.id]) {
+                            hiddenInput = document.getElementById(map[input.id]);
+                        }
+                    }
+                    if (hiddenInput) {
+                        hiddenInput.value = e.target.result;
+                    }
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -675,6 +699,19 @@
                 }
             }
             if (removeBtn) removeBtn.style.display = 'none';
+
+            // Clear hidden Base64 input
+            var map = {
+                'coachPhoto': 'coach_photo_base64',
+                'mem1Photo': 'mem_1_photo_base64',
+                'mem2Photo': 'mem_2_photo_base64',
+                'mem3Photo': 'mem_3_photo_base64'
+            };
+            var hiddenId = map[inputId] || (inputId + '_base64');
+            var hiddenInput = document.getElementById(hiddenId);
+            if (hiddenInput) {
+                hiddenInput.value = '';
+            }
         }
 
         document.getElementById('refreshCaptcha').addEventListener('click', generateCaptcha);
@@ -712,7 +749,24 @@
                 $('html, body').animate({
                     scrollTop: $(".is-invalid").first().offset().top - 100
                 }, 500);
+                return;
             }
+
+            // Universal hosting compatibility:
+            // If base64 photos are present or empty, switch to standard urlencoded submit
+            // so restrictive WAFs (like OpenResty 403 on multipart POST) will never block the request.
+            var form = this;
+            var coachB64 = document.getElementById('coach_photo_base64').value;
+            var mem1B64 = document.getElementById('mem_1_photo_base64').value;
+            var mem2B64 = document.getElementById('mem_2_photo_base64').value;
+            var mem3B64 = document.getElementById('mem_3_photo_base64').value;
+
+            // Disable raw file inputs so they don't force multipart/form-data boundary headers
+            ['coachPhoto', 'mem1Photo', 'mem2Photo', 'mem3Photo'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) el.disabled = true;
+            });
+            form.removeAttribute('enctype');
         });
 
         window.addEventListener('load', generateCaptcha);

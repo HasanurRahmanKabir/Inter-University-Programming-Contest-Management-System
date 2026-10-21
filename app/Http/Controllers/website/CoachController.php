@@ -73,101 +73,94 @@ class CoachController extends Controller
             'coach_name' => 'required|string|max:255',
             'coach_phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'coach_t_shirt' => 'required',
-            'coach_photo' => 'nullable|file|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'coach_photo' => 'nullable',
+            'coach_photo_base64' => 'nullable|string',
             'mem_1_name' => 'nullable|string|max:255',
             'mem_1_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_2_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
-            'mem_1_photo' => 'nullable|file|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'mem_2_photo' => 'nullable|file|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'mem_3_photo' => 'nullable|file|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'mem_1_photo' => 'nullable',
+            'mem_1_photo_base64' => 'nullable|string',
+            'mem_2_photo' => 'nullable',
+            'mem_2_photo_base64' => 'nullable|string',
+            'mem_3_photo' => 'nullable',
+            'mem_3_photo_base64' => 'nullable|string',
         ], [
             'coach_phone.regex' => 'Coach phone number must contain only digits (0-9), +, and -.',
             'mem_1_phone.regex' => 'Member 1 phone number must contain only digits (0-9), +, and -.',
             'mem_2_phone.regex' => 'Member 2 phone number must contain only digits (0-9), +, and -.',
             'mem_3_phone.regex' => 'Member 3 phone number must contain only digits (0-9), +, and -.',
-            'coach_photo.image' => 'Coach photo must be a valid image file (JPG, PNG, JPEG, WEBP). Documents, software, zip or other file types are not allowed.',
-            'coach_photo.mimes' => 'Coach photo must be a JPG, JPEG, PNG, or WEBP image format.',
-            'coach_photo.max' => 'Coach photo size cannot exceed 2MB.',
-            'mem_1_photo.image' => 'Member 1 photo must be a valid image file (JPG, PNG, JPEG, WEBP).',
-            'mem_1_photo.mimes' => 'Member 1 photo must be a JPG, JPEG, PNG, or WEBP image format.',
-            'mem_1_photo.max' => 'Member 1 photo size cannot exceed 2MB.',
-            'mem_2_photo.image' => 'Member 2 photo must be a valid image file (JPG, PNG, JPEG, WEBP).',
-            'mem_2_photo.mimes' => 'Member 2 photo must be a JPG, JPEG, PNG, or WEBP image format.',
-            'mem_2_photo.max' => 'Member 2 photo size cannot exceed 2MB.',
-            'mem_3_photo.image' => 'Member 3 photo must be a valid image file (JPG, PNG, JPEG, WEBP).',
-            'mem_3_photo.mimes' => 'Member 3 photo must be a JPG, JPEG, PNG, or WEBP image format.',
-            'mem_3_photo.max' => 'Member 3 photo size cannot exceed 2MB.',
         ]);
 
         $data = $request->except([
-            'coach_photo', 'mem_1_photo', 'mem_2_photo', 'mem_3_photo',
+            'coach_photo', 'coach_photo_base64', 'mem_1_photo', 'mem_1_photo_base64',
+            'mem_2_photo', 'mem_2_photo_base64', 'mem_3_photo', 'mem_3_photo_base64',
             'remove_coach_photo', 'remove_mem_1_photo', 'remove_mem_2_photo', 'remove_mem_3_photo',
             '_token', '_method'
         ]);
 
-        // Coach Photo Removal or Upload
+        // Coach Photo Removal or Upload (Base64 + File)
         if ($request->has('remove_coach_photo') && $request->remove_coach_photo == '1') {
             if ($team->coach_photo && File::exists(public_path($team->coach_photo))) {
                 File::delete(public_path($team->coach_photo));
             }
             $data['coach_photo'] = null;
-        } elseif ($request->hasFile('coach_photo')) {
-            if ($team->coach_photo && File::exists(public_path($team->coach_photo))) {
-                File::delete(public_path($team->coach_photo));
+        } else {
+            $newCoachPhoto = $this->saveCoachImageFromBase64OrFile($request, 'coach_photo', 'coach');
+            if ($newCoachPhoto) {
+                if ($team->coach_photo && File::exists(public_path($team->coach_photo))) {
+                    File::delete(public_path($team->coach_photo));
+                }
+                $data['coach_photo'] = $newCoachPhoto;
             }
-            $file = $request->file('coach_photo');
-            $filename = 'coach_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/teams/'), $filename);
-            $data['coach_photo'] = 'uploads/teams/' . $filename;
         }
 
-        // Member 1 Photo Removal or Upload
+        // Member 1 Photo Removal or Upload (Base64 + File)
         if ($request->has('remove_mem_1_photo') && $request->remove_mem_1_photo == '1') {
             if ($team->mem_1_photo && File::exists(public_path($team->mem_1_photo))) {
                 File::delete(public_path($team->mem_1_photo));
             }
             $data['mem_1_photo'] = null;
-        } elseif ($request->hasFile('mem_1_photo')) {
-            if ($team->mem_1_photo && File::exists(public_path($team->mem_1_photo))) {
-                File::delete(public_path($team->mem_1_photo));
+        } else {
+            $newMem1Photo = $this->saveCoachImageFromBase64OrFile($request, 'mem_1_photo', 'mem1');
+            if ($newMem1Photo) {
+                if ($team->mem_1_photo && File::exists(public_path($team->mem_1_photo))) {
+                    File::delete(public_path($team->mem_1_photo));
+                }
+                $data['mem_1_photo'] = $newMem1Photo;
             }
-            $file = $request->file('mem_1_photo');
-            $filename = 'mem1_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/teams/'), $filename);
-            $data['mem_1_photo'] = 'uploads/teams/' . $filename;
         }
 
-        // Member 2 Photo Removal or Upload
+        // Member 2 Photo Removal or Upload (Base64 + File)
         if ($request->has('remove_mem_2_photo') && $request->remove_mem_2_photo == '1') {
             if ($team->mem_2_photo && File::exists(public_path($team->mem_2_photo))) {
                 File::delete(public_path($team->mem_2_photo));
             }
             $data['mem_2_photo'] = null;
-        } elseif ($request->hasFile('mem_2_photo')) {
-            if ($team->mem_2_photo && File::exists(public_path($team->mem_2_photo))) {
-                File::delete(public_path($team->mem_2_photo));
+        } else {
+            $newMem2Photo = $this->saveCoachImageFromBase64OrFile($request, 'mem_2_photo', 'mem2');
+            if ($newMem2Photo) {
+                if ($team->mem_2_photo && File::exists(public_path($team->mem_2_photo))) {
+                    File::delete(public_path($team->mem_2_photo));
+                }
+                $data['mem_2_photo'] = $newMem2Photo;
             }
-            $file = $request->file('mem_2_photo');
-            $filename = 'mem2_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/teams/'), $filename);
-            $data['mem_2_photo'] = 'uploads/teams/' . $filename;
         }
 
-        // Member 3 Photo Removal or Upload
+        // Member 3 Photo Removal or Upload (Base64 + File)
         if ($request->has('remove_mem_3_photo') && $request->remove_mem_3_photo == '1') {
             if ($team->mem_3_photo && File::exists(public_path($team->mem_3_photo))) {
                 File::delete(public_path($team->mem_3_photo));
             }
             $data['mem_3_photo'] = null;
-        } elseif ($request->hasFile('mem_3_photo')) {
-            if ($team->mem_3_photo && File::exists(public_path($team->mem_3_photo))) {
-                File::delete(public_path($team->mem_3_photo));
+        } else {
+            $newMem3Photo = $this->saveCoachImageFromBase64OrFile($request, 'mem_3_photo', 'mem3');
+            if ($newMem3Photo) {
+                if ($team->mem_3_photo && File::exists(public_path($team->mem_3_photo))) {
+                    File::delete(public_path($team->mem_3_photo));
+                }
+                $data['mem_3_photo'] = $newMem3Photo;
             }
-            $file = $request->file('mem_3_photo');
-            $filename = 'mem3_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/teams/'), $filename);
-            $data['mem_3_photo'] = 'uploads/teams/' . $filename;
         }
 
         $team->update($data);
@@ -180,5 +173,48 @@ class CoachController extends Controller
         }
 
         return redirect()->back()->with('success', 'Profile & Team Information Updated Successfully!');
+    }
+
+    private function saveCoachImageFromBase64OrFile(Request $request, $fieldName, $prefix)
+    {
+        $base64Field = $fieldName . '_base64';
+
+        // 1. Process Base64 data (Bypasses OpenResty / restrictive WAF 403 on multipart uploads)
+        if ($request->filled($base64Field)) {
+            $base64Data = $request->input($base64Field);
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+                $data = substr($base64Data, strpos($base64Data, ',') + 1);
+                $type = strtolower($type[1]); // jpg, png, jpeg, webp
+
+                if (in_array($type, ['jpg', 'jpeg', 'png', 'webp'])) {
+                    $decoded = base64_decode($data);
+                    if ($decoded !== false) {
+                        $targetDir = public_path('uploads/teams');
+                        if (!File::isDirectory($targetDir)) {
+                            File::makeDirectory($targetDir, 0755, true, true);
+                        }
+                        $filename = $prefix . '_' . time() . '_' . rand(1000, 9999) . '.' . ($type === 'jpeg' ? 'jpg' : $type);
+                        file_put_contents($targetDir . DIRECTORY_SEPARATOR . $filename, $decoded);
+                        return 'uploads/teams/' . $filename;
+                    }
+                }
+            }
+        }
+
+        // 2. Standard Multipart File Upload Fallback
+        if ($request->hasFile($fieldName)) {
+            $file = $request->file($fieldName);
+            if ($file && $file->isValid()) {
+                $targetDir = public_path('uploads/teams');
+                if (!File::isDirectory($targetDir)) {
+                    File::makeDirectory($targetDir, 0755, true, true);
+                }
+                $filename = $prefix . '_' . time() . '_' . rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
+                $file->move($targetDir, $filename);
+                return 'uploads/teams/' . $filename;
+            }
+        }
+
+        return null;
     }
 }
