@@ -9,6 +9,7 @@ use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class CoachController extends Controller
 {
@@ -104,10 +105,28 @@ class CoachController extends Controller
             'mem_3_t_shirt' => 'nullable|string|max:10',
             'mem_3_photo' => 'nullable',
             'mem_3_photo_base64' => 'nullable|string',
+
+            // Password update (Optional - Leave blank to keep current)
+            'new_password' => [
+                'nullable',
+                'string',
+                'min:6',
+                'confirmed',
+                function ($attribute, $value, $fail) use ($team) {
+                    if (!empty($value) && $team && !empty($team->password)) {
+                        if (Hash::check($value, $team->password)) {
+                            $fail('New password cannot be the same as your current password.');
+                        }
+                    }
+                },
+            ],
         ], [
             'coach_name.required' => 'Coach name is required.',
             'coach_phone.required' => 'Coach phone number is required.',
             'coach_phone.regex' => 'Coach phone number must contain only digits (0-9), +, and -.',
+
+            'new_password.min' => 'New password must be at least 6 characters.',
+            'new_password.confirmed' => 'Confirm password does not match new password.',
 
             'mem_1_name.required' => 'Member 1 name is required.',
             'mem_1_student_id.required' => 'Member 1 Student ID is required.',
@@ -138,6 +157,7 @@ class CoachController extends Controller
             'coach_photo', 'coach_photo_base64', 'mem_1_photo', 'mem_1_photo_base64',
             'mem_2_photo', 'mem_2_photo_base64', 'mem_3_photo', 'mem_3_photo_base64',
             'remove_coach_photo', 'remove_mem_1_photo', 'remove_mem_2_photo', 'remove_mem_3_photo',
+            'new_password', 'new_password_confirmation',
             '_token', '_method'
         ]);
 
@@ -203,6 +223,11 @@ class CoachController extends Controller
                 }
                 $data['mem_3_photo'] = $newMem3Photo;
             }
+        }
+
+        // Update password if user entered a new password; otherwise leave current password unchanged
+        if ($request->filled('new_password')) {
+            $data['password'] = Hash::make($request->new_password);
         }
 
         try {

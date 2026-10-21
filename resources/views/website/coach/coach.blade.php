@@ -148,6 +148,73 @@
             border-color: rgba(239, 68, 68, 0.4) !important;
         }
 
+        /* Password Field & Security Card Styles (100% Matched with Coach Dashboard) */
+        .security-subcard {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .security-subcard:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .security-subcard .input-group .form-control {
+            border-color: #cbd5e1;
+        }
+        .security-subcard .input-group .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
+        }
+        .password-toggle-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #64748b;
+            padding: 0.375rem 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .password-toggle-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+            border-color: #94a3b8;
+        }
+        .input-group:focus-within .password-toggle-btn {
+            border-color: #3b82f6;
+        }
+        body[data-theme="dark"] .security-subcard {
+            background: #0b1120 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body[data-theme="dark"] .security-subcard:hover {
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        body[data-theme="dark"] .security-subcard .input-group .form-control {
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            background-color: #020617 !important;
+            color: #f8fafc !important;
+        }
+        body[data-theme="dark"] .security-subcard .input-group .form-control:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.2) !important;
+        }
+        body[data-theme="dark"] .password-toggle-btn {
+            background: #020617 !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            color: #94a3b8 !important;
+        }
+        body[data-theme="dark"] .password-toggle-btn:hover {
+            background: #1e293b !important;
+            color: #38bdf8 !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+        }
+        body[data-theme="dark"] .input-group:focus-within .password-toggle-btn {
+            border-color: #38bdf8 !important;
+        }
+
         /* Modal & Tabs Mobile Responsiveness - Industry Standard */
         #editProfileModal .modal-dialog {
             max-width: 800px;
@@ -286,6 +353,25 @@
                 text-align: center !important;
                 gap: 6px;
                 margin-top: 2px !important;
+            }
+
+            /* Security Subcard Responsive on mobile */
+            .security-subcard {
+                padding: 12px 10px !important;
+            }
+            .security-subcard-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 3px !important;
+                margin-bottom: 8px !important;
+            }
+            .security-subcard-header label {
+                font-size: 0.88rem !important;
+                white-space: nowrap !important;
+            }
+            .security-subcard-hint {
+                font-size: 0.7rem !important;
+                display: block;
             }
         }
         body[data-theme="dark"] #editProfileModal .nav-tabs {
@@ -747,6 +833,38 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-12 mt-2">
+                                        <div class="security-subcard">
+                                            <div class="security-subcard-header d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-1 mb-2">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <i class="fas fa-shield-alt text-primary flex-shrink-0"></i>
+                                                    <label class="form-label small fw-bold mb-0 text-nowrap">Change Password</label>
+                                                </div>
+                                                <span class="text-muted security-subcard-hint" style="font-size: 0.75rem;">(Leave blank to keep current password)</span>
+                                            </div>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted mb-1">New Password</label>
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control border-end-0" id="coachNewPassword" name="new_password" placeholder="At least 6 characters" autocomplete="new-password">
+                                                        <button class="btn password-toggle-btn border border-start-0" type="button" onclick="togglePasswordVisibility('coachNewPassword', 'coachNewPasswordIcon')" title="Toggle visibility">
+                                                            <i class="fas fa-eye-slash" id="coachNewPasswordIcon"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted mb-1">Confirm Password</label>
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control border-end-0" id="coachNewPasswordConfirm" name="new_password_confirmation" placeholder="Retype password" autocomplete="new-password">
+                                                        <button class="btn password-toggle-btn border border-start-0" type="button" onclick="togglePasswordVisibility('coachNewPasswordConfirm', 'coachNewPasswordConfirmIcon')" title="Toggle visibility">
+                                                            <i class="fas fa-eye-slash" id="coachNewPasswordConfirmIcon"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1044,7 +1162,7 @@
                     editModal.show();
 
                     // Switch tab to the first errored section
-                    @if ($errors->has('coach_*'))
+                    @if ($errors->has('coach_*') || $errors->has('new_password'))
                         const tabBtn = document.getElementById('coach-tab');
                         if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
                     @elseif ($errors->has('mem_1_*'))
@@ -1189,6 +1307,36 @@
                         return;
                     }
 
+                    e.preventDefault();
+
+                    // Client-side quick password confirmation check
+                    const newPass = document.getElementById('coachNewPassword')?.value || '';
+                    const confirmPass = document.getElementById('coachNewPasswordConfirm')?.value || '';
+                    if (newPass && newPass.length < 6) {
+                        if (ajaxAlert && ajaxErrorList) {
+                            ajaxErrorList.innerHTML = '<li>New password must be at least 6 characters.</li>';
+                            ajaxAlert.classList.remove('d-none');
+                            const modalBody = profileForm.querySelector('.modal-body');
+                            if (modalBody) modalBody.scrollTop = 0;
+                        }
+                        const tabBtn = document.getElementById('coach-tab');
+                        if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+                        document.getElementById('coachNewPassword').focus();
+                        return;
+                    }
+                    if (newPass && newPass !== confirmPass) {
+                        if (ajaxAlert && ajaxErrorList) {
+                            ajaxErrorList.innerHTML = '<li>Confirm password does not match new password.</li>';
+                            ajaxAlert.classList.remove('d-none');
+                            const modalBody = profileForm.querySelector('.modal-body');
+                            if (modalBody) modalBody.scrollTop = 0;
+                        }
+                        const tabBtn = document.getElementById('coach-tab');
+                        if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+                        document.getElementById('coachNewPasswordConfirm').focus();
+                        return;
+                    }
+
                     // UI Loading state
                     const spinner = submitBtn.querySelector('.spinner-border');
                     const btnText = submitBtn.querySelector('.btn-text');
@@ -1196,14 +1344,83 @@
                     if (spinner) spinner.classList.remove('d-none');
                     if (btnText) btnText.textContent = 'Updating...';
 
-                    // Universal hosting compatibility:
-                    // Disable raw file inputs so the browser doesn't send multipart/form-data boundary headers.
-                    // The Base64 image payloads in hidden inputs will be posted seamlessly via standard application/x-www-form-urlencoded,
-                    // guaranteeing 100% bypass of OpenResty / strict WAF 403 Forbidden errors on all free & paid hostings.
-                    profileForm.querySelectorAll('.photo-input-with-preview').forEach(function(inp) {
-                        inp.disabled = true;
+                    // Prepare form data using application/x-www-form-urlencoded
+                    const formData = new FormData(profileForm);
+                    // Remove raw file inputs to ensure Base64 universal host compatibility
+                    formData.delete('coach_photo');
+                    formData.delete('mem_1_photo');
+                    formData.delete('mem_2_photo');
+                    formData.delete('mem_3_photo');
+
+                    const urlEncodedData = new URLSearchParams(formData).toString();
+
+                    fetch(profileForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': profileForm.querySelector('input[name="_token"]').value
+                        },
+                        body: urlEncodedData
+                    })
+                    .then(async function(response) {
+                        const data = await response.json();
+                        if (response.ok && data.success) {
+                            // Save success toast and reload smoothly to reflect new state
+                            sessionStorage.setItem('pending_toast', JSON.stringify({
+                                message: data.message || 'Profile & Team Information Updated Successfully!',
+                                type: 'success'
+                            }));
+                            window.location.reload();
+                        } else {
+                            // Reset submit button state
+                            submitBtn.disabled = false;
+                            if (spinner) spinner.classList.add('d-none');
+                            if (btnText) btnText.textContent = 'Update';
+
+                            // Extract error messages
+                            let errorItems = [];
+                            if (data.errors) {
+                                Object.keys(data.errors).forEach(function(key) {
+                                    data.errors[key].forEach(function(msg) {
+                                        errorItems.push(msg);
+                                    });
+                                });
+                            } else if (data.message) {
+                                errorItems.push(data.message);
+                            } else {
+                                errorItems.push('An unexpected error occurred. Please try again.');
+                            }
+
+                            // Show error inside modal without reloading page
+                            if (ajaxAlert && ajaxErrorList) {
+                                ajaxErrorList.innerHTML = errorItems.map(msg => `<li>${msg}</li>`).join('');
+                                ajaxAlert.classList.remove('d-none');
+                                const modalBody = profileForm.querySelector('.modal-body');
+                                if (modalBody) modalBody.scrollTop = 0;
+                            }
+
+                            // Auto focus Coach Tab if password error
+                            if (data.errors && data.errors.new_password) {
+                                const tabBtn = document.getElementById('coach-tab');
+                                if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+                                const passInp = document.getElementById('coachNewPassword');
+                                if (passInp) passInp.focus();
+                            }
+                        }
+                    })
+                    .catch(function(err) {
+                        submitBtn.disabled = false;
+                        if (spinner) spinner.classList.add('d-none');
+                        if (btnText) btnText.textContent = 'Update';
+
+                        if (ajaxAlert && ajaxErrorList) {
+                            ajaxErrorList.innerHTML = '<li>Unable to process request. Please check your internet connection and try again.</li>';
+                            ajaxAlert.classList.remove('d-none');
+                            const modalBody = profileForm.querySelector('.modal-body');
+                            if (modalBody) modalBody.scrollTop = 0;
+                        }
                     });
-                    profileForm.removeAttribute('enctype');
                 });
             }
 
@@ -1356,6 +1573,22 @@
                 });
             });
         });
+
+        // Toggle password visibility with eye / eye-slash icon
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (!input || !icon) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
     </script>
 </body>
 
