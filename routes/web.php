@@ -43,7 +43,7 @@ Route::get('website/volunteer', [VolunteersController::class, 'index']);
 // Registration Form View & Actions
 Route::get('team/registration', [TeamRegistrationController::class, 'index'])->name('team.registration');
 Route::post('/check-duplicate-db', [TeamRegistrationController::class, 'checkDuplicateInDB']);
-Route::match(['get', 'post'], 'team/registration/store', [TeamRegistrationController::class, 'store']);
+Route::match(['get', 'post'], 'team/registration/store', [TeamRegistrationController::class, 'store'])->name('team.registration.store');
 
 // User Login Routes
 Route::get('/login', [UserLogin::class, 'index'])->name('user.login');

@@ -204,7 +204,7 @@
             </div>
         @endif
 
-        <form id="registrationForm" action="{{ url('team/registration/store') }}" method="post"
+        <form id="registrationForm" action="{{ route('team.registration.store', [], false) }}" method="post"
             enctype="multipart/form-data" class="mt-4">
             @csrf
 

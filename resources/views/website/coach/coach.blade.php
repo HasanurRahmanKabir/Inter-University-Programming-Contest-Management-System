@@ -638,7 +638,7 @@
 
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <form id="editProfileForm" action="{{ route('coach.profile.update') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form id="editProfileForm" action="{{ route('coach.profile.update', [], false) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1138,96 +1138,9 @@
                     if (spinner) spinner.classList.remove('d-none');
                     if (btnText) btnText.textContent = 'Updating...';
 
-                    // Note: If using native submission on hosts with strict WAF (like InfinityFree OpenResty),
-                    // standard form submit sends cookies seamlessly without getting blocked by proxy bots.
-                    // We attempt AJAX first; if WAF/OpenResty blocks with 403, we seamlessly submit standard form.
-                    e.preventDefault();
-
-                    const formData = new FormData(profileForm);
-                    const csrfToken = profileForm.querySelector('input[name="_token"]') ? profileForm.querySelector('input[name="_token"]').value : '';
-
-                    fetch(profileForm.action, {
-                        method: 'POST',
-                        body: formData,
-                        credentials: 'same-origin',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
-                        }
-                    })
-                    .then(async function(response) {
-                        // If OpenResty / Server Proxy intercepted with 403 HTML page, fallback to standard form POST submit!
-                        if (response.status === 403) {
-                            // Automatically submit natively so the browser and server session handle it directly
-                            profileForm.submit();
-                            return;
-                        }
-
-                        let data = {};
-                        let rawText = '';
-                        try {
-                            rawText = await response.text();
-                            data = JSON.parse(rawText);
-                        } catch(e) {
-                            data = {};
-                        }
-
-                        if (response.ok && data.success) {
-                            sessionStorage.setItem('pending_toast', JSON.stringify({
-                                type: 'success',
-                                message: data.message || 'Profile & Team Information Updated Successfully!'
-                            }));
-                            window.location.reload();
-                        } else {
-                            submitBtn.disabled = false;
-                            if (spinner) spinner.classList.add('d-none');
-                            if (btnText) btnText.textContent = 'Update';
-
-                            if (ajaxAlert && ajaxErrorList) {
-                                ajaxErrorList.innerHTML = '';
-                                if (data.errors && typeof data.errors === 'object') {
-                                    Object.keys(data.errors).forEach(function(key) {
-                                        const err = data.errors[key];
-                                        if (Array.isArray(err)) {
-                                            err.forEach(function(msg) {
-                                                const li = document.createElement('li');
-                                                li.textContent = msg;
-                                                ajaxErrorList.appendChild(li);
-                                            });
-                                        } else if (typeof err === 'string') {
-                                            const li = document.createElement('li');
-                                            li.textContent = err;
-                                            ajaxErrorList.appendChild(li);
-                                        }
-                                    });
-                                } else if (data.message) {
-                                    const li = document.createElement('li');
-                                    li.textContent = data.message;
-                                    ajaxErrorList.appendChild(li);
-                                } else if (response.status === 419) {
-                                    const li = document.createElement('li');
-                                    li.textContent = 'CSRF token expired. Please refresh the page and try again.';
-                                    ajaxErrorList.appendChild(li);
-                                } else if (response.status === 401) {
-                                    const li = document.createElement('li');
-                                    li.textContent = 'Your session has expired. Please log in again.';
-                                    ajaxErrorList.appendChild(li);
-                                } else {
-                                    // Fallback submit natively
-                                    profileForm.submit();
-                                    return;
-                                }
-                                ajaxAlert.classList.remove('d-none');
-                                const modalBody = profileForm.querySelector('.modal-body');
-                                if (modalBody) modalBody.scrollTop = 0;
-                            }
-                        }
-                    })
-                    .catch(function(error) {
-                        // In case of any network/CORS block from OpenResty, submit standard form
-                        profileForm.submit();
-                    });
+                    // On live hosts with strict edge reverse proxy / WAF (like InfinityFree OpenResty),
+                    // multipart AJAX file uploads get blocked by 403 bot filters. Native form submission
+                    // seamlessly passes browser session cookies, CSRF tokens and files with 100% reliability.
                 });
             }
 
