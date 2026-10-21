@@ -346,18 +346,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-
-            @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
-                    <div class="fw-bold mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Please fix the following errors:</div>
-                    <ul class="mb-0 ps-3">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
         </div>
 
         <div class="row mb-4 justify-content-center">
@@ -638,7 +626,7 @@
 
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <form id="editProfileForm" action="{{ route('coach.profile.update', [], false) }}" method="POST" enctype="multipart/form-data">
+            <form id="editProfileForm" action="{{ route('coach.profile.update', [], false) }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
                 <!-- Hidden inputs for Base64 image payload (100% universal across all free & paid hosts) -->
                 <input type="hidden" name="coach_photo_base64" id="coach_photo_base64">
@@ -1015,12 +1003,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('content/website') }}/js/dark-mode.js"></script>
     <script>
-        // Website In-Page Dashboard Alert (Rendered directly above cards)
+        // Website In-Page Dashboard Alert
         function showWebsiteToast(message, type = 'success', duration = 6000) {
             const container = document.getElementById('dashboardAlertContainer');
             if (!container) return;
 
-            // Clear previous alerts
             container.innerHTML = '';
 
             const isSuccess = (type === 'success');
@@ -1036,8 +1023,6 @@
             `;
 
             container.appendChild(alertEl);
-
-            // Smooth scroll to alert if needed
             alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
             if (duration > 0) {
@@ -1051,12 +1036,27 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Auto open Edit Profile Modal if validation errors exist
+            // Auto open Edit Profile Modal if validation errors exist and switch to relevant tab
             @if ($errors->any())
                 const editModalEl = document.getElementById('editProfileModal');
                 if (editModalEl) {
                     const editModal = new bootstrap.Modal(editModalEl);
                     editModal.show();
+
+                    // Switch tab to the first errored section
+                    @if ($errors->has('coach_*'))
+                        const tabBtn = document.getElementById('coach-tab');
+                        if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+                    @elseif ($errors->has('mem_1_*'))
+                        const tabBtn = document.getElementById('mem1-tab');
+                        if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+                    @elseif ($errors->has('mem_2_*'))
+                        const tabBtn = document.getElementById('mem2-tab');
+                        if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+                    @elseif ($errors->has('mem_3_*'))
+                        const tabBtn = document.getElementById('mem3-tab');
+                        if (tabBtn) bootstrap.Tab.getOrCreateInstance(tabBtn).show();
+                    @endif
                 }
             @endif
 
@@ -1136,11 +1136,31 @@
                 profileForm.addEventListener('submit', function(e) {
                     // Client-side quick check before send
                     const requiredInputs = profileForm.querySelectorAll('input[required]');
+                    const tabNames = {
+                        'coach': 'Coach Info',
+                        'mem1': 'Member 1',
+                        'mem2': 'Member 2',
+                        'mem3': 'Member 3'
+                    };
+
+                    const missingFields = [];
                     let hasMissing = false;
                     requiredInputs.forEach(function(inp) {
                         if (!inp.value.trim()) {
                             hasMissing = true;
                             inp.classList.add('is-invalid');
+                            const label = inp.closest('.col-md-6, .col-12')?.querySelector('label')?.textContent?.replace('*', '')?.trim() || inp.name;
+                            const tabPane = inp.closest('.tab-pane');
+                            const tabLabel = (tabPane && tabNames[tabPane.id]) ? tabNames[tabPane.id] : 'Coach';
+                            
+                            // Clean phrasing like "Member 1 name is required." or "Coach name is required."
+                            let cleanLabel = label.toLowerCase().replace(/^(coach|member\s*[123])\s*/i, '').trim();
+                            let errorMsg = `${tabLabel} ${cleanLabel} is required.`;
+                            if (tabLabel === 'Coach Info') {
+                                errorMsg = `Coach ${cleanLabel} is required.`;
+                            }
+
+                            missingFields.push({ input: inp, msg: errorMsg, tabId: tabPane ? tabPane.id : null });
                         } else {
                             inp.classList.remove('is-invalid');
                         }
@@ -1148,24 +1168,24 @@
 
                     if (hasMissing) {
                         e.preventDefault();
+
+                        // List inside modal alert box (Only inside the form)
                         if (ajaxAlert && ajaxErrorList) {
-                            ajaxErrorList.innerHTML = '<li>Please fill in all required fields (marked with *).</li>';
+                            ajaxErrorList.innerHTML = missingFields.map(f => `<li>${f.msg}</li>`).join('');
                             ajaxAlert.classList.remove('d-none');
                             const modalBody = profileForm.querySelector('.modal-body');
                             if (modalBody) modalBody.scrollTop = 0;
                         }
-                        // Automatically switch tab to first invalid input
-                        const firstInvalid = profileForm.querySelector('.is-invalid');
-                        if (firstInvalid) {
-                            const tabPane = firstInvalid.closest('.tab-pane');
-                            if (tabPane && tabPane.id) {
-                                const tabTrigger = document.querySelector(`[data-bs-target="#${tabPane.id}"]`);
-                                if (tabTrigger) {
-                                    bootstrap.Tab.getOrCreateInstance(tabTrigger).show();
-                                }
+
+                        // Automatically switch to the tab containing the first missing input
+                        const first = missingFields[0];
+                        if (first.tabId) {
+                            const tabTrigger = document.querySelector(`[data-bs-target="#${first.tabId}"]`);
+                            if (tabTrigger) {
+                                bootstrap.Tab.getOrCreateInstance(tabTrigger).show();
                             }
-                            firstInvalid.focus();
                         }
+                        first.input.focus();
                         return;
                     }
 
