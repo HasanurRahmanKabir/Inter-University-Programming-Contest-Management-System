@@ -386,9 +386,25 @@
             border-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1) #0b1120;
         }
     </style>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 </head>
 
 <body>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <div class="dashboard-header">
         <div class="container">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start gap-3">
