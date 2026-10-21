@@ -70,6 +70,46 @@
             color: #f87171 !important;
         }
 
+        /* Responsive Header & Optical Theme Button Alignment */
+        .reg-header-title {
+            font-size: clamp(1.35rem, 4vw, 2rem);
+            line-height: 1.25;
+            margin-bottom: 0.35rem;
+        }
+        .reg-header-subtitle {
+            font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+            opacity: 0.8;
+            line-height: 1.35;
+        }
+        .reg-header-theme-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            transition: all 0.2s ease;
+            position: absolute;
+            top: 28px;
+            right: 20px;
+            z-index: 10;
+        }
+        @media (max-width: 575.98px) {
+            .page-header {
+                padding: 24px 0 !important;
+            }
+            .reg-header-theme-btn {
+                top: 24px !important;
+                right: 14px !important;
+                width: 35px !important;
+                height: 35px !important;
+            }
+            .reg-header-theme-btn i {
+                font-size: 0.95rem !important;
+            }
+        }
+
         /* Image Upload Box & Remove Button */
         .image-upload-wrapper {
             position: relative;
@@ -203,24 +243,18 @@
     </script>
 
     <div class="page-header position-relative">
-        <div class="container">
-            <h2 class="fw-bold mb-2">Team Registration</h2>
-            <p class="opacity-75 mb-0">
+        <div class="container" style="padding-left: 50px; padding-right: 50px;">
+            <h2 class="fw-bold reg-header-title">Team Registration</h2>
+            <p class="reg-header-subtitle mb-0">
                 {{ (!empty($contest) && $contest->status == 1 && !empty($contest->title)) ? $contest->title : 'Your Contest Title' }}
             </p>
         </div>
-        <!-- Desktop Theme Toggle Button (Inside Header) -->
-        <a href="#" class="btn theme-toggle-btn position-absolute d-none d-md-flex" style="top: 20px; right: 20px; width: 45px; height: 45px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
-            <i class="fas fa-lightbulb theme-toggle-icon-light"></i>
-            <i class="fas fa-moon theme-toggle-icon-dark"></i>
-        </a>
+        <!-- Theme Toggle Button - Optically Aligned with first title line on mobile & desktop -->
+        <button class="btn btn-outline-light btn-sm theme-toggle-btn reg-header-theme-btn d-flex align-items-center justify-content-center">
+            <i class="fas fa-lightbulb theme-toggle-icon-light m-0"></i>
+            <i class="fas fa-moon theme-toggle-icon-dark m-0"></i>
+        </button>
     </div>
-
-    <!-- Mobile Floating Theme Toggle Button (Bottom Right) -->
-    <a href="#" class="btn theme-toggle-btn d-flex d-md-none" style="position: fixed; bottom: 30px; right: 20px; z-index: 1050; width: 50px; height: 50px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.9); color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.5); backdrop-filter: blur(8px); transition: all 0.3s ease;">
-        <i class="fas fa-lightbulb theme-toggle-icon-light" style="font-size: 1.2rem;"></i>
-        <i class="fas fa-moon theme-toggle-icon-dark" style="font-size: 1.2rem;"></i>
-    </a>
 
     <div class="container pb-5">
 
