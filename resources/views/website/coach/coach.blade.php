@@ -1100,7 +1100,7 @@
                 });
             });
 
-            // AJAX Form Submission for Profile Update (With Website Standard Floating Toast Notification)
+            // Coach Profile Update Form Submission
             const profileForm = document.getElementById('editProfileForm');
             const submitBtn = document.getElementById('updateProfileSubmitBtn');
             const ajaxAlert = document.getElementById('modalAjaxAlert');
@@ -1108,11 +1108,28 @@
 
             if (profileForm && submitBtn) {
                 profileForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
+                    // Client-side quick check before send
+                    const requiredInputs = profileForm.querySelectorAll('input[required]');
+                    let hasMissing = false;
+                    requiredInputs.forEach(function(inp) {
+                        if (!inp.value.trim()) {
+                            hasMissing = true;
+                            inp.classList.add('is-invalid');
+                        } else {
+                            inp.classList.remove('is-invalid');
+                        }
+                    });
 
-                    // Hide any previous error
-                    if (ajaxAlert) ajaxAlert.classList.add('d-none');
-                    if (ajaxErrorList) ajaxErrorList.innerHTML = '';
+                    if (hasMissing) {
+                        e.preventDefault();
+                        if (ajaxAlert && ajaxErrorList) {
+                            ajaxErrorList.innerHTML = '<li>Please fill in all required fields.</li>';
+                            ajaxAlert.classList.remove('d-none');
+                            const modalBody = profileForm.querySelector('.modal-body');
+                            if (modalBody) modalBody.scrollTop = 0;
+                        }
+                        return;
+                    }
 
                     // UI Loading state
                     const spinner = submitBtn.querySelector('.spinner-border');
@@ -1120,6 +1137,11 @@
                     submitBtn.disabled = true;
                     if (spinner) spinner.classList.remove('d-none');
                     if (btnText) btnText.textContent = 'Updating...';
+
+                    // Note: If using native submission on hosts with strict WAF (like InfinityFree OpenResty),
+                    // standard form submit sends cookies seamlessly without getting blocked by proxy bots.
+                    // We attempt AJAX first; if WAF/OpenResty blocks with 403, we seamlessly submit standard form.
+                    e.preventDefault();
 
                     const formData = new FormData(profileForm);
                     const csrfToken = profileForm.querySelector('input[name="_token"]') ? profileForm.querySelector('input[name="_token"]').value : '';
@@ -1135,6 +1157,13 @@
                         }
                     })
                     .then(async function(response) {
+                        // If OpenResty / Server Proxy intercepted with 403 HTML page, fallback to standard form POST submit!
+                        if (response.status === 403) {
+                            // Automatically submit natively so the browser and server session handle it directly
+                            profileForm.submit();
+                            return;
+                        }
+
                         let data = {};
                         let rawText = '';
                         try {
@@ -1145,15 +1174,12 @@
                         }
 
                         if (response.ok && data.success) {
-                            // Set alert to show directly above stat cards right after reload
                             sessionStorage.setItem('pending_toast', JSON.stringify({
                                 type: 'success',
                                 message: data.message || 'Profile & Team Information Updated Successfully!'
                             }));
-                            
                             window.location.reload();
                         } else {
-                            // Validation error (422), session error (401/419) or server error (500)
                             submitBtn.disabled = false;
                             if (spinner) spinner.classList.add('d-none');
                             if (btnText) btnText.textContent = 'Update';
@@ -1187,14 +1213,10 @@
                                     const li = document.createElement('li');
                                     li.textContent = 'Your session has expired. Please log in again.';
                                     ajaxErrorList.appendChild(li);
-                                } else if (response.status >= 500) {
-                                    const li = document.createElement('li');
-                                    li.textContent = 'Server error (' + response.status + '). Please check server logs or upload all updated files.';
-                                    ajaxErrorList.appendChild(li);
                                 } else {
-                                    const li = document.createElement('li');
-                                    li.textContent = 'HTTP ' + response.status + ': Failed to update. Please review your inputs or refresh the page.';
-                                    ajaxErrorList.appendChild(li);
+                                    // Fallback submit natively
+                                    profileForm.submit();
+                                    return;
                                 }
                                 ajaxAlert.classList.remove('d-none');
                                 const modalBody = profileForm.querySelector('.modal-body');
@@ -1203,16 +1225,8 @@
                         }
                     })
                     .catch(function(error) {
-                        submitBtn.disabled = false;
-                        if (spinner) spinner.classList.add('d-none');
-                        if (btnText) btnText.textContent = 'Update';
-
-                        if (ajaxAlert && ajaxErrorList) {
-                            ajaxErrorList.innerHTML = '<li>Network error: ' + (error.message || 'Please check your connection and try again.') + '</li>';
-                            ajaxAlert.classList.remove('d-none');
-                            const modalBody = profileForm.querySelector('.modal-body');
-                            if (modalBody) modalBody.scrollTop = 0;
-                        }
+                        // In case of any network/CORS block from OpenResty, submit standard form
+                        profileForm.submit();
                     });
                 });
             }
