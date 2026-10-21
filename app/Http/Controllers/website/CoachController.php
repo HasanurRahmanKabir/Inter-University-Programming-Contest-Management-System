@@ -69,26 +69,68 @@ class CoachController extends Controller
             'mem_3_phone' => $cleanedMem3Phone,
         ]);
 
+        $team = Auth::guard('team')->user();
+
         $request->validate([
             'coach_name' => 'required|string|max:255',
             'coach_phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'coach_t_shirt' => 'required',
             'coach_photo' => 'nullable',
             'coach_photo_base64' => 'nullable|string',
-            'mem_1_name' => 'nullable|string|max:255',
+
+            // Member 1 Validation (Required as per database schema)
+            'mem_1_name' => 'required|string|max:255',
+            'mem_1_student_id' => 'required|string|max:100|unique:team_registration_infos,mem_1_student_id,' . $team->team_id . ',team_id',
+            'mem_1_email' => 'required|email|max:255|unique:team_registration_infos,mem_1_email,' . $team->team_id . ',team_id',
             'mem_1_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
-            'mem_2_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
-            'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+            'mem_1_t_shirt' => 'nullable|string|max:10',
             'mem_1_photo' => 'nullable',
             'mem_1_photo_base64' => 'nullable|string',
+
+            // Member 2 Validation
+            'mem_2_name' => 'required|string|max:255',
+            'mem_2_student_id' => 'required|string|max:100|unique:team_registration_infos,mem_2_student_id,' . $team->team_id . ',team_id',
+            'mem_2_email' => 'required|email|max:255|unique:team_registration_infos,mem_2_email,' . $team->team_id . ',team_id',
+            'mem_2_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+            'mem_2_t_shirt' => 'nullable|string|max:10',
             'mem_2_photo' => 'nullable',
             'mem_2_photo_base64' => 'nullable|string',
+
+            // Member 3 Validation
+            'mem_3_name' => 'required|string|max:255',
+            'mem_3_student_id' => 'required|string|max:100|unique:team_registration_infos,mem_3_student_id,' . $team->team_id . ',team_id',
+            'mem_3_email' => 'required|email|max:255|unique:team_registration_infos,mem_3_email,' . $team->team_id . ',team_id',
+            'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+            'mem_3_t_shirt' => 'nullable|string|max:10',
             'mem_3_photo' => 'nullable',
             'mem_3_photo_base64' => 'nullable|string',
         ], [
+            'coach_name.required' => 'Coach name is required.',
+            'coach_phone.required' => 'Coach phone number is required.',
             'coach_phone.regex' => 'Coach phone number must contain only digits (0-9), +, and -.',
+
+            'mem_1_name.required' => 'Member 1 name is required.',
+            'mem_1_student_id.required' => 'Member 1 Student ID is required.',
+            'mem_1_student_id.unique' => 'Member 1 Student ID is already taken by another team.',
+            'mem_1_email.required' => 'Member 1 email address is required.',
+            'mem_1_email.email' => 'Member 1 email must be a valid email address.',
+            'mem_1_email.unique' => 'Member 1 email is already registered with another team.',
             'mem_1_phone.regex' => 'Member 1 phone number must contain only digits (0-9), +, and -.',
+
+            'mem_2_name.required' => 'Member 2 name is required.',
+            'mem_2_student_id.required' => 'Member 2 Student ID is required.',
+            'mem_2_student_id.unique' => 'Member 2 Student ID is already taken by another team.',
+            'mem_2_email.required' => 'Member 2 email address is required.',
+            'mem_2_email.email' => 'Member 2 email must be a valid email address.',
+            'mem_2_email.unique' => 'Member 2 email is already registered with another team.',
             'mem_2_phone.regex' => 'Member 2 phone number must contain only digits (0-9), +, and -.',
+
+            'mem_3_name.required' => 'Member 3 name is required.',
+            'mem_3_student_id.required' => 'Member 3 Student ID is required.',
+            'mem_3_student_id.unique' => 'Member 3 Student ID is already taken by another team.',
+            'mem_3_email.required' => 'Member 3 email address is required.',
+            'mem_3_email.email' => 'Member 3 email must be a valid email address.',
+            'mem_3_email.unique' => 'Member 3 email is already registered with another team.',
             'mem_3_phone.regex' => 'Member 3 phone number must contain only digits (0-9), +, and -.',
         ]);
 
@@ -163,16 +205,29 @@ class CoachController extends Controller
             }
         }
 
-        $team->update($data);
+        try {
+            $team->update($data);
 
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Profile & Team Information Updated Successfully!'
-            ]);
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Profile & Team Information Updated Successfully!'
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Profile & Team Information Updated Successfully!');
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Profile update failed: ' . $e->getMessage());
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to update profile: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->withInput()->with('error', 'Failed to update profile. Please verify that all required fields are filled correctly.');
         }
-
-        return redirect()->back()->with('success', 'Profile & Team Information Updated Successfully!');
     }
 
     private function saveCoachImageFromBase64OrFile(Request $request, $fieldName, $prefix)

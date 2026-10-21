@@ -652,6 +652,18 @@
                     </div>
 
                     <div class="modal-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-3" role="alert">
+                                <div class="fw-bold mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Please fix the following errors:</div>
+                                <ul class="mb-0 ps-3 small">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
+
                         <div id="modalAjaxAlert" class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-3 d-none" role="alert">
                             <div class="fw-bold mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Please fix the following errors:</div>
                             <ul id="modalAjaxErrorList" class="mb-0 ps-3 small"></ul>
@@ -754,19 +766,19 @@
                                 <h6 class="text-primary mb-3">Member 1 Details</h6>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Name</label>
+                                        <label class="form-label small fw-bold">Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="mem_1_name"
-                                            value="{{ $user->mem_1_name }}">
+                                            value="{{ $user->mem_1_name }}" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Student ID</label>
+                                        <label class="form-label small fw-bold">Student ID <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="mem_1_student_id"
-                                            value="{{ $user->mem_1_student_id }}">
+                                            value="{{ $user->mem_1_student_id }}" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Email</label>
+                                        <label class="form-label small fw-bold">Email <span class="text-danger">*</span></label>
                                         <input type="email" class="form-control" name="mem_1_email"
-                                            value="{{ $user->mem_1_email }}">
+                                            value="{{ $user->mem_1_email }}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Phone</label>
@@ -832,19 +844,19 @@
                                 <h6 class="text-primary mb-3">Member 2 Details</h6>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Name</label>
+                                        <label class="form-label small fw-bold">Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="mem_2_name"
-                                            value="{{ $user->mem_2_name }}">
+                                            value="{{ $user->mem_2_name }}" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Student ID</label>
+                                        <label class="form-label small fw-bold">Student ID <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="mem_2_student_id"
-                                            value="{{ $user->mem_2_student_id }}">
+                                            value="{{ $user->mem_2_student_id }}" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Email</label>
+                                        <label class="form-label small fw-bold">Email <span class="text-danger">*</span></label>
                                         <input type="email" class="form-control" name="mem_2_email"
-                                            value="{{ $user->mem_2_email }}">
+                                            value="{{ $user->mem_2_email }}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Phone</label>
@@ -910,19 +922,19 @@
                                 <h6 class="text-primary mb-3">Member 3 Details</h6>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Name</label>
+                                        <label class="form-label small fw-bold">Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="mem_3_name"
-                                            value="{{ $user->mem_3_name }}">
+                                            value="{{ $user->mem_3_name }}" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Student ID</label>
+                                        <label class="form-label small fw-bold">Student ID <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="mem_3_student_id"
-                                            value="{{ $user->mem_3_student_id }}">
+                                            value="{{ $user->mem_3_student_id }}" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Email</label>
+                                        <label class="form-label small fw-bold">Email <span class="text-danger">*</span></label>
                                         <input type="email" class="form-control" name="mem_3_email"
-                                            value="{{ $user->mem_3_email }}">
+                                            value="{{ $user->mem_3_email }}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Phone</label>
@@ -1039,6 +1051,15 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Auto open Edit Profile Modal if validation errors exist
+            @if ($errors->any())
+                const editModalEl = document.getElementById('editProfileModal');
+                if (editModalEl) {
+                    const editModal = new bootstrap.Modal(editModalEl);
+                    editModal.show();
+                }
+            @endif
+
             // Check for pending notification from previous AJAX reload
             const pendingToast = sessionStorage.getItem('pending_toast');
             if (pendingToast) {
@@ -1128,10 +1149,22 @@
                     if (hasMissing) {
                         e.preventDefault();
                         if (ajaxAlert && ajaxErrorList) {
-                            ajaxErrorList.innerHTML = '<li>Please fill in all required fields.</li>';
+                            ajaxErrorList.innerHTML = '<li>Please fill in all required fields (marked with *).</li>';
                             ajaxAlert.classList.remove('d-none');
                             const modalBody = profileForm.querySelector('.modal-body');
                             if (modalBody) modalBody.scrollTop = 0;
+                        }
+                        // Automatically switch tab to first invalid input
+                        const firstInvalid = profileForm.querySelector('.is-invalid');
+                        if (firstInvalid) {
+                            const tabPane = firstInvalid.closest('.tab-pane');
+                            if (tabPane && tabPane.id) {
+                                const tabTrigger = document.querySelector(`[data-bs-target="#${tabPane.id}"]`);
+                                if (tabTrigger) {
+                                    bootstrap.Tab.getOrCreateInstance(tabTrigger).show();
+                                }
+                            }
+                            firstInvalid.focus();
                         }
                         return;
                     }
