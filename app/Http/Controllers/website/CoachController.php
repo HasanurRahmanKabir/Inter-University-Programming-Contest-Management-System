@@ -41,6 +41,10 @@ class CoachController extends Controller
 
     public function updateProfile(Request $request)
     {
+        if ($request->isMethod('get')) {
+            return redirect()->route('coach.dashboard');
+        }
+
         $team = Auth::guard('team')->user();
 
         if (!$team) {

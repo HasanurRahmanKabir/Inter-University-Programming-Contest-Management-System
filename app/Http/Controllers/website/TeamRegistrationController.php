@@ -59,6 +59,10 @@ class TeamRegistrationController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->isMethod('get')) {
+            return redirect()->route('team.registration');
+        }
+
         $request->validate([
             'captcha_verified' => 'required|in:1',
             'team_name' => 'required|string|max:255|unique:team_registration_infos,team_name',
