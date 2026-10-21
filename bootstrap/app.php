@@ -39,6 +39,8 @@ return Application::configure(basePath: dirname(__DIR__))
             return url('/');
         });
 
+        $middleware->trustProxies(at: '*');
+
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         $middleware->web(append: [
