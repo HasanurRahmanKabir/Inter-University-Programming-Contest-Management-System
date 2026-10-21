@@ -43,7 +43,7 @@ Route::get('website/volunteer', [VolunteersController::class, 'index']);
 // Registration Form View & Actions
 Route::get('team/registration', [TeamRegistrationController::class, 'index'])->name('team.registration');
 Route::post('/check-duplicate-db', [TeamRegistrationController::class, 'checkDuplicateInDB']);
-Route::match(['get', 'post'], 'team/registration/store', [TeamRegistrationController::class, 'store'])->name('team.registration.store');
+Route::match(['get', 'post'], 'team/registration/submit', [TeamRegistrationController::class, 'store'])->name('team.registration.store');
 
 // User Login Routes
 Route::get('/login', [UserLogin::class, 'index'])->name('user.login');
@@ -156,7 +156,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 Route::group(['prefix' => 'coach', 'middleware' => 'auth:team'], function () {
     Route::get('/dashboard', [CoachController::class, 'index'])->name('coach.dashboard');
     Route::post('/payment/store', [CoachController::class, 'storePayment'])->name('coach.payment.store');
-    Route::match(['get', 'put', 'post'], '/profile/update', [CoachController::class, 'updateProfile'])->name('coach.profile.update');
+    Route::match(['get', 'put', 'post'], '/profile/save', [CoachController::class, 'updateProfile'])->name('coach.profile.update');
 });
 
 // Volunteer Dashboard
