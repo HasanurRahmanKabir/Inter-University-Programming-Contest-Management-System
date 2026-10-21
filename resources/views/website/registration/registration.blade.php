@@ -49,6 +49,27 @@
             color: inherit !important;
         }
 
+        /* Phone Input Restriction Shake & Dynamic Alert */
+        @keyframes subtlePhoneInputShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+        .phone-input-shake {
+            animation: subtlePhoneInputShake 0.3s ease-in-out;
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
+        }
+        .phone-realtime-alert {
+            font-size: 0.78rem;
+            color: #dc2626;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        body[data-theme="dark"] .phone-realtime-alert {
+            color: #f87171 !important;
+        }
+
         /* Image Upload Box & Remove Button */
         .image-upload-wrapper {
             position: relative;
@@ -594,6 +615,70 @@
             validateLocalDuplicate('.check-email', 'Email');
             validateLocalDuplicate('.check-phone', 'Phone Number');
 
+            // --- Phone Input Strict Character Restriction (Only 0-9, +, - allowed, with real-time feedback like Coach Dashboard) ---
+            $('input[name="coach_phone"], .check-phone').each(function () {
+                var phoneInput = $(this);
+                phoneInput.attr({
+                    'inputmode': 'tel',
+                    'autocomplete': 'tel',
+                    'maxlength': '20'
+                });
+
+                // Create dynamic inline alert container if not present
+                var alertNotice = $('<div class="phone-realtime-alert d-none"><i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren\'t allowed. Only 0-9, + and - are accepted.</div>');
+                phoneInput.after(alertNotice);
+
+                var alertTimeout = null;
+
+                function showInvalidWarning() {
+                    alertNotice.removeClass('d-none');
+                    phoneInput.addClass('phone-input-shake');
+                    clearTimeout(alertTimeout);
+                    alertTimeout = setTimeout(function () {
+                        phoneInput.removeClass('phone-input-shake');
+                        alertNotice.addClass('d-none');
+                    }, 2800);
+                }
+
+                function cleanPhoneValue() {
+                    var rawVal = phoneInput.val();
+                    var cleanVal = rawVal.replace(/[^0-9+\-]/g, '');
+                    if (rawVal !== cleanVal) {
+                        phoneInput.val(cleanVal);
+                        showInvalidWarning();
+                    }
+                }
+
+                phoneInput.on('keypress', function (e) {
+                    var char = String.fromCharCode(e.which || e.keyCode);
+                    // Block anything that is not 0-9, +, - (allow backspace, delete, arrows, enter)
+                    if (!/[0-9+\-]/.test(char) && e.which !== 0 && e.which !== 8 && e.which !== 13) {
+                        e.preventDefault();
+                        showInvalidWarning();
+                    }
+                });
+
+                phoneInput.on('input blur', cleanPhoneValue);
+
+                phoneInput.on('paste', function (e) {
+                    var clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                    if (clipboardData) {
+                        var pastedText = clipboardData.getData('text');
+                        if (/[^0-9+\-]/.test(pastedText)) {
+                            e.preventDefault();
+                            var sanitized = pastedText.replace(/[^0-9+\-]/g, '');
+                            var el = this;
+                            var start = el.selectionStart || 0;
+                            var end = el.selectionEnd || 0;
+                            var currentVal = el.value;
+                            var updatedVal = currentVal.substring(0, start) + sanitized + currentVal.substring(end);
+                            el.value = updatedVal.slice(0, 20);
+                            $(el).trigger('input');
+                            showInvalidWarning();
+                        }
+                    }
+                });
+            });
 
             // --- 3. DATABASE DUPLICATE CHECK (AJAX) ---
             $('.check-db').on('blur', function () {
