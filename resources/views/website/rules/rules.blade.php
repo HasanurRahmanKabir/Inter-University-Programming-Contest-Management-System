@@ -126,31 +126,33 @@
                     </p>
                 </div>
                 <div class="col-md-2 mb-4">
-                    @if(!empty($setting->platform_1_name) || !empty($setting->platform_2_name) || !empty($setting->platform_3_name) || !empty($setting->platform_4_name))
-                        <h6 class="fw-bold mb-3">Online Platforms</h6>
-                        <ul class="list-unstyled small">
-                            <li class="mb-2">
-                                <a href="{{ (!empty($setting->platform_1_link)) ? $setting->platform_1_link : '#' }}">
-                                    {{ !empty($setting->platform_1_name) ? $setting->platform_1_name : 'Platform Name 1' }}
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="{{ (!empty($setting->platform_2_link)) ? $setting->platform_2_link : '#' }}">
-                                    {{ !empty($setting->platform_2_name) ? $setting->platform_2_name : 'Platform Name 2' }}
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="{{ (!empty($setting->platform_3_link)) ? $setting->platform_3_link : '#' }}">
-                                    {{ !empty($setting->platform_3_name) ? $setting->platform_3_name : 'Platform Name 3' }}
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="{{ (!empty($setting->platform_4_link)) ? $setting->platform_4_link : '#' }}">
-                                    {{ !empty($setting->platform_4_name) ? $setting->platform_4_name : 'Platform Name 4' }}
-                                </a>
-                            </li>
-                        </ul>
-                    @endif
+                    <h6 class="fw-bold mb-3">Online Platforms</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2">
+                            <a href="{{ (!empty($setting->platform_1_link) && filter_var($setting->platform_1_link, FILTER_VALIDATE_URL)) ? $setting->platform_1_link : 'javascript:void(0)' }}"
+                               {{ (!empty($setting->platform_1_link) && filter_var($setting->platform_1_link, FILTER_VALIDATE_URL)) ? 'target=_blank rel=noopener' : '' }}>
+                                {{ !empty($setting->platform_1_name) ? $setting->platform_1_name : 'Platform Name 1' }}
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ (!empty($setting->platform_2_link) && filter_var($setting->platform_2_link, FILTER_VALIDATE_URL)) ? $setting->platform_2_link : 'javascript:void(0)' }}"
+                               {{ (!empty($setting->platform_2_link) && filter_var($setting->platform_2_link, FILTER_VALIDATE_URL)) ? 'target=_blank rel=noopener' : '' }}>
+                                {{ !empty($setting->platform_2_name) ? $setting->platform_2_name : 'Platform Name 2' }}
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ (!empty($setting->platform_3_link) && filter_var($setting->platform_3_link, FILTER_VALIDATE_URL)) ? $setting->platform_3_link : 'javascript:void(0)' }}"
+                               {{ (!empty($setting->platform_3_link) && filter_var($setting->platform_3_link, FILTER_VALIDATE_URL)) ? 'target=_blank rel=noopener' : '' }}>
+                                {{ !empty($setting->platform_3_name) ? $setting->platform_3_name : 'Platform Name 3' }}
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ (!empty($setting->platform_4_link) && filter_var($setting->platform_4_link, FILTER_VALIDATE_URL)) ? $setting->platform_4_link : 'javascript:void(0)' }}"
+                               {{ (!empty($setting->platform_4_link) && filter_var($setting->platform_4_link, FILTER_VALIDATE_URL)) ? 'target=_blank rel=noopener' : '' }}>
+                                {{ !empty($setting->platform_4_name) ? $setting->platform_4_name : 'Platform Name 4' }}
+                            </a>
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="col-md-2 mb-4">
