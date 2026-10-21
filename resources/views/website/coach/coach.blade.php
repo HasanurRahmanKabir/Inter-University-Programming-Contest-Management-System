@@ -220,15 +220,72 @@
                 font-size: 0.8rem;
             }
             .photo-upload-card {
-                padding: 10px;
+                padding: 12px 10px;
             }
+            .photo-upload-card > .d-flex {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 0 !important;
+            }
+            /* 1. Title at the very top */
+            .photo-upload-card .photo-title-header {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 12px !important;
+            }
+            .photo-upload-card .photo-title-header label.form-label {
+                font-size: 0.95rem;
+                font-weight: 700 !important;
+                text-align: center;
+                display: block;
+                width: 100%;
+                margin: 0 !important;
+                letter-spacing: 0.3px;
+            }
+            /* 2. Photo preview image directly underneath title with balanced margin */
             .modal-photo-preview-box {
-                width: 64px;
-                height: 64px;
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 12px auto !important;
             }
-            .image-specs-badge {
-                font-size: 0.68rem;
-                padding: 3px 6px;
+            /* 3. Controls wrapper below preview */
+            .photo-upload-card .photo-controls-wrap {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            /* 4. Specs info badge placed directly above Choose File input on mobile with clean breathing room */
+            .photo-upload-card .photo-info-row {
+                width: 100%;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center !important;
+                margin-bottom: 10px !important;
+            }
+            .photo-upload-card .image-specs-badge {
+                font-size: 0.72rem;
+                padding: 4px 10px;
+                border-radius: 6px;
+                display: inline-flex;
+                margin: 0 auto !important;
+            }
+            /* 5. Choose file input */
+            .photo-upload-card input[type="file"].form-control {
+                width: 100%;
+                margin: 0 0 10px 0 !important;
+            }
+            /* 6. Format text and remove button at bottom with proper spacing */
+            .photo-upload-card .photo-footer-row {
+                width: 100%;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center !important;
+                gap: 6px;
+                margin-top: 2px !important;
             }
         }
         body[data-theme="dark"] #editProfileModal .nav-tabs {
@@ -651,6 +708,9 @@
                                             @php
                                                 $hasCoachModalPhoto = !empty($user->coach_photo) && file_exists(public_path($user->coach_photo));
                                             @endphp
+                                            <div class="photo-title-header d-block d-sm-none text-center mb-2">
+                                                <label class="form-label small fw-bold mb-0">Coach Photo</label>
+                                            </div>
                                             <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
                                                 <div class="modal-photo-preview-box">
                                                     <img id="coach-photo-preview"
@@ -660,14 +720,17 @@
                                                         alt="Coach Preview">
                                                     <span class="preview-overlay-tag">PREVIEW</span>
                                                 </div>
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+                                                <div class="flex-grow-1 photo-controls-wrap">
+                                                    <div class="d-none d-sm-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
                                                         <label class="form-label small fw-bold mb-0">Coach Photo</label>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
+                                                    </div>
+                                                    <div class="photo-info-row d-sm-none text-center mb-2">
                                                         <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="coach_photo"
                                                         accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="coach-photo-preview">
-                                                    <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
+                                                    <div class="photo-footer-row d-flex flex-wrap justify-content-between align-items-center mt-1">
                                                         <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
                                                         <div class="form-check remove-photo-check m-0 {{ $hasCoachModalPhoto ? '' : 'd-none' }}" id="coachPhotoActionWrap">
                                                             <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_coach_photo" value="1" id="removeCoachPhoto" data-preview="coach-photo-preview" data-saved="{{ $hasCoachModalPhoto ? '1' : '0' }}">
@@ -723,6 +786,9 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="photo-upload-card">
+                                            <div class="photo-title-header d-block d-sm-none text-center mb-2">
+                                                <label class="form-label small fw-bold mb-0">Member 1 Photo</label>
+                                            </div>
                                             <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
                                                 <div class="modal-photo-preview-box">
                                                     <img id="mem1-photo-preview"
@@ -732,14 +798,17 @@
                                                         alt="Member 1 Preview">
                                                     <span class="preview-overlay-tag">PREVIEW</span>
                                                 </div>
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+                                                <div class="flex-grow-1 photo-controls-wrap">
+                                                    <div class="d-none d-sm-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
                                                         <label class="form-label small fw-bold mb-0">Member 1 Photo</label>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
+                                                    </div>
+                                                    <div class="photo-info-row d-sm-none text-center mb-2">
                                                         <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_1_photo"
                                                         accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem1-photo-preview">
-                                                    <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
+                                                    <div class="photo-footer-row d-flex flex-wrap justify-content-between align-items-center mt-1">
                                                         <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
                                                         <div class="form-check remove-photo-check m-0 {{ $hasMem1Photo ? '' : 'd-none' }}" id="mem1PhotoActionWrap">
                                                             <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_1_photo" value="1" id="removeMem1Photo" data-preview="mem1-photo-preview" data-saved="{{ $hasMem1Photo ? '1' : '0' }}">
@@ -780,7 +849,7 @@
                                             inputmode="tel" maxlength="20"
                                             placeholder="e.g., +8801700000000" autocomplete="tel">
                                         <div class="coach-phone-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
-                                            <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                             <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -795,6 +864,9 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="photo-upload-card">
+                                            <div class="photo-title-header d-block d-sm-none text-center mb-2">
+                                                <label class="form-label small fw-bold mb-0">Member 2 Photo</label>
+                                            </div>
                                             <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
                                                 <div class="modal-photo-preview-box">
                                                     <img id="mem2-photo-preview"
@@ -804,14 +876,17 @@
                                                         alt="Member 2 Preview">
                                                     <span class="preview-overlay-tag">PREVIEW</span>
                                                 </div>
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+                                                <div class="flex-grow-1 photo-controls-wrap">
+                                                    <div class="d-none d-sm-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
                                                         <label class="form-label small fw-bold mb-0">Member 2 Photo</label>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
+                                                    </div>
+                                                    <div class="photo-info-row d-sm-none text-center mb-2">
                                                         <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_2_photo"
                                                         accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem2-photo-preview">
-                                                    <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
+                                                    <div class="photo-footer-row d-flex flex-wrap justify-content-between align-items-center mt-1">
                                                         <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
                                                         <div class="form-check remove-photo-check m-0 {{ $hasMem2Photo ? '' : 'd-none' }}" id="mem2PhotoActionWrap">
                                                             <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_2_photo" value="1" id="removeMem2Photo" data-preview="mem2-photo-preview" data-saved="{{ $hasMem2Photo ? '1' : '0' }}">
@@ -852,7 +927,7 @@
                                             inputmode="tel" maxlength="20"
                                             placeholder="e.g., +8801700000000" autocomplete="tel">
                                         <div class="coach-phone-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
-                                            <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                             <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -867,6 +942,9 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="photo-upload-card">
+                                            <div class="photo-title-header d-block d-sm-none text-center mb-2">
+                                                <label class="form-label small fw-bold mb-0">Member 3 Photo</label>
+                                            </div>
                                             <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
                                                 <div class="modal-photo-preview-box">
                                                     <img id="mem3-photo-preview"
@@ -876,14 +954,17 @@
                                                         alt="Member 3 Preview">
                                                     <span class="preview-overlay-tag">PREVIEW</span>
                                                 </div>
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+                                                <div class="flex-grow-1 photo-controls-wrap">
+                                                    <div class="d-none d-sm-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
                                                         <label class="form-label small fw-bold mb-0">Member 3 Photo</label>
+                                                        <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
+                                                    </div>
+                                                    <div class="photo-info-row d-sm-none text-center mb-2">
                                                         <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_3_photo"
                                                         accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem3-photo-preview">
-                                                    <div class="d-flex flex-wrap justify-content-between align-items-center mt-1">
+                                                    <div class="photo-footer-row d-flex flex-wrap justify-content-between align-items-center mt-1">
                                                         <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
                                                         <div class="form-check remove-photo-check m-0 {{ $hasMem3Photo ? '' : 'd-none' }}" id="mem3PhotoActionWrap">
                                                             <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_3_photo" value="1" id="removeMem3Photo" data-preview="mem3-photo-preview" data-saved="{{ $hasMem3Photo ? '1' : '0' }}">
