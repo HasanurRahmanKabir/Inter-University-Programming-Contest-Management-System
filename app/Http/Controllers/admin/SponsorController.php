@@ -90,7 +90,7 @@ class SponsorController extends Controller
 
         cache()->forget('homepage_sponsors');
 
-        return redirect('/admin/dashboard/sponsor')->with('success', 'Sponsor Updated Successfully');
+        return redirect()->route('admin.sponsor.index')->with('success', 'Sponsor Updated Successfully');
     }
     public function destroy($id)
     {

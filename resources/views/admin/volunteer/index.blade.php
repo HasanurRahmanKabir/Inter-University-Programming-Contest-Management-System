@@ -132,7 +132,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('admin/dashboard/volunteer/store') }}" method="post">
+                    <form action="{{ route('admin.volunteer.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="modal_id" value="addVolunteerModal">
                         
@@ -365,7 +365,7 @@
                         
                         <div class="d-flex flex-wrap justify-content-center gap-2">
                             <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ url('/admin/dashboard/volunteer/delete/' . $data->volunteer_id) }}" method="post" class="m-0">
+                            <form action="{{ route('admin.volunteer.destroy', $data->volunteer_id) }}" method="post" class="m-0">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>

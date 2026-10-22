@@ -40,33 +40,33 @@
             <a class="{{ Request::is('admin/dashboard') ? 'active' : '' }}" href="{{ url('admin/dashboard') }}"><i
                     class="fas fa-th-large"></i> Dashboard</a>
 
-            <a class="{{ Request::is('admin/dashboard/contest') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/contest') }}"><i class="fas fa-trophy"></i> Contests</a>
-            <a class="{{ Request::is('admin/dashboard/team') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/team') }}"><i class="fas fa-users"></i> Teams</a>
-            <a class="{{ Request::is('admin/dashboard/payment') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/payment') }}"><i class="fas fa-credit-card"></i> Payments</a>
-            <a class="{{ Request::is('admin/dashboard/kitstatus') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/kitstatus') }}"><i class="fas fa-gift"></i> Kit Status</a>
-            <a class="{{ Request::is('admin/dashboard/downloaddetails') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/downloaddetails') }}"><i class="fas fa-download fa-lg me-2"></i>
+            <a class="{{ Request::is('admin/contests*') ? 'active' : '' }}"
+                href="{{ url('admin/contests') }}"><i class="fas fa-trophy"></i> Contests</a>
+            <a class="{{ Request::is('admin/teams*') ? 'active' : '' }}"
+                href="{{ url('admin/teams') }}"><i class="fas fa-users"></i> Teams</a>
+            <a class="{{ Request::is('admin/payments*') ? 'active' : '' }}"
+                href="{{ url('admin/payments') }}"><i class="fas fa-credit-card"></i> Payments</a>
+            <a class="{{ Request::is('admin/kit-status*') ? 'active' : '' }}"
+                href="{{ url('admin/kit-status') }}"><i class="fas fa-gift"></i> Kit Status</a>
+            <a class="{{ Request::is('admin/download-details*') ? 'active' : '' }}"
+                href="{{ url('admin/download-details') }}"><i class="fas fa-download fa-lg me-2"></i>
                 Download Details</a>
 
-            <a class="{{ Request::is('admin/dashboard/volunteer') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/volunteer') }}"><i class="fas fa-hand-holding-heart"></i> Volunteers</a>
-            <a class="{{ Request::is('admin/dashboard/sponsor') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/sponsor') }}"><i class="fas fa-ad"></i> Sponsors</a>
-            <a class="{{ Request::is('admin/dashboard/notice') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/notice') }}"><i class="fas fa-bullhorn"></i> Notices</a>
-            <a class="{{ Request::is('admin/dashboard/rules') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/rules') }}"><i class="fas fa-clipboard-list"></i> Rules</a>
-            <a class="{{ Request::is('admin/dashboard/gallery') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/gallery') }}"><i class="fas fa-images"></i> Gallery</a>
+            <a class="{{ Request::is('admin/volunteers*') ? 'active' : '' }}"
+                href="{{ url('admin/volunteers') }}"><i class="fas fa-hand-holding-heart"></i> Volunteers</a>
+            <a class="{{ Request::is('admin/sponsors*') ? 'active' : '' }}"
+                href="{{ url('admin/sponsors') }}"><i class="fas fa-ad"></i> Sponsors</a>
+            <a class="{{ Request::is('admin/notices*') ? 'active' : '' }}"
+                href="{{ url('admin/notices') }}"><i class="fas fa-bullhorn"></i> Notices</a>
+            <a class="{{ Request::is('admin/rules*') ? 'active' : '' }}"
+                href="{{ url('admin/rules') }}"><i class="fas fa-clipboard-list"></i> Rules</a>
+            <a class="{{ Request::is('admin/gallery*') ? 'active' : '' }}"
+                href="{{ url('admin/gallery') }}"><i class="fas fa-images"></i> Gallery</a>
 
-            <a class="{{ Request::is('admin/dashboard/admin') ? 'active' : '' }}"
-                href=" {{ url('admin/dashboard/admin') }}"><i class="fas fa-user-cog"></i> Admins</a>
-            <a class="{{ Request::is('admin/dashboard/website-settings') ? 'active' : '' }}" 
-                href="{{ url('admin/dashboard/website-settings') }}">
+            <a class="{{ Request::is('admin/admins*') ? 'active' : '' }}"
+                href="{{ url('admin/admins') }}"><i class="fas fa-user-cog"></i> Admins</a>
+            <a class="{{ Request::is('admin/website-settings*') ? 'active' : '' }}" 
+                href="{{ url('admin/website-settings') }}">
                 <i class="fas fa-cogs"></i> Website Settings</a>    
 
             <!-- Clear Cache -->

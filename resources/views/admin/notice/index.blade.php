@@ -64,7 +64,7 @@
             @php
                 $hasFilter = request()->filled('search') || (request()->has('audience') && request('audience') !== '' && request('audience') !== null) || (request()->has('status') && request('status') !== '' && request('status') !== null);
             @endphp
-            <form method="GET" action="{{ url('admin/dashboard/notice') }}" class="row mb-3 g-2" id="noticeFilterForm">
+            <form method="GET" action="{{ route('admin.notice.index') }}" class="row mb-3 g-2" id="noticeFilterForm">
                 <div class="col-md-4 col-12">
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
@@ -186,7 +186,7 @@
                     <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('admin/dashboard/notice/store') }}" method="post">
+                    <form action="{{ route('admin.notice.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="modal_id" value="createNoticeModal">
                         
@@ -333,7 +333,7 @@
                         
                         <div class="d-flex flex-wrap justify-content-center gap-2">
                             <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ url('/admin/dashboard/notice/delete/' . $data->notice_id) }}" method="post" class="m-0">
+                            <form action="{{ route('admin.notice.destroy', $data->notice_id) }}" method="post" class="m-0">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>
@@ -378,7 +378,7 @@
                             modalDate.value = data.notice_date;
                             modalStatus.value = data.status;
 
-                            modalForm.action = "{{ url('/admin/dashboard/notice/update') }}/" + data.id;
+                            modalForm.action = "{{ url('/admin/notices') }}/" + data.id;
 
                         } catch (error) {
                             console.error("Error parsing notice data:", error);
@@ -440,7 +440,7 @@
             if (!filterForm || !searchInput || !audienceSelect || !statusSelect || !resetBtn) return;
 
             const hasActiveUrlFilter = {{ $hasFilter ? 'true' : 'false' }};
-            const cleanUrl = "{{ url('admin/dashboard/notice') }}";
+            const cleanUrl = "{{ route('admin.notice.index') }}";
 
             function updateResetButtonState() {
                 const hasClientValues = (searchInput.value.trim() !== '') || 

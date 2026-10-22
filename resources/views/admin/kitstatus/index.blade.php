@@ -89,7 +89,7 @@
             @php
                 $hasFilter = request()->filled('q') || (request()->has('filter') && request('filter') !== '' && request('filter') !== null);
             @endphp
-            <form method="GET" action="{{ url('admin/dashboard/kitstatus') }}" id="kitFilterForm">
+            <form method="GET" action="{{ route('admin.kitstatus.index') }}" id="kitFilterForm">
                 <div class="row mb-3 g-2">
                     <div class="col-md-5 col-12">
                         <div class="input-group">
@@ -299,7 +299,7 @@
                     editKitComments.value = comments || '';
 
                     // Set Form Action URL dynamically
-                    editForm.action = "{{ url('/admin/dashboard/kitstatus/update') }}/" + id;
+                    editForm.action = "{{ url('/admin/kit-status') }}/" + id;
                 });
             });
 
@@ -356,7 +356,7 @@
             if (!filterForm || !searchInput || !filterSelect || !resetBtn) return;
 
             const hasActiveUrlFilter = {{ $hasFilter ? 'true' : 'false' }};
-            const cleanUrl = "{{ url('admin/dashboard/kitstatus') }}";
+            const cleanUrl = "{{ route('admin.kitstatus.index') }}";
 
             function updateResetButtonState() {
                 const hasClientValues = (searchInput.value.trim() !== '') || 

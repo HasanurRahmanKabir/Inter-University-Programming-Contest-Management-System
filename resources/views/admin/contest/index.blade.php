@@ -225,7 +225,7 @@
                         </div>
                     </div>
 
-                    <form action="{{ url('admin/dashboard/contest/store') }}" method="post">
+                    <form action="{{ route('admin.contest.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="modal_id" value="addContestModal">
 
@@ -471,7 +471,7 @@
                         
                         <div class="d-flex flex-wrap justify-content-center gap-2">
                             <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ url('/admin/dashboard/contest/delete/' . $data->contest_id) }}" method="post" class="m-0">
+                            <form action="{{ route('admin.contest.destroy', $data->contest_id) }}" method="post" class="m-0">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>

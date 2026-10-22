@@ -43,7 +43,7 @@ class ContestController extends Controller
         cache()->forget('homepage_contest_latest');
         cache()->forget('homepage_contest_info');
 
-        return redirect('admin/dashboard/contest')->with('success', 'Contest Added Successfully');
+        return redirect()->route('admin.contest.index')->with('success', 'Contest Added Successfully');
     }
     
     public function update(Request $request, $contest_id)
@@ -76,7 +76,7 @@ class ContestController extends Controller
         cache()->forget('homepage_contest_latest');
         cache()->forget('homepage_contest_info');
 
-        return redirect('admin/dashboard/contest')->with('success', 'Contest Updated Successfully');
+        return redirect()->route('admin.contest.index')->with('success', 'Contest Updated Successfully');
     }
 
 

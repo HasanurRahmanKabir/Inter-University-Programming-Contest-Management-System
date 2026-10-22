@@ -162,7 +162,7 @@
                     <div class="modal-body bg-light">
 
                         
-                        <form action="{{ url('/admin/dashboard/team/update/' . $data->team_id) }}" method="POST"
+                        <form action="{{ route('team.update', $data->team_id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -509,7 +509,7 @@
                         
                         <div class="d-flex flex-wrap justify-content-center gap-2">
                             <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ url('/admin/dashboard/team/delete/' . $data->team_id) }}" method="post" class="m-0">
+                            <form action="{{ route('admin.team.destroy', $data->team_id) }}" method="post" class="m-0">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>

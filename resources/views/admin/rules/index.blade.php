@@ -75,7 +75,7 @@
                        </div>
                    </div>
 
-                   <form action="{{ url('/admin/dashboard/rules/store') }}" method="post">
+                   <form action="{{ route('admin.rules.store') }}" method="post">
                        @csrf
                        <input type="hidden" name="modal_id" value="addRuleModal">
                        <input type="hidden" name="is_published" value="1">
@@ -255,7 +255,7 @@
                                                        
                                                        <div class="d-flex justify-content-center gap-2 flex-wrap">
                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                                           <form action="{{ url('/admin/dashboard/rules/delete/' . $rule->rules_id) }}" method="post" class="m-0">
+                                                           <form action="{{ route('admin.rules.destroy', $rule->rules_id) }}" method="post" class="m-0">
                                                                @csrf
                                                                @method('delete')
                                                                <button type="submit" class="btn btn-danger px-4">Yes, Delete</button>

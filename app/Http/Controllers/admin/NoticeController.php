@@ -54,7 +54,7 @@ class NoticeController extends Controller
 
         cache()->forget('homepage_notices');
 
-        return redirect('admin/dashboard/notice')->with('success', 'Notice Added Successfully');
+        return redirect()->route('admin.notice.index')->with('success', 'Notice Added Successfully');
     }
     public function update(Request $request, $notice_id)
     {
@@ -76,7 +76,7 @@ class NoticeController extends Controller
 
         cache()->forget('homepage_notices');
 
-        return redirect('admin/dashboard/notice')->with('success', 'Notice Updated Successfully');
+        return redirect()->route('admin.notice.index')->with('success', 'Notice Updated Successfully');
     }
     public function destroy($id)
     {

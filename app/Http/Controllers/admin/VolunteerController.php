@@ -37,7 +37,7 @@ class VolunteerController extends Controller
 
         ]);
 
-        return redirect('admin/dashboard/volunteer')->with('success', 'Volunteer Added Successfully');
+        return redirect()->route('admin.volunteer.index')->with('success', 'Volunteer Added Successfully');
     }
     public function update(Request $request, $volunteer_id)
     {
@@ -65,7 +65,7 @@ class VolunteerController extends Controller
 
         $volunteer->update($updateData);
 
-        return redirect('admin/dashboard/volunteer')->with('success', 'Volunteer Updated Successfully');
+        return redirect()->route('admin.volunteer.index')->with('success', 'Volunteer Updated Successfully');
     }
     public function destroy($id)
     {

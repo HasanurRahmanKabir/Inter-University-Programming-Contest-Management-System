@@ -91,7 +91,7 @@
             @php
                 $hasFilter = request()->filled('search') || request()->filled('status') || request()->filled('platform');
             @endphp
-            <form action="{{ url('admin/dashboard/payment') }}" method="GET" id="paymentFilterForm">
+            <form action="{{ route('admin.payment.index') }}" method="GET" id="paymentFilterForm">
 
                 <div class="row mb-3 g-2">
                     <div class="col-md-4">
@@ -325,7 +325,7 @@
             if (!filterForm || !searchInput || !statusSelect || !platformSelect || !resetBtn) return;
 
             const hasActiveUrlFilter = {{ $hasFilter ? 'true' : 'false' }};
-            const cleanUrl = "{{ url('admin/dashboard/payment') }}";
+            const cleanUrl = "{{ route('admin.payment.index') }}";
 
             function updateResetButtonState() {
                 const hasClientValues = (searchInput.value.trim() !== '') || 

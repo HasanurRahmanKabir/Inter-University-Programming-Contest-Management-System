@@ -188,7 +188,7 @@
                     <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('/admin/dashboard/sponsor/store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('admin.sponsor.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="modal_id" value="addSponsorModal">
                         
@@ -371,7 +371,7 @@
                         
                         <div class="d-flex justify-content-center gap-2 flex-wrap">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ url('/admin/dashboard/sponsor/delete/' . $data->sponsor_id) }}" method="post" class="m-0">
+                            <form action="{{ route('admin.sponsor.destroy', $data->sponsor_id) }}" method="post" class="m-0">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger px-4">Yes, Delete</button>

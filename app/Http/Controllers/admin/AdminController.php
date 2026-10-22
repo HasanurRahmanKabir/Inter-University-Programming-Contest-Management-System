@@ -36,7 +36,7 @@ class AdminController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect('admin/dashboard/admin')->with('success', 'Admin Added Successfully');
+        return redirect()->route('admin.admins.index')->with('success', 'Admin Added Successfully');
     }
 
     public function update(Request $request, $admin_id)
@@ -65,7 +65,7 @@ class AdminController extends Controller
         }
 
         $admin->update($updateData);
-        return redirect('admin/dashboard/admin')->with('success', 'Admin Updated Successfully');
+        return redirect()->route('admin.admins.index')->with('success', 'Admin Updated Successfully');
     }
     public function destroy($id)
     {

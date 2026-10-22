@@ -75,7 +75,7 @@ class KitStatusController extends Controller
             'comments' => $request->comments,
         ]);
 
-        return redirect('/admin/dashboard/kitstatus')->with('success', 'Kit Received Successfully');
+        return redirect()->route('admin.kitstatus.index')->with('success', 'Kit Received Successfully');
     }
 
     public function update(Request $request, $team_id)
