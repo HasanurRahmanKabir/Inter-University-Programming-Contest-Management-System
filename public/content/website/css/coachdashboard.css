@@ -232,3 +232,11 @@
       .modal-body { padding: 10px; }
       .nav-tabs .nav-link { padding: 8px 10px; font-size: 13px; }
     }
+
+    @media (max-width: 360px) {
+      .modal-footer,
+      .modal-body .d-flex.flex-wrap.justify-content-center {
+        flex-wrap: wrap-reverse !important;
+        justify-content: center !important;
+      }
+    }

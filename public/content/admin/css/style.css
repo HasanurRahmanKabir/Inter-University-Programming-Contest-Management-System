@@ -333,4 +333,14 @@ body {
   }
 }
 
+@media (max-width: 360px) {
+  .modal-footer,
+  .modal-body .d-flex.flex-wrap.justify-content-center {
+    flex-wrap: wrap-reverse !important;
+    justify-content: center !important;
+  }
+}
+
+
+
 /* admins css end*/

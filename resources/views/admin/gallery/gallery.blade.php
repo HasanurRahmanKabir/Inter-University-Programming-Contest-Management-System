@@ -144,7 +144,7 @@
                             @error('event_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
-                        <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
+                        <div class="modal-footer px-0 pb-0 mt-4 border-0">
                             <button type="button" class="btn btn-light text-nowrap" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary px-4 text-nowrap">Upload</button>
                         </div>
