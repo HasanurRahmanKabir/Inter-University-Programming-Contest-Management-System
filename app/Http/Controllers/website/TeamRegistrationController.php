@@ -70,7 +70,10 @@ class TeamRegistrationController extends Controller
             'password' => 'required|confirmed|min:6',
 
             'coach_email' => 'required|email|unique:team_registration_infos,coach_email',
-            'coach_phone' => 'required|unique:team_registration_infos,coach_phone',
+            'coach_phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-]+$/', 'unique:team_registration_infos,coach_phone'],
+            'mem_1_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+            'mem_2_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+            'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
 
             'mem_1_student_id' => 'required|unique:team_registration_infos,mem_1_student_id',
             'mem_1_email' => 'required|email|unique:team_registration_infos,mem_1_email',
@@ -81,13 +84,13 @@ class TeamRegistrationController extends Controller
             'mem_3_student_id' => 'required|unique:team_registration_infos,mem_3_student_id',
             'mem_3_email' => 'required|email|unique:team_registration_infos,mem_3_email',
 
-            'coach_photo' => 'nullable',
+            'coach_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
             'coach_photo_base64' => 'nullable|string',
-            'mem_1_photo' => 'nullable',
+            'mem_1_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
             'mem_1_photo_base64' => 'nullable|string',
-            'mem_2_photo' => 'nullable',
+            'mem_2_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
             'mem_2_photo_base64' => 'nullable|string',
-            'mem_3_photo' => 'nullable',
+            'mem_3_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
             'mem_3_photo_base64' => 'nullable|string',
         ]);
 

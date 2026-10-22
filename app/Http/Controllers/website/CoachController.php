@@ -25,6 +25,13 @@ class CoachController extends Controller
 
     public function storePayment(Request $request)
     {
+        $request->validate([
+            'payment_method' => 'required|string|max:50',
+            'transaction_id' => 'required|string|max:100|regex:/^[A-Za-z0-9\-_]+$/',
+        ], [
+            'transaction_id.regex' => 'The transaction ID may only contain letters, numbers, dashes, and underscores.',
+        ]);
+
         $team = Auth::guard('team')->user();
 
         Payment::updateOrCreate(
@@ -32,7 +39,7 @@ class CoachController extends Controller
             [
                 'platform' => $request->payment_method,
                 'amount' => 1500.00,
-                'transaction_id' => $request->transaction_id,
+                'transaction_id' => trim($request->transaction_id),
                 'payment_status' => 0
             ]
         );
@@ -76,7 +83,7 @@ class CoachController extends Controller
             'coach_name' => 'required|string|max:255',
             'coach_phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'coach_t_shirt' => 'required',
-            'coach_photo' => 'nullable',
+            'coach_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
             'coach_photo_base64' => 'nullable|string',
 
             // Member 1 Validation (Required as per database schema)
@@ -85,7 +92,7 @@ class CoachController extends Controller
             'mem_1_email' => 'required|email|max:255|unique:team_registration_infos,mem_1_email,' . $team->team_id . ',team_id',
             'mem_1_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_1_t_shirt' => 'nullable|string|max:10',
-            'mem_1_photo' => 'nullable',
+            'mem_1_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
             'mem_1_photo_base64' => 'nullable|string',
 
             // Member 2 Validation
@@ -94,7 +101,7 @@ class CoachController extends Controller
             'mem_2_email' => 'required|email|max:255|unique:team_registration_infos,mem_2_email,' . $team->team_id . ',team_id',
             'mem_2_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_2_t_shirt' => 'nullable|string|max:10',
-            'mem_2_photo' => 'nullable',
+            'mem_2_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
             'mem_2_photo_base64' => 'nullable|string',
 
             // Member 3 Validation
@@ -103,7 +110,7 @@ class CoachController extends Controller
             'mem_3_email' => 'required|email|max:255|unique:team_registration_infos,mem_3_email,' . $team->team_id . ',team_id',
             'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_3_t_shirt' => 'nullable|string|max:10',
-            'mem_3_photo' => 'nullable',
+            'mem_3_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
             'mem_3_photo_base64' => 'nullable|string',
 
             // Password update (Optional - Leave blank to keep current)

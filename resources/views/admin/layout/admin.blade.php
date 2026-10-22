@@ -135,8 +135,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="profilePhone" class="form-label text-muted small fw-bold">Phone Number</label>
-                            <input type="text" name="phone" id="profilePhone" class="form-control" value="{{ Auth::guard('admin')->user()->phone }}" required />
+                            <label for="profilePhone" class="form-label text-muted small fw-bold d-flex justify-content-between align-items-center mb-1">
+                                <span>Phone Number</span>
+                                <span class="badge bg-light text-secondary border fw-normal py-1 px-2" style="font-size: 0.68rem; letter-spacing: 0.2px;">Digits, +, - only</span>
+                            </label>
+                            <input type="text" name="phone" id="profilePhone" class="form-control admin-profile-phone-input" value="{{ Auth::guard('admin')->user()->phone }}" required inputmode="tel" maxlength="20" placeholder="+8801XXXXXXXXX" />
+                            <div class="admin-profile-phone-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                <i class="fas fa-exclamation-circle me-1"></i>Letters and symbols are not allowed in phone number!
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -296,6 +302,73 @@
                 }
             });
         })();
+    </script>
+    <style>
+        @keyframes adminProfileShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+        .admin-profile-phone-shake {
+            animation: adminProfileShake 0.3s ease-in-out;
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
+        }
+        body[data-theme="dark"] .admin-profile-phone-alert {
+            color: #f87171 !important;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var profilePhoneInput = document.getElementById('profilePhone');
+            if (!profilePhoneInput) return;
+
+            var alertNotice = profilePhoneInput.parentElement.querySelector('.admin-profile-phone-alert');
+            var alertTimeout = null;
+
+            function showWarning() {
+                if (alertNotice) alertNotice.classList.remove('d-none');
+                profilePhoneInput.classList.add('admin-profile-phone-shake');
+                clearTimeout(alertTimeout);
+                alertTimeout = setTimeout(function() {
+                    profilePhoneInput.classList.remove('admin-profile-phone-shake');
+                    if (alertNotice) alertNotice.classList.add('d-none');
+                }, 2800);
+            }
+
+            function sanitize() {
+                var raw = profilePhoneInput.value;
+                var cleaned = raw.replace(/[^0-9+\-]/g, '');
+                if (raw !== cleaned) {
+                    profilePhoneInput.value = cleaned;
+                    showWarning();
+                }
+            }
+
+            profilePhoneInput.addEventListener('input', sanitize);
+            profilePhoneInput.addEventListener('blur', sanitize);
+
+            profilePhoneInput.addEventListener('keypress', function(e) {
+                var char = String.fromCharCode(e.which || e.keyCode);
+                if (!/[0-9+\-]/.test(char) && e.which !== 0 && e.which !== 8 && e.which !== 13) {
+                    e.preventDefault();
+                    showWarning();
+                }
+            });
+
+            profilePhoneInput.addEventListener('paste', function(e) {
+                var pasted = (e.clipboardData || window.clipboardData).getData('text');
+                if (/[^0-9+\-]/.test(pasted)) {
+                    e.preventDefault();
+                    var filtered = pasted.replace(/[^0-9+\-]/g, '');
+                    var start = profilePhoneInput.selectionStart || 0;
+                    var end = profilePhoneInput.selectionEnd || 0;
+                    var current = profilePhoneInput.value;
+                    profilePhoneInput.value = (current.substring(0, start) + filtered + current.substring(end)).slice(0, 20);
+                    showWarning();
+                }
+            });
+        });
     </script>
 </body>
 

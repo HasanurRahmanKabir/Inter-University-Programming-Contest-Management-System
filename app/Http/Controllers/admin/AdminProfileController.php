@@ -16,7 +16,9 @@ class AdminProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:admin_infos,email,' . $admin->admin_id . ',admin_id',
-            'phone' => 'required|string|max:20',
+            'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+        ], [
+            'phone.regex' => 'The phone number may only contain digits (0-9), +, and -.',
         ]);
 
         $admin->update([
