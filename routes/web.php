@@ -179,15 +179,6 @@ Route::get('storage/{filename}', function ($filename) {
     return $response;
 })->where('filename', '.*');
 
-Route::get('/storage-link', function () {
-    try {
-        Artisan::call('storage:link');
-        return 'The [public/storage] directory has been linked successfully!';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
-    }
-});
-
 Route::get('/databasefresh-seed', function () {
     try {
         Artisan::call('migrate:fresh', [
