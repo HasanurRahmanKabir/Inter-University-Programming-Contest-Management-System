@@ -302,10 +302,14 @@
                         @endfor
                     </div>
 
-                    <div class="mt-4 pt-3 border-top d-flex flex-column flex-sm-row gap-2">
-                        <button type="submit" class="btn btn-primary px-4 shadow-sm flex-grow-1 flex-sm-grow-0"><i class="fas fa-save me-2"></i>Save
-                            Changes</button>
-                        <button type="reset" class="btn btn-outline-secondary px-4 flex-grow-1 flex-sm-grow-0">Reset</button>
+                    <div class="mt-4 pt-3 border-top d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center gap-3">
+                        <div class="d-flex align-items-center order-2 order-sm-1">
+                            <span id="unsavedChangesHint" class="text-muted small d-none"><i class="fas fa-info-circle me-1 text-primary"></i>You have unsaved changes</span>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row justify-content-end align-items-stretch align-items-sm-center gap-2 order-1 order-sm-2">
+                            <button type="button" id="mainWebsiteSettingsDiscardBtn" class="btn btn-outline-secondary px-4 order-2 order-sm-1" style="display: none;"><i class="fas fa-undo me-1"></i>Discard Changes</button>
+                            <button type="submit" id="mainWebsiteSettingsSaveBtn" class="btn btn-primary px-4 shadow-sm order-1 order-sm-2" disabled><i class="fas fa-save me-2"></i>Save Changes</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -616,6 +620,66 @@
                     this.classList.remove('is-invalid');
                 });
             });
+
+            // Modern Industry-Standard Form Change Detection (Dirty Check)
+            const settingsForm = document.querySelector('form[action*="website-settings"]');
+            const saveBtn = document.getElementById('mainWebsiteSettingsSaveBtn');
+            const resetBtn = document.getElementById('mainWebsiteSettingsDiscardBtn');
+            const hintSpan = document.getElementById('unsavedChangesHint');
+
+            if (settingsForm && saveBtn) {
+                const getFormSignature = () => {
+                    const formData = new FormData(settingsForm);
+                    const entries = [];
+                    for (const [key, value] of formData.entries()) {
+                        if (value instanceof File) {
+                            entries.push(key + ':' + value.name + ':' + value.size);
+                        } else {
+                            entries.push(key + ':' + value);
+                        }
+                    }
+                    return entries.join('|');
+                };
+
+                const initialSignature = getFormSignature();
+
+                const checkChanges = () => {
+                    const currentSignature = getFormSignature();
+                    const hasChanges = (currentSignature !== initialSignature);
+
+                    saveBtn.disabled = !hasChanges;
+                    if (resetBtn) {
+                        resetBtn.style.display = hasChanges ? 'inline-block' : 'none';
+                    }
+                    if (hintSpan) {
+                        if (hasChanges) {
+                            hintSpan.classList.remove('d-none');
+                        } else {
+                            hintSpan.classList.add('d-none');
+                        }
+                    }
+                };
+
+                settingsForm.addEventListener('input', checkChanges);
+                settingsForm.addEventListener('change', checkChanges);
+
+                settingsForm.addEventListener('submit', function () {
+                    // Show immediate saving state without visual hitch
+                    saveBtn.disabled = true;
+                    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+                });
+
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', function () {
+                        settingsForm.reset();
+                        // Clear image previews that were changed
+                        document.querySelectorAll('input[type="file"]').forEach(input => {
+                            input.dispatchEvent(new Event('change'));
+                        });
+                        setTimeout(checkChanges, 50);
+                    });
+                }
+            }
         });
     </script>
     </div>
