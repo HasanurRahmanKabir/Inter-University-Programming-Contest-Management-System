@@ -114,13 +114,10 @@
                                 </ul>
                             </div>
                         @endif
-                        <div class="text-center mb-3">
+                        <div class="text-center mb-4">
                             <img id="profileAvatar"
                                 src="https://ui-avatars.com/api/?name={{ urlencode(Auth::guard('admin')->user()->name) }}&background=0D8ABC&color=fff"
-                                class="rounded-circle mb-2" width="90" height="90" alt="Avatar" />
-                            <div class="small text-muted">
-                                Avatar is generated from your name
-                            </div>
+                                class="rounded-circle shadow-sm" width="90" height="90" alt="Avatar" />
                         </div>
 
                         <div class="mb-3">
@@ -147,7 +144,11 @@
 
                         <div class="mb-3">
                             <label for="profileRole" class="form-label text-muted small fw-bold">Role</label>
-                            <input type="text" id="profileRole" class="form-control" value="{{ Auth::guard('admin')->user()->role ?? 'Super Admin' }}"
+                            @php
+                                $adminRoleVal = Auth::guard('admin')->user()->role ?? null;
+                                $displayRole = ($adminRoleVal === 0 || $adminRoleVal === '0') ? 'Super Admin' : (($adminRoleVal === 1 || $adminRoleVal === '1') ? 'Admin' : ($adminRoleVal ?? 'Super Admin'));
+                            @endphp
+                            <input type="text" id="profileRole" class="form-control" value="{{ $displayRole }}"
                                 readonly />
                         </div>
                     </div>
