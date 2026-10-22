@@ -234,7 +234,7 @@
     }
 
     @media (max-width: 360px) {
-      .modal-footer,
+      .modal-footer:has(> :nth-child(2)),
       .modal-body .d-flex.flex-wrap.justify-content-center {
         flex-wrap: wrap-reverse !important;
         justify-content: center !important;
