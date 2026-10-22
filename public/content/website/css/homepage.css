@@ -361,10 +361,11 @@
         /* --- Gallery --- */
         .gallery-img {
             width: 100%;
-            height: auto;
-            object-fit: contain;
-            background-color: #000;
-            border-radius: 10px;
+            height: 500px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s;
         }
 
@@ -373,7 +374,20 @@
         }
 
         .gallery-img:hover {
-            transform: scale(1.03);
+            transform: scale(1.01);
+        }
+
+        @media (max-width: 991.98px) {
+            .gallery-img {
+                height: 380px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-img {
+                height: 260px;
+                border-radius: 8px;
+            }
         }
 
         .empty-gallery-card {

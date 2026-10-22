@@ -292,7 +292,7 @@
                 </div>
 
                 @if($galleries->isNotEmpty())
-                    <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-touch="true">
 
                         <div class="carousel-inner">
                             @foreach ($galleries as $key => $gallery)
@@ -551,6 +551,34 @@
                             behavior: "smooth"
                         });
                     });
+                }
+
+                // Robust Touch Swipe for Photo Gallery Carousel
+                const galleryEl = document.getElementById('galleryCarousel');
+                if (galleryEl && typeof bootstrap !== 'undefined') {
+                    const carouselInstance = bootstrap.Carousel.getOrCreateInstance(galleryEl, {
+                        touch: true
+                    });
+
+                    let touchStartX = 0;
+                    let touchEndX = 0;
+
+                    galleryEl.addEventListener('touchstart', function (e) {
+                        touchStartX = e.changedTouches[0].screenX;
+                    }, { passive: true });
+
+                    galleryEl.addEventListener('touchend', function (e) {
+                        touchEndX = e.changedTouches[0].screenX;
+                        const diffX = touchStartX - touchEndX;
+                        // Minimum swipe threshold of 40px
+                        if (Math.abs(diffX) > 40) {
+                            if (diffX > 0) {
+                                carouselInstance.next();
+                            } else {
+                                carouselInstance.prev();
+                            }
+                        }
+                    }, { passive: true });
                 }
             });
         </script>
