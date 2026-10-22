@@ -20,7 +20,7 @@ class CoachController extends Controller
         $payment = Payment::where('team_name', $user->team_name)->first();
         $contest = Contest::latest('contest_id')->first();
 
-        return view('website.coach.coach', compact('user', 'payment', 'contest', 'setting'));
+        return view('website.coach.index', compact('user', 'payment', 'contest', 'setting'));
     }
 
     public function storePayment(Request $request)

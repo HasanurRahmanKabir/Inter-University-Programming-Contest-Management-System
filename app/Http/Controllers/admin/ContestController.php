@@ -11,7 +11,7 @@ class ContestController extends Controller
     public function index()
     {
         $contest = Contest::all();
-        return view('admin.contest.contest', compact('contest'));
+        return view('admin.contest.index', compact('contest'));
     }
     public function store(Request $request)
     {

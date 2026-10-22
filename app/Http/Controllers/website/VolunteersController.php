@@ -24,7 +24,7 @@ class VolunteersController extends Controller
             )
             ->get();
 
-        return view('website.volunteer.volunteer', compact('volunteer', 'teams', 'contest', 'setting'));
+        return view('website.volunteer.index', compact('volunteer', 'teams', 'contest', 'setting'));
     }
 
     public function saveKitStatus(Request $request)

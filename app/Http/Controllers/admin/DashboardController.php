@@ -8,7 +8,7 @@ use App\Models\KitStatus;
 use App\Models\TeamRegistration;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class DashboardController extends Controller
 {
     public function index()
     {

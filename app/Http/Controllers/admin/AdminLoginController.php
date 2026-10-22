@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\WebsiteSetting;
 use Illuminate\Support\Facades\Auth;
 
-class AdminLogin extends Controller
+class AdminLoginController extends Controller
 {
     public function index()
     {

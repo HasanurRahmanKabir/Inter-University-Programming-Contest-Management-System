@@ -22,6 +22,6 @@ class RulesController extends Controller
             $isRegistrationOpen = true;
         }
 
-        return view('website.rules.rules', compact('rules', 'isRegistrationOpen', 'setting', 'contest'));
+        return view('website.rules.index', compact('rules', 'isRegistrationOpen', 'setting', 'contest'));
     }
 }

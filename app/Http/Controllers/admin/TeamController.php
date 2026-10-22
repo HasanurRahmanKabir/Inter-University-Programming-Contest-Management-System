@@ -28,7 +28,7 @@ class TeamController extends Controller
         }
 
         $teamregistration = $query->paginate(10);
-        return view('admin.Team.team', compact('teamregistration'));
+        return view('admin.team.index', compact('teamregistration'));
     }
 
     public function destroy($id)

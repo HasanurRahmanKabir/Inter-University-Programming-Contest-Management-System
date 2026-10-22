@@ -18,7 +18,7 @@ class ForgotPasswordController extends Controller
     public function showEmailForm()
     {
         $setting = WebsiteSetting::first();
-        return view('website.login.forgot_password', compact('setting'));
+        return view('website.login.forgot-password', compact('setting'));
     }
 
     public function sendOtp(Request $request)
@@ -52,7 +52,7 @@ class ForgotPasswordController extends Controller
             return redirect()->route('forgot.password');
         }
         $setting = WebsiteSetting::first();
-        return view('website.login.verify_otp', compact('setting'));
+        return view('website.login.verify-otp', compact('setting'));
     }
 
     public function verifyOtp(Request $request)
@@ -76,7 +76,7 @@ class ForgotPasswordController extends Controller
             return redirect()->route('forgot.password');
         }
         $setting = WebsiteSetting::first();
-        return view('website.login.reset_password', compact('setting'));
+        return view('website.login.reset-password', compact('setting'));
     }
 
     public function resetPassword(Request $request)

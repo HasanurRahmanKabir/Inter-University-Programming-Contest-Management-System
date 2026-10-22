@@ -11,7 +11,7 @@ class AdminController extends Controller
     public function index()
     {
         $admin = Admin::orderBy('admin_id', 'desc')->get();
-        return view('admin.user.all_user', compact('admin'));
+        return view('admin.admin.index', compact('admin'));
     }
 
     public function store(Request $request)

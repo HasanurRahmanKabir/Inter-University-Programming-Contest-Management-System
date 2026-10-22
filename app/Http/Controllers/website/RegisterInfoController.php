@@ -15,6 +15,6 @@ class RegisterInfoController extends Controller
         $teams = TeamRegistration::all();
         $setting = WebsiteSetting::first();
         $contest = Contest::where('status', 1)->first();
-        return view('website.registrationinfo.registration_info', compact('teams', 'setting', 'contest'));
+        return view('website.teams.index', compact('teams', 'setting', 'contest'));
     }
 }

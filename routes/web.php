@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
-use App\Http\Controllers\admin\AdminLogin;
+use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\AdminProfileController;
 use App\Http\Controllers\admin\ContestController;
 use App\Http\Controllers\admin\DownloadDetailsController;
@@ -9,10 +9,10 @@ use App\Http\Controllers\admin\GalleryController;
 use App\Http\Controllers\admin\KitStatusController;
 use App\Http\Controllers\admin\NoticeController;
 use App\Http\Controllers\admin\PaymentController;
-use App\Http\Controllers\admin\RulesAdminController;
+use App\Http\Controllers\admin\RuleController;
 use App\Http\Controllers\admin\SponsorController;
 use App\Http\Controllers\admin\TeamController;
-use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\VolunteerController;
 use App\Http\Controllers\admin\WebsiteSettingController;
 use App\Http\Controllers\website\CoachController;
@@ -21,7 +21,7 @@ use App\Http\Controllers\website\NoticeInfoController;
 use App\Http\Controllers\website\RegisterInfoController;
 use App\Http\Controllers\website\RulesController;
 use App\Http\Controllers\website\TeamRegistrationController;
-use App\Http\Controllers\website\UserLogin;
+use App\Http\Controllers\website\UserLoginController;
 use App\Http\Controllers\website\VolunteersController;
 use App\Http\Controllers\website\WebsiteController;
 use Illuminate\Support\Facades\Artisan;
@@ -46,9 +46,9 @@ Route::post('/check-duplicate-db', [TeamRegistrationController::class, 'checkDup
 Route::match(['get', 'post'], 'team/registration/submit', [TeamRegistrationController::class, 'store'])->name('team.registration.store');
 
 // User Login Routes
-Route::get('/login', [UserLogin::class, 'index'])->name('user.login');
-Route::post('/login/submit', [UserLogin::class, 'login'])->name('user.login.submit');
-Route::post('/logout', [UserLogin::class, 'logout'])->name('user.logout');
+Route::get('/login', [UserLoginController::class, 'index'])->name('user.login');
+Route::post('/login/submit', [UserLoginController::class, 'login'])->name('user.login.submit');
+Route::post('/logout', [UserLoginController::class, 'logout'])->name('user.logout');
 
 // Forgot Password Routes
 Route::get('forgot-password', [ForgotPasswordController::class, 'showEmailForm'])->name('forgot.password');
@@ -60,66 +60,67 @@ Route::post('forgot-password/reset-password', [ForgotPasswordController::class, 
 
 // Admin Authentication
 Route::group(['prefix' => 'admin', 'middleware' => 'guest:admin'], function () {
-    Route::get('/login', [AdminLogin::class, 'index'])->name('admin.login');
-    Route::post('/login/submit', [AdminLogin::class, 'login'])->name('admin.login.submit');
+    Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
+    Route::post('/login/submit', [AdminLoginController::class, 'login'])->name('admin.login.submit');
 });
 
 // Admin Dashboard Routes
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // Logout
-    Route::post('/logout', [AdminLogin::class, 'logout'])->name('admin.logout');
+    Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
     // Profile & Settings
     Route::post('/profile/update', [AdminProfileController::class, 'updateProfile'])->name('admin.profile.update');
     Route::post('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.password');
 
     // Main Dashboard
-    Route::get('/dashboard', [UserController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     // Admin Management
-    Route::get('/dashboard/admin', [AdminController::class, 'index']);
+    Route::get('/dashboard/admin', [AdminController::class, 'index'])->name('admin.admins.index');
     Route::post('/dashboard/store', [AdminController::class, 'store'])->name('admin.store');
     Route::put('/dashboard/update/{admin_id}', [AdminController::class, 'update'])->name('admin.update');
-    Route::delete('/dashboard/delete/{admin_id}', [AdminController::class, 'destroy']);
+    Route::delete('/dashboard/delete/{admin_id}', [AdminController::class, 'destroy'])->name('admin.destroy');
 
     // Contest Management
-    Route::get('/dashboard/contest', [ContestController::class, 'index']);
-    Route::post('/dashboard/contest/store', [ContestController::class, 'store']);
+    Route::get('/dashboard/contest', [ContestController::class, 'index'])->name('admin.contest.index');
+    Route::post('/dashboard/contest/store', [ContestController::class, 'store'])->name('admin.contest.store');
     Route::put('/dashboard/contest/update/{contest_id}', [ContestController::class, 'update'])->name('admin.contest.update');
-    Route::delete('/dashboard/contest/delete/{contest_id}', [ContestController::class, 'destroy']);
+    Route::delete('/dashboard/contest/delete/{contest_id}', [ContestController::class, 'destroy'])->name('admin.contest.destroy');
 
     // Team Management
     Route::get('/dashboard/team', [TeamController::class, 'index'])->name('admin.teamregistration.index');
     Route::get('/dashboard/team/{id}', [TeamController::class, 'show'])->name('admin.team.show');
     Route::match(['get', 'put', 'post'], '/dashboard/team/update/{team_id}', [TeamController::class, 'update'])->name('team.update');
-    Route::delete('/dashboard/team/delete/{team_id}', [TeamController::class, 'destroy']);
+    Route::delete('/dashboard/team/delete/{team_id}', [TeamController::class, 'destroy'])->name('admin.team.destroy');
 
     // Payment Management
-    Route::get('/dashboard/payment', [PaymentController::class, 'index']);
+    Route::get('/dashboard/payment', [PaymentController::class, 'index'])->name('admin.payment.index');
     Route::get('/dashboard/payment/{id}', [PaymentController::class, 'show'])->name('admin.payment.show');
     Route::put('/dashboard/payment/update/{id}', [PaymentController::class, 'update'])->name('admin.payment.update');
+
     // Volunteer Management
-    Route::get('/dashboard/volunteer', [VolunteerController::class, 'index']);
-    Route::post('/dashboard/volunteer/store', [VolunteerController::class, 'store']);
+    Route::get('/dashboard/volunteer', [VolunteerController::class, 'index'])->name('admin.volunteer.index');
+    Route::post('/dashboard/volunteer/store', [VolunteerController::class, 'store'])->name('admin.volunteer.store');
     Route::put('/dashboard/volunteer/update/{volunteer_id}', [VolunteerController::class, 'update'])->name('admin.volunteer.update');
-    Route::delete('/dashboard/volunteer/delete/{volunteer_id}', [VolunteerController::class, 'destroy']);
+    Route::delete('/dashboard/volunteer/delete/{volunteer_id}', [VolunteerController::class, 'destroy'])->name('admin.volunteer.destroy');
 
     // Notice Management
-    Route::get('/dashboard/notice', [NoticeController::class, 'index']);
-    Route::post('/dashboard/notice/store', [NoticeController::class, 'store']);
+    Route::get('/dashboard/notice', [NoticeController::class, 'index'])->name('admin.notice.index');
+    Route::post('/dashboard/notice/store', [NoticeController::class, 'store'])->name('admin.notice.store');
     Route::put('/dashboard/notice/update/{notice_id}', [NoticeController::class, 'update'])->name('admin.notice.update');
-    Route::delete('/dashboard/notice/delete/{notice_id}', [NoticeController::class, 'destroy']);
+    Route::delete('/dashboard/notice/delete/{notice_id}', [NoticeController::class, 'destroy'])->name('admin.notice.destroy');
 
     // Rules Management
-    Route::get('/dashboard/rules', [RulesAdminController::class, 'index']);
-    Route::post('/dashboard/rules/store', [RulesAdminController::class, 'store']);
-    Route::put('/dashboard/rules/update/{rules_id}', [RulesAdminController::class, 'update'])->name('admin.rules.update');
-    Route::delete('/dashboard/rules/delete/{rules_id}', [RulesAdminController::class, 'destroy']);
+    Route::get('/dashboard/rules', [RuleController::class, 'index'])->name('admin.rules.index');
+    Route::post('/dashboard/rules/store', [RuleController::class, 'store'])->name('admin.rules.store');
+    Route::put('/dashboard/rules/update/{rules_id}', [RuleController::class, 'update'])->name('admin.rules.update');
+    Route::delete('/dashboard/rules/delete/{rules_id}', [RuleController::class, 'destroy'])->name('admin.rules.destroy');
 
     // Download Details
-    Route::get('/dashboard/downloaddetails', [DownloadDetailsController::class, 'index']);
-    Route::get('/dashboard/downloaddetails/{id}', [DownloadDetailsController::class, 'show']);
+    Route::get('/dashboard/downloaddetails', [DownloadDetailsController::class, 'index'])->name('admin.downloaddetails.index');
+    Route::get('/dashboard/downloaddetails/{id}', [DownloadDetailsController::class, 'show'])->name('admin.downloaddetails.show');
 
     // Gallery Management
     Route::get('/dashboard/gallery', [GalleryController::class, 'index'])->name('admin.gallery');
@@ -127,18 +128,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::delete('/dashboard/gallery/delete/{id}', [GalleryController::class, 'destroy'])->name('admin.gallery.delete');
 
     // Kit Status
-    Route::get('/dashboard/kitstatus', [KitStatusController::class, 'index']);
-    Route::post('/dashboard/kitstatus/store', [KitStatusController::class, 'store']);
-    Route::put('/dashboard/kitstatus/update/{id}', [KitStatusController::class, 'update']);
+    Route::get('/dashboard/kitstatus', [KitStatusController::class, 'index'])->name('admin.kitstatus.index');
+    Route::post('/dashboard/kitstatus/store', [KitStatusController::class, 'store'])->name('admin.kitstatus.store');
+    Route::put('/dashboard/kitstatus/update/{id}', [KitStatusController::class, 'update'])->name('admin.kitstatus.update');
 
     // Sponsor Management
-    Route::get('/dashboard/sponsor', [SponsorController::class, 'index']);
-    Route::post('/dashboard/sponsor/store', [SponsorController::class, 'store']);
+    Route::get('/dashboard/sponsor', [SponsorController::class, 'index'])->name('admin.sponsor.index');
+    Route::post('/dashboard/sponsor/store', [SponsorController::class, 'store'])->name('admin.sponsor.store');
     Route::put('/dashboard/sponsor/update/{sponsor_id}', [SponsorController::class, 'update'])->name('admin.sponsor.update');
-    Route::delete('/dashboard/sponsor/delete/{sponsor_id}', [SponsorController::class, 'destroy']);
+    Route::delete('/dashboard/sponsor/delete/{sponsor_id}', [SponsorController::class, 'destroy'])->name('admin.sponsor.destroy');
 
     // Website Settings
-    Route::get('/dashboard/website-settings', [WebsiteSettingController::class, 'index']);
+    Route::get('/dashboard/website-settings', [WebsiteSettingController::class, 'index'])->name('admin.settings.index');
     Route::post('/dashboard/website-settings/update', [WebsiteSettingController::class, 'update'])->name('admin.settings.update');
     Route::get('/dashboard/website-settings/delete-image/{field}', [WebsiteSettingController::class, 'deleteImage'])->name('admin.settings.deleteImage');
 

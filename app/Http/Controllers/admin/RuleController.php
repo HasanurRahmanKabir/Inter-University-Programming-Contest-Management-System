@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Rules;
 use Illuminate\Http\Request;
 
-class RulesAdminController extends Controller
+class RuleController extends Controller
 {
     public function index()
     {
         $rules = Rules::all();
-        return view('admin.rulesadmin.rules_admin', compact('rules'));
+        return view('admin.rules.index', compact('rules'));
     }
 
     public function store(Request $request)

@@ -59,6 +59,6 @@ class WebsiteController extends Controller
             }
         }
 
-        return view('website.home_page.index', compact('notice', 'sponsors', 'contest', 'teamcount', 'isRegistrationOpen', 'galleries', 'setting'));
+        return view('website.home.index', compact('notice', 'sponsors', 'contest', 'teamcount', 'isRegistrationOpen', 'galleries', 'setting'));
     }
 }

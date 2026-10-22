@@ -15,7 +15,7 @@ class TeamRegistrationController extends Controller
     {
         $contest = Contest::where('status', 1)->first();
         $setting = WebsiteSetting::first();
-        return view('website.registration.registration', compact('setting', 'contest'));
+        return view('website.registration.index', compact('setting', 'contest'));
     }
 
     public function checkDuplicateInDB(Request $request)

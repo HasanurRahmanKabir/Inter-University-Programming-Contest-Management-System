@@ -12,7 +12,7 @@ class WebsiteSettingController extends Controller
     public function index()
     {
         $setting = WebsiteSetting::first() ?? new WebsiteSetting();
-        return view('admin.website_settings.index', compact('setting'));
+        return view('admin.website-settings.index', compact('setting'));
     }
 
     public function update(Request $request)

@@ -9,7 +9,7 @@ use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserLogin extends Controller
+class UserLoginController extends Controller
 {
 
     public function index()
@@ -27,7 +27,7 @@ class UserLogin extends Controller
                 $isRegistrationOpen = true;
             }
         }
-        return view('website.login.user_login', compact('isRegistrationOpen', 'setting', 'contestinfo'));
+        return view('website.login.login', compact('isRegistrationOpen', 'setting', 'contestinfo'));
     }
 
     public function login(Request $request)

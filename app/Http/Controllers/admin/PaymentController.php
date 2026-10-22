@@ -44,7 +44,7 @@ class PaymentController extends Controller
 
         $payment = $query->orderBy('payment_infos.created_at', 'desc')->paginate(10);
 
-        return view('admin.Payment.payment', compact('payment', 'totalCollected', 'pendingVerification', 'todaysCollection'));
+        return view('admin.payment.index', compact('payment', 'totalCollected', 'pendingVerification', 'todaysCollection'));
     }
 
     public function update(Request $request, $id)

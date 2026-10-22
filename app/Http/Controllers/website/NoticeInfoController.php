@@ -22,6 +22,6 @@ class NoticeInfoController extends Controller
             $isRegistrationOpen = true;
         }
 
-        return view('website.noticeinfo.notice_info', compact('notices', 'isRegistrationOpen', 'setting', 'contest'));
+        return view('website.notice.index', compact('notices', 'isRegistrationOpen', 'setting', 'contest'));
     }
 }

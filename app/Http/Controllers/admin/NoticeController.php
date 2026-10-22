@@ -32,7 +32,7 @@ class NoticeController extends Controller
         }
 
         $notice = $query->orderBy('notice_date', 'desc')->paginate(10)->withQueryString();
-        return view('admin.notice.notice', compact('notice'));
+        return view('admin.notice.index', compact('notice'));
     }
 
     public function store(Request $request)

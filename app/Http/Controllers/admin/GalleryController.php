@@ -12,7 +12,7 @@ class GalleryController extends Controller
     public function index()
     {
         $galleries = Gallery::orderBy('event_date', 'desc')->paginate(12);
-        return view('admin.gallery.gallery', compact('galleries'));
+        return view('admin.gallery.index', compact('galleries'));
     }
 
     public function store(Request $request)

@@ -13,7 +13,7 @@ class VolunteerController extends Controller
     public function index()
     {
         $volunteer = Volunteer::paginate(10);
-        return view('admin.Volunteer.volunteer', compact('volunteer'));
+        return view('admin.volunteer.index', compact('volunteer'));
     }
     public function store(Request $request)
     {
