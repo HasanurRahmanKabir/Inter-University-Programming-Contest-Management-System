@@ -23,6 +23,9 @@ class ContestController extends Controller
             'registration_start_date' => 'required|date',
             'registration_end_date' => 'required|date|after_or_equal:registration_start_date',
             'status' => 'required|boolean',
+        ], [
+            'contest_end_date.after_or_equal' => 'Contest end date & time must be after or equal to the contest start date & time. For single-day contests, ensure the end time is after the start time.',
+            'registration_end_date.after_or_equal' => 'Registration end date & time must be after or equal to the registration start date & time.',
         ]);
 
         $insert = Contest::create([
@@ -55,6 +58,9 @@ class ContestController extends Controller
             'registration_start_date' => 'required|date',
             'registration_end_date' => 'required|date|after_or_equal:registration_start_date',
             'status' => 'required|boolean',
+        ], [
+            'contest_end_date.after_or_equal' => 'Contest end date & time must be after or equal to the contest start date & time. For single-day contests, ensure the end time is after the start time.',
+            'registration_end_date.after_or_equal' => 'Registration end date & time must be after or equal to the registration start date & time.',
         ]);
 
         $contest->update([

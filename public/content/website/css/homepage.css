@@ -281,27 +281,81 @@
 
         /* --- Timeline --- */
         .timeline-item {
-            border-left: 3px solid #e2e8f0;
-            padding-left: 30px;
             position: relative;
-            padding-bottom: 30px;
+            padding-left: 36px;
+            padding-bottom: 28px;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 32px;
+            bottom: 4px;
+            width: 2px;
+            background: #cbd5e1;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
         }
 
         .timeline-item::before {
             content: '';
-            width: 15px;
-            height: 15px;
-            background: #3b82f6;
+            width: 16px;
+            height: 16px;
+            background-color: #2563eb;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
             border-radius: 50%;
             position: absolute;
-            left: -9px;
-            top: 0;
+            left: 0;
+            top: 8px;
+            transition: all 0.3s ease;
         }
 
-        .timeline-date {
-            color: #3b82f6;
-            font-weight: 600;
-            margin-bottom: 5px;
+        .timeline-card {
+            border-color: #e2e8f0 !important;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        .timeline-date-wrapper {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .timeline-date-wrapper i {
+            font-size: 0.95rem;
+        }
+
+        .timeline-date-text {
+            font-size: 0.95rem;
+            letter-spacing: 0.2px;
+        }
+
+        @media (max-width: 576px) {
+            .timeline-item {
+                padding-left: 28px;
+            }
+            .timeline-item::after {
+                left: 5px;
+            }
+            .timeline-item::before {
+                left: -2px;
+            }
+            .timeline-date-wrapper,
+            .timeline-date-text {
+                font-size: 0.85rem;
+            }
         }
 
         /* --- Gallery --- */

@@ -173,27 +173,51 @@
                         @foreach ($contest as $data)
                             <div class="col-lg-8">
                                 <div class="timeline-item">
-                                    <div class="timeline-date">
-                                        {{ \Carbon\Carbon::parse($data->registration_start_date)->format('d M') }}
-                                        -
-                                        {{ \Carbon\Carbon::parse($data->registration_end_date)->format('d M Y') }}
+                                    <div class="timeline-card p-3 p-md-4 rounded-4 shadow-sm bg-white border">
+                                        <div class="timeline-date-wrapper d-inline-flex align-items-center gap-2 mb-2">
+                                            <i class="far fa-calendar-alt text-primary"></i>
+                                            <span class="fw-semibold text-primary timeline-date-text">
+                                                {{ \Carbon\Carbon::parse($data->registration_start_date)->format('d M') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($data->registration_end_date)->format('d M Y') }}
+                                            </span>
+                                        </div>
+                                        <h5 class="fw-bold mb-2 timeline-title">
+                                            {{ !empty($setting->event_schedule_title_1) ? $setting->event_schedule_title_1 : 'Online Registration Period' }}
+                                        </h5>
+                                        <p class="text-muted small mb-0 timeline-desc">
+                                            {{ !empty($setting->event_schedule_description_1) ? $setting->event_schedule_description_1 : 'Official team registration and slot confirmation window for all participating universities.' }}
+                                        </p>
                                     </div>
-                                    <h5 class="fw-bold">
-                                        {{ $setting->event_schedule_title_1 ?? 'Your Schedule Title' }}
-                                    </h5>
-                                    <p class="text-muted small">
-                                        {{ $setting->event_schedule_description_1 ?? 'Your Schedule Description' }}
-                                    </p>
                                 </div>
 
                                 <div class="timeline-item">
-                                    <div class="timeline-date">
-                                        {{ \Carbon\Carbon::parse($data->contest_end_date)->format('d M Y') }}
+                                    <div class="timeline-card p-3 p-md-4 rounded-4 shadow-sm bg-white border">
+                                        <div class="timeline-date-wrapper d-inline-flex align-items-center gap-2 mb-2">
+                                            <i class="fas fa-trophy text-primary"></i>
+                                            <span class="fw-semibold text-primary timeline-date-text">
+                                                @php
+                                                    $cStart = !empty($data->contest_start_date) ? \Carbon\Carbon::parse($data->contest_start_date) : null;
+                                                    $cEnd = !empty($data->contest_end_date) ? \Carbon\Carbon::parse($data->contest_end_date) : null;
+                                                @endphp
+                                                @if($cStart && $cEnd && $cStart->format('Y-m-d') !== $cEnd->format('Y-m-d'))
+                                                    {{ $cStart->format('d M') }} - {{ $cEnd->format('d M Y') }}
+                                                @elseif($cEnd)
+                                                    {{ $cEnd->format('d M Y') }}
+                                                @elseif($cStart)
+                                                    {{ $cStart->format('d M Y') }}
+                                                @else
+                                                    TBA
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <h5 class="fw-bold mb-2 timeline-title">
+                                            {{ !empty($setting->event_schedule_title_2) ? $setting->event_schedule_title_2 : 'Main Contest & Grand Finale' }}
+                                        </h5>
+                                        <p class="text-muted small mb-0 timeline-desc">
+                                            {{ !empty($setting->event_schedule_description_2) ? $setting->event_schedule_description_2 : 'The official programming contest event, problem solving challenge and prize giving ceremony.' }}
+                                        </p>
                                     </div>
-                                    <h5 class="fw-bold text-primary">{{ $setting->event_schedule_title_2 ?? 'Your Schedule Title' }}</h5>
-                                    <p class="text-muted small">
-                                        {{ $setting->event_schedule_description_2 ?? 'Your Schedule Description' }}
-                                    </p>
                                 </div>
                             </div>
                         @endforeach

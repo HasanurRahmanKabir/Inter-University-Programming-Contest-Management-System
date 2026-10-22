@@ -228,16 +228,6 @@
                     <form action="{{ url('admin/dashboard/contest/store') }}" method="post">
                         @csrf
                         <input type="hidden" name="modal_id" value="addContestModal">
-                        
-                        @if ($errors->any() && old('modal_id') == 'addContestModal')
-                            <div class="alert alert-danger small shadow-sm">
-                                <ul class="mb-0 ps-3">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
 
                         <div class="row g-3">
                             <div class="col-md-12">
@@ -261,6 +251,9 @@
                                 <label class="form-label text-muted small fw-bold">Contest End Date</label>
                                 <input type="datetime-local" name="contest_end_date" class="form-control @error('contest_end_date') is-invalid @enderror" value="{{ old('contest_end_date') }}" required>
                                 @error('contest_end_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <div class="form-text text-muted" style="font-size: 0.78rem;">
+                                    For 1-day contests, choose the same date with an end time after the start time.
+                                </div>
                             </div>
 
                             <div class="col-md-6">
@@ -394,16 +387,6 @@
                             @csrf
                             @method('put')
                             <input type="hidden" name="modal_id" value="editContestModal{{ $data->contest_id }}">
-                            
-                            @if ($errors->any() && old('modal_id') == 'editContestModal' . $data->contest_id)
-                                <div class="alert alert-danger small shadow-sm">
-                                    <ul class="mb-0 ps-3">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
 
                             <div class="row g-3">
                                 <div class="col-md-12">
@@ -433,6 +416,9 @@
                                         value="{{ old('contest_end_date', \Carbon\Carbon::parse($data->contest_end_date)->format('Y-m-d\TH:i')) }}"
                                         name="contest_end_date" required>
                                     @error('contest_end_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <div class="form-text text-muted" style="font-size: 0.78rem;">
+                                        For 1-day contests, choose the same date with an end time after the start time.
+                                    </div>
                                 </div>
 
                                 <div class="col-md-6">
