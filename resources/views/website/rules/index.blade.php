@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/website') }}/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/website') }}/css/rules.css">
+    <link rel="stylesheet" href="{{ asset('assets/website') }}/css/rules.css?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/website') }}/css/dark-mode.css">
 </head>
 
@@ -80,14 +80,23 @@
                     @if($publishedRules->count() > 0)
                         @foreach ($publishedRules as $data)
                             <div class="rules-card mb-4 p-4 shadow-sm border-0">
-                                <h3><i class="fas fa-users text-primary me-2"></i> {{ $data->rules_headline }}</h3>
-                                <ul>
+                                <h3 class="rules-card-title d-flex align-items-center mb-3">
+                                    <span class="rules-header-icon-wrap"><i class="fas fa-clipboard-check text-primary"></i></span>
+                                    <span>{{ $data->rules_headline }}</span>
+                                </h3>
+                                <div class="rules-list">
                                     @foreach (explode("\n", $data->rules_description) as $rule)
-                                        @if(!empty(trim($rule)))
-                                            <li>{{ $rule }}</li>
+                                        @php
+                                            $cleanRule = ltrim(trim($rule), '- ');
+                                        @endphp
+                                        @if(!empty($cleanRule))
+                                            <div class="rule-point-item d-flex align-items-start mb-2">
+                                                <span class="rule-point-icon-wrap"><i class="fas fa-check-circle text-primary"></i></span>
+                                                <span class="rule-text">{{ $cleanRule }}</span>
+                                            </div>
                                         @endif
                                     @endforeach
-                                </ul>
+                                </div>
                             </div>
                         @endforeach
                     @else
