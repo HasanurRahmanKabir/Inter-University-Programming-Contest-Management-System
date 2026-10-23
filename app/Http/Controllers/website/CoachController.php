@@ -83,7 +83,7 @@ class CoachController extends Controller
             'coach_name' => 'required|string|max:255',
             'coach_phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'coach_t_shirt' => 'required',
-            'coach_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
+            'coach_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
             'coach_photo_base64' => 'nullable|string',
 
             // Member 1 Validation (Required as per database schema)
@@ -92,7 +92,7 @@ class CoachController extends Controller
             'mem_1_email' => 'required|email|max:255|unique:team_registration_infos,mem_1_email,' . $team->team_id . ',team_id',
             'mem_1_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_1_t_shirt' => 'nullable|string|max:10',
-            'mem_1_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
+            'mem_1_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
             'mem_1_photo_base64' => 'nullable|string',
 
             // Member 2 Validation
@@ -101,7 +101,7 @@ class CoachController extends Controller
             'mem_2_email' => 'required|email|max:255|unique:team_registration_infos,mem_2_email,' . $team->team_id . ',team_id',
             'mem_2_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_2_t_shirt' => 'nullable|string|max:10',
-            'mem_2_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
+            'mem_2_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
             'mem_2_photo_base64' => 'nullable|string',
 
             // Member 3 Validation
@@ -110,7 +110,7 @@ class CoachController extends Controller
             'mem_3_email' => 'required|email|max:255|unique:team_registration_infos,mem_3_email,' . $team->team_id . ',team_id',
             'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_3_t_shirt' => 'nullable|string|max:10',
-            'mem_3_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
+            'mem_3_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
             'mem_3_photo_base64' => 'nullable|string',
 
             // Password update (Optional - Leave blank to keep current)
@@ -269,18 +269,20 @@ class CoachController extends Controller
         // 1. Process Base64 data (Bypasses OpenResty / restrictive WAF 403 on multipart uploads)
         if ($request->filled($base64Field)) {
             $base64Data = $request->input($base64Field);
-            if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+            if (preg_match('/^data:image\/([\w\-]+);base64,/', $base64Data, $type)) {
                 $data = substr($base64Data, strpos($base64Data, ',') + 1);
-                $type = strtolower($type[1]); // jpg, png, jpeg, webp
+                $type = strtolower($type[1]); // jpg, png, jpeg, webp, avif, heic, heif
 
-                if (in_array($type, ['jpg', 'jpeg', 'png', 'webp'])) {
+                if (in_array($type, ['jpg', 'jpeg', 'png', 'webp', 'avif', 'heic', 'heif'])) {
                     $decoded = base64_decode($data);
                     if ($decoded !== false) {
                         $targetDir = public_path('uploads/teams');
                         if (!File::isDirectory($targetDir)) {
                             File::makeDirectory($targetDir, 0755, true, true);
                         }
-                        $filename = $prefix . '_' . time() . '_' . rand(1000, 9999) . '.' . ($type === 'jpeg' ? 'jpg' : $type);
+                        $ext = $type;
+                        if ($ext === 'jpeg') $ext = 'jpg';
+                        $filename = $prefix . '_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
                         file_put_contents($targetDir . DIRECTORY_SEPARATOR . $filename, $decoded);
                         return 'uploads/teams/' . $filename;
                     }

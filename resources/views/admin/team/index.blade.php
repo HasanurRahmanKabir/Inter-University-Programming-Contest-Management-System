@@ -210,7 +210,7 @@
                                                 style="max-width: 260px;"
                                                 name="coach_photo" 
                                                 id="coach_photo_input_{{ $data->team_id }}"
-                                                accept="image/*"
+                                                accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif"
                                                 onchange="previewAdminTeamPhoto(this, 'coachPhotoPreview{{ $data->team_id }}', 'coachPhotoRemoveBtn{{ $data->team_id }}', 'remove_coach_photo_{{ $data->team_id }}')">
                                             @error('coach_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
@@ -319,7 +319,7 @@
                                                 class="form-control form-control-sm mt-2 @error('mem_1_photo') is-invalid @enderror"
                                                 name="mem_1_photo" 
                                                 id="mem_1_photo_input_{{ $data->team_id }}"
-                                                accept="image/*"
+                                                accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif"
                                                 onchange="previewAdminTeamPhoto(this, 'mem1PhotoPreview{{ $data->team_id }}', 'mem1PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_1_photo_{{ $data->team_id }}')">
                                             @error('mem_1_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
@@ -405,7 +405,7 @@
                                                 class="form-control form-control-sm mt-2 @error('mem_2_photo') is-invalid @enderror"
                                                 name="mem_2_photo" 
                                                 id="mem_2_photo_input_{{ $data->team_id }}"
-                                                accept="image/*"
+                                                accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif"
                                                 onchange="previewAdminTeamPhoto(this, 'mem2PhotoPreview{{ $data->team_id }}', 'mem2PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_2_photo_{{ $data->team_id }}')">
                                             @error('mem_2_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
@@ -491,7 +491,7 @@
                                                 class="form-control form-control-sm mt-2 @error('mem_3_photo') is-invalid @enderror"
                                                 name="mem_3_photo" 
                                                 id="mem_3_photo_input_{{ $data->team_id }}"
-                                                accept="image/*"
+                                                accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif"
                                                 onchange="previewAdminTeamPhoto(this, 'mem3PhotoPreview{{ $data->team_id }}', 'mem3PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_3_photo_{{ $data->team_id }}')">
                                             @error('mem_3_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
@@ -745,6 +745,24 @@
         // Photo Preview for Admin Team Modal
         function previewAdminTeamPhoto(input, previewId, removeBtnId, hiddenRemoveInputId) {
             if (input.files && input.files[0]) {
+                var file = input.files[0];
+                var validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/avif', 'image/heic', 'image/heif'];
+                var validExts = ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.heic', '.heif'];
+                var fileName = file.name.toLowerCase();
+                var hasValidExt = validExts.some(function(ext) { return fileName.endsWith(ext); });
+
+                if (!validTypes.includes(file.type) && !hasValidExt) {
+                    alert('Invalid file format! Only images (JPG, JPEG, PNG, WEBP, AVIF, HEIC) are allowed.');
+                    input.value = '';
+                    return;
+                }
+
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Image size exceeds 2MB limit. Please upload a photo smaller than 2MB.');
+                    input.value = '';
+                    return;
+                }
+
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     var preview = document.getElementById(previewId);
@@ -760,7 +778,7 @@
                         hiddenInput.value = '0';
                     }
                 };
-                reader.readAsDataURL(input.files[0]);
+                reader.readAsDataURL(file);
             }
         }
 

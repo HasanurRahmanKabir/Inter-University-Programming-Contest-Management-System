@@ -210,8 +210,8 @@
 
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Logo Upload</label>
-                            <input type="file" name="logo" class="form-control" accept="image/*" required>
-                            <div class="form-text small sponsor-logo-hint">Recommended size: 200x200px (PNG/JPG)</div>
+                            <input type="file" name="logo" class="form-control sponsor-logo-input" accept="image/jpeg,image/png,image/jpg,image/webp,image/svg+xml,image/gif" required>
+                            <div class="form-text small sponsor-logo-hint">Recommended size: 200x200px (PNG, JPG, WebP, SVG &bull; Max 2MB)</div>
                         </div>
 
                         <div class="mb-3">
@@ -303,8 +303,8 @@
                                 </div>
 
                                 <label class="form-label text-muted small fw-bold">Upload New Logo</label>
-                                <input type="file" name="logo" class="form-control" accept="image/*">
-                                <div class="form-text small sponsor-logo-hint">Recommended size: 200x200px (PNG/JPG)</div>
+                                <input type="file" name="logo" class="form-control sponsor-logo-input" accept="image/jpeg,image/png,image/jpg,image/webp,image/svg+xml,image/gif">
+                                <div class="form-text small sponsor-logo-hint">Recommended size: 200x200px (PNG, JPG, WebP, SVG &bull; Max 2MB)</div>
                             </div>
 
                             <div class="mb-3">
@@ -391,7 +391,31 @@
     </style>
 
     <script>
-        // Any custom sponsor logic can go here
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.sponsor-logo-input').forEach(function (input) {
+                input.addEventListener('change', function () {
+                    if (this.files && this.files[0]) {
+                        var file = this.files[0];
+                        var validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/svg+xml', 'image/gif'];
+                        var validExts = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif'];
+                        var fileName = file.name.toLowerCase();
+                        var hasValidExt = validExts.some(function (ext) { return fileName.endsWith(ext); });
+
+                        if (!validTypes.includes(file.type) && !hasValidExt) {
+                            alert('Invalid file format! Only images (PNG, JPG, JPEG, WEBP, SVG, GIF) are allowed.\n\nVideos, zip archives, and executable files are prohibited.');
+                            this.value = '';
+                            return;
+                        }
+
+                        if (file.size > 2 * 1024 * 1024) {
+                            alert('Logo image exceeds 2MB limit. Please choose a file smaller than 2MB.');
+                            this.value = '';
+                            return;
+                        }
+                    }
+                });
+            });
+        });
     </script>
 @endsection
 

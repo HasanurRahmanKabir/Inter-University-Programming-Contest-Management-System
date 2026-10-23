@@ -835,9 +835,9 @@
                                                         <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="coach_photo"
-                                                        accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="coach-photo-preview">
+                                                        accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif" data-preview="coach-photo-preview">
                                                     <div class="photo-footer-row d-flex flex-wrap justify-content-between align-items-center mt-1">
-                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
+                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP, AVIF, HEIC.</span>
                                                         <div class="form-check remove-photo-check m-0 {{ $hasCoachModalPhoto ? '' : 'd-none' }}" id="coachPhotoActionWrap">
                                                             <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_coach_photo" value="1" id="removeCoachPhoto" data-preview="coach-photo-preview" data-saved="{{ $hasCoachModalPhoto ? '1' : '0' }}">
                                                             <label class="form-check-label small" for="removeCoachPhoto" id="removeCoachPhotoLabel">
@@ -945,9 +945,9 @@
                                                         <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_1_photo"
-                                                        accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem1-photo-preview">
+                                                        accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif" data-preview="mem1-photo-preview">
                                                     <div class="photo-footer-row d-flex flex-wrap justify-content-between align-items-center mt-1">
-                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
+                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP, AVIF, HEIC.</span>
                                                         <div class="form-check remove-photo-check m-0 {{ $hasMem1Photo ? '' : 'd-none' }}" id="mem1PhotoActionWrap">
                                                             <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_1_photo" value="1" id="removeMem1Photo" data-preview="mem1-photo-preview" data-saved="{{ $hasMem1Photo ? '1' : '0' }}">
                                                             <label class="form-check-label small" for="removeMem1Photo" id="removeMem1PhotoLabel">
@@ -1023,9 +1023,9 @@
                                                         <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_2_photo"
-                                                        accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem2-photo-preview">
+                                                        accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif" data-preview="mem2-photo-preview">
                                                     <div class="photo-footer-row d-flex flex-wrap justify-content-between align-items-center mt-1">
-                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
+                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP, AVIF, HEIC.</span>
                                                         <div class="form-check remove-photo-check m-0 {{ $hasMem2Photo ? '' : 'd-none' }}" id="mem2PhotoActionWrap">
                                                             <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_2_photo" value="1" id="removeMem2Photo" data-preview="mem2-photo-preview" data-saved="{{ $hasMem2Photo ? '1' : '0' }}">
                                                             <label class="form-check-label small" for="removeMem2Photo" id="removeMem2PhotoLabel">
@@ -1101,9 +1101,9 @@
                                                         <span class="image-specs-badge"><i class="fas fa-info-circle me-1 text-primary"></i>300&times;300 px (1:1 Square) &bull; Max 2MB</span>
                                                     </div>
                                                     <input type="file" class="form-control form-control-sm photo-input-with-preview" name="mem_3_photo"
-                                                        accept="image/jpeg,image/png,image/jpg,image/webp" data-preview="mem3-photo-preview">
+                                                        accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif" data-preview="mem3-photo-preview">
                                                     <div class="photo-footer-row d-flex flex-wrap justify-content-between align-items-center mt-1">
-                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP only.</span>
+                                                        <span class="form-text small text-muted" style="font-size: 0.72rem;">JPG, JPEG, PNG, WEBP, AVIF, HEIC.</span>
                                                         <div class="form-check remove-photo-check m-0 {{ $hasMem3Photo ? '' : 'd-none' }}" id="mem3PhotoActionWrap">
                                                             <input class="form-check-input remove-photo-trigger" type="checkbox" name="remove_mem_3_photo" value="1" id="removeMem3Photo" data-preview="mem3-photo-preview" data-saved="{{ $hasMem3Photo ? '1' : '0' }}">
                                                             <label class="form-check-label small" for="removeMem3Photo" id="removeMem3PhotoLabel">
@@ -1450,14 +1450,14 @@
                     if (!file) return;
 
                     // Strictly check file MIME type and extension
-                    const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-                    const validExts = ['.jpg', '.jpeg', '.png', '.webp'];
+                    const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/avif', 'image/heic', 'image/heif'];
+                    const validExts = ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.heic', '.heif'];
                     const fileName = file.name.toLowerCase();
                     const hasValidExt = validExts.some(function(ext) { return fileName.endsWith(ext); });
 
                     if (!validTypes.includes(file.type) && !hasValidExt) {
                         if (ajaxAlert && ajaxErrorList) {
-                            ajaxErrorList.innerHTML = '<li>Invalid file format! Only images (JPG, JPEG, PNG, WEBP) are allowed.</li>';
+                            ajaxErrorList.innerHTML = '<li>Invalid file format! Only images (JPG, JPEG, PNG, WEBP, AVIF, HEIC) are allowed.</li>';
                             ajaxAlert.classList.remove('d-none');
                             const modalBody = fileInput.closest('.modal-body');
                             if (modalBody) modalBody.scrollTop = 0;

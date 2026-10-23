@@ -80,10 +80,10 @@ class TeamController extends Controller
             'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_3_t_shirt' => 'required|string',
             
-            'coach_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'mem_1_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'mem_2_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'mem_3_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'coach_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
+            'mem_1_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
+            'mem_2_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
+            'mem_3_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
         ], [
             'coach_phone.regex' => 'The emergency contact number may only contain digits (0-9), +, and -.',
             'mem_1_phone.regex' => 'Member 01 contact number may only contain digits (0-9), +, and -.',

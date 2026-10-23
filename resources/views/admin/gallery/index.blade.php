@@ -219,12 +219,34 @@
         // File Upload Preview & Filename Display
         function previewUpload(input) {
             if (input.files && input.files[0]) {
-                const fileName = input.files[0].name;
+                const file = input.files[0];
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/gif'];
+                const validExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+                const fileName = file.name.toLowerCase();
+                const hasValidExt = validExts.some(ext => fileName.endsWith(ext));
+
+                if (!validTypes.includes(file.type) && !hasValidExt) {
+                    alert('Invalid file format! Only images (JPG, PNG, WebP, GIF) are allowed.\n\nVideos, zip archives, and documents are not permitted.');
+                    input.value = '';
+                    const previewContainer = document.getElementById('preview-container');
+                    if (previewContainer) previewContainer.classList.add('d-none');
+                    return;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Image size exceeds 5MB limit. Please select a photo smaller than 5MB.');
+                    input.value = '';
+                    const previewContainer = document.getElementById('preview-container');
+                    if (previewContainer) previewContainer.classList.add('d-none');
+                    return;
+                }
+
                 const previewText = document.getElementById('preview-filename');
                 if (previewText) {
-                    previewText.textContent = fileName;
+                    previewText.textContent = file.name;
                 }
-                document.getElementById('preview-container').classList.remove('d-none');
+                const previewContainer = document.getElementById('preview-container');
+                if (previewContainer) previewContainer.classList.remove('d-none');
             }
         }
     </script>
