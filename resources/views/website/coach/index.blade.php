@@ -1618,6 +1618,8 @@
             var form = e.target;
             if (!form || form.tagName !== 'FORM') return;
             if (form.method && form.method.toUpperCase() === 'GET') return;
+            // Never block logout forms or action with logout
+            if (form.action && form.action.indexOf('logout') !== -1) return;
             if (form.getAttribute('data-submitting') === 'true') {
                 e.preventDefault();
                 return false;
