@@ -344,8 +344,9 @@
                                 </button>
                             </div>
                             <input type="file" id="coachPhoto" name="coach_photo" class="d-none"
+                                accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif"
                                 onchange="previewImage(this, 'coachPreview', 'coachRemoveBtn')">
-                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
+                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; Image Only</span>
                         </div>
 
                         <div class="col-md-9">
@@ -398,8 +399,9 @@
                                 </button>
                             </div>
                             <input type="file" id="mem1Photo" name="mem_1_photo" class="d-none"
+                                accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif"
                                 onchange="previewImage(this, 'mem1Preview', 'mem1RemoveBtn')">
-                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
+                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; Image Only</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -454,8 +456,9 @@
                                 </button>
                             </div>
                             <input type="file" id="mem2Photo" name="mem_2_photo" class="d-none"
+                                accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif"
                                 onchange="previewImage(this, 'mem2Preview', 'mem2RemoveBtn')">
-                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
+                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; Image Only</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -510,8 +513,9 @@
                                 </button>
                             </div>
                             <input type="file" id="mem3Photo" name="mem_3_photo" class="d-none"
+                                accept="image/jpeg,image/png,image/jpg,image/webp,image/avif,image/heic,image/heif"
                                 onchange="previewImage(this, 'mem3Preview', 'mem3RemoveBtn')">
-                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; JPG/PNG</span>
+                            <span class="image-upload-hint mb-2"><span class="hint-info-icon">i</span>300&times;300 px (1:1 Square) &bull; Max 2MB &bull; Image Only</span>
 
                             <div class="mb-2">
                                 <label class="small text-muted fw-bold">Full Name <span
@@ -782,6 +786,29 @@
 
         function previewImage(input, previewId, removeBtnId) {
             if (input.files && input.files[0]) {
+                var file = input.files[0];
+
+                // 1. Validate File Type (Strict image check supporting JPG, PNG, WEBP, AVIF, HEIC, etc.)
+                var allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/avif', 'image/heic', 'image/heif'];
+                var allowedExtensions = /\.(jpe?g|png|webp|avif|heic|heif)$/i;
+
+                var isMimeValid = file.type ? (allowedMimeTypes.indexOf(file.type.toLowerCase()) !== -1 || file.type.toLowerCase().startsWith('image/')) : false;
+                var isExtValid = allowedExtensions.test(file.name);
+
+                if (!isMimeValid && !isExtValid) {
+                    input.value = '';
+                    showCustomAlert("Invalid File Format", "Only image files (JPG, PNG, WEBP, AVIF) are allowed. Videos or other documents cannot be uploaded.");
+                    return;
+                }
+
+                // 2. Validate File Size (Maximum 2MB allowed)
+                var maxSizeBytes = 2 * 1024 * 1024; // 2MB
+                if (file.size > maxSizeBytes) {
+                    input.value = '';
+                    showCustomAlert("File Too Large", "The selected image is larger than 2MB. Please select an image under 2MB.");
+                    return;
+                }
+
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     var preview = document.getElementById(previewId);
@@ -812,7 +839,7 @@
                         hiddenInput.value = e.target.result;
                     }
                 }
-                reader.readAsDataURL(input.files[0]);
+                reader.readAsDataURL(file);
             }
         }
 

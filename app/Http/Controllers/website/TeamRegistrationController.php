@@ -84,13 +84,13 @@ class TeamRegistrationController extends Controller
             'mem_3_student_id' => 'required|unique:team_registration_infos,mem_3_student_id',
             'mem_3_email' => 'required|email|unique:team_registration_infos,mem_3_email',
 
-            'coach_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
+            'coach_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
             'coach_photo_base64' => 'nullable|string',
-            'mem_1_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
+            'mem_1_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
             'mem_1_photo_base64' => 'nullable|string',
-            'mem_2_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
+            'mem_2_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
             'mem_2_photo_base64' => 'nullable|string',
-            'mem_3_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:2048',
+            'mem_3_photo' => 'nullable|file|mimes:jpeg,png,jpg,webp,avif,heic,heif|max:2048',
             'mem_3_photo_base64' => 'nullable|string',
         ]);
 
@@ -178,9 +178,9 @@ class TeamRegistrationController extends Controller
             $base64Data = $request->input($base64Field);
             if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
                 $data = substr($base64Data, strpos($base64Data, ',') + 1);
-                $type = strtolower($type[1]); // jpg, png, jpeg, webp
+                $type = strtolower($type[1]); // jpg, png, jpeg, webp, avif, heic, heif
 
-                if (in_array($type, ['jpg', 'jpeg', 'png', 'webp'])) {
+                if (in_array($type, ['jpg', 'jpeg', 'png', 'webp', 'avif', 'heic', 'heif'])) {
                     $decoded = base64_decode($data);
                     if ($decoded !== false) {
                         $targetDir = public_path('uploads/teams');
