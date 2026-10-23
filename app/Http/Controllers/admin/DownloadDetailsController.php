@@ -13,7 +13,7 @@ class DownloadDetailsController extends Controller
         $paginatedDetails = TeamRegistration::paginate(15);
         $allDetails = TeamRegistration::all();
 
-        return view('admin.downloaddetails.index', compact('paginatedDetails', 'allDetails'));
+        return view('admin.download-details.index', compact('paginatedDetails', 'allDetails'));
     }
     public function show($id)
     {

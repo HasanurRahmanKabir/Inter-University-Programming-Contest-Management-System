@@ -1,6 +1,6 @@
 @extends('admin.layout.admin')
 @section('content')
-    <link rel="stylesheet" href="{{ asset('content/admin') }}/css/download_details.css">
+    <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/download-details.css">
 
     <div class="main-content">
         <nav class="navbar navbar-expand-lg top-navbar">

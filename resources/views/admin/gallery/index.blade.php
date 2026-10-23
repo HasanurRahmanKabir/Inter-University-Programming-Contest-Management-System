@@ -1,7 +1,7 @@
 @extends('admin.layout.admin')
 @section('content')
 
-    <link rel="stylesheet" href="{{ asset('content/admin') }}/css/gallery_adminpanel.css">
+    <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/gallery.css">
 
     <div class="main-content">
 

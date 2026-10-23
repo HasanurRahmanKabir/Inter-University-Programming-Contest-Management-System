@@ -49,7 +49,7 @@ class KitStatusController extends Controller
 
         $kits = $query->orderBy('team_registration_infos.team_id', 'desc')->paginate(15)->withQueryString();
 
-        return view('admin.kitstatus.index', compact(
+        return view('admin.kit-status.index', compact(
             'totalTeams',
             'kitsDistributed',
             'pendingDistribution',

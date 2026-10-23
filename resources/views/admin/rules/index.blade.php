@@ -1,6 +1,6 @@
 @extends('admin.layout.admin')
 @section('content')
-    <link rel="stylesheet" href="{{ asset('content/admin') }}/css/notices_adminpanel.css">
+    <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/notices.css">
 
     <div class="main-content">
         <nav class="navbar navbar-expand-lg top-navbar">

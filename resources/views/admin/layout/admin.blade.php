@@ -9,12 +9,12 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Premium Admin Dashboard</title>
-    <link rel="icon" type="image/x-icon" href="{{ !empty($setting->admin_favicon) ? asset($setting->admin_favicon) : asset('content/website/image/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ !empty($setting->admin_favicon) ? asset($setting->admin_favicon) : asset('assets/website/image/favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('content/admin') }}/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('content/admin') }}/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('content/admin') }}/css/style.css">
-    <link rel="stylesheet" href="{{ asset('content/admin') }}/css/admin-dark-mode.css">
+    <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/style.css">
+    <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/admin-dark-mode.css">
 </head>
 
 <body>
@@ -231,9 +231,9 @@
         </a>
     </div>
 </div>
-    <script src="{{ asset('content/admin') }}/js/app.js"></script>
-    <script src="{{ asset('content/admin') }}/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('content/admin') }}/js/admin-dark-mode.js"></script>
+    <script src="{{ asset('assets/admin') }}/js/app.js"></script>
+    <script src="{{ asset('assets/admin') }}/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/admin') }}/js/admin-dark-mode.js"></script>
 
     @if(session('profile_success'))
         <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-4 shadow-lg" style="z-index: 9999;" role="alert">
