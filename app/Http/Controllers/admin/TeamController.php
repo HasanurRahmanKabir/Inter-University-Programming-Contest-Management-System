@@ -63,13 +63,22 @@ class TeamController extends Controller
             'coach_t_shirt' => 'required|string',
             
             'mem_1_name' => 'required|string|max:255',
+            'mem_1_student_id' => 'required|string|max:255',
+            'mem_1_email' => 'required|email|max:255',
+            'mem_1_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_1_t_shirt' => 'required|string',
             
             'mem_2_name' => 'required|string|max:255',
+            'mem_2_student_id' => 'required|string|max:255',
+            'mem_2_email' => 'required|email|max:255',
+            'mem_2_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
             'mem_2_t_shirt' => 'required|string',
             
-            'mem_3_name' => 'nullable|string|max:255',
-            'mem_3_t_shirt' => 'nullable|string',
+            'mem_3_name' => 'required|string|max:255',
+            'mem_3_student_id' => 'required|string|max:255',
+            'mem_3_email' => 'required|email|max:255',
+            'mem_3_phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9+\-]+$/'],
+            'mem_3_t_shirt' => 'required|string',
             
             'coach_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'mem_1_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -77,6 +86,9 @@ class TeamController extends Controller
             'mem_3_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ], [
             'coach_phone.regex' => 'The emergency contact number may only contain digits (0-9), +, and -.',
+            'mem_1_phone.regex' => 'Member 01 contact number may only contain digits (0-9), +, and -.',
+            'mem_2_phone.regex' => 'Member 02 contact number may only contain digits (0-9), +, and -.',
+            'mem_3_phone.regex' => 'Member 03 contact number may only contain digits (0-9), +, and -.',
         ]);
 
         $team = TeamRegistration::findOrFail($id);

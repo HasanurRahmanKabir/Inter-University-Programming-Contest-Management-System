@@ -206,7 +206,8 @@
                                             <input type="hidden" name="remove_coach_photo" id="remove_coach_photo_{{ $data->team_id }}" value="0">
                                             <label class="small text-muted fw-bold d-block">Coach Photo</label>
                                             <input type="file" 
-                                                class="form-control form-control-sm w-50 mx-auto mt-1 @error('coach_photo') is-invalid @enderror"
+                                                class="form-control form-control-sm mx-auto mt-1 @error('coach_photo') is-invalid @enderror"
+                                                style="max-width: 260px;"
                                                 name="coach_photo" 
                                                 id="coach_photo_input_{{ $data->team_id }}"
                                                 accept="image/*"
@@ -259,7 +260,6 @@
                                             <div class="emergency-contact-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
                                                 <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
                                             </div>
-                                            <div class="invalid-feedback client-phone-feedback d-none">Only digits (0-9), +, and - are allowed.</div>
                                             @error('coach_phone') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="col-md-6">
@@ -312,7 +312,7 @@
                                                     title="Remove Member 01 Photo"
                                                     onclick="removeAdminTeamPhoto('{{ $data->team_id }}', 'mem_1')">
                                                     <i class="fas fa-times"></i>
-                                                </button>
+                                                 </button>
                                             </div>
                                             <input type="hidden" name="remove_mem_1_photo" id="remove_mem_1_photo_{{ $data->team_id }}" value="0">
                                             <input type="file" 
@@ -323,15 +323,44 @@
                                                 onchange="previewAdminTeamPhoto(this, 'mem1PhotoPreview{{ $data->team_id }}', 'mem1PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_1_photo_{{ $data->team_id }}')">
                                             @error('mem_1_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
-                                        <h6 class="fw-bold mb-2 text-center">Member 01</h6>
+                                        <h6 class="fw-bold mb-2 text-center text-primary">Member 01</h6>
                                         <div class="mb-2">
-                                            <label class="small text-muted">Name</label>
+                                            <label class="small text-muted fw-bold">Full Name <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-sm @error('mem_1_name') is-invalid @enderror" name="mem_1_name"
-                                                value="{{ old('mem_1_name', $data->mem_1_name) }}">
+                                                value="{{ old('mem_1_name', $data->mem_1_name) }}" required>
                                             @error('mem_1_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold">Student ID <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control form-control-sm @error('mem_1_student_id') is-invalid @enderror" name="mem_1_student_id"
+                                                value="{{ old('mem_1_student_id', $data->mem_1_student_id) }}" required>
+                                            @error('mem_1_student_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold">Email <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control form-control-sm @error('mem_1_email') is-invalid @enderror" name="mem_1_email"
+                                                value="{{ old('mem_1_email', $data->mem_1_email) }}" required>
+                                            @error('mem_1_email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold d-flex justify-content-between align-items-center mb-1">
+                                                <span>Phone</span>
+                                                <span class="badge bg-light text-secondary border fw-normal py-1 px-2" style="font-size: 0.68rem; letter-spacing: 0.2px;">Digits, +, - only</span>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm emergency-contact-input @error('mem_1_phone') is-invalid @enderror" name="mem_1_phone"
+                                                value="{{ old('mem_1_phone', $data->mem_1_phone) }}"
+                                                pattern="^[0-9+\-]*$"
+                                                inputmode="tel"
+                                                maxlength="20"
+                                                placeholder="+8801XXXXXXXXX"
+                                                title="Only digits (0-9), +, and - are allowed.">
+                                            <div class="emergency-contact-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                                <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                            </div>
+                                            @error('mem_1_phone') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        </div>
                                         <div>
-                                            <label class="small text-muted">Size</label>
+                                            <label class="small text-muted fw-bold">Size</label>
                                             <select class="form-select form-select-sm" name="mem_1_t_shirt">
                                                 <option value="S"
                                                     {{ $data->mem_1_t_shirt == 'S' ? 'selected' : '' }}>S</option>
@@ -380,15 +409,44 @@
                                                 onchange="previewAdminTeamPhoto(this, 'mem2PhotoPreview{{ $data->team_id }}', 'mem2PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_2_photo_{{ $data->team_id }}')">
                                             @error('mem_2_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
-                                        <h6 class="fw-bold mb-2 text-center">Member 02</h6>
+                                        <h6 class="fw-bold mb-2 text-center text-primary">Member 02</h6>
                                         <div class="mb-2">
-                                            <label class="small text-muted">Name</label>
+                                            <label class="small text-muted fw-bold">Full Name <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-sm @error('mem_2_name') is-invalid @enderror" name="mem_2_name"
-                                                value="{{ old('mem_2_name', $data->mem_2_name) }}">
+                                                value="{{ old('mem_2_name', $data->mem_2_name) }}" required>
                                             @error('mem_2_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold">Student ID <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control form-control-sm @error('mem_2_student_id') is-invalid @enderror" name="mem_2_student_id"
+                                                value="{{ old('mem_2_student_id', $data->mem_2_student_id) }}" required>
+                                            @error('mem_2_student_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold">Email <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control form-control-sm @error('mem_2_email') is-invalid @enderror" name="mem_2_email"
+                                                value="{{ old('mem_2_email', $data->mem_2_email) }}" required>
+                                            @error('mem_2_email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold d-flex justify-content-between align-items-center mb-1">
+                                                <span>Phone</span>
+                                                <span class="badge bg-light text-secondary border fw-normal py-1 px-2" style="font-size: 0.68rem; letter-spacing: 0.2px;">Digits, +, - only</span>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm emergency-contact-input @error('mem_2_phone') is-invalid @enderror" name="mem_2_phone"
+                                                value="{{ old('mem_2_phone', $data->mem_2_phone) }}"
+                                                pattern="^[0-9+\-]*$"
+                                                inputmode="tel"
+                                                maxlength="20"
+                                                placeholder="+8801XXXXXXXXX"
+                                                title="Only digits (0-9), +, and - are allowed.">
+                                            <div class="emergency-contact-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                                <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                            </div>
+                                            @error('mem_2_phone') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        </div>
                                         <div>
-                                            <label class="small text-muted">Size</label>
+                                            <label class="small text-muted fw-bold">Size</label>
                                             <select class="form-select form-select-sm" name="mem_2_t_shirt">
                                                 <option value="S"
                                                     {{ $data->mem_2_t_shirt == 'S' ? 'selected' : '' }}>S</option>
@@ -437,15 +495,44 @@
                                                 onchange="previewAdminTeamPhoto(this, 'mem3PhotoPreview{{ $data->team_id }}', 'mem3PhotoRemoveBtn{{ $data->team_id }}', 'remove_mem_3_photo_{{ $data->team_id }}')">
                                             @error('mem_3_photo') <div class="invalid-feedback text-center">{{ $message }}</div> @enderror
                                         </div>
-                                        <h6 class="fw-bold mb-2 text-center">Member 03</h6>
+                                        <h6 class="fw-bold mb-2 text-center text-primary">Member 03</h6>
                                         <div class="mb-2">
-                                            <label class="small text-muted">Name</label>
+                                            <label class="small text-muted fw-bold">Full Name <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-sm @error('mem_3_name') is-invalid @enderror" name="mem_3_name"
-                                                value="{{ old('mem_3_name', $data->mem_3_name) }}">
+                                                value="{{ old('mem_3_name', $data->mem_3_name) }}" required>
                                             @error('mem_3_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold">Student ID <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control form-control-sm @error('mem_3_student_id') is-invalid @enderror" name="mem_3_student_id"
+                                                value="{{ old('mem_3_student_id', $data->mem_3_student_id) }}" required>
+                                            @error('mem_3_student_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold">Email <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control form-control-sm @error('mem_3_email') is-invalid @enderror" name="mem_3_email"
+                                                value="{{ old('mem_3_email', $data->mem_3_email) }}" required>
+                                            @error('mem_3_email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="small text-muted fw-bold d-flex justify-content-between align-items-center mb-1">
+                                                <span>Phone</span>
+                                                <span class="badge bg-light text-secondary border fw-normal py-1 px-2" style="font-size: 0.68rem; letter-spacing: 0.2px;">Digits, +, - only</span>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm emergency-contact-input @error('mem_3_phone') is-invalid @enderror" name="mem_3_phone"
+                                                value="{{ old('mem_3_phone', $data->mem_3_phone) }}"
+                                                pattern="^[0-9+\-]*$"
+                                                inputmode="tel"
+                                                maxlength="20"
+                                                placeholder="+8801XXXXXXXXX"
+                                                title="Only digits (0-9), +, and - are allowed.">
+                                            <div class="emergency-contact-alert small text-danger mt-1 d-none" style="font-size: 0.78rem;">
+                                                <i class="fas fa-exclamation-triangle me-1"></i> Letters & symbols aren't allowed. Only 0-9, + and - are accepted.
+                                            </div>
+                                            @error('mem_3_phone') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                        </div>
                                         <div>
-                                            <label class="small text-muted">Size</label>
+                                            <label class="small text-muted fw-bold">T-Shirt Size</label>
                                             <select class="form-select form-select-sm" name="mem_3_t_shirt">
                                                 <option value="S"
                                                     {{ $data->mem_3_t_shirt == 'S' ? 'selected' : '' }}>S</option>
@@ -790,7 +877,7 @@
                     }, 2800);
                 }
 
-                function sanitizeAndValidate() {
+                function sanitizeAndValidate(showErrors = true) {
                     const originalVal = input.value;
                     const cleanedVal = originalVal.replace(/[^0-9+\-]/g, '');
                     if (originalVal !== cleanedVal) {
@@ -799,21 +886,39 @@
                     }
 
                     const trimmed = input.value.trim();
+                    const isRequired = input.hasAttribute('required');
+                    
+                    if (trimmed.length === 0) {
+                        if (isRequired && showErrors) {
+                            input.classList.add('is-invalid');
+                            input.setCustomValidity('This field is required.');
+                            return false;
+                        } else {
+                            input.classList.remove('is-invalid');
+                            input.setCustomValidity('');
+                            return true;
+                        }
+                    }
+
                     const isValid = /^[0-9+\-]+$/.test(trimmed);
-                    if (!isValid && trimmed.length > 0) {
-                        input.classList.add('is-invalid');
-                        if (feedback) feedback.classList.remove('d-none');
-                        input.setCustomValidity('Emergency contact must contain only digits (0-9), +, and -');
+                    if (!isValid) {
+                        if (showErrors) {
+                            input.classList.add('is-invalid');
+                        }
+                        input.setCustomValidity('Contact number must contain only digits (0-9), +, and -');
                     } else {
                         input.classList.remove('is-invalid');
-                        if (feedback) feedback.classList.add('d-none');
                         input.setCustomValidity('');
                     }
                     return isValid;
                 }
 
-                input.addEventListener('input', sanitizeAndValidate);
-                input.addEventListener('blur', sanitizeAndValidate);
+                input.addEventListener('input', function() {
+                    sanitizeAndValidate(true);
+                });
+                input.addEventListener('blur', function() {
+                    sanitizeAndValidate(true);
+                });
 
                 input.addEventListener('keypress', function(e) {
                     const char = String.fromCharCode(e.which || e.keyCode);
@@ -842,6 +947,10 @@
                 if (form) {
                     form.addEventListener('submit', function(e) {
                         const val = input.value.trim();
+                        const isRequired = input.hasAttribute('required');
+                        if (val.length === 0 && !isRequired) {
+                            return true;
+                        }
                         if (!/^[0-9+\-]+$/.test(val)) {
                             e.preventDefault();
                             input.classList.add('is-invalid');
