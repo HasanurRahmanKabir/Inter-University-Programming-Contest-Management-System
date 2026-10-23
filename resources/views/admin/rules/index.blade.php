@@ -167,8 +167,8 @@
                                                             Rules Description (One per line)
                                                         </label>
                                                         <textarea id="editRuleDescription{{ $rule->rules_id }}" name="rules_description" class="form-control"
-                                                            rows="5" required>{{ $rule->rules_description }}</textarea>
-                                                        <small class="text-muted" style="font-size: 0.78rem;">Enter each rule point on a separate line.</small>
+                                                            rows="6" placeholder="Enter each rule on a new line" required>{{ $rule->rules_description }}</textarea>
+                                                        <small class="text-muted d-block mt-1" style="font-size: 0.78rem;"><i class="fas fa-info-circle me-1 text-primary"></i>Enter each rule on a new line. Each line is automatically formatted as a distinct bullet point.</small>
                                                     </div>
 
                                                     <div class="mb-3">
@@ -266,9 +266,9 @@
                         <div class="mb-3">
                             <label for="ruleLines" class="form-label text-muted small fw-bold">Rules Description (One per line)</label>
                             <textarea id="ruleLines" class="form-control" name="rules_description" rows="6"
-                                placeholder="Enter each rule on a new line&#10;Example:&#10;- All team members must arrive 15 minutes before the contest&#10;- Cheating will result in disqualification&#10;- Mobile phones are not allowed during the contest"
+                                placeholder="Enter each rule on a new line&#10;Example:&#10;All team members must arrive 15 minutes before the contest&#10;Cheating will result in immediate disqualification&#10;Mobile phones and smart devices are prohibited during the contest"
                                 required>{{ old('rules_description') }}</textarea>
-                            <small class="text-muted" style="font-size: 0.78rem;">Enter each rule on a separate line. Prepend with '- ' for automatic formatting.</small>
+                            <small class="text-muted d-block mt-1" style="font-size: 0.78rem;"><i class="fas fa-info-circle me-1 text-primary"></i>Enter each rule on a new line. Each line is automatically formatted as a distinct bullet point.</small>
                         </div>
 
                         <div class="mb-3">
