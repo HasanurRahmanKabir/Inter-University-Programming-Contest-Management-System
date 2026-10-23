@@ -15,6 +15,53 @@
     <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/style.css">
     <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/admin-dark-mode.css">
+    <style>
+        .admin-password-group .form-control {
+            border-color: #dee2e6;
+            box-shadow: none !important;
+        }
+        .admin-password-group .password-toggle-btn {
+            background-color: transparent !important;
+            border-color: #dee2e6 !important;
+            color: #6c757d;
+            box-shadow: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.375rem 0.75rem;
+            cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .admin-password-group .password-toggle-btn:hover,
+        .admin-password-group .password-toggle-btn:focus {
+            background-color: transparent !important;
+            color: #3b82f6 !important;
+            box-shadow: none !important;
+        }
+        .admin-password-group:focus-within .form-control,
+        .admin-password-group:focus-within .password-toggle-btn {
+            border-color: #86b7fe !important;
+        }
+        body[data-theme="dark"] .admin-password-group .form-control {
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            background-color: #0f172a !important;
+            color: #e2e8f0 !important;
+        }
+        body[data-theme="dark"] .admin-password-group .password-toggle-btn {
+            background-color: #0f172a !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            color: #94a3b8;
+        }
+        body[data-theme="dark"] .admin-password-group .password-toggle-btn:hover,
+        body[data-theme="dark"] .admin-password-group .password-toggle-btn:focus {
+            background-color: #0f172a !important;
+            color: #60a5fa !important;
+        }
+        body[data-theme="dark"] .admin-password-group:focus-within .form-control,
+        body[data-theme="dark"] .admin-password-group:focus-within .password-toggle-btn {
+            border-color: #3b82f6 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -177,35 +224,47 @@
                     @csrf
                     <input type="hidden" name="modal_id" value="settingsModal">
                     <div class="modal-body">
-                        @if ($errors->any() && old('modal_id') == 'settingsModal')
-                            <div class="alert alert-danger small shadow-sm">
-                                <ul class="mb-0 ps-3">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label text-muted small fw-bold">Current Password</label>
-                            <input type="password" name="current_password" id="currentPassword" class="form-control"
-                                placeholder="Enter current password" required autocomplete="new-password" />
+                            <div class="input-group admin-password-group">
+                                <input type="password" name="current_password" id="currentPassword" class="form-control border-end-0"
+                                    placeholder="Enter current password" required autocomplete="new-password" />
+                                <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleCurrentPassword"
+                                    onclick="toggleAdminPasswordVisibility('currentPassword', 'currentPasswordIcon')"
+                                    title="Show/Hide Password" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye-slash" id="currentPasswordIcon"></i>
+                                </button>
+                            </div>
                             @error('current_password')
                                 <div class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label for="newPassword" class="form-label text-muted small fw-bold">New Password</label>
-                            <input type="password" name="new_password" id="newPassword" class="form-control"
-                                placeholder="Enter new password" required autocomplete="new-password" />
+                            <div class="input-group admin-password-group">
+                                <input type="password" name="new_password" id="newPassword" class="form-control border-end-0"
+                                    placeholder="Enter new password" required autocomplete="new-password" />
+                                <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleNewPassword"
+                                    onclick="toggleAdminPasswordVisibility('newPassword', 'newPasswordIcon')"
+                                    title="Show/Hide Password" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye-slash" id="newPasswordIcon"></i>
+                                </button>
+                            </div>
                             @error('new_password')
                                 <div class="text-danger small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label for="confirmPassword" class="form-label text-muted small fw-bold">Confirm New Password</label>
-                            <input type="password" name="new_password_confirmation" id="confirmPassword" class="form-control"
-                                placeholder="Confirm new password" required autocomplete="new-password" />
+                            <div class="input-group admin-password-group">
+                                <input type="password" name="new_password_confirmation" id="confirmPassword" class="form-control border-end-0"
+                                    placeholder="Confirm new password" required autocomplete="new-password" />
+                                <button class="btn password-toggle-btn border border-start-0" type="button" id="toggleConfirmPassword"
+                                    onclick="toggleAdminPasswordVisibility('confirmPassword', 'confirmPasswordIcon')"
+                                    title="Show/Hide Password" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye-slash" id="confirmPasswordIcon"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -236,10 +295,20 @@
     <script src="{{ asset('assets/admin') }}/js/admin-dark-mode.js"></script>
 
     @if(session('profile_success'))
-        <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-4 shadow-lg" style="z-index: 9999;" role="alert">
-            <i class="fas fa-check-circle me-2"></i> <strong>Success!</strong> {{ session('profile_success') }}
+        <div id="global-profile-alert" style="display: none;" class="alert alert-success alert-dismissible fade show shadow-sm mt-3 mx-3 mx-md-4 mb-0" role="alert">
+            <i class="fas fa-check-circle me-2"></i>{{ session('profile_success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var alertEl = document.getElementById('global-profile-alert');
+                var mainContainer = document.querySelector('.main-content');
+                if (mainContainer && alertEl) {
+                    alertEl.style.display = 'block';
+                    mainContainer.insertBefore(alertEl, mainContainer.children[1] || mainContainer.firstChild);
+                }
+            });
+        </script>
     @endif
 
     @if(session('cache_success'))
@@ -399,6 +468,22 @@
                 }, 50);
             }
         }, true);
+
+        function toggleAdminPasswordVisibility(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const passwordIcon = document.getElementById(iconId);
+            if (!passwordInput || !passwordIcon) return;
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            }
+        }
     </script>
 </body>
 

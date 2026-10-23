@@ -55,7 +55,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            @if ($errors->any())
+            @if ($errors->any() && !old('modal_id'))
                 <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
                     <i class="fas fa-exclamation-circle me-2"></i>{{ $errors->first() }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

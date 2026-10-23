@@ -51,7 +51,7 @@
                 </div>
             @endif
 
-            @if ($errors->any())
+            @if ($errors->any() && !old('modal_id'))
                 <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
                     <div class="d-flex align-items-center mb-2">
                         <i class="fas fa-exclamation-triangle me-2"></i>
