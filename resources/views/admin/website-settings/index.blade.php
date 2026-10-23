@@ -129,21 +129,25 @@
 
                         <div class="col-12 col-lg-6"><label class="form-label small fw-bold">Hero Title</label>
                             <input type="text" name="hero_title" class="form-control shadow-none @error('hero_title') is-invalid @enderror"
+                                placeholder="Your Hero Section Title (e.g. IUPC Programming Contest 2026)"
                                 value="{{ old('hero_title', $setting->hero_title ?? '') }}">
                             @error('hero_title') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
                         <div class="col-12 col-lg-6"><label class="form-label small fw-bold">About Us Title</label>
                             <input type="text" name="about_title" class="form-control shadow-none @error('about_title') is-invalid @enderror"
+                                placeholder="About Your Contest (e.g. About IUPC 2026)"
                                 value="{{ old('about_title', $setting->about_title ?? '') }}">
                             @error('about_title') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
                         <div class="col-12 col-lg-6"><label class="form-label small fw-bold">Hero Description</label>
                             <textarea name="hero_description" class="form-control shadow-none @error('hero_description') is-invalid @enderror"
+                                placeholder="Your Hero Section Description"
                                 rows="2">{{ old('hero_description', $setting->hero_description ?? '') }}</textarea>
                             @error('hero_description') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
                         <div class="col-12 col-lg-6"><label class="form-label small fw-bold">About Us Description</label>
                             <textarea name="about_description" class="form-control shadow-none @error('about_description') is-invalid @enderror"
+                                placeholder="Your About Section Description"
                                 rows="2">{{ old('about_description', $setting->about_description ?? '') }}</textarea>
                             @error('about_description') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
@@ -157,12 +161,14 @@
                                 <div class="mb-2">
                                     <label class="form-label small text-muted">Title</label>
                                     <input type="text" name="event_schedule_title_1" class="form-control shadow-none @error('event_schedule_title_1') is-invalid @enderror"
+                                        placeholder="Online Registration Period"
                                         value="{{ old('event_schedule_title_1', $setting->event_schedule_title_1 ?? '') }}">
                                     @error('event_schedule_title_1') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
                                 <div>
                                     <label class="form-label small text-muted">Description</label>
                                     <textarea name="event_schedule_description_1" class="form-control shadow-none @error('event_schedule_description_1') is-invalid @enderror"
+                                        placeholder="Official team registration and slot confirmation window for all participating universities."
                                         rows="2">{{ old('event_schedule_description_1', $setting->event_schedule_description_1 ?? '') }}</textarea>
                                     @error('event_schedule_description_1') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
@@ -174,12 +180,14 @@
                                 <div class="mb-2">
                                     <label class="form-label small text-muted">Title</label>
                                     <input type="text" name="event_schedule_title_2" class="form-control shadow-none @error('event_schedule_title_2') is-invalid @enderror"
+                                        placeholder="Main Contest & Grand Finale"
                                         value="{{ old('event_schedule_title_2', $setting->event_schedule_title_2 ?? '') }}">
                                     @error('event_schedule_title_2') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
                                 <div>
                                     <label class="form-label small text-muted">Description</label>
                                     <textarea name="event_schedule_description_2" class="form-control shadow-none @error('event_schedule_description_2') is-invalid @enderror"
+                                        placeholder="The official programming contest event, problem solving challenge and prize giving ceremony."
                                         rows="2">{{ old('event_schedule_description_2', $setting->event_schedule_description_2 ?? '') }}</textarea>
                                     @error('event_schedule_description_2') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
