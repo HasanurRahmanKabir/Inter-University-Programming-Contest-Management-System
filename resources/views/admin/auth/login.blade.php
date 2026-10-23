@@ -5,6 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Admin Login</title>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 
     <link href="{{ asset('assets/admin') }}/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/all.min.css" />
@@ -14,6 +22,14 @@
 </head>
 
 <body>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <a href="#" class="btn theme-toggle-btn position-fixed d-flex" style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 50px; height: 50px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.9); color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.5); backdrop-filter: blur(8px); transition: all 0.3s ease;">
         <i class="fas fa-lightbulb theme-toggle-icon-light" style="font-size: 1.2rem;"></i>
         <i class="fas fa-moon theme-toggle-icon-dark" style="font-size: 1.2rem;"></i>

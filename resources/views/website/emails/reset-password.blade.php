@@ -3,8 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
     <title>Password Reset Code</title>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <style>
+        :root {
+            color-scheme: light dark;
+            supported-color-schemes: light dark;
+        }
+        html[data-theme="dark"],
+        body[data-theme="dark"] {
+            background-color: #0f172a !important;
+            color: #e2e8f0 !important;
+        }
+        html[data-theme="dark"] .email-wrapper,
+        body[data-theme="dark"] .email-wrapper {
+            background-color: #020617 !important;
+        }
+        html[data-theme="dark"] .email-content,
+        body[data-theme="dark"] .email-content {
+            background-color: #0f172a !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #e2e8f0 !important;
+        }
+        html[data-theme="dark"] .body,
+        body[data-theme="dark"] .body,
+        html[data-theme="dark"] .body p,
+        body[data-theme="dark"] .body p {
+            color: #cbd5e1 !important;
+        }
+        html[data-theme="dark"] .otp-code,
+        body[data-theme="dark"] .otp-code {
+            background-color: #1e293b !important;
+            color: #38bdf8 !important;
+            border-color: #38bdf8 !important;
+        }
+        html[data-theme="dark"] .footer,
+        body[data-theme="dark"] .footer {
+            background-color: #1e293b !important;
+            color: #94a3b8 !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #f4f7f6;
@@ -70,6 +117,14 @@
     </style>
 </head>
 <body>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <div class="email-wrapper">
         <div class="email-content">
             @php

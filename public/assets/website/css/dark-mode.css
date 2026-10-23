@@ -2,7 +2,8 @@
    Website Dark Mode - Complete Stylesheet
    ============================================ */
 
-/* === Base Body === */
+/* === Base HTML and Body === */
+html[data-theme="dark"],
 body[data-theme="dark"] {
     background-color: #020617 !important;
     /* Ultra dark background for contrast */

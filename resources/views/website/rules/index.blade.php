@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Rules</title>
     <link rel="icon" type="image/x-icon" href="{{ !empty($setting->website_favicon) ? asset($setting->website_favicon) : asset('assets/website/image/favicon.ico') }}">
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 
     <link href="{{ asset('assets/website') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/website') }}/css/all.min.css">
@@ -16,6 +24,14 @@
 </head>
 
 <body>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">

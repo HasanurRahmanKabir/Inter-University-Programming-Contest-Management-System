@@ -5,6 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Reset Password</title>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 
     <link href="{{ asset('assets/website') }}/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/website') }}/css/all.min.css" />
@@ -30,6 +38,14 @@
 </head>
 
 <body>
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <div class="container d-flex justify-content-center align-items-center min-vh-100 px-3 px-sm-0">
         <div class="login-card p-4 p-sm-5 mx-auto w-100">
             <div class="brand-logo">
