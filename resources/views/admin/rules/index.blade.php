@@ -179,7 +179,7 @@
                                                         </select>
                                                     </div>
 
-                                                    <div class="modal-footer d-flex justify-content-end gap-2 px-0 pb-0 border-top-0">
+                                                    <div class="modal-footer">
                                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                                                         <button type="submit" class="btn btn-primary px-4">Update Rule</button>
                                                     </div>
@@ -279,7 +279,7 @@
                             </select>
                         </div>
 
-                        <div class="modal-footer d-flex justify-content-end gap-2 px-0 pb-0 border-top-0">
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary px-4">Add Rule</button>
                         </div>
