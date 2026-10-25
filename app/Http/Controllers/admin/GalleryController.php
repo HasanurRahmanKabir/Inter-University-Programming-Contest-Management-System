@@ -18,7 +18,7 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'media_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'media_file' => 'required|image|mimes:jpeg,png,jpg,webp,gif,avif,heic,heif|max:5120',
             'event_date' => 'required|date',
         ]);
 

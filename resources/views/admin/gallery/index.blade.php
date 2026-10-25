@@ -124,19 +124,43 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Select Image</label>
-                            <div class="upload-area" onclick="document.getElementById('mediaFile').click()"
-                                style="cursor: pointer;">
-                                <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
-                                <p class="mb-1 fw-bold">Click to browse file</p>
-                                <small class="text-muted d-block gallery-upload-hint">Recommended: 16:9 ratio (1920x1080px or 1200x675px)</small>
-                                <small class="text-muted d-block gallery-upload-subhint">JPG, PNG, WebP up to 5MB</small>
-                                <input type="file" name="media_file" id="mediaFile" accept="image/jpeg,image/png,image/jpg,image/webp,image/gif" class="d-none @error('media_file') is-invalid @enderror" required
+                            
+                            <!-- Unified In-Place Dropzone & Media Preview Box -->
+                            <div class="upload-area position-relative p-0" id="galleryUploadArea" onclick="handleGalleryUploadClick(event)"
+                                style="cursor: pointer; min-height: 200px;">
+                                
+                                <!-- Empty State Prompt -->
+                                <div id="galleryEmptyPrompt" class="p-4 text-center">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                    <p class="mb-1 fw-bold">Click to browse file</p>
+                                    <small class="text-muted d-block gallery-upload-hint">Recommended: 16:9 ratio (1920x1080px or 1200x675px)</small>
+                                    <small class="text-muted d-block gallery-upload-subhint">JPG, PNG, WebP, AVIF up to 5MB</small>
+                                </div>
+
+                                <!-- Filled State: In-Place Visual Image Preview with Floating Cross Button -->
+                                <div id="galleryFilledPreview" class="w-100 d-none position-relative text-center">
+                                    <!-- Full Complete Image with Natural Proportions -->
+                                    <img id="galleryPreviewImg" src="" alt="Selected Preview" class="w-100 rounded-3 shadow-sm" style="display: block; max-height: 380px; object-fit: contain;">
+                                    
+                                    <!-- Floating Cross / Remove Button at Exact Outer Top-Right Corner -->
+                                    <button type="button" class="btn-gallery-remove-floating" onclick="clearGalleryUpload(event)" title="Remove selected image">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+
+                                    <!-- Bottom Info Bar -->
+                                    <div class="gallery-preview-glass-overlay position-absolute bottom-0 start-0 w-100 p-2 d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-2 overflow-hidden me-2">
+                                            <span class="badge bg-success rounded-pill px-2 py-1" style="font-size: 0.7rem;"><i class="fas fa-check me-1"></i>Selected</span>
+                                            <span id="preview-filename" class="text-white small fw-semibold text-truncate" style="max-width: 240px;"></span>
+                                        </div>
+                                        <span id="preview-filesize" class="badge bg-dark bg-opacity-75 text-light fw-normal rounded-pill px-2 py-1 flex-shrink-0" style="font-size: 0.7rem;"></span>
+                                    </div>
+                                </div>
+
+                                <input type="file" name="media_file" id="mediaFile" accept="image/jpeg,image/png,image/jpg,image/webp,image/gif,image/avif,image/heic,image/heif" class="d-none @error('media_file') is-invalid @enderror" required
                                     onchange="previewUpload(this)">
                             </div>
                             @error('media_file') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                            <div id="preview-container" class="mt-2 text-center d-none">
-                                <small class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i><span id="preview-filename">File Selected!</span></small>
-                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold">Date</label>
@@ -216,42 +240,218 @@
             });
         });
 
-        // File Upload Preview & Filename Display
+        // Format bytes helper
+        function formatBytes(bytes, decimals = 1) {
+            if (!bytes || bytes === 0) return '0 B';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        // Handle upload area click: browse if empty
+        function handleGalleryUploadClick(e) {
+            const fileInput = document.getElementById('mediaFile');
+            const filledPreview = document.getElementById('galleryFilledPreview');
+            // If already has file, do nothing on container click (user can remove with cross button)
+            if (filledPreview && !filledPreview.classList.contains('d-none')) {
+                return;
+            }
+            if (fileInput) {
+                fileInput.click();
+            }
+        }
+
+        // File Upload In-Place Preview Display
         function previewUpload(input) {
+            const emptyPrompt = document.getElementById('galleryEmptyPrompt');
+            const filledPreview = document.getElementById('galleryFilledPreview');
+            const previewImg = document.getElementById('galleryPreviewImg');
+            const previewText = document.getElementById('preview-filename');
+            const previewSize = document.getElementById('preview-filesize');
+            const uploadArea = document.getElementById('galleryUploadArea');
+
             if (input.files && input.files[0]) {
                 const file = input.files[0];
-                const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/gif'];
-                const validExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/gif', 'image/avif', 'image/heic', 'image/heif'];
+                const validExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.heic', '.heif'];
                 const fileName = file.name.toLowerCase();
                 const hasValidExt = validExts.some(ext => fileName.endsWith(ext));
 
                 if (!validTypes.includes(file.type) && !hasValidExt) {
-                    alert('Invalid file format! Only images (JPG, PNG, WebP, GIF) are allowed.\n\nVideos, zip archives, and documents are not permitted.');
-                    input.value = '';
-                    const previewContainer = document.getElementById('preview-container');
-                    if (previewContainer) previewContainer.classList.add('d-none');
+                    alert('Invalid file format! Only images (JPG, PNG, WebP, AVIF, GIF) are allowed.\n\nVideos, zip archives, and documents are not permitted.');
+                    clearGalleryUpload();
                     return;
                 }
 
                 if (file.size > 5 * 1024 * 1024) {
                     alert('Image size exceeds 5MB limit. Please select a photo smaller than 5MB.');
-                    input.value = '';
-                    const previewContainer = document.getElementById('preview-container');
-                    if (previewContainer) previewContainer.classList.add('d-none');
+                    clearGalleryUpload();
                     return;
                 }
 
-                const previewText = document.getElementById('preview-filename');
                 if (previewText) {
                     previewText.textContent = file.name;
                 }
-                const previewContainer = document.getElementById('preview-container');
-                if (previewContainer) previewContainer.classList.remove('d-none');
+
+                if (previewSize) {
+                    previewSize.textContent = formatBytes(file.size);
+                }
+
+                // Render live image in place of the browse area
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (previewImg) {
+                        previewImg.src = e.target.result;
+                    }
+                    const previewBackdrop = document.getElementById('galleryPreviewBackdrop');
+                    if (previewBackdrop) {
+                        previewBackdrop.style.backgroundImage = 'url(' + e.target.result + ')';
+                    }
+                    if (emptyPrompt) {
+                        emptyPrompt.classList.add('d-none');
+                    }
+                    if (filledPreview) {
+                        filledPreview.classList.remove('d-none');
+                    }
+                    if (uploadArea) {
+                        uploadArea.classList.add('has-file');
+                    }
+                };
+                reader.readAsDataURL(file);
             }
         }
+
+        // Clear Selected Image Handler
+        function clearGalleryUpload(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            const fileInput = document.getElementById('mediaFile');
+            const emptyPrompt = document.getElementById('galleryEmptyPrompt');
+            const filledPreview = document.getElementById('galleryFilledPreview');
+            const previewImg = document.getElementById('galleryPreviewImg');
+            const previewBackdrop = document.getElementById('galleryPreviewBackdrop');
+            const previewText = document.getElementById('preview-filename');
+            const previewSize = document.getElementById('preview-filesize');
+            const uploadArea = document.getElementById('galleryUploadArea');
+
+            if (fileInput) {
+                fileInput.value = '';
+            }
+            if (previewImg) {
+                previewImg.src = '';
+            }
+            if (previewBackdrop) {
+                previewBackdrop.style.backgroundImage = 'none';
+            }
+            if (previewText) {
+                previewText.textContent = '';
+            }
+            if (previewSize) {
+                previewSize.textContent = '';
+            }
+            if (filledPreview) {
+                filledPreview.classList.add('d-none');
+            }
+            if (emptyPrompt) {
+                emptyPrompt.classList.remove('d-none');
+            }
+            if (uploadArea) {
+                uploadArea.classList.remove('has-file');
+            }
+        }
+
+        // Reset upload preview when modal is closed
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadModalEl = document.getElementById('uploadMediaModal');
+            if (uploadModalEl) {
+                uploadModalEl.addEventListener('hidden.bs.modal', function () {
+                    clearGalleryUpload();
+                });
+            }
+        });
     </script>
 
     <style>
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 14px;
+            background-color: #f8fafc;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .upload-area.has-file {
+            border-style: solid !important;
+            border-color: #10b981 !important;
+            background-color: transparent !important;
+            box-shadow: 0 4px 15px -3px rgba(16, 185, 129, 0.2);
+            min-height: auto !important;
+        }
+
+        /* Floating Remove Cross Button on Outer Top-Right Corner */
+        .btn-gallery-remove-floating {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            z-index: 25;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: #ffffff !important;
+            border: 2px solid #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            padding: 0;
+        }
+
+        .btn-gallery-remove-floating:hover {
+            background: #dc2626 !important;
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+            transform: scale(1.15) rotate(90deg);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.55);
+        }
+
+        /* Glass Overlay for Image Filename & Specs */
+        .gallery-preview-glass-overlay {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(15, 23, 42, 0.88) 100%);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        /* Dark Mode Fine Tuning */
+        body[data-theme="dark"] .upload-area {
+            background-color: #1e293b;
+            border-color: #475569;
+        }
+
+        body[data-theme="dark"] .upload-area:hover {
+            border-color: #60a5fa;
+            background-color: #1e293b;
+        }
+
+        body[data-theme="dark"] .upload-area.has-file {
+            border-color: #10b981 !important;
+            background-color: #020617 !important;
+        }
+
         .btn-gallery-lightbox-close {
             position: absolute;
             top: -16px;
@@ -292,6 +492,18 @@
                 width: 38px;
                 height: 38px;
                 font-size: 1.05rem;
+            }
+
+            .upload-area {
+                min-height: 175px !important;
+            }
+
+            .btn-gallery-remove-floating {
+                top: -9px;
+                right: -9px;
+                width: 26px;
+                height: 26px;
+                font-size: 0.75rem;
             }
         }
 
