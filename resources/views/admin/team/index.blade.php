@@ -124,9 +124,9 @@
                                     </td>
                                     <td class="text-end">
                                         <button class="btn btn-light btn-sm text-primary" data-bs-toggle="modal"
-                                            data-bs-target="#teamDetailModal{{ $data->team_id }}"><i
-                                                class="fas fa-eye"></i>
-                                            Details</button>
+                                            data-bs-target="#teamDetailModal{{ $data->team_id }}" title="Edit Team">
+                                            <i class="fas fa-edit me-1"></i> Edit
+                                        </button>
                                     </td>
                                 </tr>
                             @empty
@@ -155,7 +155,7 @@
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Team Details: <span
+                        <h5 class="modal-title fw-bold">Edit Team: <span
                                 class="text-primary">{{ $data->team_name }}</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -738,6 +738,18 @@
             background-color: rgba(255, 255, 255, 0.08) !important;
             color: #e2e8f0 !important;
             border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        /* Dark Mode Toggle Switch Visibility */
+        body[data-theme="dark"] .form-switch .form-check-input {
+            background-color: #334155 !important;
+            border-color: #64748b !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23cbd5e1'/%3e%3c/svg%3e") !important;
+        }
+        body[data-theme="dark"] .form-switch .form-check-input:checked {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") !important;
         }
     </style>
 
