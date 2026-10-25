@@ -101,11 +101,18 @@
                                         </span>
                                     </td>
                                     <td class="text-end">
-                                        <!-- View Button -->
-                                        <button class="btn btn-light btn-sm text-primary" title="View Details"
-                                            data-bs-toggle="modal" data-bs-target="#viewDetailsModal{{ $data->team_id }}">
-                                            <i class="fas fa-eye me-1"></i> View
-                                        </button>
+                                        <div class="d-inline-flex align-items-center justify-content-end gap-1">
+                                            <!-- Download Specific Team Excel Button -->
+                                            <button class="btn btn-light btn-sm text-success" title="Download this team's details (Excel)"
+                                                onclick="exportSingleTeamToExcel({{ $data->team_id }})">
+                                                <i class="fas fa-file-excel me-1"></i> Download
+                                            </button>
+                                            <!-- View Button -->
+                                            <button class="btn btn-light btn-sm text-primary" title="View Details"
+                                                data-bs-toggle="modal" data-bs-target="#viewDetailsModal{{ $data->team_id }}">
+                                                <i class="fas fa-eye me-1"></i> View
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
@@ -272,7 +279,50 @@
 
                                 XLSX.utils.book_append_sheet(workbook, worksheet, "Team Details");
 
-                                XLSX.writeFile(workbook, "team-details.xlsx");
+                                XLSX.writeFile(workbook, "all-team-details.xlsx");
+                            }
+
+                            function exportSingleTeamToExcel(teamId) {
+                                const team = teamDetails.find(t => String(t.team_id) === String(teamId));
+                                if (!team) {
+                                    if (typeof showCustomAlert === 'function') {
+                                        showCustomAlert('Error', 'Team data not found for export.');
+                                    } else {
+                                        alert('Team data not found for export.');
+                                    }
+                                    return;
+                                }
+
+                                const singleData = [{
+                                    "Institution": team.institute_name,
+                                    "Team Name": team.team_name,
+                                    "Coach Name": team.coach_name,
+                                    "Coach T-Shirt Size": team.coach_t_shirt,
+                                    "Coach Contact": team.coach_phone,
+                                    "Coach Email": team.coach_email,
+
+                                    "Member 1 Name": team.mem_1_name ?? '',
+                                    "Member 1 Email": team.mem_1_email ?? '',
+                                    "Member 1 T-Shirt": team.mem_1_t_shirt ?? '',
+
+                                    "Member 2 Name": team.mem_2_name ?? '',
+                                    "Member 2 Email": team.mem_2_email ?? '',
+                                    "Member 2 T-Shirt": team.mem_2_t_shirt ?? '',
+
+                                    "Member 3 Name": team.mem_3_name ?? '',
+                                    "Member 3 Email": team.mem_3_email ?? '',
+                                    "Member 3 T-Shirt": team.mem_3_t_shirt ?? '',
+
+                                    "Payment Status": team.is_paid ? "Paid" : "Unpaid"
+                                }];
+
+                                const workbook = XLSX.utils.book_new();
+                                const worksheet = XLSX.utils.json_to_sheet(singleData);
+
+                                XLSX.utils.book_append_sheet(workbook, worksheet, "Team Details");
+
+                                const safeTeamName = (team.team_name || 'team').replace(/[^a-zA-Z0-9_-]/g, '_');
+                                XLSX.writeFile(workbook, safeTeamName + "-details.xlsx");
                             }
 
                             document.getElementById('exportAllBtn')
