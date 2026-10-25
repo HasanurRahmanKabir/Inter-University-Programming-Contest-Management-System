@@ -277,17 +277,20 @@
                 const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'image/gif', 'image/avif', 'image/heic', 'image/heif'];
                 const validExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.heic', '.heif'];
                 const fileName = file.name.toLowerCase();
+                const uploadModalEl = document.getElementById('uploadMediaModal');
+                const uploadModal = uploadModalEl ? (bootstrap.Modal.getInstance(uploadModalEl) || new bootstrap.Modal(uploadModalEl)) : null;
+
                 const hasValidExt = validExts.some(ext => fileName.endsWith(ext));
 
                 if (!validTypes.includes(file.type) && !hasValidExt) {
-                    alert('Invalid file format! Only images (JPG, PNG, WebP, AVIF, GIF) are allowed.\n\nVideos, zip archives, and documents are not permitted.');
                     clearGalleryUpload();
+                    showCustomAlert('Invalid File Format', 'Only image files (JPG, PNG, WebP, AVIF, GIF) are allowed.<br><br>Videos, zip archives, and documents are not permitted.');
                     return;
                 }
 
                 if (file.size > 5 * 1024 * 1024) {
-                    alert('Image size exceeds 5MB limit. Please select a photo smaller than 5MB.');
                     clearGalleryUpload();
+                    showCustomAlert('File Too Large', 'The selected image exceeds the 5MB size limit. Please select an image smaller than 5MB.');
                     return;
                 }
 

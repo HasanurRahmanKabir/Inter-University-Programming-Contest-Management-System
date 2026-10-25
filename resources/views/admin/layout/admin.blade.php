@@ -492,6 +492,80 @@
                 passwordIcon.classList.add('fa-eye-slash');
             }
         }
+
+        // Global Custom Alert Modal Function for Admin Panel (Consistent with Registration Modal)
+        function showCustomAlert(title, message, iconClass) {
+            const titleEl = document.getElementById('customAlertTitle');
+            const messageEl = document.getElementById('customAlertMessage');
+            const iconEl = document.getElementById('customAlertIcon');
+            const modalEl = document.getElementById('customAlertModal');
+
+            if (titleEl) titleEl.innerText = title || 'Alert';
+            if (messageEl) messageEl.innerHTML = message ? message.replace(/\n/g, '<br>') : '';
+            if (iconEl && iconClass) {
+                iconEl.className = iconClass + ' me-2';
+            }
+
+            if (modalEl && typeof bootstrap !== 'undefined') {
+                const alertModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl, {
+                    backdrop: true,
+                    keyboard: true
+                });
+
+                alertModal.show();
+            } else {
+                alert(message);
+            }
+        }
+    </script>
+
+    <!-- Global Custom Alert Modal (Matching Registration Modal & Dark/Light Theme) -->
+    <style>
+        #customAlertModal {
+            z-index: 10600 !important;
+        }
+        .modal-backdrop.custom-alert-backdrop {
+            z-index: 10550 !important;
+        }
+    </style>
+    <div class="modal fade" id="customAlertModal" tabindex="-1" aria-labelledby="customAlertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h6 class="modal-title fw-bold" id="customAlertModalLabel">
+                        <i id="customAlertIcon" class="fas fa-exclamation-triangle text-warning me-2"></i><span id="customAlertTitle">Alert</span>
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3 pb-3 text-center">
+                    <p id="customAlertMessage" class="mb-0 text-muted" style="font-size: 14px; line-height: 1.5;"></p>
+                </div>
+                <div class="modal-footer border-top-0 pt-0 justify-content-center pb-3">
+                    <button type="button" class="btn btn-primary rounded-pill px-4 btn-sm" data-bs-dismiss="modal">OK, Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var alertEl = document.getElementById('customAlertModal');
+            if (alertEl) {
+                alertEl.addEventListener('show.bs.modal', function() {
+                    setTimeout(function() {
+                        var backdrops = document.querySelectorAll('.modal-backdrop');
+                        if (backdrops.length > 0) {
+                            backdrops[backdrops.length - 1].classList.add('custom-alert-backdrop');
+                        }
+                    }, 10);
+                });
+                alertEl.addEventListener('hidden.bs.modal', function() {
+                    // If another modal is still open, ensure body has modal-open class
+                    if (document.querySelectorAll('.modal.show').length > 0) {
+                        document.body.classList.add('modal-open');
+                    }
+                });
+            }
+        });
     </script>
 </body>
 

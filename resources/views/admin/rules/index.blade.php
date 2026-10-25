@@ -289,34 +289,7 @@
         </div>
     </div>
 
-    <!-- Custom Alert Modal -->
-    <div class="modal fade" id="customAlertModal" tabindex="-1" aria-labelledby="customAlertModalLabel" aria-hidden="true" style="z-index: 9999;">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
-                <div class="modal-header border-bottom-0 pb-0">
-                    <h6 class="modal-title fw-bold" id="customAlertModalLabel">
-                        <i class="fas fa-exclamation-triangle text-warning me-2"></i><span id="customAlertTitle">Alert</span>
-                    </h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pt-3 pb-3 text-center">
-                    <p id="customAlertMessage" class="mb-0 text-muted" style="font-size: 14px;">Message goes here.</p>
-                </div>
-                <div class="modal-footer border-top-0 pt-0 justify-content-center pb-3">
-                    <button type="button" class="btn btn-primary rounded-pill px-4 btn-sm" data-bs-dismiss="modal">OK, Got it</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        function showCustomAlert(title, message) {
-            document.getElementById('customAlertTitle').innerText = title;
-            document.getElementById('customAlertMessage').innerText = message;
-            var alertModal = new bootstrap.Modal(document.getElementById('customAlertModal'));
-            alertModal.show();
-        }
-
         //Sidebar Logic
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
@@ -333,61 +306,6 @@
 
         if (overlay) {
             overlay.addEventListener('click', toggleSidebar);
-        }
-
-        //Profile Settings
-        const saveProfileBtn = document.getElementById('saveProfileBtn');
-
-        if (saveProfileBtn) {
-            saveProfileBtn.addEventListener('click', () => {
-                const firstName = document.getElementById('adminFirstName')?.value.trim();
-                const lastName = document.getElementById('adminLastName')?.value.trim();
-                const email = document.getElementById('adminEmail')?.value.trim();
-
-                if (firstName && lastName && email) {
-                    showCustomAlert('Success', 'Profile updated successfully!');
-                    const profileModal = bootstrap.Modal.getInstance(
-                        document.getElementById('profileModal')
-                    );
-                    profileModal?.hide();
-                } else {
-                    showCustomAlert('Warning', 'Please fill in all required fields.');
-                }
-            });
-        }
-
-        //Password Settings
-        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-
-        if (saveSettingsBtn) {
-            saveSettingsBtn.addEventListener('click', () => {
-                const currentPassword = document.getElementById('currentPassword')?.value.trim();
-                const newPassword = document.getElementById('newPassword')?.value.trim();
-                const confirmPassword = document.getElementById('confirmPassword')?.value.trim();
-
-                if (!currentPassword || !newPassword || !confirmPassword) {
-                    showCustomAlert('Warning', 'Please fill in all password fields!');
-                    return;
-                }
-
-                if (newPassword !== confirmPassword) {
-                    showCustomAlert('Error', 'Passwords do not match!');
-                    return;
-                }
-
-                if (newPassword.length < 6) {
-                    showCustomAlert('Warning', 'Password must be at least 6 characters long!');
-                    return;
-                }
-
-                showCustomAlert('Success', 'Password updated successfully!');
-                const settingsModal = bootstrap.Modal.getInstance(
-                    document.getElementById('settingsModal')
-                );
-                settingsModal?.hide();
-
-                document.getElementById('settingsForm')?.reset();
-            });
         }
     </script>
 @endsection

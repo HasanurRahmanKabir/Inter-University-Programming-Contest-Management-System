@@ -752,13 +752,13 @@
                 var hasValidExt = validExts.some(function(ext) { return fileName.endsWith(ext); });
 
                 if (!validTypes.includes(file.type) && !hasValidExt) {
-                    alert('Invalid file format! Only images (JPG, JPEG, PNG, WEBP, AVIF, HEIC) are allowed.');
+                    showCustomAlert('Invalid File Format', 'Only image files (JPG, JPEG, PNG, WEBP, AVIF, HEIC) are allowed.<br><br>Videos, zip archives, and documents are not permitted.');
                     input.value = '';
                     return;
                 }
 
                 if (file.size > 2 * 1024 * 1024) {
-                    alert('Image size exceeds 2MB limit. Please upload a photo smaller than 2MB.');
+                    showCustomAlert('File Too Large', 'The selected photo exceeds the 2MB size limit. Please select an image under 2MB.');
                     input.value = '';
                     return;
                 }

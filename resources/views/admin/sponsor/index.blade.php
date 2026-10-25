@@ -402,13 +402,13 @@
                         var hasValidExt = validExts.some(function (ext) { return fileName.endsWith(ext); });
 
                         if (!validTypes.includes(file.type) && !hasValidExt) {
-                            alert('Invalid file format! Only images (PNG, JPG, JPEG, WEBP, SVG, GIF) are allowed.\n\nVideos, zip archives, and executable files are prohibited.');
+                            showCustomAlert('Invalid File Format', 'Only image files (PNG, JPG, JPEG, WEBP, SVG, GIF) are allowed.<br><br>Videos, zip archives, and executable files are prohibited.');
                             this.value = '';
                             return;
                         }
 
                         if (file.size > 2 * 1024 * 1024) {
-                            alert('Logo image exceeds 2MB limit. Please choose a file smaller than 2MB.');
+                            showCustomAlert('File Too Large', 'Logo image exceeds the 2MB size limit. Please choose an image smaller than 2MB.');
                             this.value = '';
                             return;
                         }
