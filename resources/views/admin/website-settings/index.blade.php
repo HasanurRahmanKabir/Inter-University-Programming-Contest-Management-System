@@ -92,7 +92,7 @@
                                         <button type="button" 
                                             class="btn btn-sm btn-danger rounded-circle position-absolute d-flex align-items-center justify-content-center p-0"
                                             style="width: 24px; height: 24px; top: -8px; right: -8px; z-index: 5;"
-                                            onclick="let el = document.getElementById('img-container-{{ $key }}'); el.classList.remove('d-inline-block'); el.classList.add('d-none'); document.getElementById('delete-{{ $key }}').disabled=false;"
+                                            onclick="removeImageSetting('{{ $key }}')"
                                             title="Remove Image">
                                             <i class="fas fa-times" style="font-size: 12px;"></i>
                                         </button>
@@ -549,7 +549,7 @@
 
                 const initialSignature = getFormSignature();
 
-                const checkChanges = () => {
+                window.checkWebsiteSettingsChanges = () => {
                     const currentSignature = getFormSignature();
                     const hasChanges = (currentSignature !== initialSignature);
 
@@ -566,8 +566,8 @@
                     }
                 };
 
-                settingsForm.addEventListener('input', checkChanges);
-                settingsForm.addEventListener('change', checkChanges);
+                settingsForm.addEventListener('input', window.checkWebsiteSettingsChanges);
+                settingsForm.addEventListener('change', window.checkWebsiteSettingsChanges);
 
                 settingsForm.addEventListener('submit', function () {
                     // Show immediate saving state without visual hitch
@@ -578,15 +578,39 @@
                 if (resetBtn) {
                     resetBtn.addEventListener('click', function () {
                         settingsForm.reset();
+                        // Restore any removed image containers and disable their delete inputs
+                        document.querySelectorAll('[id^="delete-"]').forEach(hiddenDel => {
+                            hiddenDel.disabled = true;
+                        });
+                        document.querySelectorAll('[id^="img-container-"]').forEach(container => {
+                            container.classList.remove('d-none');
+                            container.classList.add('d-inline-block');
+                        });
                         // Clear image previews that were changed
                         document.querySelectorAll('input[type="file"]').forEach(input => {
                             input.dispatchEvent(new Event('change'));
                         });
-                        setTimeout(checkChanges, 50);
+                        setTimeout(window.checkWebsiteSettingsChanges, 50);
                     });
                 }
             }
         });
+
+        // Global helper for website settings image removal
+        function removeImageSetting(key) {
+            const container = document.getElementById('img-container-' + key);
+            const deleteInput = document.getElementById('delete-' + key);
+            if (container) {
+                container.classList.remove('d-inline-block');
+                container.classList.add('d-none');
+            }
+            if (deleteInput) {
+                deleteInput.disabled = false;
+            }
+            if (typeof window.checkWebsiteSettingsChanges === 'function') {
+                window.checkWebsiteSettingsChanges();
+            }
+        }
     </script>
     </div>
 @endsection
