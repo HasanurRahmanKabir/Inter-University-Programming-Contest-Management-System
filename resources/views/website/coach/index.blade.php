@@ -8,7 +8,7 @@
     <link rel="icon" type="image/x-icon" href="{{ !empty($setting->coach_favicon) ? asset($setting->coach_favicon) : (!empty($setting->website_favicon) ? asset($setting->website_favicon) : asset('assets/website/image/favicon.ico')) }}">
     <script>
         (function() {
-            var savedTheme = localStorage.getItem('theme');
+            var savedTheme = localStorage.getItem('coach_theme');
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
@@ -396,7 +396,7 @@
     </style>
     <script>
         (function() {
-            var savedTheme = localStorage.getItem('theme');
+            var savedTheme = localStorage.getItem('coach_theme');
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
@@ -407,7 +407,7 @@
 <body>
     <script>
         (function() {
-            var savedTheme = localStorage.getItem('theme');
+            var savedTheme = localStorage.getItem('coach_theme');
             if (savedTheme === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
             }
@@ -1143,7 +1143,7 @@
 
     <!-- Bootstrap & App Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/website') }}/js/dark-mode.js"></script>
+    <script src="{{ asset('assets/website') }}/js/coach-dark-mode.js"></script>
     <script>
         // Website In-Page Dashboard Alert
         function showWebsiteToast(message, type = 'success', duration = 6000) {

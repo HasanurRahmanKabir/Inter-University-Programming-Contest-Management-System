@@ -12,7 +12,7 @@
     <link rel="icon" type="image/x-icon" href="{{ !empty($setting->admin_favicon) ? asset($setting->admin_favicon) : (!empty($setting->website_favicon) ? asset($setting->website_favicon) : asset('assets/website/image/favicon.ico')) }}">
     <script>
         (function() {
-            var savedTheme = localStorage.getItem('theme');
+            var savedTheme = localStorage.getItem('admin_theme');
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
@@ -126,7 +126,7 @@
 <body>
     <script>
         (function() {
-            var savedTheme = localStorage.getItem('theme');
+            var savedTheme = localStorage.getItem('admin_theme');
             if (savedTheme === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
             }

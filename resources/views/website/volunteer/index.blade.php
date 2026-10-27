@@ -8,7 +8,7 @@
     <link rel="icon" type="image/x-icon" href="{{ !empty($setting->volunteer_favicon) ? asset($setting->volunteer_favicon) : (!empty($setting->website_favicon) ? asset($setting->website_favicon) : asset('assets/website/image/favicon.ico')) }}">
     <script>
         (function() {
-            var savedTheme = localStorage.getItem('theme');
+            var savedTheme = localStorage.getItem('volunteer_theme');
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
@@ -168,7 +168,7 @@
     </style>
     <script>
         (function() {
-            var savedTheme = localStorage.getItem('theme');
+            var savedTheme = localStorage.getItem('volunteer_theme');
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
@@ -179,7 +179,7 @@
 <body>
     <script>
         (function() {
-            var savedTheme = localStorage.getItem('theme');
+            var savedTheme = localStorage.getItem('volunteer_theme');
             if (savedTheme === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
             }
@@ -526,7 +526,7 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/website') }}/js/dark-mode.js"></script>
+    <script src="{{ asset('assets/website') }}/js/volunteer-dark-mode.js"></script>
 
 </body>
 
