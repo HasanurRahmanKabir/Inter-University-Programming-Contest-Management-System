@@ -116,7 +116,7 @@
                     </table>
                 </div>
 
-                <div class="mt-4 d-flex justify-content-end">
+                <div class="mt-4 w-100">
                     {{ $volunteer->appends(request()->query())->links('pagination::bootstrap-5') }}
                 </div>
             </div>

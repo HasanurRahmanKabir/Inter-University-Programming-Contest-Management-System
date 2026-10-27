@@ -192,7 +192,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-3">
+                <div class="mt-4 w-100">
                     {!! $kits->links('pagination::bootstrap-5') !!}
                 </div>
             </div>

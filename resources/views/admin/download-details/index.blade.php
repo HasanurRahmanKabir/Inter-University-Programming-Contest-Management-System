@@ -128,7 +128,7 @@
                     </table>
                 </div>
 
-                <div class="d-flex justify-content-center mt-4">
+                <div class="mt-4 w-100">
                     {{ $paginatedDetails->links('pagination::bootstrap-5') }}
                 </div>
             </div>

@@ -124,8 +124,12 @@
                                     </td>
                                     <td class="text-end">
                                         <button class="btn btn-light btn-sm text-primary" data-bs-toggle="modal"
-                                            data-bs-target="#teamDetailModal{{ $data->team_id }}" title="Edit Team">
-                                            <i class="fas fa-edit me-1"></i> Edit
+                                            data-bs-target="#teamDetailModal{{ $data->team_id }}" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-light btn-sm text-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteTeamModal{{ $data->team_id }}" title="Delete">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -142,7 +146,7 @@
                     </table>
                 </div>
                 
-                <div class="mt-4 d-flex justify-content-end">
+                <div class="mt-4 w-100">
                     {{ $teamregistration->appends(request()->query())->links('pagination::bootstrap-5') }}
                 </div>
             </div>
@@ -566,14 +570,9 @@
                             </div>
                     </div>
                     
-                    <div class="modal-footer d-flex justify-content-between align-items-center bg-white border-top">
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTeamModal{{ $data->team_id }}">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                        <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
-                        </div>
+                    <div class="modal-footer bg-white border-top">
+                        <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary px-4">Save Changes</button>
                     </div>
                     </form>
                 </div>

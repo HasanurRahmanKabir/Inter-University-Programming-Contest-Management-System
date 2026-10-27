@@ -198,7 +198,7 @@
                     </table>
                 </div>
 
-                <div class="mt-4 d-flex justify-content-end">
+                <div class="mt-4 w-100">
                     {{ $payment->appends(request()->query())->links('pagination::bootstrap-5') }}
                 </div>
             </div>

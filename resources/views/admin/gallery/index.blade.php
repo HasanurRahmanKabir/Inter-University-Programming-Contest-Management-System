@@ -102,11 +102,9 @@
             </div>
 
             @if($galleries->count() > 0)
-                <nav class="mt-4">
-                    <ul class="pagination justify-content-end">
-                        <li>{!! $galleries->links('pagination::bootstrap-5') !!}</li>
-                    </ul>
-                </nav>
+                <div class="mt-4 w-100">
+                    {!! $galleries->links('pagination::bootstrap-5') !!}
+                </div>
             @endif
 
         </div>

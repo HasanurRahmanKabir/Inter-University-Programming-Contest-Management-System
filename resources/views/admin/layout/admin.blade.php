@@ -69,6 +69,57 @@
         body[data-theme="dark"] .admin-password-group:focus-within .password-toggle-btn {
             border-color: #3b82f6 !important;
         }
+
+        /* --- Admin Pagination Professional Layout --- */
+        nav .pagination {
+            margin-bottom: 0 !important;
+        }
+        nav.d-flex.justify-content-between,
+        nav.d-flex.justify-items-center {
+            width: 100% !important;
+        }
+
+        /* Hide Laravel's bulky Previous/Next text block on all devices */
+        nav div.d-sm-none {
+            display: none !important;
+        }
+
+        /* Always show the clean numeric pagination with Showing counter */
+        nav div.flex-sm-fill {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            gap: 1rem !important;
+        }
+        nav div.flex-sm-fill p.small {
+            margin-bottom: 0 !important;
+            white-space: nowrap !important;
+            font-size: 0.85rem !important;
+        }
+        nav .pagination .page-link {
+            padding: 0.35rem 0.65rem !important;
+            font-size: 0.85rem !important;
+            line-height: 1.25 !important;
+        }
+
+        /* Mobile specific stacking: Showing counter on top, numbers below */
+        @media (max-width: 575.98px) {
+            nav div.flex-sm-fill {
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center !important;
+                gap: 0.6rem !important;
+            }
+            nav div.flex-sm-fill p.small {
+                white-space: normal !important;
+            }
+        }
+
+        /* Compact bottom scroll padding so card and Live button have a balanced, tight gap */
+        .main-content {
+            padding-bottom: 25px !important;
+        }
     </style>
 </head>
 
@@ -288,7 +339,6 @@
         </div>
     </div>
 
-
     <div style="position:fixed;bottom:20px;right:20px;z-index:1040;">
         <a href="{{ url('/') }}"
         target="_blank"
@@ -296,6 +346,7 @@
         class="btn btn-success rounded-pill shadow">
             <i class="fas fa-globe me-2"></i> Live
         </a>
+    </div>
     </div>
 </div>
     <script src="{{ asset('assets/admin') }}/js/app.js"></script>
