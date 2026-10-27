@@ -78,18 +78,42 @@
             color: #f87171 !important;
         }
 
-        /* Responsive Header & Optical Theme Button Alignment */
-        .reg-header-title {
-            font-size: clamp(1.35rem, 4vw, 2rem);
-            line-height: 1.25;
-            margin-bottom: 0.35rem;
+        /* Standard Website Navbar & Clean Page Header (Matching Home, Teams, Rules) */
+        .navbar {
+            background-color: #0f172a;
+            padding: 15px 0;
+            transition: all 0.3s;
         }
-        .reg-header-subtitle {
-            font-size: clamp(0.8rem, 2.5vw, 0.95rem);
-            opacity: 0.8;
-            line-height: 1.35;
+        .logo-wrapper {
+            text-decoration: none !important;
+            color: inherit !important;
         }
-        .reg-header-theme-btn {
+        .custom-logo {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .custom-logo-placeholder {
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border: 1px dashed #ced4da;
+            padding: 4px 10px;
+            color: #6c757d !important;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        body[data-theme="dark"] .custom-logo-placeholder {
+            background-color: #1e293b !important;
+            color: #ffffff !important;
+            border: 1px dashed rgba(255, 255, 255, 0.2) !important;
+        }
+        .navbar-theme-btn {
             width: 38px;
             height: 38px;
             border-radius: 50%;
@@ -98,23 +122,44 @@
             border: 1px solid rgba(255, 255, 255, 0.25);
             color: white;
             transition: all 0.2s ease;
-            position: absolute;
-            top: 28px;
-            right: 20px;
-            z-index: 10;
         }
-        @media (max-width: 575.98px) {
+        .navbar-theme-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 35px 0;
+            text-align: center;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .page-header h1 {
+            font-size: clamp(1.6rem, 4vw, 2.3rem);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .page-header p {
+            font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+            opacity: 0.8;
+            margin-bottom: 0;
+        }
+        @media (max-width: 767.98px) {
+            .navbar {
+                padding: 10px 0;
+            }
+            .custom-logo {
+                height: 32px;
+            }
+            .custom-logo-placeholder {
+                min-height: 34px;
+                padding: 2px 8px;
+                font-size: 12px;
+            }
             .page-header {
-                padding: 24px 0 !important;
-            }
-            .reg-header-theme-btn {
-                top: 24px !important;
-                right: 14px !important;
-                width: 35px !important;
-                height: 35px !important;
-            }
-            .reg-header-theme-btn i {
-                font-size: 0.95rem !important;
+                padding: 25px 0;
+                margin-bottom: 25px;
             }
         }
 
@@ -250,19 +295,39 @@
         })();
     </script>
 
-    <div class="page-header position-relative">
-        <div class="container" style="padding-left: 50px; padding-right: 50px;">
-            <h2 class="fw-bold reg-header-title">Team Registration</h2>
-            <p class="reg-header-subtitle mb-0">
+    <!-- Top Navbar (Matching Homepage, Registered Teams, Rules) -->
+    <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="logo-wrapper" href="{{ url('/') }}" title="Back to Home">
+                @if(!empty($setting->header_logo))
+                    <img src="{{ asset($setting->header_logo) }}" alt="Logo" class="img-fluid custom-logo">
+                @else
+                    <div class="custom-logo-placeholder">
+                        Upload Your Logo
+                    </div>
+                @endif
+            </a>
+            <div class="d-flex align-items-center">
+                <a href="{{ url('/') }}" class="btn btn-outline-light btn-sm me-2 d-none d-sm-inline-flex align-items-center">
+                    <i class="fas fa-home me-1"></i> Home
+                </a>
+                <button class="btn theme-toggle-btn navbar-theme-btn d-flex align-items-center justify-content-center">
+                    <i class="fas fa-lightbulb theme-toggle-icon-light m-0"></i>
+                    <i class="fas fa-moon theme-toggle-icon-dark m-0"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Clean Page Header (Matching Rules & Registered Teams) -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Team Registration</h1>
+            <p>
                 {{ (!empty($contest) && $contest->status == 1 && !empty($contest->title)) ? $contest->title : 'Your Contest Title' }}
             </p>
         </div>
-        <!-- Theme Toggle Button - Optically Aligned with first title line on mobile & desktop -->
-        <button class="btn btn-outline-light btn-sm theme-toggle-btn reg-header-theme-btn d-flex align-items-center justify-content-center">
-            <i class="fas fa-lightbulb theme-toggle-icon-light m-0"></i>
-            <i class="fas fa-moon theme-toggle-icon-dark m-0"></i>
-        </button>
-    </div>
+    </section>
 
     <div class="container pb-5">
 
