@@ -5,9 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>{{ $setting->website_name ?? 'Your Website Name' }} - Premium Admin Dashboard</title>
     <link rel="icon" type="image/x-icon" href="{{ !empty($setting->admin_favicon) ? asset($setting->admin_favicon) : (!empty($setting->website_favicon) ? asset($setting->website_favicon) : asset('assets/website/image/favicon.ico')) }}">
     <script>
@@ -18,6 +15,8 @@
             }
         })();
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('assets/admin') }}/css/bootstrap.min.css">
