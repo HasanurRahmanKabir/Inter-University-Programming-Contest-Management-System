@@ -564,8 +564,12 @@
                 });
 
                 alertModal.show();
+            } else if (modalEl) {
+                // If bootstrap is still initializing, display modal directly without native alert
+                modalEl.style.display = 'block';
+                modalEl.classList.add('show');
             } else {
-                alert(message);
+                console.warn('[CustomAlert]:', title, message);
             }
         }
     </script>

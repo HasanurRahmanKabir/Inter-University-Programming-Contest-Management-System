@@ -34,6 +34,12 @@ class TeamController extends Controller
     public function destroy($id)
     {
         $team = TeamRegistration::findOrFail($id);
+
+        // Safeguard: Do not allow deleting a team with an approved payment
+        if ($team->is_paid == 1) {
+            return back()->with('error', 'Action Denied: Team "' . $team->team_name . '" has an approved payment. Please reject or cancel the payment from the Payments section first.');
+        }
+
         $images = ['coach_photo', 'mem_1_photo', 'mem_2_photo', 'mem_3_photo'];
         foreach ($images as $img) {
             if (!empty($team->$img) && File::exists(public_path($team->$img))) {

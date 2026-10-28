@@ -286,9 +286,7 @@
                                 const team = teamDetails.find(t => String(t.team_id) === String(teamId));
                                 if (!team) {
                                     if (typeof showCustomAlert === 'function') {
-                                        showCustomAlert('Error', 'Team data not found for export.');
-                                    } else {
-                                        alert('Team data not found for export.');
+                                        showCustomAlert('Error', 'Team data not found for export.', 'fas fa-exclamation-circle text-danger');
                                     }
                                     return;
                                 }

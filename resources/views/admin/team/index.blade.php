@@ -579,35 +579,85 @@
             </div>
         </div>
 
-        <!-- Delete Team Modal -->
+        <!-- Delete Team Modal / Payment Restricted Modal -->
         <div class="modal fade" id="deleteTeamModal{{ $data->team_id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header border-0 pb-0">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-center pb-4">
-                        <div class="mb-3">
-                            <i class="fas fa-exclamation-circle text-danger" style="font-size: 4rem;"></i>
+                    @if ($data->is_paid == 1)
+                        {{-- Payment Approved - Deletion Restricted --}}
+                        <div class="modal-body text-center pb-4 pt-1 px-4">
+                            <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle"
+                                 style="width: 76px; height: 76px; background: rgba(245, 158, 11, 0.12); color: #f59e0b;">
+                                <i class="fas fa-shield-alt" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">Deletion Restricted</h4>
+                            <div class="mb-3">
+                                <span class="badge bg-success px-3 py-2 rounded-pill fw-semibold shadow-sm" style="font-size: 0.85rem; color: #ffffff !important; background-color: #16a34a !important;">
+                                    <i class="fas fa-check-circle me-1" style="color: #ffffff !important;"></i> Payment Approved
+                                </span>
+                            </div>
+                            <p class="text-muted small mb-3">
+                                Team <strong>{{ $data->team_name }}</strong> has an active approved payment record.
+                                In order to protect financial accounting records and contest integrity, paid teams cannot be deleted directly.
+                            </p>
+                            <div class="admin-restricted-notice text-start small mb-4 py-2 px-3 rounded">
+                                <i class="fas fa-info-circle me-1 text-warning"></i>
+                                If you still wish to remove this team, please first <strong>Reject</strong> or <strong>Cancel</strong> their payment status from the Payments section.
+                            </div>
+
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Close</button>
+                                <a href="{{ route('admin.payment.index') }}?search={{ urlencode($data->team_name) }}" class="btn btn-primary px-4 text-nowrap">
+                                    <i class="fas fa-wallet me-1"></i> View in Payments
+                                </a>
+                            </div>
                         </div>
-                        <h4 class="fw-bold mb-2">Are you sure?</h4>
-                        <p class="text-muted mb-4">You are about to delete team <strong>{{ $data->team_name }}</strong>.<br>This action cannot be undone.</p>
-                        
-                        <div class="d-flex flex-wrap justify-content-center gap-2">
-                            <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
-                            <form action="{{ route('admin.team.destroy', $data->team_id) }}" method="post" class="m-0">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>
-                            </form>
+                    @else
+                        {{-- Unpaid / Pending - Standard Safe Deletion --}}
+                        <div class="modal-body text-center pb-4 pt-1 px-4">
+                            <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle"
+                                 style="width: 76px; height: 76px; background: rgba(239, 68, 68, 0.12); color: #ef4444;">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">Are you sure?</h4>
+                            <p class="text-muted mb-4">You are about to delete team <strong>{{ $data->team_name }}</strong>.<br>This action cannot be undone.</p>
+
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                <button type="button" class="btn btn-light px-4 text-nowrap" data-bs-dismiss="modal">Cancel</button>
+                                <form action="{{ route('admin.team.destroy', $data->team_id) }}" method="post" class="m-0">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger px-4 text-nowrap">Yes, Delete</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
     @endforeach
 
     <style>
+        .admin-restricted-notice {
+            background-color: #fef3c7;
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+        .admin-restricted-notice strong {
+            color: #78350f;
+        }
+        body[data-theme="dark"] .admin-restricted-notice {
+            background-color: rgba(245, 158, 11, 0.12) !important;
+            border: 1px solid rgba(245, 158, 11, 0.25) !important;
+            color: #fef08a !important;
+        }
+        body[data-theme="dark"] .admin-restricted-notice strong {
+            color: #fbbf24 !important;
+        }
+
         .team-reset-btn {
             transition: all 0.2s ease;
         }
