@@ -230,26 +230,43 @@
 
                 <div class="col-md-4">
                     <h6 class="fw-bold mb-3">Contact Info</h6>
-                    <p class="small text-white-50 mb-1">
-                        <i class="fas fa-envelope me-2"></i>
-                        {{ !empty($setting->email) ? $setting->email : 'info@gmail.com' }}
+                    @php
+                        $contactEmail = !empty($setting->email) ? $setting->email : 'info@gmail.com';
+                        $contactPhone = !empty($setting->phone_number) ? $setting->phone_number : '+880 1711 000000';
+                        $cleanPhone = preg_replace('/[^0-9+]/', '', $contactPhone);
+                    @endphp
+                    <p class="small mb-1">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ urlencode($contactEmail) }}"
+                           target="_blank" rel="noopener noreferrer"
+                           class="footer-contact-link"
+                           title="Send email via Gmail">
+                            <i class="fas fa-envelope me-2"></i>
+                            <span>{{ $contactEmail }}</span>
+                        </a>
                     </p>
 
-                    <p class="small text-white-50">
-                        <i class="fas fa-phone me-2"></i>
-                        {{ !empty($setting->phone_number) ? $setting->phone_number : '+880 1711 000000' }}
+                    <p class="small mb-0">
+                        <a href="tel:{{ $cleanPhone }}"
+                           class="footer-contact-link"
+                           title="Click to call">
+                            <i class="fas fa-phone me-2"></i>
+                            <span>{{ $contactPhone }}</span>
+                        </a>
                     </p>
                     <div class="mt-3">
-                        <a href="{{ !empty($setting->facebook_link) ? $setting->facebook_link : 'javascript:void(0)' }}"
-                            class="me-3 text-white" target="_blank" rel="noopener noreferrer">
+                        <a href="{{ (!empty($setting->facebook_link) && filter_var($setting->facebook_link, FILTER_VALIDATE_URL)) ? $setting->facebook_link : 'javascript:void(0)' }}"
+                            {{ (!empty($setting->facebook_link) && filter_var($setting->facebook_link, FILTER_VALIDATE_URL)) ? 'target=_blank rel=noopener' : '' }}
+                            class="me-3 text-white">
                             <i class="fab fa-facebook fa-lg"></i>
                         </a>
-                        <a href="{{ !empty($setting->linkedin_link) ? $setting->linkedin_link : 'javascript:void(0)' }}"
-                            class="me-3 text-white" target="_blank" rel="noopener noreferrer">
+                        <a href="{{ (!empty($setting->linkedin_link) && filter_var($setting->linkedin_link, FILTER_VALIDATE_URL)) ? $setting->linkedin_link : 'javascript:void(0)' }}"
+                            {{ (!empty($setting->linkedin_link) && filter_var($setting->linkedin_link, FILTER_VALIDATE_URL)) ? 'target=_blank rel=noopener' : '' }}
+                            class="me-3 text-white">
                             <i class="fab fa-linkedin fa-lg"></i>
                         </a>
-                        <a href="{{ !empty($setting->youtube_link) ? $setting->youtube_link : 'javascript:void(0)' }}"
-                            class="me-3 text-white" target="_blank" rel="noopener noreferrer">
+                        <a href="{{ (!empty($setting->youtube_link) && filter_var($setting->youtube_link, FILTER_VALIDATE_URL)) ? $setting->youtube_link : 'javascript:void(0)' }}"
+                            {{ (!empty($setting->youtube_link) && filter_var($setting->youtube_link, FILTER_VALIDATE_URL)) ? 'target=_blank rel=noopener' : '' }}
+                            class="me-3 text-white">
                             <i class="fab fa-youtube fa-lg"></i>
                         </a>
                     </div>

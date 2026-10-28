@@ -238,6 +238,95 @@ body[data-theme="dark"] footer {
     border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
+/* === Footer Links & Navigation (Crisp, High Visibility in Both Light & Dark Modes) === */
+footer a {
+    color: #cbd5e1 !important;
+    text-decoration: none !important;
+    transition: all 0.25s ease-in-out !important;
+    display: inline-block;
+}
+
+footer a:hover {
+    color: #38bdf8 !important;
+    text-decoration: none !important;
+    transform: translateX(4px);
+}
+
+.footer-platform-link {
+    color: #cbd5e1 !important;
+    text-decoration: none !important;
+    transition: all 0.25s ease-in-out !important;
+    display: inline-flex !important;
+    align-items: center;
+}
+
+.footer-platform-link:hover {
+    color: #38bdf8 !important;
+    transform: translateX(4px);
+}
+
+body[data-theme="dark"] footer a {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] footer a:hover {
+    color: #38bdf8 !important;
+}
+
+body[data-theme="dark"] .footer-platform-link {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .footer-platform-link:hover {
+    color: #38bdf8 !important;
+}
+
+.footer-contact-link {
+    display: inline-flex !important;
+    align-items: center;
+    color: #cbd5e1 !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease-in-out !important;
+    padding: 3px 0;
+    word-break: break-word;
+}
+
+.footer-contact-link i {
+    color: #38bdf8 !important;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-contact-link:hover {
+    color: #38bdf8 !important;
+    text-decoration: none !important;
+    transform: translateX(4px);
+}
+
+.footer-contact-link:hover i {
+    color: #60a5fa !important;
+    transform: scale(1.15);
+}
+
+body[data-theme="dark"] .footer-contact-link {
+    color: #cbd5e1 !important;
+    text-decoration: none !important;
+}
+
+body[data-theme="dark"] .footer-contact-link i {
+    color: #38bdf8 !important;
+}
+
+body[data-theme="dark"] .footer-contact-link:hover {
+    color: #38bdf8 !important;
+    text-decoration: none !important;
+    transform: translateX(4px);
+}
+
+body[data-theme="dark"] .footer-contact-link:hover i {
+    color: #60a5fa !important;
+    transform: scale(1.15);
+}
+
 /* === Alerts === */
 body[data-theme="dark"] .alert-success {
     background-color: rgba(16, 185, 129, 0.15) !important;
