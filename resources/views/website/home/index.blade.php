@@ -351,7 +351,10 @@
 
         <section class="py-5 bg-light">
             <div class="container">
-                <p class="text-center text-dark fw-bold mb-4 fs-3">Our Official Partners</p>
+                <div class="section-title">
+                    <h2>Our Official Partners</h2>
+                    <p>Valued sponsors and organizations supporting the event.</p>
+                </div>
 
                 @if($sponsors->isNotEmpty())
                     <div class="d-flex justify-content-center align-items-center flex-wrap gap-4 gap-md-5">

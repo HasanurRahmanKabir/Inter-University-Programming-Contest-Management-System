@@ -308,9 +308,6 @@
                 @endif
             </a>
             <div class="d-flex align-items-center">
-                <a href="{{ url('/') }}" class="btn btn-outline-light btn-sm me-2 d-none d-sm-inline-flex align-items-center">
-                    <i class="fas fa-home me-1"></i> Home
-                </a>
                 <button class="btn theme-toggle-btn navbar-theme-btn d-flex align-items-center justify-content-center">
                     <i class="fas fa-lightbulb theme-toggle-icon-light m-0"></i>
                     <i class="fas fa-moon theme-toggle-icon-dark m-0"></i>
