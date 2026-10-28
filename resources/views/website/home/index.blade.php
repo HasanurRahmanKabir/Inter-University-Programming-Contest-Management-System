@@ -21,7 +21,10 @@
         <link href="{{ asset('assets/website') }}/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('assets/website') }}/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-            rel="stylesheet">
+            rel="stylesheet" media="print" onload="this.media='all'">
+        <noscript>
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        </noscript>
         <link rel="stylesheet" href="{{ asset('assets/website') }}/css/homepage.css">
         <link rel="stylesheet" href="{{ asset('assets/website') }}/css/dark-mode.css">
     </head>
@@ -316,7 +319,7 @@
                             @foreach ($galleries as $key => $gallery)
                                 <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                     <img src="{{ asset($gallery->media_path) }}" class="d-block w-100 gallery-img"
-                                        alt="Gallery Image">
+                                        alt="Gallery Image" loading="{{ $key == 0 ? 'eager' : 'lazy' }}" decoding="async">
                                 </div>
                             @endforeach
                         </div>
@@ -365,12 +368,12 @@
                                 @if ($sponsor->link)
                                     <a href="{{ $sponsor->link }}" target="_blank" rel="noopener noreferrer" title="Visit {{ $sponsor->name }}">
                                         <img src="{{ asset($sponsor->logo) }}" alt="{{ $sponsor->name }}" class="sponsor-logo"
-                                         style="max-height: 80px; max-width: 150px; object-fit: contain;">
+                                         style="max-height: 80px; max-width: 150px; object-fit: contain;" loading="lazy" decoding="async">
                                     </a>
                                 @else
                                     <img src="{{ asset($sponsor->logo) }}" alt="{{ $sponsor->name }}" class="sponsor-logo"
                                         title="{{ $sponsor->name }} ({{ $sponsor->sponsor_category }})"
-                                        style="max-height: 80px; max-width: 150px; object-fit: contain;">
+                                        style="max-height: 80px; max-width: 150px; object-fit: contain;" loading="lazy" decoding="async">
                                 @endif
                             @endif
                         @endforeach
